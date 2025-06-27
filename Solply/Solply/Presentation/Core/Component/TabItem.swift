@@ -15,14 +15,22 @@ struct TabItem: View {
     private let tab: TabBarState
     private let width: CGFloat
     private let height: CGFloat
+    private let onTap: (() -> Void)?
     
     // MARK: - Initializer
     
-    init(selectedTab: Binding<TabBarState>, tab: TabBarState, width: CGFloat, height: CGFloat) {
+    init(
+        selectedTab: Binding<TabBarState>,
+        tab: TabBarState,
+        width: CGFloat,
+        height: CGFloat,
+        onTap: (() -> Void)?
+    ) {
         self._selectedTab = selectedTab
         self.tab = tab
         self.width = width
         self.height = height
+        self.onTap = onTap
     }
     
     // MARK: - Body
@@ -30,9 +38,10 @@ struct TabItem: View {
     var body: some View {
         Button {
             selectedTab = tab
+            onTap?()
         } label: {
             Text(tab.title)
-                .frame(width: 81.adjustedWidth, height: 42.adjustedHeight)
+                .frame(width: width, height: height)
                 .foregroundColor(selectedTab == tab ? .black : .gray)
         }
         .buttonStyle(.plain)

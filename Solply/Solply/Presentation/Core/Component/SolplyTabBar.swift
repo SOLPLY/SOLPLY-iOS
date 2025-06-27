@@ -14,6 +14,13 @@ struct SolplyTabBar: View {
     @State private var selectedTab: TabBarState = .place
     private let tabItemCapsuleWidth: CGFloat = 81.adjustedWidth
     private let tabItemCapsuleHeight: CGFloat = 42.adjustedHeight
+    private let onTap: ((TabBarState) -> Void)?
+    
+    // MARK: - Initializer
+    
+    init(onTap: ((TabBarState) -> Void)?) {
+        self.onTap = onTap
+    }
     
     // MARK: - Body
     
@@ -28,7 +35,9 @@ struct SolplyTabBar: View {
                         tab: tab,
                         width: tabItemCapsuleWidth,
                         height: tabItemCapsuleHeight
-                    )
+                    ) {
+                        onTap?(tab)
+                    }
                 }
             }
         }
@@ -58,8 +67,4 @@ extension SolplyTabBar {
         let index = TabBarState.allCases.firstIndex(of: tab) ?? 0
         return CGFloat(index) * tabItemCapsuleWidth
     }
-}
-
-#Preview {
-    SolplyTabBar()
 }
