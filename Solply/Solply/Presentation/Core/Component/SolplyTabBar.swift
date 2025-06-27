@@ -28,7 +28,7 @@ struct SolplyTabBar: View {
         ZStack(alignment: .leading) {
             tabItemCapsule
             
-            HStack(spacing: 0) {
+            HStack(alignment: .center, spacing: 0) {
                 ForEach(TabBarState.allCases, id: \.self) { tab in
                     TabItem(
                         selectedTab: $selectedTab,
