@@ -38,4 +38,9 @@ extension View {
     func capsuleClipped() -> some View {
         self.clipShape(Capsule())
     }
+    
+    /// 뷰 전체를 원형 형태로 자릅니다.
+    func circleClipped() -> some View {
+        self.clipShape(Circle())
+    }
 }
