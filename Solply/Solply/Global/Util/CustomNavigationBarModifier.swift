@@ -39,9 +39,8 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
                 self.centerView?()
                 
             }
-            /*
-             Todo: 네비게이션 패딩값 나오면 수정 필요
-             */
+            
+            // TODO: 네비게이션 패딩값 나오면 수정 필요
             .padding(.horizontal, 0)
             .padding(.vertical, 0)
             .background(backgroundColor)
