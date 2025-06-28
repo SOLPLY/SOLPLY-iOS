@@ -26,20 +26,9 @@ struct SolplyTabBar: View {
     
     var body: some View {
         ZStack(alignment: .leading) {
-            tabItemCapsule
+            tabCapsule
             
-            HStack(alignment: .center, spacing: 0) {
-                ForEach(TabBarState.allCases, id: \.self) { tab in
-                    TabItem(
-                        selectedTab: $selectedTab,
-                        tab: tab,
-                        width: tabItemCapsuleWidth,
-                        height: tabItemCapsuleHeight
-                    ) {
-                        onTap?(tab)
-                    }
-                }
-            }
+            tabButton
         }
         .padding(.horizontal, 4.adjustedWidth)
         .padding(.vertical, 4.adjustedHeight)
@@ -51,12 +40,27 @@ struct SolplyTabBar: View {
 // MARK: - Subviews
 
 extension SolplyTabBar {
-    private var tabItemCapsule: some View {
+    private var tabCapsule: some View {
         Capsule()
             .fill(Color(.systemGray3))
             .frame(width: tabItemCapsuleWidth, height: tabItemCapsuleHeight)
             .offset(x: capsuleOffsetX(for: selectedTab))
             .animation(.easeInOut(duration: 0.2), value: selectedTab)
+    }
+    
+    private var tabButton: some View {
+        HStack(alignment: .center, spacing: 0) {
+            ForEach(TabBarState.allCases, id: \.self) { tab in
+                TabItem(
+                    selectedTab: $selectedTab,
+                    tab: tab,
+                    width: tabItemCapsuleWidth,
+                    height: tabItemCapsuleHeight
+                ) {
+                    onTap?(tab)
+                }
+            }
+        }
     }
 }
 
