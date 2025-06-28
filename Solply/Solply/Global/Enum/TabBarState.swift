@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TabBarState: CaseIterable {
+enum TabBarState: CaseIterable, Hashable {
     case place
     case course
     
