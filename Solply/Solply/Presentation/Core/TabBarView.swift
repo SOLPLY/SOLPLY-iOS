@@ -43,7 +43,6 @@ extension TabBarView {
                 print("\(tab.title) 탭")
             }
         }
-        .background(.blue)
     }
 }
 
