@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 탭바 오른쪽에 위치하는 수집함 버튼입니다.
 struct MyPageButton: View {
     
     // MARK: - Properties
