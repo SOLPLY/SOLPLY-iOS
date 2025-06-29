@@ -28,4 +28,5 @@ struct AuthView: View {
 
 #Preview {
     AuthView()
+        .environmentObject(AppCoordinator())
 }

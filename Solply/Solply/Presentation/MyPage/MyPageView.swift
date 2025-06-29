@@ -28,4 +28,5 @@ struct MyPageView: View {
 
 #Preview {
     MyPageView()
+        .environmentObject(AppCoordinator())
 }
