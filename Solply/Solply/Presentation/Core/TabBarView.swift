@@ -9,16 +9,21 @@ import SwiftUI
 
 struct TabBarView: View {
     
+    // MARK: - Properties
+    
+    @EnvironmentObject private var appCoordinator: AppCoordinator
+    
     // MARK: - Body
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            Text("hello")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.red)
-            
-            tabBar
-                .padding(.bottom, 16.adjustedHeight)
+        NavigationStack(path: $appCoordinator.path) {
+            ZStack(alignment: .bottom) {
+                tabContent
+                
+                tabBar
+                    .padding(.bottom, 16.adjustedHeight)
+            }
+            .navigationDestination(for: AppDestination.self) { $0.build() }
         }
     }
 }
@@ -26,26 +31,39 @@ struct TabBarView: View {
 // MARK: - Subviews
 
 extension TabBarView {
+    private var tabContent: some View {
+        Group {
+            PlaceView()
+                .visible(appCoordinator.selectedTab == .place)
+            
+            CourseView()
+                .visible(appCoordinator.selectedTab == .course)
+        }
+        .animation(.easeInOut(duration: 0.1), value: appCoordinator.selectedTab)
+    }
+    
     private var tabBar: some View {
         ZStack(alignment: .center) {
             HStack(alignment: .center, spacing: 0) {
                 Spacer()
                 
                 MyPageButton {
-                    // TODO: 마이페이지(수집함) 연결
-                    print("마이페이지 탭")
+                    appCoordinator.navigate(to: .myPage)
                 }
             }
             .padding(.horizontal, 23.adjustedWidth)
             
-            SolplyTabBar { tab in
-                // TODO: tab에 따라 장소, 코스 연결
-                print("\(tab.title) 탭")
-            }
+            SolplyTabBar(
+                selectedTab: Binding(
+                    get: { appCoordinator.selectedTab },
+                    set: { appCoordinator.switchTab(to: $0) }
+                )
+            )
         }
     }
 }
 
 #Preview {
     TabBarView()
+        .environmentObject(AppCoordinator())
 }
