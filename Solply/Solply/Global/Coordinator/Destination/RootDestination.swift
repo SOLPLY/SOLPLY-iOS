@@ -5,10 +5,24 @@
 //  Created by 김승원 on 6/28/25.
 //
 
-import Foundation
+import SwiftUI
 
 enum RootDestination {
     case auth
     case onboarding
     case tabBar
+}
+
+extension RootDestination {
+    @ViewBuilder
+    func build() -> some View {
+        switch self {
+        case .auth:
+            AuthView()
+        case .onboarding:
+            OnboardingView()
+        case .tabBar:
+            TabBarView()
+        }
+    }
 }

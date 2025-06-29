@@ -12,17 +12,8 @@ struct RootView: View {
     
     var body: some View {
         NavigationStack(path: $appCoordinator.path) {
-            Group {
-                switch appCoordinator.root {
-                case .auth:
-                    AuthView()
-                case .onboarding:
-                    OnboardingView()
-                case .tabBar:
-                    TabBarView()
-                }
-            }
-            .navigationDestination(for: AppDestination.self) { $0.build() }
+            appCoordinator.root.build()
+                .navigationDestination(for: AppDestination.self) { $0.build() }
         }
         .environmentObject(appCoordinator)
         .animation(.easeInOut(duration: 0.2), value: appCoordinator.root)
