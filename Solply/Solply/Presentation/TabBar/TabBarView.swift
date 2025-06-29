@@ -16,14 +16,11 @@ struct TabBarView: View {
     // MARK: - Body
     
     var body: some View {
-        NavigationStack(path: $appCoordinator.path) {
-            ZStack(alignment: .bottom) {
-                tabContent
-                
-                tabBar
-                    .padding(.bottom, 16.adjustedHeight)
-            }
-            .navigationDestination(for: AppDestination.self) { $0.build() }
+        ZStack(alignment: .bottom) {
+            tabContent
+            
+            tabBar
+                .padding(.bottom, 16.adjustedHeight)
         }
     }
 }
