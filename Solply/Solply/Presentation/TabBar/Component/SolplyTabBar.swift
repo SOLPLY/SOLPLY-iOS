@@ -7,39 +7,29 @@
 
 import SwiftUI
 
+/// 장소, 코스 탭을 전환하는 커스텀 탭바입니다.
+/// TabBarState 바인딩을 통해 선택된 탭(뷰)을 교체합니다.
 struct SolplyTabBar: View {
     
     // MARK: - Properties
     
-    @State private var selectedTab: TabBarState = .place
+    @Binding private var selectedTab: TabBarState
     private let tabItemCapsuleWidth: CGFloat = 81.adjustedWidth
     private let tabItemCapsuleHeight: CGFloat = 42.adjustedHeight
-    private let onTap: ((TabBarState) -> Void)?
     
     // MARK: - Initializer
     
-    init(onTap: ((TabBarState) -> Void)?) {
-        self.onTap = onTap
+    init(selectedTab: Binding<TabBarState>) {
+        self._selectedTab = selectedTab
     }
     
     // MARK: - Body
     
     var body: some View {
         ZStack(alignment: .leading) {
-            tabItemCapsule
+            tabCapsule
             
-            HStack(alignment: .center, spacing: 0) {
-                ForEach(TabBarState.allCases, id: \.self) { tab in
-                    TabItem(
-                        selectedTab: $selectedTab,
-                        tab: tab,
-                        width: tabItemCapsuleWidth,
-                        height: tabItemCapsuleHeight
-                    ) {
-                        onTap?(tab)
-                    }
-                }
-            }
+            tabButton
         }
         .padding(.horizontal, 4.adjustedWidth)
         .padding(.vertical, 4.adjustedHeight)
@@ -51,12 +41,27 @@ struct SolplyTabBar: View {
 // MARK: - Subviews
 
 extension SolplyTabBar {
-    private var tabItemCapsule: some View {
+    private var tabCapsule: some View {
         Capsule()
             .fill(Color(.systemGray3))
             .frame(width: tabItemCapsuleWidth, height: tabItemCapsuleHeight)
             .offset(x: capsuleOffsetX(for: selectedTab))
             .animation(.easeInOut(duration: 0.2), value: selectedTab)
+    }
+    
+    private var tabButton: some View {
+        HStack(alignment: .center, spacing: 0) {
+            ForEach(TabBarState.allCases, id: \.self) { tab in
+                TabItem(
+                    selectedTab: selectedTab,
+                    tab: tab,
+                    width: tabItemCapsuleWidth,
+                    height: tabItemCapsuleHeight
+                ) {
+                    selectedTab = tab
+                }
+            }
+        }
     }
 }
 

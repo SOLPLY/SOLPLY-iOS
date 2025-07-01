@@ -1,5 +1,5 @@
 //
-//  MyPageButton.swift
+//  ArchiveButton.swift
 //  Solply
 //
 //  Created by 김승원 on 6/27/25.
@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct MyPageButton: View {
+/// 탭바 오른쪽에 위치하는 수집함 버튼입니다.
+struct ArchiveButton: View {
     
     // MARK: - Properties
     

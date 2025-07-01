@@ -7,11 +7,12 @@
 
 import SwiftUI
 
+/// 커스텀 탭바에 들어갈 탭 아이템입니다.
 struct TabItem: View {
     
     // MARK: - Properties
     
-    @Binding private var selectedTab: TabBarState
+    private let selectedTab: TabBarState
     private let tab: TabBarState
     private let width: CGFloat
     private let height: CGFloat
@@ -20,13 +21,13 @@ struct TabItem: View {
     // MARK: - Initializer
     
     init(
-        selectedTab: Binding<TabBarState>,
+        selectedTab: TabBarState,
         tab: TabBarState,
         width: CGFloat,
         height: CGFloat,
         onTap: (() -> Void)?
     ) {
-        self._selectedTab = selectedTab
+        self.selectedTab = selectedTab
         self.tab = tab
         self.width = width
         self.height = height
@@ -37,7 +38,6 @@ struct TabItem: View {
     
     var body: some View {
         Button {
-            selectedTab = tab
             onTap?()
         } label: {
             Text(tab.title)
