@@ -1,5 +1,5 @@
 //
-//  CourseView.swift
+//  PlaceView.swift
 //  Solply
 //
 //  Created by 김승원 on 6/28/25.
@@ -7,29 +7,29 @@
 
 import SwiftUI
 
-struct CourseView: View {
+struct PlaceRecommendView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     
     var body: some View {
         ScrollView {
             VStack {
-                Text("CourseView")
+                Text("PlaceRecommendView")
                 
                 Button {
-                    appCoordinator.navigate(to: .courseDetail)
+                    appCoordinator.navigate(to: .placeDetail)
                 } label: {
-                    Text("navigate to CourseDetailView")
+                    Text("navigate to PlaceDetailView")
                 }
             }
             .frame(height: 1000)
             .frame(maxWidth: .infinity)
         }
-        .background(.green)
+        .background(.yellow)
     }
 }
 
 #Preview {
-    CourseView()
+    PlaceRecommendView()
         .environmentObject(AppCoordinator())
 }

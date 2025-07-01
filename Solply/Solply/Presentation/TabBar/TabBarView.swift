@@ -30,10 +30,10 @@ struct TabBarView: View {
 extension TabBarView {
     private var tabContent: some View {
         Group {
-            PlaceView()
+            PlaceRecommendView()
                 .visible(appCoordinator.selectedTab == .place)
             
-            CourseView()
+            CourseRecommendView()
                 .visible(appCoordinator.selectedTab == .course)
         }
         .animation(.easeInOut(duration: 0.1), value: appCoordinator.selectedTab)
@@ -44,8 +44,8 @@ extension TabBarView {
             HStack(alignment: .center, spacing: 0) {
                 Spacer()
                 
-                MyPageButton {
-                    appCoordinator.navigate(to: .myPage)
+                ArchiveButton {
+                    appCoordinator.navigate(to: .archive)
                 }
             }
             .padding(.horizontal, 23.adjustedWidth)

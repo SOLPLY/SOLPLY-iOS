@@ -1,5 +1,5 @@
 //
-//  MyPageView.swift
+//  ArchiveView.swift
 //  Solply
 //
 //  Created by 김승원 on 6/28/25.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct MyPageView: View {
+struct ArchiveView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     
     var body: some View {
         VStack {
-            Text("MyPageView")
+            Text("ArchiveView")
             
             Button {
                 appCoordinator.goBack()
@@ -27,6 +27,6 @@ struct MyPageView: View {
 }
 
 #Preview {
-    MyPageView()
+    ArchiveView()
         .environmentObject(AppCoordinator())
 }

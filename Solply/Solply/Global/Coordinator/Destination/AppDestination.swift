@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum AppDestination {
-    case myPage
+    case archive
     case placeDetail
     case courseDetail
 }
@@ -17,8 +17,8 @@ extension AppDestination {
     @ViewBuilder
     func build() -> some View {
         switch self {
-        case .myPage:
-            MyPageView()
+        case .archive:
+            ArchiveView()
         case .placeDetail:
             PlaceDetailView()
         case .courseDetail:
