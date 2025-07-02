@@ -16,9 +16,22 @@
 		E36882732E0DD865008A7288 /* Solply.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solply.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E39752982E15934B0053E288 /* Exceptions for "Solply" folder in "Solply" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Global/Info.plist,
+			);
+			target = E36882722E0DD865008A7288 /* Solply */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E36882752E0DD865008A7288 /* Solply */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E39752982E15934B0053E288 /* Exceptions for "Solply" folder in "Solply" target */,
+			);
 			path = Solply;
 			sourceTree = "<group>";
 		};
@@ -273,6 +286,7 @@
 				DEVELOPMENT_TEAM = 7KX4HGAQ77;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Solply/Global/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -301,6 +315,7 @@
 				DEVELOPMENT_TEAM = 7KX4HGAQ77;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Solply/Global/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
