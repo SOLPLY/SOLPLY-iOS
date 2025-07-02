@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E34011482E151709008944E7 /* NMapsMap in Frameworks */ = {isa = PBXBuildFile; productRef = E34011472E151709008944E7 /* NMapsMap */; };
 		E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E36882822E0DD8AF008A7288 /* Kingfisher */; };
 		E36882862E0DD935008A7288 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = E36882852E0DD935008A7288 /* Moya */; };
 /* End PBXBuildFile section */
@@ -29,6 +30,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E36882862E0DD935008A7288 /* Moya in Frameworks */,
+				E34011482E151709008944E7 /* NMapsMap in Frameworks */,
 				E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +76,7 @@
 			packageProductDependencies = (
 				E36882822E0DD8AF008A7288 /* Kingfisher */,
 				E36882852E0DD935008A7288 /* Moya */,
+				E34011472E151709008944E7 /* NMapsMap */,
 			);
 			productName = Solply;
 			productReference = E36882732E0DD865008A7288 /* Solply.app */;
@@ -106,6 +109,7 @@
 			packageReferences = (
 				E36882812E0DD8AF008A7288 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				E36882842E0DD935008A7288 /* XCRemoteSwiftPackageReference "Moya" */,
+				E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E36882742E0DD865008A7288 /* Products */;
@@ -339,6 +343,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/navermaps/SPM-NMapsMap";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.22.0;
+			};
+		};
 		E36882812E0DD8AF008A7288 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -358,6 +370,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E34011472E151709008944E7 /* NMapsMap */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */;
+			productName = NMapsMap;
+		};
 		E36882822E0DD8AF008A7288 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E36882812E0DD8AF008A7288 /* XCRemoteSwiftPackageReference "Kingfisher" */;
