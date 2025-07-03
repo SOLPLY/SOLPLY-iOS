@@ -16,9 +16,22 @@
 		E36882732E0DD865008A7288 /* Solply.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solply.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E39752982E15934B0053E288 /* Exceptions for "Solply" folder in "Solply" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Global/Info.plist,
+			);
+			target = E36882722E0DD865008A7288 /* Solply */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E36882752E0DD865008A7288 /* Solply */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E39752982E15934B0053E288 /* Exceptions for "Solply" folder in "Solply" target */,
+			);
 			path = Solply;
 			sourceTree = "<group>";
 		};
@@ -144,6 +157,8 @@
 /* Begin XCBuildConfiguration section */
 		E368827C2E0DD866008A7288 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = E36882752E0DD865008A7288 /* Solply */;
+			baseConfigurationReferenceRelativePath = Global/Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -208,6 +223,8 @@
 		};
 		E368827D2E0DD866008A7288 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = E36882752E0DD865008A7288 /* Solply */;
+			baseConfigurationReferenceRelativePath = Global/Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -265,6 +282,8 @@
 		};
 		E368827F2E0DD866008A7288 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = E36882752E0DD865008A7288 /* Solply */;
+			baseConfigurationReferenceRelativePath = Global/Config.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -273,6 +292,7 @@
 				DEVELOPMENT_TEAM = 7KX4HGAQ77;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Solply/Global/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -283,7 +303,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = won.Solply;
+				PRODUCT_BUNDLE_IDENTIFIER = com.solply.project;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -293,6 +313,8 @@
 		};
 		E36882802E0DD866008A7288 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = E36882752E0DD865008A7288 /* Solply */;
+			baseConfigurationReferenceRelativePath = Global/Config.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -301,6 +323,7 @@
 				DEVELOPMENT_TEAM = 7KX4HGAQ77;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Solply/Global/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -311,7 +334,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = won.Solply;
+				PRODUCT_BUNDLE_IDENTIFIER = com.solply.project;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

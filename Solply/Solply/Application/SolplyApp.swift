@@ -7,8 +7,15 @@
 
 import SwiftUI
 
+import NMapsMap
+
 @main
 struct SolplyApp: App {
+    
+    init() {
+        NMFAuthManager.shared().ncpKeyId = AppEnvironment.naverMapClientId
+    }
+    
     var body: some Scene {
         WindowGroup {
             RootView()
