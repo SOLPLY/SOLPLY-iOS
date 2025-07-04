@@ -16,4 +16,12 @@ enum AppEnvironment {
         
         return clientId
     }()
+    
+    static let baseURL: String = {
+        guard let baseURL = Bundle.main.object(forInfoDictionaryKey: "Base_URL") as? String else {
+            fatalError("Info.plist에 Base_URL이 없습니다.")
+        }
+        
+        return baseURL
+    }()
 }
