@@ -9,17 +9,6 @@ import Foundation
 
 import Moya
 
-class BaseService1<T: BaseTargetType> {
-    let provider: MoyaProvider<T>
-    
-    init(session: Session = .default, plugins: [PluginType] = [MoyaLoggingPlugin()]) {
-        self.provider = MoyaProvider<T>(
-            session: session,
-            plugins: plugins
-        )
-    }
-}
-
 class BaseService<Target: BaseTargetType> {
     
     private let provider: MoyaProvider<Target>

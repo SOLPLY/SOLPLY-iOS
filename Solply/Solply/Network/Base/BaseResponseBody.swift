@@ -19,5 +19,5 @@ struct BaseResponseBody<T: ResponseModelType>: ResponseModelType {
 struct ErrorResponseBody: ResponseModelType {
     let code: Int
     let message: String
-    // TODO: 서버에서 error상황에서
+    // TODO: 서버에서 error상황에서 어떻게 넘겨주는지 확인 후 수정 필요
 }
