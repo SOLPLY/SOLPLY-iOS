@@ -41,8 +41,9 @@ struct TabItem: View {
             onTap?()
         } label: {
             Text(tab.title)
+                .applySolplyFont(.button_16_m)
                 .frame(width: width, height: height)
-                .foregroundColor(selectedTab == tab ? .black : .gray)
+                .foregroundColor(selectedTab == tab ? .coreBlack : .gray100)
         }
         .buttonStyle(.plain)
     }

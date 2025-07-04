@@ -26,11 +26,17 @@ struct ArchiveButton: View {
         Button {
             onTap?()
         } label: {
-            Image(systemName: "house.fill")
+            Image(.collectionIcon)
+                .resizable()
+                .renderingMode(.template)
+                .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 50.adjustedWidth, height: 50.adjustedHeight)
-                .background(Color(.systemGray5))
-                .circleClipped()
+                .foregroundStyle(.green100)
+                .background {
+                    Circle()
+                        .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
+                        .foregroundStyle(.gray900)
+                }
         }
         .buttonStyle(.plain)
     }

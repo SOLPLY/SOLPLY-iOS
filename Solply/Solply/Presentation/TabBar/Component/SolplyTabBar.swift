@@ -14,8 +14,8 @@ struct SolplyTabBar: View {
     // MARK: - Properties
     
     @Binding private var selectedTab: TabBarState
-    private let tabItemCapsuleWidth: CGFloat = 81.adjustedWidth
-    private let tabItemCapsuleHeight: CGFloat = 42.adjustedHeight
+    private let tabItemCapsuleWidth: CGFloat = 72.adjustedWidth
+    private let tabItemCapsuleHeight: CGFloat = 48.adjustedHeight
     
     // MARK: - Initializer
     
@@ -31,9 +31,9 @@ struct SolplyTabBar: View {
             
             tabButton
         }
-        .padding(.horizontal, 4.adjustedWidth)
-        .padding(.vertical, 4.adjustedHeight)
-        .background(Color(.systemGray5))
+        .padding(.horizontal, 6.adjustedWidth)
+        .padding(.vertical, 6.adjustedHeight)
+        .background(.gray900)
         .capsuleClipped()
     }
 }
@@ -43,7 +43,7 @@ struct SolplyTabBar: View {
 extension SolplyTabBar {
     private var tabCapsule: some View {
         Capsule()
-            .fill(Color(.systemGray3))
+            .fill(.green100)
             .frame(width: tabItemCapsuleWidth, height: tabItemCapsuleHeight)
             .offset(x: capsuleOffsetX(for: selectedTab))
             .animation(.easeInOut(duration: 0.2), value: selectedTab)
