@@ -44,6 +44,7 @@ struct TabItem: View {
                 .applySolplyFont(.button_16_m)
                 .frame(width: width, height: height)
                 .foregroundColor(selectedTab == tab ? .coreBlack : .gray100)
+                .animation(.easeInOut(duration: 0.2), value: selectedTab)
         }
         .buttonStyle(.plain)
     }
