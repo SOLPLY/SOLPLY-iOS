@@ -57,6 +57,7 @@ extension TabBarView {
                 )
             )
         }
+        .shadow(color: .coreBlack.opacity(0.15), radius: 8)
     }
 }
 
