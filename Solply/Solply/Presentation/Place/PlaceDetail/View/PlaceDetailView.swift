@@ -14,8 +14,6 @@ struct PlaceDetailView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceDetailStore()
     
-    @State private var isShowing: Bool = false
-    
     // MARK: - Body
     
     var body: some View {
@@ -41,7 +39,6 @@ extension PlaceDetailView {
             
             SolplyAddButton(isSelected: store.state.addButtonSelected) {
                 store.dispatch(.toggleAddToCourse)
-                isShowing.toggle()
             }
             .animation(.easeIn(duration: 0.2), value: store.state.saveButtonSelected)
             
