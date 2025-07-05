@@ -21,19 +21,24 @@ struct NMapView: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) -> NMFNaverMapView {
-        let view = NMFNaverMapView()
-        view.showZoomControls = false
-        view.mapView.positionMode = .disabled
-        view.mapView.zoomLevel = 17 // 수정 필요
+        let mapView = NMFNaverMapView()
+        mapView.showZoomControls = false
+        mapView.mapView.positionMode = .disabled
+        mapView.mapView.zoomLevel = 17 // 수정 필요
         
-        return view
+        let targetCoord = NMGLatLng(lat: coordinate.1, lng: coordinate.0)
+        let cameraUpdate = NMFCameraUpdate(scrollTo: targetCoord)
+        cameraUpdate.animation = .none
+        mapView.mapView.moveCamera(cameraUpdate)
+        
+        return mapView
     }
     
-    func updateUIView(_ view: NMFNaverMapView, context: Context) {
+    func updateUIView(_ mapView: NMFNaverMapView, context: Context) {
         let coordinate = NMGLatLng(lat: coordinate.1, lng: coordinate.0)
         let cameraUpdate = NMFCameraUpdate(scrollTo: coordinate)
         cameraUpdate.animation = .fly
         cameraUpdate.animationDuration = 1
-        view.mapView.moveCamera(cameraUpdate)
+        mapView.mapView.moveCamera(cameraUpdate)
     }
 }
