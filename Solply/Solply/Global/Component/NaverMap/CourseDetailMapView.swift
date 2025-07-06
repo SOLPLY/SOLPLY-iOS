@@ -132,7 +132,7 @@ extension CourseDetailMapView {
             print("레벨 범위 - 위도: \(coordinateDelta.latitude), 경도: \(coordinateDelta.longitude)")
             print("----------Rrr------------------")
             
-            // 마커들의 범위가 현재 레벨의 span 안에 들어가는지 확인
+            // 마커들의 범위가 현재 레벨의 coordinateDelta 안에 들어가는지 확인
             if latitudeRange <= coordinateDelta.latitude && longitudeRange <= coordinateDelta.longitude {
                 mapView.zoomLevel = level.zoom
                 print("선택된 줌 레벨: \(level.zoom)")
