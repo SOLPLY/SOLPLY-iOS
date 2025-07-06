@@ -17,12 +17,13 @@ struct PlaceDetailView: View {
     // MARK: - Body
     
     var body: some View {
-        NMapView(coordinate: (126.9784147, 37.5666805))
-            .detailBottomSheet {
-                bottomSheetTopButtons
-            } sheetContent: {
-                bottomSheetContent
-            }
+        Text("임시PlaceView")
+//        NMapView(coordinate: (126.9784147, 37.5666805))
+//            .detailBottomSheet {
+//                bottomSheetTopButtons
+//            } sheetContent: {
+//                bottomSheetContent
+//            }
     }
 }
 
