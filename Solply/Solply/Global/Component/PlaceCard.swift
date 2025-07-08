@@ -36,6 +36,8 @@ struct PlaceCard: View {
                 
                 if isSaved {
                     Image(placeCategory.savedBadge ?? "")
+                        .resizable()
+                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                         .aspectRatio(contentMode: .fit)
                         .padding(.horizontal, 12.adjustedWidth)
                         .padding(.vertical, 12.adjustedHeight)
