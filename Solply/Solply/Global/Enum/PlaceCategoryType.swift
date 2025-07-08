@@ -51,4 +51,16 @@ enum PlaceCategoryType {
         case .unique: return .green500
         }
     }
+    
+    var savedBadge: String? {
+        switch self {
+        case .all: return nil
+        case .cafe: return "save-icon-red"
+        case .food: return "save-icon-yellow"
+        case .book: return "save-icon-purple"
+        case .shopping: return "save-icon-purple"
+        case .walk: return "save-icon-green"
+        case .unique: return "save-icon-green"
+        }
+    }
 }
