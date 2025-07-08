@@ -39,7 +39,7 @@ struct CourseCard: View {
                 .padding(.bottom, 84.adjustedHeight)
             
             VStack(alignment: .leading, spacing: 12.adjustedHeight) {
-                HStack(alignment: .center) {
+                HStack(alignment: .center, spacing: 0) {
                     Text(title)
                         .applySolplyFont(.title_14_m)
                         .foregroundStyle(.coreBlack)
@@ -49,6 +49,8 @@ struct CourseCard: View {
                     
                     if isSaved, let isSavedBadge = courseCategory.first?.savedBadge {
                         Image(isSavedBadge)
+                            .resizable()
+                            .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                             .aspectRatio(contentMode: .fit)
                     }
                 }
@@ -64,7 +66,7 @@ struct CourseCard: View {
                 .padding(.bottom, 12.adjustedHeight)
                 .padding(.leading, 12.adjustedWidth)
             }
-            .frame(width: 165.adjustedWidth ,height: 88.adjustedHeight)
+            .frame(width: 165.adjustedWidth, height: 88.adjustedHeight)
             .background(courseCategory.first?.courseBackgroundColor)
             .cornerRadius(4, corners: [.topLeft, .topRight])
             .cornerRadius(20, corners: [.bottomLeft, .bottomRight])
