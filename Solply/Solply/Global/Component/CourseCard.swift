@@ -33,6 +33,11 @@ struct CourseCard: View {
                 .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                 .cornerRadius(20, corners: .allCorners)
             
+            Rectangle()
+                .frame(width: 165.adjustedWidth, height: 11.adjustedHeight)
+                .foregroundStyle(.coreBlackO20)
+                .padding(.bottom, 84.adjustedHeight)
+            
             VStack(alignment: .leading, spacing: 12.adjustedHeight) {
                 HStack(alignment: .center) {
                     Text(title)
