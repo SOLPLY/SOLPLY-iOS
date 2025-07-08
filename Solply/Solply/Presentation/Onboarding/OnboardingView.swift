@@ -23,7 +23,6 @@ struct OnboardingView: View {
                 
             ProgressBar(progress: $progress)
             
-            
             TabView(selection: $selectedTab) {
                 ForEach(icons.indices, id: \.self) { index in
                     ZStack {
