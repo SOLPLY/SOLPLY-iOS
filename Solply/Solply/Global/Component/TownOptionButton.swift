@@ -42,7 +42,7 @@ struct TownOptionButton: View {
     }
 
     private var content: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 10.adjustedWidth) {
             if let title = type.title {
                 Text(title)
                     .applySolplyFont(.button_16_m)
