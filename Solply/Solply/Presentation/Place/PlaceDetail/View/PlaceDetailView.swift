@@ -14,17 +14,16 @@ struct PlaceDetailView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceDetailStore()
     
-    @State private var isShowing: Bool = false
-    
     // MARK: - Body
     
     var body: some View {
-        NMapView(coordinate: (126.9784147, 37.5666805))
-            .detailBottomSheet {
-                bottomSheetTopButtons
-            } sheetContent: {
-                bottomSheetContent
-            }
+        Text("임시PlaceView")
+//        NMapView(coordinate: (126.9784147, 37.5666805))
+//            .detailBottomSheet {
+//                bottomSheetTopButtons
+//            } sheetContent: {
+//                bottomSheetContent
+//            }
     }
 }
 
@@ -41,7 +40,6 @@ extension PlaceDetailView {
             
             SolplyAddButton(isSelected: store.state.addButtonSelected) {
                 store.dispatch(.toggleAddToCourse)
-                isShowing.toggle()
             }
             .animation(.easeIn(duration: 0.2), value: store.state.saveButtonSelected)
             

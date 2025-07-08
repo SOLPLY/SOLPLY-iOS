@@ -89,7 +89,7 @@ enum SolplyFont {
         switch self {
         case .display_24_sb: return 36
         case .display_20_sb: return 30
-        case .display_16_sb: return 12
+        case .display_16_sb: return 21
         case .display_12_r: return 16
         case .title_18_sb: return 23
         case .title_15_m: return 19
