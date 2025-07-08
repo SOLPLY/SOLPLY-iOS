@@ -49,16 +49,18 @@ struct TownOptionButton: View {
                     .foregroundColor(.gray900)
             } else {
                 Image(.plusIcon)
+                    .resizable()
+                    .renderingMode(.template)
+                    .aspectRatio(contentMode: .fit)
                     .foregroundColor(.gray400)
+                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
             }
         }
-        .padding(.horizontal, 15)
-        .padding(.vertical, 23)
-        .frame(width: 100, height: 100)
+        .frame(width: 100.adjustedWidth, height: 100.adjustedHeight)
         .background(type.backgroundColor(isSelected: isSelected))
         .capsuleClipped()
         .overlay(
-            RoundedRectangle(cornerRadius: 999)
+            Circle()
                 .stroke(type.borderColor(isSelected: isSelected), lineWidth: 1)
         )
     }
