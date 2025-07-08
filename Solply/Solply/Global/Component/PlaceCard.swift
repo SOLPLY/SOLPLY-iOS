@@ -32,6 +32,8 @@ struct PlaceCard: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                    .cornerRadius(20, corners: .allCorners)
+                
                 (isSaved ? Image(placeCategory.savedBadge ?? "") : nil)
                     .aspectRatio(contentMode: .fit)
                     .padding(.horizontal, 12.adjustedWidth)
