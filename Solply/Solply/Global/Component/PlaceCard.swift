@@ -30,19 +30,22 @@ struct PlaceCard: View {
             ZStack(alignment: .bottomTrailing) {
                 Image(.place)
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                     .cornerRadius(20, corners: .allCorners)
                 
-                (isSaved ? Image(placeCategory.savedBadge ?? "") : nil)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.horizontal, 12.adjustedWidth)
-                    .padding(.vertical, 12.adjustedHeight)
+                if isSaved {
+                    Image(placeCategory.savedBadge ?? "")
+                        .aspectRatio(contentMode: .fit)
+                        .padding(.horizontal, 12.adjustedWidth)
+                        .padding(.vertical, 12.adjustedHeight)
+                }
             }
             HStack(alignment: .center, spacing: 4.adjustedWidth) {
                 PlaceCategoryTag(placeCategory: placeCategory)
                 Text(title)
                     .applySolplyFont(.body_14_m)
+                    .foregroundStyle(.coreBlack)
             }
         }
     }
