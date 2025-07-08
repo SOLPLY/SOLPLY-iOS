@@ -32,6 +32,7 @@ struct CourseDetailMapView: UIViewRepresentable {
         let mapView = configureMapView(context: context)
         configureCamera(mapView)
         addMarkersToMap(mapView)
+        addLineToMap(mapView)
         calculateZoomLevel(mapView)
         return mapView
     }
@@ -44,6 +45,7 @@ struct CourseDetailMapView: UIViewRepresentable {
 // MARK: - Map Configuration
 
 extension CourseDetailMapView {
+    /// 지도를 초기화하는 함수입니다.
     private func configureMapView(context: Context) -> NMFMapView {
         let mapView = NMFMapView()
         mapView.mapType = .basic
@@ -62,7 +64,7 @@ extension CourseDetailMapView {
 // MARK: - Camera Management
 
 extension CourseDetailMapView {
-    /// 초기 카메라 위치를 설정하는 함수
+    /// 초기 카메라 위치를 설정하는 함수입니다.
     private func configureCamera(_ mapView: NMFMapView) {
         DispatchQueue.main.async {
             let centerCoordinate = calculateCenterCoordinate()
@@ -72,7 +74,7 @@ extension CourseDetailMapView {
         }
     }
     
-    /// 코스 내 장소들의 중앙 좌표를 구하는 함수
+    /// 코스 내 장소들의 중앙 좌표를 구하는 함수입니다.
     private func calculateCenterCoordinate() -> NMGLatLng {
         let boundingBox = calculateBoundingBox()
         let centerLatitude = (boundingBox.minLatitude + boundingBox.maxLatitude) / 2
@@ -116,7 +118,7 @@ extension CourseDetailMapView {
         return boundingBox
     }
     
-    /// 마커 분포에 따라(BoundingBox를 기준으로) 줌 레벨을 계산하는 함수
+    /// 마커 분포에 따라(BoundingBox를 기준으로) 줌 레벨을 계산하는 함수입니다.
     private func calculateZoomLevel(_ mapView: NMFMapView) {
         let boundingBox = calculateBoundingBox()
         
@@ -151,7 +153,7 @@ extension CourseDetailMapView {
         // 예: 코스 데이터가 변경되었을 때
     }
     
-    /// 특정 장소로 카메라 이동하는 함수
+    /// 특정 장소로 카메라 이동하는 함수입니다.
     private func moveCameraToPlace(_ place: Place, mapView: NMFMapView, animated: Bool = true) {
         let coordinate = NMGLatLng(lat: place.latitude, lng: place.longitude)
         let cameraUpdate = NMFCameraUpdate(scrollTo: coordinate)
@@ -163,7 +165,7 @@ extension CourseDetailMapView {
 // MARK: - Marker Management
 
 extension CourseDetailMapView {
-    /// 지도에 마커를 추가하는 함수
+    /// 지도에 마커를 추가하는 함수입니다.
     private func addMarkersToMap(_ mapView: NMFMapView) {
         DispatchQueue.global(qos: .default).async {
             var markers: [NMFMarker] = []
@@ -187,5 +189,19 @@ extension CourseDetailMapView {
                 }
             }
         }
+    }
+    
+    /// 지도에 코스(선)을 추가하는 함수입니다.
+    private func addLineToMap(_ mapView: NMFMapView) {
+        var coordinates: [NMGLatLng] = []
+        
+        for place in course.places {
+            let coordinate = NMGLatLng(lat: place.latitude, lng: place.longitude)
+            coordinates.append(coordinate)
+        }
+        
+        let polyline = NMFPolylineOverlay(coordinates)
+        polyline?.width = 2
+        polyline?.mapView = mapView
     }
 }
