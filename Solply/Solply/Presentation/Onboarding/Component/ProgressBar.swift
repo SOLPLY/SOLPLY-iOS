@@ -28,6 +28,6 @@ struct ProgressBar: View {
                     .capsuleClipped()
             }
         }
-        .frame(height: 10)
+        .frame(height: 10.adjustedWidth)
     }
 }
