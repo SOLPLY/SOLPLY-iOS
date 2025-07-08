@@ -31,7 +31,7 @@ struct CourseDetailMapView: UIViewRepresentable {
     func makeUIView(context: Context) -> NMFMapView {
         let mapView = configureMapView(context: context)
         configureCamera(mapView)
-        addMarkesToMap(mapView)
+        addMarkersToMap(mapView)
         calculateZoomLevel(mapView)
         return mapView
     }
@@ -164,7 +164,7 @@ extension CourseDetailMapView {
 
 extension CourseDetailMapView {
     /// 지도에 마커를 추가하는 함수
-    private func addMarkesToMap(_ mapView: NMFMapView) {
+    private func addMarkersToMap(_ mapView: NMFMapView) {
         DispatchQueue.global(qos: .default).async {
             var markers: [NMFMarker] = []
   
