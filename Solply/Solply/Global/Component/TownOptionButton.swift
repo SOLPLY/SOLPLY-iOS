@@ -11,18 +11,18 @@ struct TownOptionButton: View {
 
     // MARK: - Properties
     
-    let style: Style
-    let isSelected: Bool
-    let action: (() -> Void)?
+    private let type: TownOptionButtonType
+    private let isSelected: Bool
+    private let action: (() -> Void)?
 
     // MARK: - Initializer
     
     init(
-        style: Style,
+        type: TownOptionButtonType,
         isSelected: Bool = false,
         action: (() -> Void)? = nil
     ) {
-        self.style = style
+        self.type = type
         self.isSelected = isSelected
         self.action = action
     }
@@ -31,7 +31,9 @@ struct TownOptionButton: View {
     
     var body: some View {
         if let action = action {
-            Button(action: action) {
+            Button {
+                action()
+            } label: {
                 content
             }
         } else {
@@ -40,59 +42,59 @@ struct TownOptionButton: View {
     }
 
     private var content: some View {
-        VStack(spacing: 10) {
-            if let title = style.title {
+        VStack(alignment: .leading, spacing: 10) {
+            if let title = type.title {
                 Text(title)
                     .applySolplyFont(.button_16_m)
                     .foregroundColor(.gray900)
             } else {
-                Image("plus-icon")
-                    .foregroundColor(.secondary)
+                Image(.plusIcon)
+                    .foregroundColor(.gray400)
             }
         }
         .padding(.horizontal, 15)
         .padding(.vertical, 23)
         .frame(width: 100, height: 100)
-        .background(style.backgroundColor(isSelected: isSelected))
-        .cornerRadius(999)
+        .background(type.backgroundColor(isSelected: isSelected))
+        .capsuleClipped()
         .overlay(
             RoundedRectangle(cornerRadius: 999)
-                .stroke(style.borderColor(isSelected: isSelected), lineWidth: 1)
+                .stroke(type.borderColor(isSelected: isSelected), lineWidth: 1)
         )
     }
 }
 
-// MARK: - Style
+// MARK: - Type
 
 extension TownOptionButton {
-    enum Style {
-        case mangwon
-        case yeonhui
-        case add
+    enum TownOptionButtonType {
+            case named(String)
+            case add
 
         var title: String? {
             switch self {
-            case .mangwon: return "망원동"
-            case .yeonhui: return "연희동"
-            case .add:     return nil
+            case .named(let name):
+                return name
+            case .add:
+                return nil
             }
         }
 
         func backgroundColor(isSelected: Bool) -> Color {
             switch self {
-            case .mangwon, .yeonhui:
-                return isSelected ? Color("gray-100") : Color("red-100")
+            case .named:
+                return isSelected ? .gray100 : .red100
             case .add:
-                return Color("gray-200")
+                return .gray200
             }
         }
 
         func borderColor(isSelected: Bool) -> Color {
             switch self {
-            case .mangwon, .yeonhui:
-                return isSelected ? Color("gray-300") : Color("red-300")
+            case .named:
+                return isSelected ? .gray300 : .red300
             case .add:
-                return Color("gray-200")
+                return .gray200
             }
         }
     }
