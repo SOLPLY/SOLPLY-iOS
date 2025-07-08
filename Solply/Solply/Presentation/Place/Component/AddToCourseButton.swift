@@ -1,5 +1,5 @@
 //
-//  SolplyAddButton.swift
+//  AddToCourseButton.swift
 //  Solply
 //
 //  Created by 김승원 on 7/4/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SolplyAddButton: View {
+struct AddToCourseButton: View {
     
     // MARK: - Properties
     
