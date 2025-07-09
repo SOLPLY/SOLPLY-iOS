@@ -13,7 +13,7 @@ enum CourseDetailReducer {
         case .toggleSaveCourse:
             state.courseSaveSelected.toggle()
             
-        case .focusPlace(index: let index):
+        case .focusPlace(let index):
             state.focusedPlaceIndex = state.focusedPlaceIndex == index ? -1 : index
             
         case .fetchCourseDetailData:
