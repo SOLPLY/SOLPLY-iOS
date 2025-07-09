@@ -9,4 +9,9 @@ import Foundation
 
 enum CourseDetailAction {
     case toggleSaveCourse
+    case focusPlace(index: Int)
+    case toggleSavePlace(index: Int)
+    
+    case fetchCourseDetailData
+    case courseDetailDataFetched(Course)
 }

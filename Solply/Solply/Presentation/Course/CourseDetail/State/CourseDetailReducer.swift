@@ -11,7 +11,22 @@ enum CourseDetailReducer {
     static func reduce(state: inout CourseDetailState, action: CourseDetailAction) {
         switch action {
         case .toggleSaveCourse:
-            state.saveButtonSelected.toggle()
+            state.courseSaveSelected.toggle()
+            
+        case .focusPlace(index: let index):
+            state.focusedPlaceIndex = state.focusedPlaceIndex == index ? -1 : index
+            
+        case .fetchCourseDetailData:
+            state.isLoading = true
+            
+        case .courseDetailDataFetched(let course):
+            state.isLoading = false
+            state.courseTitle = course.courseTitle
+            state.courseDescription = course.courseDescription
+            state.places = course.places
+            
+        case .toggleSavePlace(let index):
+            state.places[index].isSaved.toggle()
         }
     }
 }
