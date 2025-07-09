@@ -16,6 +16,10 @@ enum CourseDetailReducer {
         case .focusPlace(let index):
             state.focusedPlaceIndex = state.focusedPlaceIndex == index ? -1 : index
             
+            for i in state.places.indices {
+                state.places[i].isFocused = (i == state.focusedPlaceIndex)
+            }
+            
         case .fetchCourseDetailData:
             state.isLoading = true
             
