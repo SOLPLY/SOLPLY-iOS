@@ -47,6 +47,7 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
             
             Spacer()
         }
+        .ignoresSafeArea(edges: .bottom)
         .navigationBarHidden(true)
     }
 }
