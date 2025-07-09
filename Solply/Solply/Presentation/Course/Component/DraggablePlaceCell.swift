@@ -51,12 +51,12 @@ struct DraggablePlaceCell: View {
     // MARK: - Body
     
     var body: some View {
-        HStack(alignment: .center, spacing: 8.adjustedWidth) {
+        HStack(alignment: .top, spacing: 8.adjustedWidth) {
             Image(.place)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(
-                    width: isExpanded ? 88.adjustedWidth : 52.adjustedWidth,
+                    width: isExpanded ? 88.adjustedHeight : 52.adjustedWidth,
                     height: isExpanded ? 88.adjustedHeight : 52.adjustedHeight
                 )
                 .cornerRadius(12, corners: .allCorners)
@@ -72,14 +72,14 @@ struct DraggablePlaceCell: View {
                                 .frame(height: 19.adjustedHeight)
                                 .foregroundStyle(.coreBlack)
                         }
+                        .frame(height: 20.adjustedHeight)
                         
                         Text(address)
                             .applySolplyFont(.caption_12_r)
                             .frame(height: 18.adjustedHeight)
                             .foregroundStyle(.gray700)
                     }
-                    
-                    Spacer()
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Button {
                         saveAction?()
@@ -90,6 +90,7 @@ struct DraggablePlaceCell: View {
                     }
                     .buttonStyle(.plain)
                 }
+                .padding(.top, 4.adjustedHeight)
                 
                 if isExpanded {
                     HStack(alignment: .center, spacing: 8.adjustedWidth) {
@@ -106,7 +107,7 @@ struct DraggablePlaceCell: View {
         }
         .padding(.leading, 8.adjustedWidth)
         .padding(.trailing, 16.adjustedWidth)
-        .padding(.vertical, 8.adjustedHeight)
+        .frame(height: isExpanded ? 104.adjustedHeight : 68.adjustedHeight)
         .background(isExpanded ? .gray100 : .coreWhite)
         .cornerRadius(20, corners: .allCorners)
         .addBorder(.roundedRectangle(cornerRaius: 20), borderColor: .gray300, borderWidth: 1)
