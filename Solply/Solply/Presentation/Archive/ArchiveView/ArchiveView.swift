@@ -23,7 +23,10 @@ struct ArchiveView: View {
                 store.dispatch(.toggleArchiveBar(archiveCategory: category))
             }
             
-            ArchiveEmptyView(archiveCategory: store.state.selectedCategory)
+            // TODO: - 데이터 연결 후 데이터 여부에 따라서 분기 처리 필요
+
+//            ArchiveEmptyView(archiveCategory: store.state.selectedCategory)
+            ArchiveFullView(archiveCatrgory: store.state.selectedCategory)
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .customNavigationBar(.archive(backAction: appCoordinator.goBack))

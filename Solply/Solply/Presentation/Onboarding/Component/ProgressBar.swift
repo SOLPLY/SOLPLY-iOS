@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProgressBar: View {
-    @Binding var progress: CGFloat
+    var step: OnboardingStep
     
     var body: some View {
         GeometryReader { geometry in
@@ -18,12 +18,7 @@ struct ProgressBar: View {
                     .capsuleClipped()
                 
                 Rectangle()
-                    .frame(width: geometry.size.width * 0.95)
-                    .foregroundColor(.gray200)
-                    .capsuleClipped()
-                
-                Rectangle()
-                    .frame(width: geometry.size.width * 0.95 * progress)
+                    .frame(width: geometry.size.width * 0.90 * CGFloat(step.rawValue + 1) * 0.3)
                     .foregroundStyle(.gray900)
                     .capsuleClipped()
             }

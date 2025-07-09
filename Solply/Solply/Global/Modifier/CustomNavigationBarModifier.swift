@@ -17,7 +17,7 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
         centerView: (() -> C)? = nil,
         leftView: (() -> L)? = nil,
         rightView: (() -> R)? = nil,
-        backgroundColor: Color = .coreWhite
+        backgroundColor: Color
     ) {
         self.centerView = centerView
         self.leftView = leftView
@@ -54,7 +54,7 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
 
 extension View {
     @ViewBuilder
-    func customNavigationBar(_ navigationBarType: NavigationBarType) -> some View {
+    func customNavigationBar(_ navigationBarType: NavigationBarType, backgroundColor: Color = .coreWhite) -> some View {
         switch navigationBarType {
         case .onboarding(let backAction):
             self.modifier(
@@ -75,7 +75,8 @@ extension View {
                     },
                     rightView: {
                         EmptyView()
-                    }
+                    },
+                    backgroundColor: backgroundColor
                 )
             )
             
@@ -118,7 +119,8 @@ extension View {
                                 .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                         }
                         .buttonStyle(.plain)
-                    }
+                    },
+                    backgroundColor: backgroundColor
                 )
             )
             
@@ -150,7 +152,8 @@ extension View {
                                 .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                         }
                         .buttonStyle(.plain)
-                    }
+                    },
+                    backgroundColor: backgroundColor
                 )
             )
             
@@ -182,7 +185,8 @@ extension View {
                                 .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                         }
                         .buttonStyle(.plain)
-                    }
+                    },
+                    backgroundColor: backgroundColor
                 )
             )
             
@@ -206,7 +210,8 @@ extension View {
                     },
                     rightView: {
                         EmptyView()
-                    }
+                    },
+                    backgroundColor: backgroundColor
                 )
             )
             
@@ -230,7 +235,8 @@ extension View {
                     },
                     rightView: {
                         EmptyView()
-                    }
+                    },
+                    backgroundColor: backgroundColor
                 )
             )
         }
