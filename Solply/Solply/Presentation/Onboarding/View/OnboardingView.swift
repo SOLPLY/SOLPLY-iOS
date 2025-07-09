@@ -14,9 +14,6 @@ struct OnboardingView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store: OnboardingStore = OnboardingStore()
     
-    //    @State private var selectedStep: OnboardingStep = .townOption
-//    @State private var progress: CGFloat = 0
-    
     // MARK: - Body
     
     var body: some View {
