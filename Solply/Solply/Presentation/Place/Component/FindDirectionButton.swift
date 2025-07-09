@@ -32,11 +32,11 @@ struct FindDirectionButton: View {
                     .frame(width: 47.adjustedWidth, height: 47.adjustedHeight)
                     .foregroundStyle(.coreWhite)
                 
-                Image(.tempIcon)
+                Image(.findRoadIcon)
                     .resizable()
                     .renderingMode(.template)
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 23.adjustedWidth, height: 23.adjustedHeight)
+                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                     .foregroundStyle(isEnabled ? .purple600 : .gray400)
             }
             .animation(.easeInOut(duration: 0.2), value: isEnabled)
