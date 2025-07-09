@@ -63,4 +63,16 @@ enum PlaceCategoryType {
         case .unique: return "save-icon-green"
         }
     }
+    
+    var courseBackgroundColor: Color? {
+        switch self {
+        case .all: return nil
+        case .cafe: return .red300
+        case .food: return .yellow200
+        case .book: return .purple300
+        case .shopping: return .purple300
+        case .walk: return .green300
+        case .unique: return .green300
+        }
+    }
 }

@@ -38,7 +38,7 @@ extension PlaceDetailView {
             
             Spacer()
             
-            SolplyAddButton(isSelected: store.state.addButtonSelected) {
+            AddToCourseButton(isSelected: store.state.addButtonSelected) {
                 store.dispatch(.toggleAddToCourse)
             }
             .animation(.easeIn(duration: 0.2), value: store.state.saveButtonSelected)

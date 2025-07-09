@@ -1,0 +1,119 @@
+//
+//  DraggablePlaceCell.swift
+//  Solply
+//
+//  Created by 김승원 on 7/8/25.
+//
+
+import SwiftUI
+
+struct DraggablePlaceCell: View {
+    
+    // MARK: - Properties
+    
+    // TODO: 추후 @State 지우고 Action과 연결
+    @State private var isExpanded: Bool = false
+    
+    private let mainImageURL: String
+    private let placeCategoryType: PlaceCategoryType
+    private let title: String
+    private let address: String
+    private let isSaved: Bool
+    private let saveAction: (() -> Void)?
+    private let detailAction: (() -> Void)?
+    private let findDirectionAction: (() -> Void)?
+    private let tapAction: (() -> Void)?
+    
+    // MARK: - Initializer
+    
+    init(
+        mainImageURL: String,
+        placeCategoryType: PlaceCategoryType,
+        title: String,
+        address: String,
+        isSaved: Bool,
+        tapAction: (() -> Void)?,
+        detailAction: (() -> Void)?,
+        findDirectionAction: (() -> Void)?,
+        saveAction: (() -> Void)?
+    ) {
+        self.mainImageURL = mainImageURL
+        self.placeCategoryType = placeCategoryType
+        self.title = title
+        self.address = address
+        self.saveAction = saveAction
+        self.isSaved = isSaved
+        self.detailAction = detailAction
+        self.findDirectionAction = findDirectionAction
+        self.tapAction = tapAction
+    }
+    
+    // MARK: - Body
+    
+    var body: some View {
+        HStack(alignment: .center, spacing: 8.adjustedWidth) {
+            Image(.place)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(
+                    width: isExpanded ? 88.adjustedWidth : 52.adjustedWidth,
+                    height: isExpanded ? 88.adjustedHeight : 52.adjustedHeight
+                )
+                .cornerRadius(12, corners: .allCorners)
+            
+            VStack(alignment: .trailing, spacing: 8.adjustedHeight) {
+                HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                    VStack(alignment: .leading, spacing: 6.adjustedHeight) {
+                        HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                            PlaceCategoryTag(placeCategory: placeCategoryType)
+                            
+                            Text(title)
+                                .applySolplyFont(.title_15_m)
+                                .frame(height: 19.adjustedHeight)
+                                .foregroundStyle(.coreBlack)
+                        }
+                        
+                        Text(address)
+                            .applySolplyFont(.caption_12_r)
+                            .frame(height: 18.adjustedHeight)
+                            .foregroundStyle(.gray700)
+                    }
+                    
+                    Spacer()
+                    
+                    Button {
+                        saveAction?()
+                    } label: {
+                        Image(isSaved ? .saveIconRed : .saveIconGray)
+                            .resizable()
+                            .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                    }
+                    .buttonStyle(.plain)
+                }
+                
+                if isExpanded {
+                    HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                        PlaceCellButton(title: "장소 상세") {
+                            detailAction?()
+                        }
+                        
+                        PlaceCellButton(title: "길찾기") {
+                            findDirectionAction?()
+                        }
+                    }
+                }
+            }
+        }
+        .padding(.leading, 8.adjustedWidth)
+        .padding(.trailing, 16.adjustedWidth)
+        .padding(.vertical, 8.adjustedHeight)
+        .background(isExpanded ? .gray100 : .coreWhite)
+        .cornerRadius(20, corners: .allCorners)
+        .addBorder(.roundedRectangle(cornerRaius: 20), borderColor: .gray300, borderWidth: 1)
+        .onTapGesture {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isExpanded.toggle()
+            }
+        }
+    }
+}

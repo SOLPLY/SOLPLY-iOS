@@ -26,7 +26,7 @@ struct PlaceCategoryTag: View {
             .applySolplyFont(.body_14_m)
             .foregroundStyle(placeCategory.titleColor ?? .coreWhite)
             .padding(.horizontal, 8.adjustedWidth)
-            .padding(.vertical, 4.adjustedHeight)
+            .padding(.vertical, 1.adjustedHeight)
             .background(placeCategory.backgroundColor)
             .capsuleClipped()
     }
