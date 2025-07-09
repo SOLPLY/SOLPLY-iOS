@@ -9,14 +9,20 @@ import SwiftUI
 
 struct ArchiveEmptyView: View {
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
+    // MARK: - Properties
     
+    @EnvironmentObject var appCoordinator: AppCoordinator
+
     private let archiveCategory: SolplyContentType
     
+    // MARK: - Initializers
+
     init(archiveCategory: SolplyContentType) {
         self.archiveCategory = archiveCategory
     }
     
+    // MARK: - Body
+
     var body: some View {
         VStack(alignment: .center, spacing: 28.adjustedHeight) {
             Text("저장한 \(archiveCategory.title)가 없어요.")

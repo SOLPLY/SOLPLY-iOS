@@ -9,9 +9,13 @@ import SwiftUI
 
 struct ArchiveView: View {
     
+    // MARK: - Properties
+
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject var store = ArchiveStore()
     
+    // MARK: - Body
+
     var body: some View {
         
         VStack(alignment: .leading, spacing: 0) {

@@ -25,7 +25,8 @@ struct ArchiveBar: View {
                     if selected == category {
                         Capsule()
                             .fill(.gray800)
-                            .matchedGeometryEffect(id: "categoryUnderLine", in: namespace).frame(width: 181.adjustedWidth, height: 3.adjustedHeight)
+                            .matchedGeometryEffect(id: "categoryUnderLine", in: namespace)
+                            .frame(width: 181.adjustedWidth, height: 3.adjustedHeight)
                             .offset(y:14.adjustedHeight)
                     }
                     Text(category.title)
