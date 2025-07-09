@@ -26,9 +26,6 @@ struct CourseDetailMapView: UIViewRepresentable {
     
     private let defaultZoomLevel: Double = ZoomLevel.extraLarge.zoom
     
-    private var markers: [NMFMarker] = []
-    private var polyline: NMFPolylineOverlay? = nil
-    
     // MARK: - Initializer
 
     init(places: [Place]) {
