@@ -35,6 +35,7 @@ struct CTAMainButton: View {
         } label: {
             content
         }
+        .buttonStyle(.plain)
         .allowsHitTesting(isEnabled)
     }
     
@@ -52,4 +53,5 @@ struct CTAMainButton: View {
             )
             .animation(.easeInOut(duration: 0.2), value: isEnabled)
     }
+
 }

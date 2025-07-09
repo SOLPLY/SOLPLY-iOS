@@ -35,6 +35,7 @@ struct CTASubButton: View {
         } label: {
             content
         }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Content View
