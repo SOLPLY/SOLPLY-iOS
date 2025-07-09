@@ -8,5 +8,11 @@
 import Foundation
 
 struct CourseDetailState {
-    var saveButtonSelected: Bool = false
+    var isLoading: Bool = false
+    var courseTitle: String = ""
+    var courseDescription: String = ""
+    var places: [Place] = []
+    var focusedPlaceIndex: Int = -1
+    
+    var courseSaveSelected: Bool = false
 }
