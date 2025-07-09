@@ -11,14 +11,12 @@ struct DraggablePlaceCell: View {
     
     // MARK: - Properties
     
-    // TODO: 추후 @State 지우고 Action과 연결
-    @State private var isExpanded: Bool = false
-    
     private let mainImageURL: String
     private let placeCategoryType: PlaceCategoryType
     private let title: String
     private let address: String
     private let isSaved: Bool
+    private let isFocused: Bool
     private let saveAction: (() -> Void)?
     private let detailAction: (() -> Void)?
     private let findDirectionAction: (() -> Void)?
@@ -32,6 +30,7 @@ struct DraggablePlaceCell: View {
         title: String,
         address: String,
         isSaved: Bool,
+        isFocused: Bool,
         tapAction: (() -> Void)?,
         detailAction: (() -> Void)?,
         findDirectionAction: (() -> Void)?,
@@ -43,6 +42,7 @@ struct DraggablePlaceCell: View {
         self.address = address
         self.saveAction = saveAction
         self.isSaved = isSaved
+        self.isFocused = isFocused
         self.detailAction = detailAction
         self.findDirectionAction = findDirectionAction
         self.tapAction = tapAction
@@ -56,8 +56,8 @@ struct DraggablePlaceCell: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(
-                    width: isExpanded ? 88.adjustedHeight : 52.adjustedWidth,
-                    height: isExpanded ? 88.adjustedHeight : 52.adjustedHeight
+                    width: isFocused ? 88.adjustedHeight : 52.adjustedWidth,
+                    height: isFocused ? 88.adjustedHeight : 52.adjustedHeight
                 )
                 .cornerRadius(12, corners: .allCorners)
             
@@ -92,7 +92,7 @@ struct DraggablePlaceCell: View {
                 }
                 .padding(.top, 4.adjustedHeight)
                 
-                if isExpanded {
+                if isFocused {
                     HStack(alignment: .center, spacing: 8.adjustedWidth) {
                         PlaceCellButton(title: "장소 상세") {
                             detailAction?()
@@ -107,13 +107,13 @@ struct DraggablePlaceCell: View {
         }
         .padding(.leading, 8.adjustedWidth)
         .padding(.trailing, 16.adjustedWidth)
-        .frame(height: isExpanded ? 104.adjustedHeight : 68.adjustedHeight)
-        .background(isExpanded ? .gray100 : .coreWhite)
+        .frame(height: isFocused ? 104.adjustedHeight : 68.adjustedHeight)
+        .background(isFocused ? .gray100 : .coreWhite)
         .cornerRadius(20, corners: .allCorners)
         .addBorder(.roundedRectangle(cornerRaius: 20), borderColor: .gray300, borderWidth: 1)
         .onTapGesture {
             withAnimation(.easeInOut(duration: 0.2)) {
-                isExpanded.toggle()
+                tapAction?()
             }
         }
     }
