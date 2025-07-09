@@ -49,7 +49,7 @@ struct ArchiveFullView: View {
                                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                             }
                             
-                            Text("\(town)")
+                            Text(town)
                                 .applySolplyFont(.title_15_m)
                                 .padding(.leading, 8.adjustedWidth)
                         }
@@ -65,7 +65,7 @@ struct ArchiveFullView: View {
                                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                             }
                             
-                            Text("\(town)")
+                            Text(town)
                                 .applySolplyFont(.title_15_m)
                                 .padding(.leading, 8.adjustedWidth)
                         }
