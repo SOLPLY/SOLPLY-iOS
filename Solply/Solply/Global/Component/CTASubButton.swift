@@ -30,18 +30,14 @@ struct CTASubButton: View {
     // MARK: - Body
     
     var body: some View {
-        Group {
-            if let action = action {
-                Button(action: action) {
-                    content
-                }
-            } else {
-                content
-            }
+        Button {
+            action?()
+        } label: {
+            content
         }
     }
 
-    // MARK: - Content
+    // MARK: - Content View
     
     private var content: some View {
         Text(title)
@@ -50,7 +46,8 @@ struct CTASubButton: View {
             .frame(maxWidth: .infinity)
             .frame(height: 64.adjustedHeight)
             .background(
-                Capsule().fill(type.backgroundColor)
+                Capsule()
+                    .fill(type.backgroundColor)
             )
             .animation(.easeInOut(duration: 0.2), value: type)
     }
