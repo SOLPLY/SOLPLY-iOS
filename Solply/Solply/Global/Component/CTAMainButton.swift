@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct CTAMainButton: View {
-
+    
     // MARK: - Properties
-
+    
     private let title: String
     private let isEnabled: Bool
     private let action: (() -> Void)?
-
+    
     // MARK: - Initializer
-
+    
     init(
         title: String,
         isEnabled: Bool = true,
@@ -26,9 +26,9 @@ struct CTAMainButton: View {
         self.isEnabled = isEnabled
         self.action  = action
     }
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         Button {
             action?()
@@ -37,9 +37,9 @@ struct CTAMainButton: View {
         }
         .allowsHitTesting(isEnabled)
     }
-
+    
     // MARK: - Content View
-
+    
     private var content: some View {
         Text(title)
             .applySolplyFont(.button_16_m)
