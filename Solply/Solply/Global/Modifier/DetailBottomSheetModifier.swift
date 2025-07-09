@@ -76,7 +76,7 @@ private extension DetailBottomSheetModifier {
         
         var maxHeight: CGFloat {
             switch self {
-            case .medium: return 439.adjustedHeight // 467 - 28
+            case .medium: return 429.adjustedHeight // 467 - 28 - 10
             case .small: return 150.adjustedHeight
             }
         }
