@@ -21,7 +21,7 @@ struct CourseDetailView: View {
             .detailBottomSheet {
                 bottomSheetTopButton
             } sheetContent: {
-                Text("asdf")
+                placeList
             }
     }
 }
@@ -39,6 +39,47 @@ extension CourseDetailView {
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 16.adjustedWidth)
+    }
+    
+    private var placeList: some View {
+        ScrollView(.vertical) {
+            LazyVStack(alignment: .center, spacing: 12.adjustedHeight) {
+                VStack(spacing: 12) {
+                    DraggablePlaceCell(
+                        mainImageURL: "주소",
+                        placeCategoryType: .unique,
+                        title: "장소 이름이이이이이이이이이",
+                        address: "상세주소이이이이이이이이이이이이이이이이이이이이이이이잉",
+                        isSaved: false
+                    ) {
+                        print("tapAction")
+                    } detailAction: {
+                        print("detailAction")
+                    } findDirectionAction: {
+                        print("findDirectionAction")
+                    } saveAction: {
+                        print("saveAction")
+                    }
+                    
+                    DraggablePlaceCell(
+                        mainImageURL: "주소",
+                        placeCategoryType: .shopping,
+                        title: "장소 이름",
+                        address: "상세주소",
+                        isSaved: true
+                    ) {
+                        print("tapAction")
+                    } detailAction: {
+                        print("detailAction")
+                    } findDirectionAction: {
+                        print("findDirectionAction")
+                    } saveAction: {
+                        print("saveAction")
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, 20)
     }
 }
 

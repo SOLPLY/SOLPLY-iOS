@@ -13,7 +13,7 @@ struct DetailBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
     
     @State private var dragOffset: CGFloat = 0
     @State private var bottomSheetSize: CGSize = .zero
-    @State private var sheetState: DetailBottomSheetState = .small
+    @State private var sheetState: DetailBottomSheetState = .medium
     
     func body(content: Content) -> some View {
         ZStack {
