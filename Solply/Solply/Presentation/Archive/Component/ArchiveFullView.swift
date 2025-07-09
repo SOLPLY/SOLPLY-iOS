@@ -33,9 +33,10 @@ struct ArchiveFullView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16.adjustedHeight) {
-                ForEach(0...town.count-1, id: \.self) { index in
+                ForEach(Array(town.enumerated()), id: \.offset) { index, town in
                     
-                    if archiveCategory == .place {
+                    switch archiveCategory {
+                    case .place:
                         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                             ZStack {
                                 Image(.place)
@@ -47,12 +48,12 @@ struct ArchiveFullView: View {
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                             }
-                    
-                            Text("\(town[index])")
+                            
+                            Text("\(town)")
                                 .applySolplyFont(.title_15_m)
                                 .padding(.leading, 8.adjustedWidth)
                         }
-                    } else {
+                    case .course:
                         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                             
                             ZStack {
@@ -64,7 +65,7 @@ struct ArchiveFullView: View {
                                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                             }
                             
-                            Text("\(town[index])")
+                            Text("\(town)")
                                 .applySolplyFont(.title_15_m)
                                 .padding(.leading, 8.adjustedWidth)
                         }
@@ -77,5 +78,5 @@ struct ArchiveFullView: View {
 }
 
 #Preview {
-    ArchiveFullView(archiveCatrgory: .place)
+    ArchiveFullView(archiveCatrgory: .course)
 }
