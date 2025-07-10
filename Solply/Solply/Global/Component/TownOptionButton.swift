@@ -30,15 +30,12 @@ struct TownOptionButton: View {
     // MARK: - Body
     
     var body: some View {
-        if let action = action {
-            Button {
-                action()
-            } label: {
-                content
-            }
-        } else {
+        Button {
+            action?()
+        } label: {
             content
         }
+        .buttonStyle(.plain)
     }
 
     private var content: some View {

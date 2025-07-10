@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct NicknameView: View {
+    @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store: OnboardingStore
 
     var body: some View {
         VStack {
-            Spacer()
-            Text("타운 선택 화면")
+            Text("")
                 .padding()
 
             Spacer()
 
             CTAMainButton(title: "다음") {
-                store.dispatch(.next)
+                appCoordinator.changeRoot(to: .tabBar)
             }
             .padding(.bottom, 40)
         }

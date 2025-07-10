@@ -121,7 +121,7 @@ struct DraggablePlaceCell: View {
         .frame(height: isFocused ? 104.adjustedHeight : 68.adjustedHeight)
         .background(isFocused ? .gray100 : .coreWhite)
         .cornerRadius(20, corners: .allCorners)
-        .addBorder(.roundedRectangle(cornerRaius: 20), borderColor: .gray300, borderWidth: 1)
+        .addBorder(.roundedRectangle(cornerRadius: 20), borderColor: .gray300, borderWidth: 1)
         .onTapGesture {
             if !isEditing {
                 withAnimation(.easeInOut(duration: 0.2)) {
