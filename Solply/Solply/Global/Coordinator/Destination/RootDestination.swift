@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum RootDestination {
+enum RootDestination: Hashable {
     case auth
     case onboarding
     case tabBar

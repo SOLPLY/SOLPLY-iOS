@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-enum AppDestination {
+enum AppDestination: Hashable {
     case archive
     case placeDetail
-    case courseDetail
+    case courseDetail(fromArchive: Bool)
 }
 
 extension AppDestination {
@@ -21,8 +21,8 @@ extension AppDestination {
             ArchiveView()
         case .placeDetail:
             PlaceDetailView()
-        case .courseDetail:
-            CourseDetailView()
+        case .courseDetail(let fromArchive):
+            CourseDetailView(fromeArchive: fromArchive)
         }
     }
 }
