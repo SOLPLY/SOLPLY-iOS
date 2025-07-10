@@ -13,9 +13,11 @@ final class OnboardingStore: ObservableObject {
     @Published private(set) var state = OnboardingState()
     
     func dispatch(_ action: OnboardingAction) {
+        OnboardingReducer.reduce(state: &state, action: action)
+        
         switch action {
         default:
-            OnboardingReducer.reduce(state: &state, action: action)
+            break
         }
     }
 }

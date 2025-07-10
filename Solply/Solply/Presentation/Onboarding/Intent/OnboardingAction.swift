@@ -12,5 +12,5 @@ enum OnboardingAction {
     case goBack
     case skip
     
-    case selectPersona(String)
+    case selectPersona(PersonaType)
 }

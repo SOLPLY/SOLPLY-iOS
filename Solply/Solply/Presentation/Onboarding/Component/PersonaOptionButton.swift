@@ -51,17 +51,16 @@ struct PersonaOptionButton: View {
             if isSelected {
                 Image(.selectIcon)
                     .resizable()
-                    .renderingMode(.original)
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
             }
         }
         .padding(.horizontal, 16.adjustedWidth)
         .frame(height: 52.adjustedHeight)
-        .background(
-            Rectangle()
-                .fill(isSelected ? .red100 : .gray100)
-        .addBorder(.roundedRectangle(cornerRaius: 20),
-                borderColor: isSelected ? .red300 : .gray300,
-                    borderWidth: 1))
+        .background(isSelected ? .red100 : .gray100)
+        .cornerRadius(20, corners: .allCorners)
+        .addBorder(
+            .roundedRectangle(cornerRadius: 20), borderColor: isSelected ? .red300 : .gray300, borderWidth: 1
+        )
     }
 }
