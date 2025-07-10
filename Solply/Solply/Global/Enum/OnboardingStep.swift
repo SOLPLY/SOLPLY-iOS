@@ -9,6 +9,6 @@ import Foundation
 
 enum OnboardingStep: Int, CaseIterable {
     case townOption
-    case moodOption
+    case personaOption
     case nickName
 }
