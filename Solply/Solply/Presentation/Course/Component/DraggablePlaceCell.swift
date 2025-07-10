@@ -17,6 +17,7 @@ struct DraggablePlaceCell: View {
     private let address: String
     private let isSaved: Bool
     private let isFocused: Bool
+    private let isEditing: Bool
     private let saveAction: (() -> Void)?
     private let detailAction: (() -> Void)?
     private let findDirectionAction: (() -> Void)?
@@ -31,6 +32,7 @@ struct DraggablePlaceCell: View {
         address: String,
         isSaved: Bool,
         isFocused: Bool,
+        isEditing: Bool,
         tapAction: (() -> Void)?,
         detailAction: (() -> Void)?,
         findDirectionAction: (() -> Void)?,
@@ -43,6 +45,7 @@ struct DraggablePlaceCell: View {
         self.saveAction = saveAction
         self.isSaved = isSaved
         self.isFocused = isFocused
+        self.isEditing = isEditing
         self.detailAction = detailAction
         self.findDirectionAction = findDirectionAction
         self.tapAction = tapAction
@@ -81,14 +84,22 @@ struct DraggablePlaceCell: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    Button {
-                        saveAction?()
-                    } label: {
-                        Image(isSaved ? .saveIconRed : .saveIconGray)
+                    if isEditing {
+                        Image(.dragDropIcon)
                             .resizable()
+                            .aspectRatio(contentMode: .fit)
                             .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        
+                    } else {
+                        Button {
+                            saveAction?()
+                        } label: {
+                            Image(isSaved ? .saveIconRed : .saveIconGray)
+                                .resizable()
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                 }
                 .padding(.top, 4.adjustedHeight)
                 
@@ -112,8 +123,10 @@ struct DraggablePlaceCell: View {
         .cornerRadius(20, corners: .allCorners)
         .addBorder(.roundedRectangle(cornerRaius: 20), borderColor: .gray300, borderWidth: 1)
         .onTapGesture {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                tapAction?()
+            if !isEditing {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    tapAction?()
+                }
             }
         }
     }

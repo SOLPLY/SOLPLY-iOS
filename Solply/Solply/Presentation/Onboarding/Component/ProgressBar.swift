@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProgressBar: View {
+    @State private var rectangleSize: CGSize = .zero
     var step: OnboardingStep
     
     var body: some View {
@@ -18,11 +19,29 @@ struct ProgressBar: View {
                     .capsuleClipped()
                 
                 Rectangle()
-                    .frame(width: geometry.size.width * 0.90 * CGFloat(step.rawValue + 1) * 0.3)
+                    .sizeState(size: $rectangleSize)
+                    .frame(width: geometry.size.width * 0.95)
+                    .foregroundColor(.clear)
+                    .capsuleClipped()
+                
+                Rectangle()
+                    .frame(width: progressWidth(totalWidth: rectangleSize.width))
                     .foregroundStyle(.gray900)
                     .capsuleClipped()
             }
         }
         .frame(height: 10.adjustedWidth)
+    }
+}
+
+// MARK: - Functions
+
+extension ProgressBar {
+    private func progressWidth(totalWidth: CGFloat) -> CGFloat {
+        let totalSteps = Double(OnboardingStep.allCases.count)
+        let currentStep = Double(step.rawValue + 1)
+        let progress = currentStep / totalSteps
+        
+        return totalWidth * progress
     }
 }

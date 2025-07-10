@@ -13,6 +13,6 @@ struct CourseDetailState {
     var courseDescription: String = ""
     var places: [Place] = []
     var focusedPlaceIndex: Int = -1
-    
     var courseSaveSelected: Bool = false
+    var isEditing: Bool = false
 }
