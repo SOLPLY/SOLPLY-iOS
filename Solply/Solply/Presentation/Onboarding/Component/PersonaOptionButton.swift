@@ -30,14 +30,13 @@ struct PersonaOptionButton: View {
     // MARK: - Body
     
     var body: some View {
-            if let action {
-                Button(action: action) {
-                    content
-                }
-            } else {
-                content
-            }
+        Button {
+            action?()
+        } label: {
+            content
         }
+        .buttonStyle(.plain)
+    }
 
     // MARK: - Subview
 
