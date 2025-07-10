@@ -10,8 +10,6 @@ import SwiftUI
 struct PersonaOptionView: View {
     
     @ObservedObject var store: OnboardingStore
-    @State private var selectedIndex: Int? = nil
-    
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -47,9 +45,8 @@ struct PersonaOptionView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-            .padding(.bottom, 40.adjustedHeight)
+            .padding(.bottom, 20.adjustedHeight)
         }
-        .padding(.horizontal, 20.adjustedWidth)
         .background(Color.gray100)
     }
 }
