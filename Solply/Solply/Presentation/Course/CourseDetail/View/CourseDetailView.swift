@@ -14,6 +14,14 @@ struct CourseDetailView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = CourseDetailStore()
     
+    private let fromeArchive: Bool
+    
+    // MARK: - Initializer
+    
+    init(fromeArchive: Bool) {
+        self.fromeArchive = fromeArchive
+    }
+    
     // MARK: - Body
     
     var body: some View {
@@ -25,7 +33,9 @@ struct CourseDetailView: View {
                 )
             )
             .detailBottomSheet {
-                bottomSheetTopButton
+                if !fromeArchive {
+                    bottomSheetTopButton
+                }
             } sheetContent: {
                 VStack(alignment: .center, spacing: 10.adjustedHeight) {
                     title
@@ -58,13 +68,35 @@ extension CourseDetailView {
     
     private var title: some View {
         VStack(alignment: .leading, spacing: 4.adjustedHeight) {
-            Text(store.state.courseTitle)
-                .applySolplyFont(.title_18_sb)
+            
+            Group {
+                if fromeArchive {
+                    HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                        Text(store.state.courseTitle)
+                            .applySolplyFont(.title_18_sb)
+                            .frame(width: 307.adjustedWidth, alignment: .leading)
+                        
+                        Button {
+                            
+                        } label: {
+                            Image(.editingIcon)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                    }
+                    
+                } else {
+                    Text(store.state.courseTitle)
+                        .applySolplyFont(.title_18_sb)
+                        .frame(width: 335.adjustedWidth, alignment: .leading)
+                }
+            }
+            .frame(height: 23.adjustedHeight)
             
             Text(store.state.courseDescription)
                 .applySolplyFont(.caption_14_r)
                 .frame(maxHeight: 21.adjustedHeight)
-                
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -103,8 +135,11 @@ extension CourseDetailView {
 }
 
 #Preview {
-    CourseDetailView()
+    CourseDetailView(fromeArchive: true)
         .environmentObject(AppCoordinator())
+    
+//    CourseDetailView(fromeArchive: false)
+//        .environmentObject(AppCoordinator())
 }
 
 // MARK: - 임시 모델
@@ -116,7 +151,7 @@ struct Course {
     
     static func mockData() -> Course {
         return Course(
-            courseTitle: "오감으로 수집하는 하루",
+            courseTitle: "오감으로 수집하는 하루우우우우우우우우우우우우우우우우우우우우우",
             courseDescription: "귀여운 당고 디저트와 커피, 에이드가 있는 펫 프렌들리 코스",
             places: [
                 Place(
@@ -126,8 +161,8 @@ struct Course {
                     isFocused: false,
                     isSaved: true,
                     placeCategoryType: .book,
-                    title: "장소 이름",
-                    address: "상세주소"
+                    title: "장소 이름응응응믕믕믕믕믕응으으으으",
+                    address: "상세주소오오오오오오오오오오오오오"
                 ),
                 Place(
                     imageURL: "",
@@ -135,7 +170,7 @@ struct Course {
                     longitude: 126.9239,
                     isFocused: false,
                     isSaved: false,
-                    placeCategoryType: .book,
+                    placeCategoryType: .unique,
                     title: "장소 이름",
                     address: "상세주소"
                 ),
@@ -145,7 +180,7 @@ struct Course {
                     longitude: 126.9253,
                     isFocused: false,
                     isSaved: true,
-                    placeCategoryType: .book,
+                    placeCategoryType: .cafe,
                     title: "장소 이름",
                     address: "상세주소"
                 ),
@@ -155,7 +190,7 @@ struct Course {
                     longitude: 126.9260,
                     isFocused: false,
                     isSaved: false,
-                    placeCategoryType: .book,
+                    placeCategoryType: .food,
                     title: "장소 이름",
                     address: "상세주소"
                 ),
@@ -165,7 +200,7 @@ struct Course {
                     longitude: 126.9235,
                     isFocused: false,
                     isSaved: false,
-                    placeCategoryType: .book,
+                    placeCategoryType: .shopping,
                     title: "장소 이름",
                     address: "상세주소"
                 ),
