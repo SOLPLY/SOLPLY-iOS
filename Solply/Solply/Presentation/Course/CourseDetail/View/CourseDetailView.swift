@@ -77,13 +77,16 @@ extension CourseDetailView {
                             .frame(width: 307.adjustedWidth, alignment: .leading)
                         
                         Button {
-                            
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                store.dispatch(.toggleEdting)
+                            }
                         } label: {
-                            Image(.editingIcon)
+                            Image(store.state.isEditing ? .editDoneIcon : .editingIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                         }
+                        .buttonStyle(.plain)
                     }
                     
                 } else {
@@ -114,7 +117,8 @@ extension CourseDetailView {
                             title: place.title,
                             address: place.address,
                             isSaved: place.isSaved,
-                            isFocused: (store.state.focusedPlaceIndex == index)
+                            isFocused: (store.state.focusedPlaceIndex == index),
+                            isEditing: store.state.isEditing
                         ) {
                             store.dispatch(.focusPlace(index: index))
                         } detailAction: {

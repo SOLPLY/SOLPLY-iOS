@@ -31,6 +31,15 @@ enum CourseDetailReducer {
             
         case .toggleSavePlace(let index):
             state.places[index].isSaved.toggle()
+            
+        case .toggleEdting:
+            state.isEditing.toggle()
+            state.focusedPlaceIndex = -1
+            
+            for index in state.places.indices {
+                state.places[index].isFocused = false
+            }
+            
         }
     }
 }
