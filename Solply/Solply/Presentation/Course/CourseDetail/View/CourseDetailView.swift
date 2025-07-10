@@ -17,9 +17,9 @@ struct CourseDetailView: View {
     // MARK: - Body
     
     var body: some View {
-        CourseDetailMapView(course: Course.mockData())
-            .customNavigationBar(
-                .courseDetail(
+        CourseDetailMapView(places: store.state.places)
+        .customNavigationBar(
+            .courseDetail(
                     backAction: appCoordinator.goBack,
                     homeAction: appCoordinator.goToRoot
                 )
