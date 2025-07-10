@@ -98,7 +98,7 @@ extension CourseDetailMapView {
         
         DispatchQueue.main.async {
             let cameraUpdate = NMFCameraUpdate(scrollTo: centerCoordinate, zoomTo: self.defaultZoomLevel)
-            cameraUpdate.animation = .easeOut
+            cameraUpdate.animation = .none
             mapView.moveCamera(cameraUpdate)
         }
     }
@@ -110,7 +110,7 @@ extension CourseDetailMapView {
         
         DispatchQueue.main.async {
             let cameraUpdate = NMFCameraUpdate(scrollTo: centerCoordinate, zoomTo: calculatedZoomLevel)
-            cameraUpdate.animation = .easeIn
+            cameraUpdate.animation = .fly
             mapView.moveCamera(cameraUpdate)
         }
     }
