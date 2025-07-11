@@ -15,6 +15,7 @@ struct CourseDetailState {
     var focusedPlaceIndex: Int = -1
     var courseSaveSelected: Bool = false
     var isEditing: Bool = false
+    var canDelete: Bool = false
     
     var draggedPlace: Place?
 }
