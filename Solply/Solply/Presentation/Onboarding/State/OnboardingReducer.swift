@@ -5,7 +5,9 @@
 //  Created by 선영주 on 7/9/25.
 //
 
-struct OnboardingReducer {
+import Foundation
+
+enum OnboardingReducer {
 
     static func reduce(state: inout OnboardingState, action: OnboardingAction) {
         switch action {
@@ -21,13 +23,28 @@ struct OnboardingReducer {
 
         case .skip:
             state.step = .nickName
-            
+
         case .selectTown(let town):
             state.townOption = town
-            
+
         case .selectPersona(let persona):
             state.personaOption = persona
-        }
 
+        case .updateNickname(let nickname):
+            state.nickname = nickname
+
+        case .validateNickname(let nickname):
+            if nickname.isEmpty {
+                state.nicknameType = .placeholder
+            } else if nickname.contains(where: { !$0.isLetter && !$0.isNumber }) {
+                state.nicknameType = .invalidCharacter
+            } else if nickname == "중복된이름" {
+                state.nicknameType = .duplicate
+            } else {
+                state.nicknameType = .valid
+            }
+        case .textFieldFullFilled(let isFull):
+            state.isTextFieldFullFilled = isFull
+        }
     }
 }

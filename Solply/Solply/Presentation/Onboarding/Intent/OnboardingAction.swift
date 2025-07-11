@@ -14,4 +14,8 @@ enum OnboardingAction {
     
     case selectTown(TownOptionType)
     case selectPersona(PersonaType)
+    
+    case updateNickname(String)
+    case validateNickname(String)
+    case textFieldFullFilled(Bool)
 }
