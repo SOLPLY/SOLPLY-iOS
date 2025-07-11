@@ -34,10 +34,13 @@ struct TownOptionView: View {
 
             Spacer()
             
-            CTAMainButton(title: "다음") {
+            CTAMainButton(
+                title: "다음",
+                isEnabled: store.state.townOption != nil
+            ) {
                 store.dispatch(.next)
             }
-            .frame(maxWidth: .infinity)
+                
         }
         .padding(.bottom, 20.adjustedHeight)
     }
