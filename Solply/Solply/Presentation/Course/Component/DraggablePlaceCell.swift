@@ -11,6 +11,7 @@ struct DraggablePlaceCell: View {
     
     // MARK: - Properties
     
+    private let order: Int
     private let mainImageURL: String
     private let placeCategoryType: PlaceCategoryType
     private let title: String
@@ -26,6 +27,7 @@ struct DraggablePlaceCell: View {
     // MARK: - Initializer
     
     init(
+        order: Int,
         mainImageURL: String,
         placeCategoryType: PlaceCategoryType,
         title: String,
@@ -38,6 +40,7 @@ struct DraggablePlaceCell: View {
         findDirectionAction: (() -> Void)?,
         saveAction: (() -> Void)?
     ) {
+        self.order = order
         self.mainImageURL = mainImageURL
         self.placeCategoryType = placeCategoryType
         self.title = title
@@ -54,6 +57,29 @@ struct DraggablePlaceCell: View {
     // MARK: - Body
     
     var body: some View {
+        HStack(alignment: .center, spacing: 15.adjustedWidth) {
+            if !isEditing {
+                numberBadge
+            }
+            
+            placeCell
+        }
+    }
+}
+
+extension DraggablePlaceCell {
+    private var numberBadge: some View {
+        ZStack(alignment: .center) {
+            RoundedRectangle(cornerRadius: 8)
+                .frame(width: 20.adjustedWidth, height: 20.adjustedHeight)
+                .foregroundStyle(.gray200)
+            
+            Text("\(order)")
+                .applySolplyFont(.caption_12_m)
+        }
+    }
+    
+    private var placeCell: some View {
         HStack(alignment: .top, spacing: 8.adjustedWidth) {
             Image(.place)
                 .resizable()
