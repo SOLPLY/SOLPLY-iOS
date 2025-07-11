@@ -8,20 +8,27 @@
 import SwiftUI
 
 struct NicknameView: View {
+    
+    // TODO: - Rootview로 안가니까 지울거임
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store: OnboardingStore
 
     var body: some View {
-        VStack {
-            Text("")
-                .padding()
-
+        VStack(alignment: .leading, spacing: 0) {
+            
+            Text("솔플리와 함께할 준비 되셨나요?\n닉네임을 알려주세요.")
+                .applySolplyFont(.display_20_sb)
+                .foregroundStyle(.gray900)
+                .padding(.top, 24.adjustedHeight)
+                .padding(.bottom, 28.adjustedHeight)
+            
             Spacer()
-
+            
             CTAMainButton(title: "다음") {
                 appCoordinator.changeRoot(to: .tabBar)
             }
-            .padding(.bottom, 40)
+            .frame(maxWidth: .infinity)
+        }
+        .padding(.bottom, 20.adjustedHeight)
         }
     }
-}
