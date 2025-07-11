@@ -13,6 +13,10 @@ enum CourseDetailAction {
     case toggleSavePlace(index: Int)
     case toggleEdting
     
+    case startDragging(draggedPlace: Place)
+    case whileDragging(from: Int, to: Int)
+    case endDragging
+    
     case fetchCourseDetailData
     case courseDetailDataFetched(Course)
 }
