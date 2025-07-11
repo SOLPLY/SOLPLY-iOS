@@ -10,7 +10,7 @@ import SwiftUI
 import NMapsMap
 
 /// 네이버 지도를 SwiftUI에서 사용하기 위한 뷰입니다.
-struct CourseDetailMapView: UIViewRepresentable {
+struct CourseDetailMapView: UIViewRepresentable, Equatable {
     
     // MARK: - Properties
     
@@ -30,6 +30,20 @@ struct CourseDetailMapView: UIViewRepresentable {
 
     init(places: [Place]) {
         self.places = places
+    }
+    
+    // MARK: - Functions
+    
+    static func == (lhs: CourseDetailMapView, rhs: CourseDetailMapView) -> Bool {
+        guard lhs.places.count == rhs.places.count else { return false }
+        
+        for (lhsPlace, rhsPlace) in zip(lhs.places, rhs.places) {
+            if lhsPlace.id != rhsPlace.id || lhsPlace.isFocused != rhsPlace.isFocused {
+                return false
+            }
+        }
+        
+        return true
     }
     
     func makeUIView(context: Context) -> NMFMapView {
@@ -168,19 +182,13 @@ extension CourseDetailMapView {
         for level in ZoomLevel.allCases {
             let coordinateDelta = level.coordinateDelta
             
-            print("--------\(level.zoom)-\(level)------------")
-            print("마커 범위 - 위도: \(latitudeRange), 경도: \(longitudeRange)")
-            print("레벨 범위 - 위도: \(coordinateDelta.latitude), 경도: \(coordinateDelta.longitude)")
-            print("--------------계산 끝--------------")
-            
             // 마커들의 범위가 현재 레벨의 coordinateDelta 안에 들어가는지 확인
             if latitudeRange <= coordinateDelta.latitude && longitudeRange <= coordinateDelta.longitude {
-                print("선택된 줌 레벨: \(level.zoom)")
+                
                 return level.zoom
             }
         }
         
-        print("기본 줌 레벨: \(ZoomLevel.extraLarge.zoom)")
         return ZoomLevel.extraLarge.zoom
     }
     
