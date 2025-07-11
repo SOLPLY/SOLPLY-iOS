@@ -12,5 +12,6 @@ enum OnboardingAction {
     case goBack
     case skip
     
+    case selectTown(TownOptionType)
     case selectPersona(PersonaType)
 }
