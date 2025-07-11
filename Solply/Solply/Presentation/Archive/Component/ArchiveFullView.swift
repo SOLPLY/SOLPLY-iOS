@@ -34,42 +34,7 @@ struct ArchiveFullView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16.adjustedHeight) {
                 ForEach(Array(town.enumerated()), id: \.offset) { index, town in
-                    
-                    switch archiveCategory {
-                    case .place:
-                        VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                            ZStack {
-                                Image(.place)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
-                                Image(.archiveFrame)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
-                            }
-                            
-                            Text(town)
-                                .applySolplyFont(.title_15_m)
-                                .padding(.leading, 8.adjustedWidth)
-                        }
-                    case .course:
-                        VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                            
-                            ZStack {
-                                CourseCard(isSaved: true, title: "\(title[index])", courseCategory: tags[index])
-                                    .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
-                                Image(.archiveFrame)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
-                            }
-                            
-                            Text(town)
-                                .applySolplyFont(.title_15_m)
-                                .padding(.leading, 8.adjustedWidth)
-                        }
-                    }
+                    archiveCell(index: index)
                 }
             }
             .padding(.top, 16.adjustedHeight)
@@ -77,6 +42,50 @@ struct ArchiveFullView: View {
     }
 }
 
-#Preview {
-    ArchiveFullView(archiveCatrgory: .course)
+extension ArchiveFullView {
+    private func archiveCell(index: Int) -> some View {
+        Group {
+            switch archiveCategory {
+            case .place:
+                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                    ZStack {
+                        Image(.place)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                        Image(.archiveFrame)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                    }
+
+                    Text(town[index])
+                        .applySolplyFont(.title_15_m)
+                        .padding(.leading, 8.adjustedWidth)
+                }
+
+            case .course:
+                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                    ZStack {
+                        CourseCard(
+                            isSaved: true,
+                            title: title[index],
+                            courseCategory: tags[index],
+                            isSelected: false
+                        )
+                        .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+
+                        Image(.archiveFrame)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                    }
+
+                    Text(town[index])
+                        .applySolplyFont(.title_15_m)
+                        .padding(.leading, 8.adjustedWidth)
+                }
+            }
+        }
+    }
 }
