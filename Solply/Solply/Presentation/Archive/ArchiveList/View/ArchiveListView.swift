@@ -21,7 +21,6 @@ struct ArchiveListView: View {
             if store.state.activeDelete {
                 HStack {
                     Button {
-                        store.dispatch(.toggleSelect)
                         store.dispatch(.toggleCancel)
                     } label: {
                         Text("취소")

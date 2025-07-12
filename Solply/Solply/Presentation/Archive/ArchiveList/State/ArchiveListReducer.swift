@@ -16,8 +16,10 @@ enum ArchiveListReducer {
             } else {
                 state.selectedIndex.insert(index)
             }
+            
         case .toggleSelect:
             state.activeDelete.toggle()
+            
         case .toggleCancel:
             state.selectedIndex.removeAll()
         }

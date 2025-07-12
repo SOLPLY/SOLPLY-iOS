@@ -44,6 +44,8 @@ struct ArchiveListFullView: View {
     }
 }
 
+// MARK: - Functions
+
 extension ArchiveListFullView {
     private func archiveCell(index: Int) -> some View {
         ZStack(alignment: .topTrailing) {
@@ -62,17 +64,17 @@ extension ArchiveListFullView {
                         isSaved: true,
                         title: title[index],
                         courseCategory: tags[index],
-                        isSelected: store.state.selectedIndex.contains(index),
-                        action: {
-                            if store.state.activeDelete {
-                                print(index)
-                                store.dispatch(.toggleArchiveList(index: index))
-                            }
-                            if store.state.activeCancel {
-                                store.dispatch(.toggleArchiveList(index: index))
-                            }
+                        isSelected: store.state.selectedIndex.contains(index)
+                    ) {
+                        if store.state.activeDelete {
+                            print(index)
+                            store.dispatch(.toggleArchiveList(index: index))
                         }
-                    )
+                        
+                        if store.state.activeCancel {
+                            store.dispatch(.toggleArchiveList(index: index))
+                        }
+                    }
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                 }
             }

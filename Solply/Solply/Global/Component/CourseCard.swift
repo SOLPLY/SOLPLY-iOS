@@ -64,8 +64,8 @@ struct CourseCard: View {
                         if isSaved, let isSavedBadge = courseCategory.first?.savedBadge {
                             Image(isSavedBadge)
                                 .resizable()
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                                 .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                         }
                     }
                     .padding(.top, 8.adjustedHeight)
