@@ -20,6 +20,7 @@ struct OnboardingView: View {
         VStack(alignment: .leading, spacing: 0) {
             
             ProgressBar(step: store.state.step)
+                .animation(.easeInOut(duration: 0.3), value: store.state.step)
             
             switch store.state.step {
             case .townOption:
@@ -33,6 +34,7 @@ struct OnboardingView: View {
             
             Spacer()
         }
+        .animation(.easeOut(duration: 0.2), value: store.state.step)
         .padding(.horizontal, 20)
         .customNavigationBar(.onboarding(backAction: {
             switch store.state.step {
@@ -45,10 +47,11 @@ struct OnboardingView: View {
             }
         }))
         .background(.gray100)
+        .onTapGesture {
+            hideKeyboard()
+        }
     }
 }
-        
-
 
 #Preview {
     OnboardingView()

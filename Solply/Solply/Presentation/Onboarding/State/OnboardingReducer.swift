@@ -5,7 +5,9 @@
 //  Created by 선영주 on 7/9/25.
 //
 
-struct OnboardingReducer {
+import Foundation
+
+enum OnboardingReducer {
 
     static func reduce(state: inout OnboardingState, action: OnboardingAction) {
         switch action {
@@ -21,13 +23,21 @@ struct OnboardingReducer {
 
         case .skip:
             state.step = .nickName
-            
+
         case .selectTown(let town):
             state.townOption = town
-            
+
         case .selectPersona(let persona):
             state.personaOption = persona
-        }
 
+        case .updateNickname(let nickname):
+            state.nickname = nickname
+
+        case .textFieldFullFilled(let isFull):
+            state.isTextFieldFullFilled = isFull
+            
+        case .nicknameChecked(let nicknameState):
+            state.nicknameType = nicknameState
+        }
     }
 }
