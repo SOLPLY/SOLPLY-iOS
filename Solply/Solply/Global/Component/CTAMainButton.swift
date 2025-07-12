@@ -44,12 +44,12 @@ struct CTAMainButton: View {
     private var content: some View {
         Text(title)
             .applySolplyFont(.button_16_m)
-            .foregroundStyle(isEnabled ? Color.coreWhite : Color.gray800)
+            .foregroundStyle(isEnabled ? .coreWhite : .gray800)
             .frame(maxWidth: .infinity)
             .frame(height: 64.adjustedHeight)
             .background(
                 Capsule()
-                    .fill(isEnabled ? Color.gray900 : Color.gray300)
+                    .fill(isEnabled ? .gray900 : .gray300)
             )
             .animation(.easeInOut(duration: 0.2), value: isEnabled)
     }
