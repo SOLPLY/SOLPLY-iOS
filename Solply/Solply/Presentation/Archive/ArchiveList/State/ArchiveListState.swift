@@ -11,4 +11,6 @@ struct ArchiveListState {
     var selectedIndex: Set<Int> = []
     var activeDelete: Bool = false
     var activeCancel: Bool = false
+    
+    var isPresented: Bool = false
 }

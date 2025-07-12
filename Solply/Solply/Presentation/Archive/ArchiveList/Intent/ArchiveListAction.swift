@@ -11,4 +11,8 @@ enum ArchiveListAction {
     case toggleArchiveList(index: Int)
     case toggleSelect
     case toggleCancel
+    
+    case showAlert
+    case alertCancel
+    case alertDelete
 }
