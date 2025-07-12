@@ -21,12 +21,13 @@ struct NicknameView: View {
                 .padding(.bottom, 28.adjustedHeight)
             
             NicknameTextField(
-                text: Binding(
-                    get: { store.state.nickname },
-                    set: { store.dispatch(.updateNickname($0)) }
-                ),
-                state: store.state.nicknameType
+                state: store.state.nicknameType,
+                onChange: { text in
+                    store.dispatch(.updateNickname(text))
+                }
             )
+            
+            
             .padding(.bottom, 24.adjustedHeight)
             
             Spacer()
