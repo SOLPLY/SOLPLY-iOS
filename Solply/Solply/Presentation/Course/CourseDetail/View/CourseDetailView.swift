@@ -133,6 +133,7 @@ extension CourseDetailView {
                             }
                             .cornerRadius(20, corners: .allCorners)
                             .frame(maxWidth: .infinity)
+                            .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
                             .onDrag {
                                 guard store.state.isEditing else {
                                     return NSItemProvider()
