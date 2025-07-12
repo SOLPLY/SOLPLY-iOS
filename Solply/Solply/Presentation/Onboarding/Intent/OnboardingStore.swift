@@ -11,6 +11,7 @@ import Foundation
 final class OnboardingStore: ObservableObject {
 
     @Published private(set) var state = OnboardingState()
+    private let effect: OnboardingEffect = OnboardingEffect()
 
     func dispatch(_ action: OnboardingAction) {
         switch action {
@@ -24,8 +25,15 @@ final class OnboardingStore: ObservableObject {
             let isFull = trimmed.count == 8
             OnboardingReducer.reduce(state: &state, action: .textFieldFullFilled(isFull))
 
+        case .onboardingCompleteOnAppear:
+            Task {
+                let result = await effect.waitThenComplete()
+                self.dispatch(result)
+            }
+            
         default:
             OnboardingReducer.reduce(state: &state, action: action)
         }
     }
 }
+

@@ -18,4 +18,7 @@ enum OnboardingAction {
     case updateNickname(String)
     case validateNickname(String)
     case textFieldFullFilled(Bool)
+    
+    case onboardingCompleteOnAppear
+    case isLottieFinished
 }

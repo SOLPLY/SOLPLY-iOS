@@ -43,8 +43,15 @@ enum OnboardingReducer {
             } else {
                 state.nicknameType = .valid
             }
+            
         case .textFieldFullFilled(let isFull):
             state.isTextFieldFullFilled = isFull
+            
+        case .onboardingCompleteOnAppear:
+            state.isOnboardingFinished = true
+            
+        case .isLottieFinished:
+            state.isLottieFinished = true
         }
     }
 }
