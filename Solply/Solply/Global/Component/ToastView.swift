@@ -30,7 +30,7 @@ struct ToastView: View {
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             HStack(alignment: .center, spacing: 4.adjustedWidth) {
-                if toastType == .withAlertToast {
+                if toastType == .withIconToast {
                     Image(.warningIcon)
                         .resizable()
                         .renderingMode(.template)
@@ -48,7 +48,7 @@ struct ToastView: View {
                     Spacer()
                     
                     Button {
-                        
+                        action?()
                     } label: {
                         HStack(alignment: .center, spacing: 0) {
                             Text(buttonTitle)

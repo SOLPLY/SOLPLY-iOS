@@ -10,5 +10,5 @@ import SwiftUI
 enum ToastType {
     case defaultToast
     case withActionToast
-    case withAlertToast
+    case withIconToast
 }

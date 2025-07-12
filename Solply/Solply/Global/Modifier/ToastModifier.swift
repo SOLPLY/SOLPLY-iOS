@@ -15,9 +15,9 @@ struct ToastModifier: ViewModifier {
     
     // MARK: - Body
     
-    func body(content: Content) -> some View {
+    func body(content: Content) -> some View  {
         content
-            .overlay(
+            .overlay {
                 VStack {
                     if toastManager.isShowing {
                         ToastView(
@@ -35,10 +35,9 @@ struct ToastModifier: ViewModifier {
                 .frame(maxHeight: .infinity, alignment: .bottom)
                 .padding(.bottom, 28.adjustedHeight)
                 .animation(.easeInOut(duration: 0.4), value: toastManager.isShowing)
-            )
+            }
     }
 }
-
 
 extension View {
     func toast(toastManager: ToastManager) -> some View {
