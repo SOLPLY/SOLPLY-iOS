@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum NicknameState {
+enum NicknameTextFieldState {
     case placeholder
     case editing
     case valid

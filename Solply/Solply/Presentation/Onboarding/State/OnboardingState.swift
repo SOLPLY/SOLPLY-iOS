@@ -12,6 +12,6 @@ struct OnboardingState {
     var personaOption: PersonaType? = nil
 
     var nickname: String = ""
-    var nicknameType: NicknameState = .placeholder
+    var nicknameType: NicknameTextFieldState = .placeholder
     var isTextFieldFullFilled: Bool = false
 }

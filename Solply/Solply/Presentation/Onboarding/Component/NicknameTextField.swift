@@ -10,11 +10,11 @@ import SwiftUI
 struct NicknameTextField: View {
 
     @State private var text: String = ""
-    private var state: NicknameState
+    private var state: NicknameTextFieldState
     private let maxLength: Int = 8
     private let onChange: ((String) -> Void)?
     
-    init(state: NicknameState, onChange: ((String) -> Void)? = nil) {
+    init(state: NicknameTextFieldState, onChange: ((String) -> Void)? = nil) {
         self.state = state
         self.onChange = onChange
     }

@@ -18,5 +18,5 @@ enum OnboardingAction {
     case updateNickname(String)
     case textFieldFullFilled(Bool)
     
-    case nicknameChecked(NicknameState)
+    case nicknameChecked(NicknameTextFieldState)
 }
