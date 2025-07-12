@@ -9,10 +9,15 @@ import SwiftUI
 
 struct NicknameTextField: View {
 
-    @Binding var text: String
+    @State private var text: String = ""
+    private var state: NicknameState
+    private let maxLength: Int = 8
+    private let onChange: ((String) -> Void)?
     
-    var state: NicknameState
-    let maxLength: Int = 8
+    init(state: NicknameState, onChange: ((String) -> Void)? = nil) {
+        self.state = state
+        self.onChange = onChange
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
@@ -31,6 +36,9 @@ struct NicknameTextField: View {
                         .onChange(of: text) { _, newValue in
                             if newValue.count > maxLength {
                                 text = String(newValue.prefix(maxLength))
+                                onChange?(text)
+                            } else {
+                                onChange?(text)
                             }
                         }
                 }
