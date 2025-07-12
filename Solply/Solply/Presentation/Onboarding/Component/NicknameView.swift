@@ -13,6 +13,11 @@ struct NicknameView: View {
     @ObservedObject var store: OnboardingStore
     
     @State private var nickname: String = ""
+    
+    init(store: OnboardingStore) {
+        self.store = store
+    }
+    
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
