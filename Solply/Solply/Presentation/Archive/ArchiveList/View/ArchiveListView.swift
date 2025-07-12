@@ -57,7 +57,7 @@ struct ArchiveListView: View {
                 }
             }
             ZStack(alignment: .topTrailing) {
-                ArchiveListFullView(archiveCatrgory: .course, store: store)
+                ArchiveListFullView(archiveCategory: .course, store: store)
             }
         }
         .customNavigationBar(.archiveList(title: "망원동", backAction: appCoordinator.goBack))

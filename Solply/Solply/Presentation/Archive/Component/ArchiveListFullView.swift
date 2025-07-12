@@ -25,8 +25,8 @@ struct ArchiveListFullView: View {
     
     // MARK: - Initializers
     
-    init(archiveCatrgory: SolplyContentType, store: ArchiveListStore) {
-        self.archiveCategory = archiveCatrgory
+    init(archiveCategory: SolplyContentType, store: ArchiveListStore) {
+        self.archiveCategory = archiveCategory
         self.store = store
     }
     
