@@ -16,13 +16,12 @@ final class OnboardingStore: ObservableObject {
         switch action {
         case .updateNickname(let nickname):
             let trimmed = String(nickname.prefix(8))
-            
-            OnboardingReducer.reduce(state: &state, action: .updateNickname(trimmed))
-            
-            OnboardingReducer.reduce(state: &state, action: .validateNickname(trimmed))
-            
+            self.dispatch(.updateNickname(trimmed))
+            self.dispatch(.validateNickname(trimmed))
+
             let isFull = trimmed.count == 8
-            OnboardingReducer.reduce(state: &state, action: .textFieldFullFilled(isFull))
+            self.dispatch(.textFieldFullFilled(isFull))
+            
 
         default:
             OnboardingReducer.reduce(state: &state, action: action)
