@@ -8,7 +8,7 @@
 struct OnboardingState {
     var step: OnboardingStep = .townOption
     
-    var townOption: String = ""
-    var moodOption: String? = nil
+    var townOption: TownOptionType? = nil
+    var personaOption: PersonaType? = nil
     var nickname: String = ""
 }

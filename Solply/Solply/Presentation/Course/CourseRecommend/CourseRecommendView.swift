@@ -17,9 +17,15 @@ struct CourseRecommendView: View {
                 Text("CourseRecommendView")
                 
                 Button {
-                    appCoordinator.navigate(to: .courseDetail)
+                    appCoordinator.navigate(to: .courseDetail(fromArchive: false))
                 } label: {
-                    Text("navigate to CourseDetailView")
+                    Text("코스 추천 -> 코스 상세")
+                }
+                
+                Button {
+                    appCoordinator.navigate(to: .courseDetail(fromArchive: true))
+                } label: {
+                    Text("수집함 -> 코스 상세")
                 }
             }
             .frame(height: 1000)

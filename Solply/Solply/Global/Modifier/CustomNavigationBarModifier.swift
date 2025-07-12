@@ -54,7 +54,7 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
 
 extension View {
     @ViewBuilder
-    func customNavigationBar(_ navigationBarType: NavigationBarType, backgroundColor: Color = .coreWhite) -> some View {
+    func customNavigationBar(_ navigationBarType: NavigationBarType) -> some View {
         switch navigationBarType {
         case .onboarding(let backAction):
             self.modifier(
@@ -76,7 +76,7 @@ extension View {
                     rightView: {
                         EmptyView()
                     },
-                    backgroundColor: backgroundColor
+                    backgroundColor: .gray100
                 )
             )
             
@@ -120,7 +120,7 @@ extension View {
                         }
                         .buttonStyle(.plain)
                     },
-                    backgroundColor: backgroundColor
+                    backgroundColor: .coreWhite
                 )
             )
             
@@ -153,7 +153,7 @@ extension View {
                         }
                         .buttonStyle(.plain)
                     },
-                    backgroundColor: backgroundColor
+                    backgroundColor: .coreWhite
                 )
             )
             
@@ -186,7 +186,7 @@ extension View {
                         }
                         .buttonStyle(.plain)
                     },
-                    backgroundColor: backgroundColor
+                    backgroundColor: .coreWhite
                 )
             )
             
@@ -211,7 +211,7 @@ extension View {
                     rightView: {
                         EmptyView()
                     },
-                    backgroundColor: backgroundColor
+                    backgroundColor: .coreWhite
                 )
             )
             
@@ -236,7 +236,7 @@ extension View {
                     rightView: {
                         EmptyView()
                     },
-                    backgroundColor: backgroundColor
+                    backgroundColor: .coreWhite
                 )
             )
         }

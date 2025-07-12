@@ -11,14 +11,14 @@ struct TownOptionButton: View {
 
     // MARK: - Properties
     
-    private let type: TownOptionButtonType
+    private let type: TownOptionType
     private let isSelected: Bool
     private let action: (() -> Void)?
 
     // MARK: - Initializer
     
     init(
-        type: TownOptionButtonType,
+        type: TownOptionType,
         isSelected: Bool = false,
         action: (() -> Void)? = nil
     ) {
@@ -30,15 +30,12 @@ struct TownOptionButton: View {
     // MARK: - Body
     
     var body: some View {
-        if let action = action {
-            Button {
-                action()
-            } label: {
-                content
-            }
-        } else {
+        Button {
+            action?()
+        } label: {
             content
         }
+        .buttonStyle(.plain)
     }
 
     private var content: some View {
@@ -59,45 +56,6 @@ struct TownOptionButton: View {
         .frame(width: 100.adjustedWidth, height: 100.adjustedHeight)
         .background(type.backgroundColor(isSelected: isSelected))
         .capsuleClipped()
-        .overlay(
-            Circle()
-                .stroke(type.borderColor(isSelected: isSelected), lineWidth: 1)
-        )
-    }
-}
-
-// MARK: - Type
-
-extension TownOptionButton {
-    enum TownOptionButtonType {
-            case named(String)
-            case add
-
-        var title: String? {
-            switch self {
-            case .named(let name):
-                return name
-            case .add:
-                return nil
-            }
-        }
-
-        func backgroundColor(isSelected: Bool) -> Color {
-            switch self {
-            case .named:
-                return isSelected ? .gray100 : .red100
-            case .add:
-                return .gray200
-            }
-        }
-
-        func borderColor(isSelected: Bool) -> Color {
-            switch self {
-            case .named:
-                return isSelected ? .gray300 : .red300
-            case .add:
-                return .gray200
-            }
-        }
+        .addBorder(.circle, borderColor: type.borderColor(isSelected: isSelected), borderWidth: 1)
     }
 }

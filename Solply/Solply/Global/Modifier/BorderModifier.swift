@@ -43,7 +43,7 @@ struct BorderModifier: ViewModifier {
 
 extension BorderModifier {
     enum BorderType {
-        case roundedRectangle(cornerRaius: CGFloat)
+        case roundedRectangle(cornerRadius: CGFloat)
         case capsule
         case circle
     }

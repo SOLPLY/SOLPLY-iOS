@@ -24,10 +24,11 @@ struct OnboardingView: View {
             switch store.state.step {
             case .townOption:
                 TownOptionView(store: store)
-            case .moodOption:
-                MoodOptionView(store: store)
+            case .personaOption:
+                PersonaOptionView(store: store)
             case .nickName:
                 NicknameView(store: store)
+                    .environmentObject(appCoordinator)
             }
             
             Spacer()
@@ -37,12 +38,12 @@ struct OnboardingView: View {
             switch store.state.step {
             case .townOption:
                 appCoordinator.changeRoot(to: .auth)
-            case .moodOption:
+            case .personaOption:
                 store.dispatch(.goBack)
             case .nickName:
                 store.dispatch(.goBack)
             }
-        }), backgroundColor: .gray100)
+        }))
         .background(.gray100)
     }
 }

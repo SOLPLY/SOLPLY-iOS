@@ -31,6 +31,29 @@ enum CourseDetailReducer {
             
         case .toggleSavePlace(let index):
             state.places[index].isSaved.toggle()
+            
+        case .toggleEdting:
+            state.isEditing.toggle()
+            state.focusedPlaceIndex = -1
+            
+            for index in state.places.indices {
+                state.places[index].isFocused = false
+            }
+            
+        case .startDragging(draggedPlace: let draggedPlace):
+            state.draggedPlace = draggedPlace
+            
+        case .whileDragging(from: let fromIndex, to: let toIndex):
+            guard state.draggedPlace != nil,
+                  fromIndex < state.places.count,
+                  toIndex < state.places.count,
+                  fromIndex != toIndex else { return }
+            
+            let movedPlace = state.places.remove(at: fromIndex)
+            state.places.insert(movedPlace, at: toIndex)
+
+        case .endDragging:
+            state.draggedPlace = nil
         }
     }
 }

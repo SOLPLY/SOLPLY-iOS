@@ -21,6 +21,12 @@ struct OnboardingReducer {
 
         case .skip:
             state.step = .nickName
+            
+        case .selectTown(let town):
+            state.townOption = town
+            
+        case .selectPersona(let persona):
+            state.personaOption = persona
         }
 
     }
