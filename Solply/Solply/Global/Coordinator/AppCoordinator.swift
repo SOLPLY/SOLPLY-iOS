@@ -34,6 +34,7 @@ final class AppCoordinator: ObservableObject {
     }
     
     func changeRoot(to root: RootDestination) {
+        path.removeAll()
         self.root = root
     }
 }
