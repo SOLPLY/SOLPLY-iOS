@@ -17,6 +17,7 @@ struct ArchiveListView: View {
     // MARK: - Body
     
     var body: some View {
+        
         VStack(alignment: .trailing, spacing: 16.adjustedHeight) {
             if store.state.activeDelete {
                 HStack {
@@ -33,7 +34,7 @@ struct ArchiveListView: View {
                     Spacer()
 
                     Button {
-                        // MARK: - 삭제 api 연결 예정
+                        store.dispatch(.showAlert)
                     } label: {
                         Text("삭제")
                             .applySolplyFont(.button_14_r)
@@ -57,10 +58,19 @@ struct ArchiveListView: View {
                 }
             }
             ZStack(alignment: .topTrailing) {
-                ArchiveListFullView(archiveCategory: .place, store: store)
+                ArchiveListFullView(archiveCategory: .course, store: store)
             }
         }
         .customNavigationBar(.archiveList(title: "망원동", backAction: appCoordinator.goBack))
+        .customAlert(
+            alertType: .delete,
+            title: "선택한 장소를 삭제할까요?",
+            isPresented: store.state.isPresented
+        ) {
+            store.dispatch(.alertCancel)
+        } onConfirm: {
+            store.dispatch(.alertDelete)
+        }
     }
 }
 
