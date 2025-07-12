@@ -40,12 +40,10 @@ struct OnboardingCompleteView: View {
         .ignoresSafeArea(edges: .bottom)
         .background(.gray100)
         .onAppear {
-            print("onAppear")
             store.dispatch(.onboardingCompleteOnAppear)
         }
         .onChange(of: store.state.isLottieFinished) { _, newValue in
             if newValue {
-                print("onChange")
                 appCoordinator.changeRoot(to: .tabBar)
             }
         }
