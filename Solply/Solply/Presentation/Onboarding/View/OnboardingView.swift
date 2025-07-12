@@ -47,6 +47,9 @@ struct OnboardingView: View {
             }
         }))
         .background(.gray100)
+        .onTapGesture {
+            hideKeyboard()
+        }
     }
 }
 
