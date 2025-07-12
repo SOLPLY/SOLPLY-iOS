@@ -18,10 +18,11 @@ enum ArchiveListReducer {
             }
             
         case .toggleSelect:
-            state.activeDelete.toggle()
+            state.activeDelete = true
             
         case .toggleCancel:
             state.selectedIndex.removeAll()
+            state.activeDelete = false
         }
     }
 }
