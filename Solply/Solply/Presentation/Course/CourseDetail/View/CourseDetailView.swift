@@ -40,7 +40,13 @@ struct CourseDetailView: View {
                 VStack(alignment: .center, spacing: 10.adjustedHeight) {
                     title
                     
-                    placeList
+                    ZStack(alignment: .bottom) {
+                        placeList
+                        
+                        if store.state.canDelete == .active {
+                            deleteArea
+                        }
+                    }
                 }
                 .padding(.horizontal, 20.adjustedWidth)
                 .padding(.top, 8.adjustedHeight)
@@ -127,8 +133,14 @@ extension CourseDetailView {
                             }
                             .cornerRadius(20, corners: .allCorners)
                             .frame(maxWidth: .infinity)
+                            .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
                             .onDrag {
-                                guard store.state.isEditing else { return NSItemProvider() }
+                                guard store.state.isEditing else {
+                                    return NSItemProvider()
+                                }
+
+                                let generator = UIImpactFeedbackGenerator(style: .light)
+                                generator.impactOccurred()
                                 
                                 store.dispatch(.startDragging(draggedPlace: place))
                                 return NSItemProvider()
@@ -152,6 +164,34 @@ extension CourseDetailView {
                 }
                 .padding(.bottom, 35.adjustedHeight)
             }
+    }
+    
+    private var deleteArea: some View {
+        Image(store.state.isInDeleteZone ? .deleteTrueIcon : .deleteFalseIcon)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
+            .padding(.bottom, 26.adjustedHeight)
+            .onDrop(
+                of: [.text],
+                delegate: DeleteDropDelegate(
+                    draggedPlace: store.state.draggedPlace,
+                    onDelete: {
+                        store.dispatch(.deletePlace)
+                    },
+                    onEntered: {
+                        store.dispatch(.draggedInDeleteZone)
+                        let generator = UIImpactFeedbackGenerator(style: .medium)
+                            generator.impactOccurred()
+                    },
+                    onExited: {
+                        store.dispatch(.draggedOutDeleteZone)
+                        let generator = UIImpactFeedbackGenerator(style: .medium)
+                            generator.impactOccurred()
+                    }
+                )
+            )
+
     }
 }
 
