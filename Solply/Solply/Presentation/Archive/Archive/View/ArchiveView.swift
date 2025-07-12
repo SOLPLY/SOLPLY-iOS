@@ -34,7 +34,7 @@ struct ArchiveView: View {
     }
 }
 
-#Preview {
-    ArchiveView()
-        .environmentObject(AppCoordinator())
-}
+//#Preview {
+//    ArchiveView()
+//        .environmentObject(AppCoordinator())
+//}
