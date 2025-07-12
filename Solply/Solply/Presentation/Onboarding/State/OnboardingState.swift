@@ -7,8 +7,11 @@
 
 struct OnboardingState {
     var step: OnboardingStep = .townOption
-    
+
     var townOption: TownOptionType? = nil
     var personaOption: PersonaType? = nil
+
     var nickname: String = ""
+    var nicknameType: NicknameTextFieldState = .placeholder
+    var isTextFieldFullFilled: Bool = false
 }
