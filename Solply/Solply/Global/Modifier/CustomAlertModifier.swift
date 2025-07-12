@@ -84,23 +84,9 @@ struct CustomAlertModifier: ViewModifier {
     }
 }
 
-extension CustomAlertModifier {
-    enum AlertType {
-        case delete
-        case leave
-
-        var mainText: String {
-            switch self {
-            case .delete: return "삭제"
-            case .leave: return "나가기"
-            }
-        }
-    }
-}
-
 extension View {
     func customAlert(
-        alertType: CustomAlertModifier.AlertType,
+        alertType: AlertType,
         title: String,
         isPresented: Bool,
         onCancel: (() -> Void)?,
