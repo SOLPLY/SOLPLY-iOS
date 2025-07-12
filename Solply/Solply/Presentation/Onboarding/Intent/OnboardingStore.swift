@@ -15,14 +15,16 @@ final class OnboardingStore: ObservableObject {
     func dispatch(_ action: OnboardingAction) {
         switch action {
         case .updateNickname(let nickname):
-            let trimmed = String(nickname.prefix(8))
-            self.dispatch(.updateNickname(trimmed))
-            self.dispatch(.validateNickname(trimmed))
-
-            let isFull = trimmed.count == 8
-            self.dispatch(.textFieldFullFilled(isFull))
+            if nickname.isEmpty {
+                self.dispatch(.nicknameChecked(.placeholder))
+            } else if nickname.contains(where: { !$0.isLetter && !$0.isNumber }) {
+                self.dispatch(.nicknameChecked(.invalidCharacter))
+            } else if nickname == "중복된이름" {
+                self.dispatch(.nicknameChecked(.duplicate))
+            } else {
+                self.dispatch(.nicknameChecked(.valid))
+            }
             
-
         default:
             OnboardingReducer.reduce(state: &state, action: action)
         }
