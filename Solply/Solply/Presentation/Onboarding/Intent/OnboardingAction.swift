@@ -16,9 +16,10 @@ enum OnboardingAction {
     case selectPersona(PersonaType)
     
     case updateNickname(String)
-    case validateNickname(String)
     case textFieldFullFilled(Bool)
     
     case onboardingCompleteOnAppear
     case isLottieFinished
+    
+    case nicknameChecked(NicknameTextFieldState)
 }

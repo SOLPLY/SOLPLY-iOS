@@ -13,6 +13,7 @@ struct CourseDetailView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = CourseDetailStore()
+    @StateObject private var toastManager = ToastManager()
     
     private let fromeArchive: Bool
     
@@ -40,7 +41,13 @@ struct CourseDetailView: View {
                 VStack(alignment: .center, spacing: 10.adjustedHeight) {
                     title
                     
-                    placeList
+                    ZStack(alignment: .bottom) {
+                        placeList
+                        
+                        if store.state.canDelete == .active {
+                            deleteArea
+                        }
+                    }
                 }
                 .padding(.horizontal, 20.adjustedWidth)
                 .padding(.top, 8.adjustedHeight)
@@ -48,6 +55,7 @@ struct CourseDetailView: View {
             .onAppear {
                 store.dispatch(.fetchCourseDetailData)
             }
+            .toast(toastManager: toastManager)
     }
 }
 
@@ -104,54 +112,96 @@ extension CourseDetailView {
     }
     
     private var placeList: some View {
-            ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack(alignment: .center, spacing: 12.adjustedHeight) {
-                    ForEach(Array(store.state.places.enumerated()), id: \.element.id) { index, place in
-                            DraggablePlaceCell(
-                                order: index + 1,
-                                mainImageURL: "",
-                                placeCategoryType: place.placeCategoryType,
-                                title: place.title,
-                                address: place.address,
-                                isSaved: place.isSaved,
-                                isFocused: (store.state.focusedPlaceIndex == index),
-                                isEditing: store.state.isEditing
-                            ) {
-                                store.dispatch(.focusPlace(index: index))
-                            } detailAction: {
-                                print("detailAction")
-                            } findDirectionAction: {
-                                print("findDirectionAction")
-                            } saveAction: {
-                                store.dispatch(.toggleSavePlace(index: index))
-                            }
-                            .cornerRadius(20, corners: .allCorners)
-                            .frame(maxWidth: .infinity)
-                            .onDrag {
-                                guard store.state.isEditing else { return NSItemProvider() }
-                                
-                                store.dispatch(.startDragging(draggedPlace: place))
-                                return NSItemProvider()
-                            }
-                            .onDrop(
-                                of: [.text],
-                                delegate: DropViewDelegate(
-                                    destinationPlace: place,
-                                    places: store.state.places,
-                                    draggedPlace: store.state.draggedPlace,
-                                    isEditing: store.state.isEditing,
-                                    onMove: { fromIndex, toIndex in
-                                        store.dispatch(.whileDragging(from: fromIndex, to: toIndex))
-                                    },
-                                    onDragEnd: {
-                                        store.dispatch(.endDragging)
-                                    }
-                                )
+        ScrollView(.vertical, showsIndicators: false) {
+            LazyVStack(alignment: .center, spacing: 12.adjustedHeight) {
+                ForEach(Array(store.state.places.enumerated()), id: \.element.id) { index, place in
+                    DraggablePlaceCell(
+                        order: index + 1,
+                        mainImageURL: "",
+                        placeCategoryType: place.placeCategoryType,
+                        title: place.title,
+                        address: place.address,
+                        isSaved: place.isSaved,
+                        isFocused: (store.state.focusedPlaceIndex == index),
+                        isEditing: store.state.isEditing
+                    ) {
+                        store.dispatch(.focusPlace(index: index))
+                    } detailAction: {
+                        print("detailAction")
+                    } findDirectionAction: {
+                        print("findDirectionAction")
+                    } saveAction: {
+                        store.dispatch(.toggleSavePlace(index: index))
+                        if store.state.places[index].isSaved {
+                            toastManager.showToast(
+                                type: .defaultToast,
+                                message: "'\(place.title.truncated(9))'가 수집함에 저장되었어요."
                             )
+                        } else {
+                            toastManager.showToast(
+                                type: .defaultToast,
+                                message: "'\(place.title.truncated(9))'가 수집함에 삭제되었어요."
+                            )
+                        }
                     }
+                    .cornerRadius(20, corners: .allCorners)
+                    .frame(maxWidth: .infinity)
+                    .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
+                    .onDrag {
+                        guard store.state.isEditing else { return NSItemProvider() }
+                        
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                        
+                        store.dispatch(.startDragging(draggedPlace: place))
+                        return NSItemProvider()
+                    }
+                    .onDrop(
+                        of: [.text],
+                        delegate: DropViewDelegate(
+                            destinationPlace: place,
+                            places: store.state.places,
+                            draggedPlace: store.state.draggedPlace,
+                            isEditing: store.state.isEditing,
+                            onMove: { fromIndex, toIndex in
+                                store.dispatch(.whileDragging(from: fromIndex, to: toIndex))
+                            },
+                            onDragEnd: {
+                                store.dispatch(.endDragging)
+                            }
+                        )
+                    )
                 }
-                .padding(.bottom, 35.adjustedHeight)
             }
+            .padding(.bottom, 35.adjustedHeight)
+        }
+    }
+    
+    private var deleteArea: some View {
+        Image(store.state.isInDeleteZone ? .deleteTrueIcon : .deleteFalseIcon)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
+            .padding(.bottom, 26.adjustedHeight)
+            .onDrop(
+                of: [.text],
+                delegate: DeleteDropDelegate(
+                    draggedPlace: store.state.draggedPlace,
+                    onDelete: {
+                        store.dispatch(.deletePlace)
+                    },
+                    onEntered: {
+                        store.dispatch(.draggedInDeleteZone)
+                        let generator = UIImpactFeedbackGenerator(style: .medium)
+                        generator.impactOccurred()
+                    },
+                    onExited: {
+                        store.dispatch(.draggedOutDeleteZone)
+                        let generator = UIImpactFeedbackGenerator(style: .medium)
+                        generator.impactOccurred()
+                    }
+                )
+            )
     }
 }
 

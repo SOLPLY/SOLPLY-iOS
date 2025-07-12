@@ -32,17 +32,6 @@ enum OnboardingReducer {
 
         case .updateNickname(let nickname):
             state.nickname = nickname
-
-        case .validateNickname(let nickname):
-            if nickname.isEmpty {
-                state.nicknameType = .placeholder
-            } else if nickname.contains(where: { !$0.isLetter && !$0.isNumber }) {
-                state.nicknameType = .invalidCharacter
-            } else if nickname == "중복된이름" {
-                state.nicknameType = .duplicate
-            } else {
-                state.nicknameType = .valid
-            }
             
         case .textFieldFullFilled(let isFull):
             state.isTextFieldFullFilled = isFull
@@ -52,6 +41,9 @@ enum OnboardingReducer {
             
         case .isLottieFinished:
             state.isLottieFinished = true
+            
+        case .nicknameChecked(let nicknameType):
+            state.nicknameType = nicknameType
         }
     }
 }

@@ -12,12 +12,9 @@ struct NicknameView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store: OnboardingStore
     
-    @State private var nickname: String = ""
-    
     init(store: OnboardingStore) {
         self.store = store
     }
-    
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -26,15 +23,15 @@ struct NicknameView: View {
                 .foregroundStyle(.gray900)
                 .padding(.top, 24.adjustedHeight)
                 .padding(.bottom, 28.adjustedHeight)
-
+            
             NicknameTextField(
-                text: $nickname,
-                state: store.state.nicknameType
+                state: store.state.nicknameType,
+                onChange: { text in
+                    store.dispatch(.updateNickname(text))
+                }
             )
+            
             .padding(.bottom, 24.adjustedHeight)
-            .onChange(of: nickname) {
-                store.dispatch(.updateNickname(nickname))
-            }
             
             Spacer()
             

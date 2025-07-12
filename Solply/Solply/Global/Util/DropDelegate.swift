@@ -1,5 +1,5 @@
 //
-//  DropViewDelegate.swift
+//  DropDelegate.swift
 //  Solply
 //
 //  Created by 김승원 on 7/11/25.
@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct DropViewDelegate: DropDelegate {
-    
     let destinationPlace : Place
     let places: [Place]
     let draggedPlace : Place?
@@ -33,17 +32,41 @@ struct DropViewDelegate: DropDelegate {
         guard isEditing else { return }
 
         if let draggedPlace,
-           draggedPlace.id != destinationPlace.id,
            let fromIndex = places.firstIndex(of: draggedPlace),
-           let toIndex = places.firstIndex(of: destinationPlace),
-           fromIndex != toIndex {
+           let toIndex = places.firstIndex(of: destinationPlace) {
             
-            if places[toIndex] != draggedPlace {
-                withAnimation(.interactiveSpring()) {
-                    onMove(fromIndex, toIndex)
-                }
+            withAnimation(.interactiveSpring) {
+                onMove(fromIndex, toIndex)
             }
         }
     }
 }
+
+struct DeleteDropDelegate: DropDelegate {
+    let draggedPlace: Place?
+    let onDelete: () -> Void
+    let onEntered: () -> Void
+    let onExited: () -> Void
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        return DropProposal(operation: .move)
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        if draggedPlace != nil {
+            onDelete()
+            return true
+        }
+        return false
+    }
+
+    func dropEntered(info: DropInfo) {
+        onEntered()
+    }
+
+    func dropExited(info: DropInfo) {
+        onExited()
+    }
+}
+
 

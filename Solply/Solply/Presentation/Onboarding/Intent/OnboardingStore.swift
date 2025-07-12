@@ -14,17 +14,19 @@ final class OnboardingStore: ObservableObject {
     private let effect: OnboardingEffect = OnboardingEffect()
 
     func dispatch(_ action: OnboardingAction) {
+        OnboardingReducer.reduce(state: &state, action: action)
+        
         switch action {
         case .updateNickname(let nickname):
-            let trimmed = String(nickname.prefix(8))
-            
-            OnboardingReducer.reduce(state: &state, action: .updateNickname(trimmed))
-            
-            OnboardingReducer.reduce(state: &state, action: .validateNickname(trimmed))
-            
-            let isFull = trimmed.count == 8
-            OnboardingReducer.reduce(state: &state, action: .textFieldFullFilled(isFull))
-
+            if nickname.isEmpty {
+                self.dispatch(.nicknameChecked(.placeholder))
+            } else if nickname.contains(where: { !$0.isLetter && !$0.isNumber }) {
+                self.dispatch(.nicknameChecked(.invalidCharacter))
+            } else if nickname == "중복된이름" {
+                self.dispatch(.nicknameChecked(.duplicate))
+            } else {
+                self.dispatch(.nicknameChecked(.valid))
+            }
         case .onboardingCompleteOnAppear:
             Task {
                 let result = await effect.waitThenComplete()
@@ -32,7 +34,7 @@ final class OnboardingStore: ObservableObject {
             }
             
         default:
-            OnboardingReducer.reduce(state: &state, action: action)
+            break
         }
     }
 }

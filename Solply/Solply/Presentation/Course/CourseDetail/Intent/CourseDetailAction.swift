@@ -16,6 +16,9 @@ enum CourseDetailAction {
     case startDragging(draggedPlace: Place)
     case whileDragging(from: Int, to: Int)
     case endDragging
+    case deletePlace
+    case draggedInDeleteZone
+    case draggedOutDeleteZone
     
     case fetchCourseDetailData
     case courseDetailDataFetched(Course)

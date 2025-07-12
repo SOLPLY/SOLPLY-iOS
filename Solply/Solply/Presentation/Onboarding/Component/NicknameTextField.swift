@@ -9,9 +9,15 @@ import SwiftUI
 
 struct NicknameTextField: View {
 
-    @Binding var text: String
-    var state: NicknameState
-    let maxLength: Int = 8
+    @State private var text: String = ""
+    private var state: NicknameTextFieldState
+    private let maxLength: Int = 8
+    private let onChange: ((String) -> Void)?
+    
+    init(state: NicknameTextFieldState, onChange: ((String) -> Void)? = nil) {
+        self.state = state
+        self.onChange = onChange
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
@@ -30,6 +36,9 @@ struct NicknameTextField: View {
                         .onChange(of: text) { _, newValue in
                             if newValue.count > maxLength {
                                 text = String(newValue.prefix(maxLength))
+                                onChange?(text)
+                            } else {
+                                onChange?(text)
                             }
                         }
                 }
@@ -37,6 +46,7 @@ struct NicknameTextField: View {
                 if let icon = state.icon {
                     icon
                         .resizable()
+                        .aspectRatio(contentMode: .fill)
                         .frame(width: 20.adjustedHeight, height: 20.adjustedHeight)
                         .foregroundColor(state.borderColor)
                 }
@@ -44,7 +54,7 @@ struct NicknameTextField: View {
             .padding(.horizontal, 16.adjustedHeight)
             .frame(height: 56.adjustedHeight)
             .background(.white)
-            .cornerRadius(20.adjustedHeight)
+            .cornerRadius(20)
             .addBorder(
                 .roundedRectangle(cornerRadius: 20.adjustedHeight),
                 borderColor: state.borderColor,

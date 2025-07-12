@@ -19,7 +19,7 @@ struct OnboardingView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             
-            if store.state.isOnboardingFinished {
+            if !store.state.isOnboardingFinished {
                 ProgressBar(step: store.state.step)
                     .animation(.easeInOut(duration: 0.3), value: store.state.step)
             }

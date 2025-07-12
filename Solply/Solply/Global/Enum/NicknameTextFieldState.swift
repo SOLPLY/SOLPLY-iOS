@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum NicknameState {
+enum NicknameTextFieldState {
     case placeholder
     case editing
     case valid
@@ -28,9 +28,9 @@ enum NicknameState {
     var icon: Image? {
         switch self {
         case .valid:
-            return Image("success-icon")
+            return Image(.successIcon)
         case .duplicate, .invalidCharacter:
-            return Image("error-icon")
+            return Image(.errorIcon)
         default:
             return nil
         }
