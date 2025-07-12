@@ -10,6 +10,7 @@ import SwiftUI
 struct NicknameTextField: View {
 
     @Binding var text: String
+    
     var state: NicknameState
     let maxLength: Int = 8
 
@@ -37,6 +38,7 @@ struct NicknameTextField: View {
                 if let icon = state.icon {
                     icon
                         .resizable()
+                        .aspectRatio(contentMode: .fill)
                         .frame(width: 20.adjustedHeight, height: 20.adjustedHeight)
                         .foregroundColor(state.borderColor)
                 }
@@ -44,7 +46,7 @@ struct NicknameTextField: View {
             .padding(.horizontal, 16.adjustedHeight)
             .frame(height: 56.adjustedHeight)
             .background(.white)
-            .cornerRadius(20.adjustedHeight)
+            .cornerRadius(20)
             .addBorder(
                 .roundedRectangle(cornerRadius: 20.adjustedHeight),
                 borderColor: state.borderColor,
