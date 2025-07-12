@@ -19,8 +19,10 @@ struct OnboardingView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             
-            ProgressBar(step: store.state.step)
-                .animation(.easeInOut(duration: 0.3), value: store.state.step)
+            if store.state.isOnboardingFinished {
+                ProgressBar(step: store.state.step)
+                    .animation(.easeInOut(duration: 0.3), value: store.state.step)
+            }
             
             switch store.state.step {
             case .townOption:
@@ -29,7 +31,8 @@ struct OnboardingView: View {
                 PersonaOptionView(store: store)
             case .nickName:
                 NicknameView(store: store)
-                    .environmentObject(appCoordinator)
+            case .onboardingComplete:
+                OnboardingCompleteView(store: store)
             }
             
             Spacer()
@@ -44,9 +47,14 @@ struct OnboardingView: View {
                 store.dispatch(.goBack)
             case .nickName:
                 store.dispatch(.goBack)
+            case .onboardingComplete:
+                break
             }
         }))
         .background(.gray100)
+        .onChange(of: store.state.isLottieFinished) { _, newValue in
+            appCoordinator.changeRoot(to: .tabBar)
+        }
     }
 }
 
