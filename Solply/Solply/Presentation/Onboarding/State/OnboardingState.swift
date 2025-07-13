@@ -14,4 +14,7 @@ struct OnboardingState {
     var nickname: String = ""
     var nicknameType: NicknameTextFieldState = .placeholder
     var isTextFieldFullFilled: Bool = false
+    
+    var isLottieFinished: Bool = false
+    var isOnboardingFinished: Bool = false
 }

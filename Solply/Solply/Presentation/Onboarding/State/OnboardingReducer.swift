@@ -32,12 +32,18 @@ enum OnboardingReducer {
 
         case .updateNickname(let nickname):
             state.nickname = nickname
-
+            
         case .textFieldFullFilled(let isFull):
             state.isTextFieldFullFilled = isFull
             
-        case .nicknameChecked(let nicknameState):
-            state.nicknameType = nicknameState
+        case .onboardingCompleteOnAppear:
+            state.isOnboardingFinished = true
+            
+        case .isLottieFinished:
+            state.isLottieFinished = true
+            
+        case .nicknameChecked(let nicknameType):
+            state.nicknameType = nicknameType
         }
     }
 }
