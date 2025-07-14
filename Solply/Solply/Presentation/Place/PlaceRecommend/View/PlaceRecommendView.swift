@@ -9,23 +9,21 @@ import SwiftUI
 
 struct PlaceRecommendView: View {
     
+    // MARK: - Properties
     @EnvironmentObject var appCoordinator: AppCoordinator
+    @StateObject private var store = PlaceRecommendStore()
+    
+    // MARK: - Body
     
     var body: some View {
         ScrollView {
-            VStack {
-                Text("PlaceRecommendView")
-                
-                Button {
-                    appCoordinator.navigate(to: .placeDetail)
-                } label: {
-                    Text("navigate to PlaceDetailView")
-                }
+            VStack(alignment: .center, spacing: 0) {
+                TodayPlaceRecommendCarousel(placeRecommendItems: store.state.items)
             }
             .frame(height: 1000)
             .frame(maxWidth: .infinity)
         }
-        .background(.yellow)
+        .background(.gray100)
     }
 }
 
