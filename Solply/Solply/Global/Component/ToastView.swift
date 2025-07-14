@@ -11,17 +11,13 @@ struct ToastView: View {
     
     // MARK: - Properties
     
-    private let toastType: ToastType
-    private let message: String
-    private let buttonTitle: String?
+    private let toastContent: ToastContent
     private let action: (() -> Void)?
     
     // MARK: - Initializer
     
-    init(toastType: ToastType, message: String, buttonTitle: String? = nil, action: (() -> Void)? = nil) {
-        self.toastType = toastType
-        self.message = message
-        self.buttonTitle = buttonTitle
+    init(toastContent: ToastContent, action: (() -> Void)? = nil) {
+        self.toastContent = toastContent
         self.action = action
     }
     
@@ -30,7 +26,7 @@ struct ToastView: View {
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             HStack(alignment: .center, spacing: 4.adjustedWidth) {
-                if toastType == .withIconToast {
+                if toastContent.toastType == .withIconToast {
                     Image(.warningIcon)
                         .resizable()
                         .renderingMode(.template)
@@ -39,12 +35,12 @@ struct ToastView: View {
                         .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                 }
                 
-                Text(message)
+                Text(toastContent.message)
                     .applySolplyFont(.body_14_r)
                     .foregroundStyle(.coreWhite)
                     .frame(height: 21.adjustedHeight)
                 
-                if let buttonTitle, toastType == .withActionToast {
+                if let buttonTitle = toastContent.buttonTitle, toastContent.toastType == .withActionToast {
                     Spacer()
                     
                     Button {

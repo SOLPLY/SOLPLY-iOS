@@ -12,19 +12,15 @@ class ToastManager: ObservableObject {
     // MARK: - Properties
     
     @Published var isShowing: Bool = false
-    @Published var toastType: ToastType = .defaultToast
-    @Published var message: String = ""
-    @Published var buttonTitle: String? = nil
+    @Published var toastContent: ToastContent?
     @Published var action: (() -> Void)? = nil
     
     private var workItem: DispatchWorkItem?
-
+    
     // MARK: - Functions
     
     func showToast(
-        type: ToastType,
-        message: String,
-        buttonTitle: String? = nil,
+        content: ToastContent,
         action: (() -> Void)? = nil,
         duration: TimeInterval = 2.0
     ) {
@@ -34,37 +30,21 @@ class ToastManager: ObservableObject {
             withAnimation(.easeInOut(duration: 0.2)) {
                 isShowing = false
             }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.displayToast(
-                    type: type,
-                    message: message,
-                    buttonTitle: buttonTitle,
-                    action: action,
-                    duration: duration
-                )
-            }
-        } else {
-            displayToast(
-                type: type,
-                message: message,
-                buttonTitle: buttonTitle,
-                action: action,
-                duration: duration
-            )
         }
+        
+        self.displayToast(
+            content: content,
+            action: action,
+            duration: duration
+        )
     }
     
     private func displayToast(
-        type: ToastType,
-        message: String,
-        buttonTitle: String? = nil,
+        content: ToastContent,
         action: (() -> Void)? = nil,
         duration: TimeInterval = 2.0
     ) {
-        self.toastType = type
-        self.message = message
-        self.buttonTitle = buttonTitle
+        self.toastContent = content
         self.action = action
         
         withAnimation(.easeInOut(duration: 0.3)) {
@@ -89,3 +69,11 @@ class ToastManager: ObservableObject {
     }
 }
 
+// MARK: - ToastContent
+
+struct ToastContent: Equatable {
+    let toastType: ToastType
+    let message: String
+    let buttonTitle: String?
+    let id: UUID = UUID()
+}

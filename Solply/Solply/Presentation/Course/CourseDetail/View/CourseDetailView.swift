@@ -15,12 +15,12 @@ struct CourseDetailView: View {
     @StateObject private var store = CourseDetailStore()
     @StateObject private var toastManager = ToastManager()
     
-    private let fromeArchive: Bool
+    private let fromArchive: Bool
     
     // MARK: - Initializer
     
-    init(fromeArchive: Bool) {
-        self.fromeArchive = fromeArchive
+    init(fromArchive: Bool) {
+        self.fromArchive = fromArchive
     }
     
     // MARK: - Body
@@ -34,7 +34,7 @@ struct CourseDetailView: View {
                 )
             )
             .detailBottomSheet {
-                if !fromeArchive {
+                if !fromArchive {
                     bottomSheetTopButton
                 }
             } sheetContent: {
@@ -54,6 +54,12 @@ struct CourseDetailView: View {
             }
             .onAppear {
                 store.dispatch(.fetchCourseDetailData)
+            }
+            .onChange(of: store.state.toastContent) { _, toastContent in
+                guard let toastContent else { return }
+                toastManager.showToast(content: toastContent) {
+                    
+                }
             }
             .toast(toastManager: toastManager)
     }
@@ -77,7 +83,7 @@ extension CourseDetailView {
     private var title: some View {
         VStack(alignment: .leading, spacing: 4.adjustedHeight) {
             Group {
-                if fromeArchive {
+                if fromArchive {
                     HStack(alignment: .center, spacing: 4.adjustedWidth) {
                         Text(store.state.courseTitle)
                             .applySolplyFont(.title_18_sb)
@@ -133,14 +139,24 @@ extension CourseDetailView {
                     } saveAction: {
                         store.dispatch(.toggleSavePlace(index: index))
                         if store.state.places[index].isSaved {
-                            toastManager.showToast(
-                                type: .defaultToast,
-                                message: "'\(place.title.truncated(9))'가 수집함에 저장되었어요."
+                            store.dispatch(
+                                .showToastView(
+                                    ToastContent(
+                                        toastType: .defaultToast,
+                                        message: "'\(place.title.truncated(9))'가 수집함에 저장되었어요.",
+                                        buttonTitle: nil
+                                    )
+                                )
                             )
                         } else {
-                            toastManager.showToast(
-                                type: .defaultToast,
-                                message: "'\(place.title.truncated(9))'가 수집함에 삭제되었어요."
+                            store.dispatch(
+                                .showToastView(
+                                    ToastContent(
+                                        toastType: .defaultToast,
+                                        message: "'\(place.title.truncated(9))'가 수집함에 삭제되었어요.",
+                                        buttonTitle: nil
+                                    )
+                                )
                             )
                         }
                     }
@@ -171,6 +187,7 @@ extension CourseDetailView {
                             }
                         )
                     )
+                    
                 }
             }
             .padding(.bottom, 35.adjustedHeight)
@@ -188,7 +205,19 @@ extension CourseDetailView {
                 delegate: DeleteDropDelegate(
                     draggedPlace: store.state.draggedPlace,
                     onDelete: {
-                        store.dispatch(.deletePlace)
+                        if store.state.places.count > 2 {
+                            store.dispatch(.deletePlace)
+                        } else {
+                            store.dispatch(
+                                .showToastView(
+                                    ToastContent(
+                                        toastType: .withIconToast,
+                                        message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
+                                        buttonTitle: nil
+                                    )
+                                )
+                            )
+                        }
                     },
                     onEntered: {
                         store.dispatch(.draggedInDeleteZone)
@@ -206,6 +235,6 @@ extension CourseDetailView {
 }
 
 #Preview {
-    CourseDetailView(fromeArchive: true)
+    CourseDetailView(fromArchive: true)
         .environmentObject(AppCoordinator())
 }

@@ -19,11 +19,9 @@ struct ToastModifier: ViewModifier {
         content
             .overlay {
                 VStack {
-                    if toastManager.isShowing {
+                    if toastManager.isShowing, let toastContent = toastManager.toastContent {
                         ToastView(
-                            toastType: toastManager.toastType,
-                            message: toastManager.message,
-                            buttonTitle: toastManager.buttonTitle,
+                            toastContent: toastContent,
                             action: toastManager.action
                         )
                         .transition(.asymmetric(
