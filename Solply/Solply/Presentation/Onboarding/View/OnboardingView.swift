@@ -55,6 +55,9 @@ struct OnboardingView: View {
         .onChange(of: store.state.isLottieFinished) { _, newValue in
             appCoordinator.changeRoot(to: .tabBar)
         }
+        .onTapGesture {
+            self.hideKeyboard()
+        }
     }
 }
 
