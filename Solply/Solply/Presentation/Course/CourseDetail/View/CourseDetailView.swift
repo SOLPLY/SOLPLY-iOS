@@ -63,6 +63,7 @@ struct CourseDetailView: View {
                 }
                 .onChange(of: store.state.toastContent) { _, toastContent in
                     guard let toastContent else { return }
+                    
                     toastManager.showToast(content: toastContent) {
                         appCoordinator.navigate(to: .courseDetail(fromArchive: true))
                     }

@@ -10,11 +10,12 @@ import SwiftUI
 struct ArchiveBar: View {
     private let archiveCategory: [SolplyContentType] = [.place, .course]
     private let action: ((SolplyContentType) -> Void)?
+    private let selected: SolplyContentType
     
-    @State private var selected: SolplyContentType = .place
     @Namespace private var namespace
     
-    init(action: ((SolplyContentType) -> Void)? = nil) {
+    init(selected: SolplyContentType, action: ((SolplyContentType) -> Void)? = nil) {
+        self.selected = selected
         self.action = action
     }
     
@@ -37,16 +38,10 @@ struct ArchiveBar: View {
                 .frame(height: 48.adjustedHeight)
                 .onTapGesture {
                     withAnimation(.spring()) {
-                        selected = category
+                        action?(category)
                     }
-                    
-                    action?(category)
                 }
             }
         }
     }
-}
-
-#Preview {
-    ArchiveBar()
 }

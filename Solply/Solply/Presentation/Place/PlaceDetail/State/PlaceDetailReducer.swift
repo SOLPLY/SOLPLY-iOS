@@ -20,6 +20,15 @@ enum PlaceDetailReducer {
             
         case .requestFindDirection:
             print("길찾기 버트 누름")
+            
+        case .selectCourseToAdd(let index):
+            state.selectedCourseIndex = index
+            
+        case .addPlaceToCourse:
+            state.selectedCourseIndex = -1
+            
+        case .showToastView(let toastContent):
+            state.toastContent = toastContent
         }
     }
 }

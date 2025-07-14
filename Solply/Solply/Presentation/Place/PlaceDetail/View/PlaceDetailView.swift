@@ -13,6 +13,7 @@ struct PlaceDetailView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceDetailStore()
+    @StateObject private var toastManager = ToastManager()
     
     // MARK: - Body
     
@@ -34,7 +35,14 @@ struct PlaceDetailView: View {
             } sheetContent: {
                 bottomSheetContent
             }
-            .ignoresSafeArea(edges: .bottom)
+            .onChange(of: store.state.toastContent) { _, toastContent in
+                guard let toastContent else { return }
+                
+                toastManager.showToast(content: toastContent) {
+                    appCoordinator.navigate(to: .courseDetail(fromArchive: true))
+                }
+            }
+            .toast(toastManager: toastManager)
     }
 }
 
@@ -51,6 +59,10 @@ extension PlaceDetailView {
             
             AddToCourseButton(isSelected: store.state.addButtonSelected) {
                 store.dispatch(.toggleAddToCourse)
+                
+                if store.state.selectedCourseIndex != -1 {
+                    store.dispatch(.selectCourseToAdd(index: -1))
+                }
             }
             .animation(.easeIn(duration: 0.2), value: store.state.saveButtonSelected)
             
@@ -60,6 +72,17 @@ extension PlaceDetailView {
                 isSelected: store.state.saveButtonSelected
             ) {
                 store.dispatch(.toggleSavePlace)
+                if store.state.saveButtonSelected {
+                    store.dispatch(
+                        .showToastView(
+                            ToastContent(
+                                toastType: .defaultToast,
+                                message: "장소가 수집함에 저장되었어요.",
+                                buttonTitle: nil
+                            )
+                        )
+                    )
+                }
             }
         }
         .padding(.horizontal, 20.adjustedWidth)
@@ -68,8 +91,24 @@ extension PlaceDetailView {
     private var bottomSheetContent: some View {
         ZStack {
             if store.state.addButtonSelected {
-                AddPlaceToCourseView {
-                        store.dispatch(.toggleAddToCourse)
+                AddPlaceToCourseView(selectedIndex: store.state.selectedCourseIndex) { index in
+                    store.dispatch(.selectCourseToAdd(index: index))
+                } addAction: { index in
+                    store.dispatch(.addPlaceToCourse(index: index))
+                    store.dispatch(.toggleAddToCourse)
+                    store.dispatch(
+                        .showToastView(
+                            ToastContent(
+                                toastType: .withActionToast,
+                                // TODO: 데이터 바인딩
+                                message: "‘오감으로 수집하..’에 추가되었어요.",
+                                buttonTitle: "자세히 보기"
+                            )
+                        )
+                    )
+                } backAction: {
+                    store.dispatch(.toggleAddToCourse)
+                    store.dispatch(.selectCourseToAdd(index: -1))
                 }
                 .transition(.move(edge: .trailing))
             } else {

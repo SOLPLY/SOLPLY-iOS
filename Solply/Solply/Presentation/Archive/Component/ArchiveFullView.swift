@@ -44,7 +44,7 @@ struct ArchiveFullView: View {
 
 extension ArchiveFullView {
     private func archiveCell(index: Int) -> some View {
-        Group {
+        ZStack(alignment: .center) {
             switch archiveCategory {
             case .place:
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
@@ -63,6 +63,7 @@ extension ArchiveFullView {
                         .applySolplyFont(.title_15_m)
                         .padding(.leading, 8.adjustedWidth)
                 }
+                .transition(.move(edge: .trailing))
 
             case .course:
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
@@ -85,8 +86,10 @@ extension ArchiveFullView {
                         .applySolplyFont(.title_15_m)
                         .padding(.leading, 8.adjustedWidth)
                 }
+                .transition(.move(edge: .leading))
             }
         }
+        .animation(.easeInOut(duration: 0.2), value: archiveCategory)
         .onTapGesture {
             appCoordinator.navigate(to: .archiveList(archiveCategory: archiveCategory, town: town[index]))
         }
