@@ -33,9 +33,9 @@ struct ArchiveButton: View {
                 
                 Image(.collectionIcon)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .renderingMode(.template)
                     .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
-                    .aspectRatio(contentMode: .fit)
                     .foregroundStyle(.green100)
             }
         }
