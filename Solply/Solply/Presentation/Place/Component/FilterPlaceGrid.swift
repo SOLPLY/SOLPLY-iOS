@@ -25,7 +25,7 @@ struct FilterPlaceGrid: View {
                 .fill(.coreWhite)
             
             VStack(alignment: .leading, spacing: 16.adjustedHeight) {
-                HStack(alignment: .center, spacing: 8) {
+                HStack(alignment: .center, spacing: 8.adjustedWidth) {
                     FilterButton(title: placeCategory.title)
                     
                     FilterButton(title: "추가옵션")

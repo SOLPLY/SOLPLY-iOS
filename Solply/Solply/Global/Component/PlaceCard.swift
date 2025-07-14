@@ -25,7 +25,7 @@ struct PlaceCard: View {
         title: String,
         placeCategory: PlaceCategoryType,
         isSelected: Bool,
-        size: CGFloat = 165.adjustedWidth,
+        size: CGFloat = 165,
         action: (() -> Void)? = nil
     ) {
         self.isSaved = isSaved
