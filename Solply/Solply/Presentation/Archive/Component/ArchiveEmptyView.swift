@@ -50,7 +50,7 @@ struct ArchiveEmptyView: View {
     }
 }
 
-//#Preview {
-//    ArchiveEmptyView(archiveCategory: .place)
-//        .environmentObject(AppCoordinator())
-//}
+#Preview {
+    ArchiveEmptyView(archiveCategory: .course)
+        .environmentObject(AppCoordinator())
+}
