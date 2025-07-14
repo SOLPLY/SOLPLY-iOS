@@ -21,7 +21,6 @@ struct OnboardingView: View {
                         ProgressBar(step: store.state.step)
                             .animation(.easeInOut(duration: 0.3), value: store.state.step)
                     }
-                    
                     switch store.state.step {
                     case .townOption:
                         TownOptionView(store: store)
@@ -32,17 +31,12 @@ struct OnboardingView: View {
                     case .onboardingComplete:
                         OnboardingCompleteView(store: store)
                     }
-                    
-                    Spacer()
                 }
                 .animation(.easeOut(duration: 0.2), value: store.state.step)
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 20.adjustedHeight)
                 .background(.gray100)
                 .onChange(of: store.state.isLottieFinished) { _, newValue in
                     appCoordinator.changeRoot(to: .tabBar)
-                }
-                .onTapGesture {
-                    self.hideKeyboard()
                 }
                 .customNavigationBar(.onboarding(backAction: {
                     switch store.state.step {
@@ -57,12 +51,6 @@ struct OnboardingView: View {
             } else {
                 VStack(alignment: .leading, spacing: 0) {
                     OnboardingCompleteView(store: store)
-                    Spacer()
-                }
-                .padding(.horizontal, 20)
-                .background(.gray100)
-                .onTapGesture {
-                    self.hideKeyboard()
                 }
             }
         }
@@ -73,9 +61,3 @@ struct OnboardingView: View {
     OnboardingView()
         .environmentObject(AppCoordinator())
 }
-
-#Preview {
-    OnboardingView()
-        .environmentObject(AppCoordinator())
-}
-
