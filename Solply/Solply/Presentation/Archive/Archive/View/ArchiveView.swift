@@ -19,22 +19,58 @@ struct ArchiveView: View {
     var body: some View {
         
         VStack(alignment: .leading, spacing: 0) {
-            ArchiveBar { category in
-                store.dispatch(.toggleArchiveBar(archiveCategory: category))
-            }
+            ArchiveBar(
+                selected: store.state.selectedCategory,
+                action: { newCategory in
+                    store.dispatch(.toggleArchiveBar(archiveCategory: newCategory))
+                }
+            )
             
             // TODO: - 데이터 연결 후 데이터 여부에 따라서 분기 처리 필요
-
-//            ArchiveEmptyView(archiveCategory: store.state.selectedCategory)
-            ArchiveFullView(archiveCatrgory: store.state.selectedCategory)
+            
+//            Group {
+//                if store.state.selectedCategory == .place {
+//                    ArchiveEmptyView(archiveCategory: .place)
+//                        .transition(.move(edge: .leading))
+//                } else {
+//                    ArchiveEmptyView(archiveCategory: .course)
+//                        .transition(.move(edge: .trailing))
+//                }
+//            }
+//            .animation(.easeInOut(duration: 0.2), value: store.state.selectedCategory)
+//        }
+//            
+        
+        Group {
+                if store.state.selectedCategory == .place {
+                    ArchiveFullView(archiveCatrgory: .place)
+                        .transition(.move(edge: .leading))
+                } else {
+                    ArchiveFullView(archiveCatrgory: .course)
+                        .transition(.move(edge: .trailing))
+                }
+            }
+            .animation(.easeInOut(duration: 0.2), value: store.state.selectedCategory)
+            .gesture(
+                DragGesture()
+                    .onEnded { value in
+                        if value.translation.width < -50 {
+                            if store.state.selectedCategory != .course {
+                                withAnimation {
+                                    store.dispatch(.toggleArchiveBar(archiveCategory: .course))
+                                }
+                            }
+                        } else if value.translation.width > 50 {
+                            if store.state.selectedCategory != .place {
+                                withAnimation {
+                                    store.dispatch(.toggleArchiveBar(archiveCategory: .place))
+                                }
+                            }
+                        }
+                    }
+            )
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .customNavigationBar(.archive(backAction: appCoordinator.goBack))
-            
     }
 }
-
-//#Preview {
-//    ArchiveView()
-//        .environmentObject(AppCoordinator())
-//}
