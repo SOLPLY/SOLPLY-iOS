@@ -31,7 +31,7 @@ struct ArchiveEmptyView: View {
                 .padding(.top, 215.adjustedHeight)
             
             Button {
-                
+                appCoordinator.goBack()
             } label: {
                 Text("나만의 \(archiveCategory.title) 수집하러 가기")
                     .foregroundStyle(archiveCategory.title == "장소" ? .purple700 : .green800)
@@ -50,7 +50,7 @@ struct ArchiveEmptyView: View {
     }
 }
 
-#Preview {
-    ArchiveEmptyView(archiveCategory: .place)
-        .environmentObject(AppCoordinator())
-}
+//#Preview {
+//    ArchiveEmptyView(archiveCategory: .place)
+//        .environmentObject(AppCoordinator())
+//}
