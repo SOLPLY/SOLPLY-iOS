@@ -50,8 +50,3 @@ struct OnboardingCompleteView: View {
         }
     }
 }
-
-#Preview {
-    OnboardingCompleteView(store: OnboardingStore())
-        .environmentObject(AppCoordinator())
-}
