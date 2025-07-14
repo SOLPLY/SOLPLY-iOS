@@ -21,7 +21,7 @@ struct AddPlaceToCourseView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .center, spacing: 0.adjustedHeight) {
+        VStack(alignment: .center, spacing: 0) {
             navigationBar
             
             courseGrid
