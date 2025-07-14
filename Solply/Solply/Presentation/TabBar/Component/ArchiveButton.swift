@@ -26,17 +26,18 @@ struct ArchiveButton: View {
         Button {
             onTap?()
         } label: {
-            Image(.collectionIcon)
-                .resizable()
-                .renderingMode(.template)
-                .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
-                .aspectRatio(contentMode: .fit)
-                .foregroundStyle(.green100)
-                .background {
-                    Circle()
-                        .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
-                        .foregroundStyle(.gray900)
-                }
+            ZStack(alignment: .center) {
+                Circle()
+                    .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
+                    .foregroundStyle(.gray900)
+                
+                Image(.collectionIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .renderingMode(.template)
+                    .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
+                    .foregroundStyle(.green100)
+            }
         }
         .buttonStyle(.plain)
     }
