@@ -20,14 +20,10 @@ struct ArchiveView: View {
         
         VStack(alignment: .leading, spacing: 0) {
             ArchiveBar(
-                selected: Binding(
-                    get: { store.state.selectedCategory },
-                    set: { newCategory in
-                        withAnimation {
-                            store.dispatch(.toggleArchiveBar(archiveCategory: newCategory))
-                        }
-                    }
-                )
+                selected: store.state.selectedCategory,
+                action: { newCategory in
+                    store.dispatch(.toggleArchiveBar(archiveCategory: newCategory))
+                }
             )
             
             // TODO: - 데이터 연결 후 데이터 여부에 따라서 분기 처리 필요
