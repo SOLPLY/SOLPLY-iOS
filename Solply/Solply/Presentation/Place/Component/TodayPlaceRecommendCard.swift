@@ -12,6 +12,7 @@ struct TodayPlaceRecommendCard: View {
     // MARK: - Properties
     
     private let backgroundImage: UIImage
+    private let category: PlaceCategoryType
     private let title: String
     private let desciption: String
     
@@ -19,10 +20,12 @@ struct TodayPlaceRecommendCard: View {
     
     init(
         backgroundImage: UIImage,
+        category: PlaceCategoryType,
         title: String,
         description: String
     ) {
         self.backgroundImage = backgroundImage
+        self.category = category
         self.title = title
         self.desciption = description
     }
@@ -37,10 +40,9 @@ struct TodayPlaceRecommendCard: View {
                 .cornerRadius(20)
             
             VStack(alignment: .leading, spacing: 4.adjustedHeight) {
-                // TODO: 태그 컴포넌트 만들어지면 추가하기
+                PlaceCategoryTag(placeCategory: category)
                 
                 Text(title)
-                // TODO: 줄간격 확인해보기
                     .applySolplyFont(.display_16_sb)
                     .foregroundStyle(.coreWhite)
                 

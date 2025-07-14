@@ -42,6 +42,7 @@ struct TodayPlaceRecommendCarousel: View {
                 TodayPlaceRecommendCard(
                     // TODO: - .temp 이미지 변경하기
                     backgroundImage: .temp,
+                    category: placeRecommendItems[index].category,
                     title: placeRecommendItems[index].title,
                     description: placeRecommendItems[index].description
                 )
