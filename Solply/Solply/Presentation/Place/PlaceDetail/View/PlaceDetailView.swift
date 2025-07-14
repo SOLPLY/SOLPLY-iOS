@@ -69,9 +69,7 @@ extension PlaceDetailView {
         ZStack {
             if store.state.addButtonSelected {
                 AddPlaceToCourseView {
-                    withAnimation(.easeInOut(duration: 0.2)) {
                         store.dispatch(.toggleAddToCourse)
-                    }
                 }
                 .transition(.move(edge: .trailing))
             } else {
