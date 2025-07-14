@@ -78,8 +78,10 @@ struct CustomAlertModifier: ViewModifier {
                             .background(.coreWhite)
                             .cornerRadius(12)
                         }
+                        .transition(.opacity)
                     }
                 }
+                .animation(.easeInOut(duration: 0.2), value: isPresented)
             )
     }
 }

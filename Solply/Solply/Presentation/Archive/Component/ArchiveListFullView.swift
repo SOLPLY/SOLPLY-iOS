@@ -62,6 +62,8 @@ extension ArchiveListFullView {
                     if store.state.activeDelete {
                         print(index)
                         store.dispatch(.toggleArchiveList(index: index))
+                    } else {
+                        appCoordinator.navigate(to: .placeDetail)
                     }
                     
                     if store.state.activeCancel {
@@ -82,6 +84,8 @@ extension ArchiveListFullView {
                         if store.state.activeDelete {
                             print(index)
                             store.dispatch(.toggleArchiveList(index: index))
+                        } else {
+                            appCoordinator.navigate(to: .courseDetail(fromArchive: true))
                         }
                         
                         if store.state.activeCancel {

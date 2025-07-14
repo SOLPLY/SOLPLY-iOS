@@ -58,7 +58,7 @@ extension ArchiveFullView {
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                     }
-
+                    
                     Text(town[index])
                         .applySolplyFont(.title_15_m)
                         .padding(.leading, 8.adjustedWidth)
@@ -86,6 +86,9 @@ extension ArchiveFullView {
                         .padding(.leading, 8.adjustedWidth)
                 }
             }
+        }
+        .onTapGesture {
+            appCoordinator.navigate(to: .archiveList(archiveCategory: archiveCategory, town: town[index]))
         }
     }
 }

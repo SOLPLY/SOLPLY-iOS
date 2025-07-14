@@ -14,6 +14,16 @@ struct ArchiveListView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject var store = ArchiveListStore()
     
+    private let archiveCategory: SolplyContentType
+    private let town: String
+    
+    // MARK: - Initializer
+    
+    init(archiveCategory: SolplyContentType, town: String) {
+        self.archiveCategory = archiveCategory
+        self.town = town
+    }
+    
     // MARK: - Body
     
     var body: some View {
@@ -58,10 +68,10 @@ struct ArchiveListView: View {
                 }
             }
             ZStack(alignment: .topTrailing) {
-                ArchiveListFullView(archiveCategory: .course, store: store)
+                ArchiveListFullView(archiveCategory: archiveCategory, store: store)
             }
         }
-        .customNavigationBar(.archiveList(title: "망원동", backAction: appCoordinator.goBack))
+        .customNavigationBar(.archiveList(title: town, backAction: appCoordinator.goBack))
         .customAlert(
             alertType: .delete,
             title: "선택한 장소를 삭제할까요?",
@@ -74,7 +84,7 @@ struct ArchiveListView: View {
     }
 }
 
-#Preview {
-    ArchiveListView()
-        .environmentObject(AppCoordinator())
-}
+//#Preview {
+//    ArchiveListView(archiveCategory: .course)
+//        .environmentObject(AppCoordinator())
+//}
