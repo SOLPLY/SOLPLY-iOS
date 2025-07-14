@@ -30,21 +30,13 @@ class ToastManager: ObservableObject {
             withAnimation(.easeInOut(duration: 0.2)) {
                 isShowing = false
             }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.displayToast(
-                    content: content,
-                    action: action,
-                    duration: duration
-                )
-            }
-        } else {
-            displayToast(
-                content: content,
-                action: action,
-                duration: duration
-            )
         }
+        
+        self.displayToast(
+            content: content,
+            action: action,
+            duration: duration
+        )
     }
     
     private func displayToast(
