@@ -15,6 +15,7 @@ struct PlaceCard: View {
     private let title: String
     private let placeCategory: PlaceCategoryType
     private let isSelected: Bool
+    private let size: CGFloat
     private let action: (() -> Void)?
     
     // MARK: - Initializer
@@ -24,12 +25,14 @@ struct PlaceCard: View {
         title: String,
         placeCategory: PlaceCategoryType,
         isSelected: Bool,
+        size: CGFloat = 165.adjustedWidth,
         action: (() -> Void)? = nil
     ) {
         self.isSaved = isSaved
         self.title = title
         self.placeCategory = placeCategory
         self.isSelected = isSelected
+        self.size = size
         self.action = action
     }
     
@@ -44,7 +47,7 @@ struct PlaceCard: View {
                     Image(.place)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                        .frame(width: size.adjustedWidth, height: size.adjustedHeight)
                         .cornerRadius(20, corners: .allCorners)
                     
                     if isSaved {
