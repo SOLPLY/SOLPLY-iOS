@@ -22,6 +22,14 @@ enum CourseDetailAction {
     
     case showToastView(ToastContent)
     
+    case showAlert
+    case cancelAlert
+    case confirmAlert
+    
+    case saveCourseToCurrent
+    case saveCourseAsNew
+    case saveCourseCancel
+    
     case fetchCourseDetailData
     case courseDetailDataFetched(Course)
 }
