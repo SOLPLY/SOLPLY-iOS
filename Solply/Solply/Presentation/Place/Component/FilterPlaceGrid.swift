@@ -87,6 +87,33 @@ struct CategoryBottomSheet: View {
                 }
             }
             .padding(.horizontal, 16.adjustedWidth)
+            
+            ForEach(PlaceCategoryType.allCases) { category in
+                CategoryListRow(category: category)
+            }
+        }
+    }
+}
+
+struct CategoryListRow: View {
+    
+    private let category: PlaceCategoryType
+    
+    init(category: PlaceCategoryType) {
+        self.category = category
+    }
+    
+    var body: some View {
+        HStack(alignment: .center, spacing: 4) {
+            Image(category.icon)
+                .resizable()
+                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+            Text(category.title)
+                .applySolplyFont(.body_16_r)
+            Spacer()
+            Image(.checkIcon)
+                .resizable()
+                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
         }
     }
 }
