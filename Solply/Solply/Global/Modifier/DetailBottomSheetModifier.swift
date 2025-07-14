@@ -8,12 +8,28 @@
 import SwiftUI
 
 struct DetailBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModifier {
-    let topContent: () -> TopContent
-    let sheetContent: () -> SheetContent
     
-    @State private var dragOffset: CGFloat = 0
-    @State private var bottomSheetSize: CGSize = .zero
-    @State private var sheetState: DetailBottomSheetState = .collapsed
+    // MARK: - Properties
+
+       let topContent: () -> TopContent
+       let sheetContent: () -> SheetContent
+       private let maxState: DetailBottomSheetState
+
+       @State private var dragOffset: CGFloat = 0
+       @State private var bottomSheetSize: CGSize = .zero
+       @State private var sheetState: DetailBottomSheetState = .collapsed
+
+       // MARK: - Initializer
+
+       init(
+           maxState: DetailBottomSheetState,
+           @ViewBuilder topContent: @escaping () -> TopContent,
+           @ViewBuilder sheetContent: @escaping () -> SheetContent
+       ) {
+           self.maxState = maxState
+           self.topContent = topContent
+           self.sheetContent = sheetContent
+       }
     
     func body(content: Content) -> some View {
         ZStack {
@@ -58,7 +74,7 @@ struct DetailBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
                     .cornerRadius(20, corners: [.topLeft, .topRight])
                     .onAppear {
                         withAnimation(.easeInOut(duration: 0.4)) {
-                            sheetState = .expanded
+                            sheetState = maxState
                         }
                     }
                 }
@@ -69,29 +85,17 @@ struct DetailBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
     }
 }
 
-private extension DetailBottomSheetModifier {
-    enum DetailBottomSheetState {
-        case expanded
-        case collapsed
-        
-        var maxHeight: CGFloat {
-            switch self {
-            case .expanded: return 429.adjustedHeight // 467 - 28 - 10
-            case .collapsed: return 150.adjustedHeight
-            }
-        }
-    }
-}
-
 extension View {
     func detailBottomSheet<TopContent: View, SheetContent: View>(
+        maxState: DetailBottomSheetState,
         @ViewBuilder topContent: @escaping () -> TopContent,
         @ViewBuilder sheetContent: @escaping () -> SheetContent
     ) -> some View {
         self.modifier(
             DetailBottomSheetModifier(
+                maxState: maxState,
                 topContent: topContent,
-                sheetContent: sheetContent
+                sheetContent: sheetContent,
             )
         )
     }
