@@ -16,14 +16,14 @@ struct TodayPlaceRecommendCarousel: View {
     @State private var currentIndex: Int = 1
     @State private var dragOffset: CGFloat = 0
 
-    private let placeRecommendItems: [PlaceRecommendItem]
-    private let cardWidth: CGFloat = 240
-    private let cardSpacing: CGFloat = 16
+    private let placeRecommendItems: [TempPlaceRecommendItem]
+    private let cardWidth: CGFloat = 240.adjustedWidth
+    private let cardSpacing: CGFloat = 16.adjustedWidth
     private var cardOffset: CGFloat { cardWidth + cardSpacing }
     
     // MARK: - Initializer
     
-    init(placeRecommendItems: [PlaceRecommendItem]) {
+    init(placeRecommendItems: [TempPlaceRecommendItem]) {
         self.placeRecommendItems = placeRecommendItems
     }
     
@@ -46,7 +46,7 @@ struct TodayPlaceRecommendCarousel: View {
                     title: placeRecommendItems[index].title,
                     description: placeRecommendItems[index].description
                 )
-                .frame(width: cardWidth.adjustedWidth, height: cardWidth.adjustedHeight)
+                .frame(width: cardWidth, height: cardWidth)
                 .scaleEffect(scale)
                 .offset(x: totalOffset)
                 .onTapGesture {
@@ -54,14 +54,14 @@ struct TodayPlaceRecommendCarousel: View {
                 }
             }
         }
-        .frame(height: 260)
+        .frame(height: 240.adjustedHeight)
         .gesture(
             DragGesture()
                 .onChanged { value in
                     dragOffset = value.translation.width
                 }
                 .onEnded { value in
-                    let threshold: CGFloat = 50
+                    let threshold: CGFloat = 50.adjustedWidth
                     var newIndex = currentIndex
                     var targetOffset: CGFloat = 0
                     

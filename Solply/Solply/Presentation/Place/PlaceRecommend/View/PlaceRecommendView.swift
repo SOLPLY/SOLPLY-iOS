@@ -10,6 +10,7 @@ import SwiftUI
 struct PlaceRecommendView: View {
     
     // MARK: - Properties
+    
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceRecommendStore()
     

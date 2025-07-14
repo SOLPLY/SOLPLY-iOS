@@ -37,8 +37,7 @@ struct TodayPlaceRecommendCard: View {
             Image(.temp)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .cornerRadius(20)
-            
+                .cornerRadius(20, corners: .allCorners)
             VStack(alignment: .leading, spacing: 4.adjustedHeight) {
                 PlaceCategoryTag(placeCategory: category)
                 
@@ -51,8 +50,8 @@ struct TodayPlaceRecommendCard: View {
                     .foregroundStyle(.coreWhite)
                     .lineLimit(2)
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 16)
+            .padding(.horizontal, 16.adjustedWidth)
+            .padding(.bottom, 16.adjustedHeight)
         }
         .frame(width: 240.adjustedWidth, height: 240.adjustedHeight)
     }
