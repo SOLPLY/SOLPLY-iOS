@@ -50,7 +50,9 @@ extension PlaceDetailView {
             Spacer()
             
             AddToCourseButton(isSelected: store.state.addButtonSelected) {
-                store.dispatch(.toggleAddToCourse)
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    store.dispatch(.toggleAddToCourse)
+                }
             }
             .animation(.easeIn(duration: 0.2), value: store.state.saveButtonSelected)
             
@@ -66,13 +68,21 @@ extension PlaceDetailView {
     }
     
     private var bottomSheetContent: some View {
-        VStack(alignment: .center, spacing: 0) {
-            // TODO: 뷰 스위칭
-//            PlaceInformationView()
-//                .padding(.top, 8.adjustedHeight)
-            AddPlaceToCourseView()
+        ZStack {
+            if store.state.addButtonSelected {
+                AddPlaceToCourseView {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        store.dispatch(.toggleAddToCourse)
+                    }
+                }
+                .transition(.move(edge: .trailing))
+            } else {
+                PlaceInformationView()
+                    .padding(.top, 8.adjustedHeight)
+                    .transition(.move(edge: .leading))
+            }
         }
-        
+        .animation(.easeInOut(duration: 0.25), value: store.state.addButtonSelected)
     }
 }
 
