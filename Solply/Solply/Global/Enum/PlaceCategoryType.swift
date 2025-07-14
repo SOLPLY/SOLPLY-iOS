@@ -76,15 +76,15 @@ enum PlaceCategoryType {
         }
     }
     
-    var icon: String {
+    var icon: ImageResource {
         switch self {
-        case .all: return "all-icon"
-        case .cafe: return "cafe-icon"
-        case .food: return "food-icon"
-        case .book: return "book-icon"
-        case .shopping: return "shop-icon"
-        case .walk: return "walk-icon"
-        case .unique: return "unique-icon"
+        case .all: return .allIcon
+        case .cafe: return .cafeIcon
+        case .food: return .foodIcon
+        case .book: return .bookIcon
+        case .shopping: return .shopIcon
+        case .walk: return .walkIcon
+        case .unique: return .uniqueIcon
         }
     }
 }
