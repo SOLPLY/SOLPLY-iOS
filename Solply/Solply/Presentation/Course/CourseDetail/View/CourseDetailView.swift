@@ -15,12 +15,12 @@ struct CourseDetailView: View {
     @StateObject private var store = CourseDetailStore()
     @StateObject private var toastManager = ToastManager()
     
-    private let fromeArchive: Bool
+    private let fromArchive: Bool
     
     // MARK: - Initializer
     
-    init(fromeArchive: Bool) {
-        self.fromeArchive = fromeArchive
+    init(fromArchive: Bool) {
+        self.fromArchive = fromArchive
     }
     
     // MARK: - Body
@@ -34,7 +34,7 @@ struct CourseDetailView: View {
                 )
             )
             .detailBottomSheet {
-                if !fromeArchive {
+                if !fromArchive {
                     bottomSheetTopButton
                 }
             } sheetContent: {
@@ -55,8 +55,9 @@ struct CourseDetailView: View {
             .onAppear {
                 store.dispatch(.fetchCourseDetailData)
             }
-            .onChange(of: store.state.toastContent) { _, newValue in
-                toastManager.showToast(content: store.state.toastContent!) {
+            .onChange(of: store.state.toastContent) { _, toastContent in
+                guard let toastContent else { return }
+                toastManager.showToast(content: toastContent) {
                     
                 }
             }
@@ -82,7 +83,7 @@ extension CourseDetailView {
     private var title: some View {
         VStack(alignment: .leading, spacing: 4.adjustedHeight) {
             Group {
-                if fromeArchive {
+                if fromArchive {
                     HStack(alignment: .center, spacing: 4.adjustedWidth) {
                         Text(store.state.courseTitle)
                             .applySolplyFont(.title_18_sb)
@@ -119,9 +120,7 @@ extension CourseDetailView {
     private var placeList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(alignment: .center, spacing: 12.adjustedHeight) {
-                ForEach(Array(store.state.places.enumerated()), id: \.element.id) {
-                    index,
-                    place in
+                ForEach(Array(store.state.places.enumerated()), id: \.element.id) { index, place in
                     DraggablePlaceCell(
                         order: index + 1,
                         mainImageURL: "",
@@ -236,6 +235,6 @@ extension CourseDetailView {
 }
 
 #Preview {
-    CourseDetailView(fromeArchive: true)
+    CourseDetailView(fromArchive: true)
         .environmentObject(AppCoordinator())
 }
