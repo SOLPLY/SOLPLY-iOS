@@ -29,7 +29,7 @@ struct AuthView: View {
                     Image(.logoFullVector)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 40.adjustedHeight, height: 60.35069.adjustedHeight)
+                        .frame(width: 40.adjustedHeight, height: 60.adjustedHeight)
                     
                     Image(.letteringVector)
                         .resizable()
@@ -53,7 +53,7 @@ struct AuthView: View {
                     HStack(alignment: .center, spacing: 12) {
                         Image(.kakaoTalkIcon)
                             .resizable()
-                            .frame(width: 28, height: 28)
+                            .frame(width: 28.adjustedHeight, height: 28.adjustedHeight)
                         
                         Text("카카오로 시작하기")
                             .applySolplyFont(.button_16_m)
@@ -64,11 +64,6 @@ struct AuthView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color(red: 1, green: 0.9, blue: 0))
                     .cornerRadius(12)
-                    .addBorder(
-                        .roundedRectangle(cornerRadius: 12),
-                        borderColor: Color(red: 0.9, green: 0.9, blue: 0.9),
-                        borderWidth: 1
-                    )
                     .padding(.horizontal, 24.adjustedHeight)
                     .padding(.bottom, 100.adjustedHeight)
                 }
