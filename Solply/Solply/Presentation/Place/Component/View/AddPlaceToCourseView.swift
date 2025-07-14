@@ -16,12 +16,18 @@ struct AddPlaceToCourseView: View {
         GridItem(.fixed(165.adjustedWidth))
     ]
     
+    private let action: (() -> Void)?
+    
     // MARK: - Initializer
+    
+    init(action: (() -> Void)? = nil) {
+        self.action = action
+    }
     
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
+        VStack(alignment: .center, spacing: 10.adjustedHeight) {
             navigationBar
             
             courseGrid
@@ -34,7 +40,7 @@ extension AddPlaceToCourseView {
         ZStack(alignment: .center) {
             HStack(alignment: .center, spacing: 0) {
                 Button {
-                    
+                    action?()
                 } label: {
                     Image(.backIconIos)
                         .resizable()
@@ -64,11 +70,11 @@ extension AddPlaceToCourseView {
                         courseCategory: [.cafe, .shopping],
                         isSelected: true
                     ) {
-                        print("asdf")
+                        // TODO: 코스 저장
                     }
                 }
             }
-            .padding(.top, 20.adjustedHeight)
+            .padding(.top, 10.adjustedHeight)
         }
     }
 }

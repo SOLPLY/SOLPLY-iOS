@@ -66,7 +66,7 @@ extension PlaceInformationView {
             PlaceInformationRow(title: "전화번호", value: "내용")
             PlaceInformationRow(title: "운영시간", value: "내용")
             PlaceInformationRow(title: "바로가기", value: "인스타그램") {
-                print("hello")
+                // TODO: 주소 복사
             }
         }
         .padding(.vertical, 16.adjustedHeight)
