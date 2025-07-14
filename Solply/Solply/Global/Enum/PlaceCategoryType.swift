@@ -75,4 +75,16 @@ enum PlaceCategoryType {
         case .unique: return .green300
         }
     }
+    
+    var icon: String {
+        switch self {
+        case .all: return "all-icon"
+        case .cafe: return "cafe-icon"
+        case .food: return "food-icon"
+        case .book: return "book-icon"
+        case .shopping: return "shop-icon"
+        case .walk: return "walk-icon"
+        case .unique: return "unique-icon"
+        }
+    }
 }
