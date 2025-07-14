@@ -17,13 +17,24 @@ struct PlaceDetailView: View {
     // MARK: - Body
     
     var body: some View {
-        Text("임시PlaceView")
-//        NMapView(coordinate: (126.9784147, 37.5666805))
-//            .detailBottomSheet {
-//                bottomSheetTopButtons
-//            } sheetContent: {
-//                bottomSheetContent
-//            }
+        PlaceDetailMapView(place: Place.mockData())
+            .customNavigationBar(
+                .placeDetail(
+                    title: "이거는 받아야지",
+                    backAction: {
+                        appCoordinator.goBack()
+                    },
+                    homeAction: {
+                        appCoordinator.goToRoot()
+                    }
+                )
+            )
+            .detailBottomSheet(maxState: .placeExpended) {
+                bottomSheetTopButtons
+            } sheetContent: {
+                bottomSheetContent
+            }
+            .ignoresSafeArea(edges: .bottom)
     }
 }
 
@@ -56,7 +67,7 @@ extension PlaceDetailView {
     
     private var bottomSheetContent: some View {
         VStack(alignment: .center, spacing: 0) {
-            Text("아 되나?")
+            PlaceInformationView()
         }
         
     }
