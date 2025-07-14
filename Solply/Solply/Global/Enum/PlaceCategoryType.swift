@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-enum PlaceCategoryType {
-    case all
-    case cafe
-    case food
-    case book
-    case shopping
-    case walk
-    case unique
+enum PlaceCategoryType: String {
+    case all = "ALL"
+    case cafe = "CAFE"
+    case food = "FOOD"
+    case book = "BOOKSTORE"
+    case shopping = "SHOPPING"
+    case walk = "WALKING"
+    case unique = "UNIQUE_SPACE"
     
     var title: String {
         switch self {
