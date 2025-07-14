@@ -20,5 +20,7 @@ struct CourseDetailState {
     
     var toastContent: ToastContent?
     
+    var isAlertPresented: Bool = false
+    
     var draggedPlace: Place?
 }

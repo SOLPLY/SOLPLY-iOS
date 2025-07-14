@@ -57,6 +57,7 @@ enum CourseDetailReducer {
         case .endDragging:
             state.draggedPlace = nil
             state.canDelete = .dismissed
+            state.isInDeleteZone = false
             
         case .deletePlace:
             guard let place = state.draggedPlace else { return }
@@ -80,6 +81,15 @@ enum CourseDetailReducer {
             state.draggedPlace = nil
             state.canDelete = .dismissed
             state.isInDeleteZone = false
+            
+        case .showAlert:
+            state.isAlertPresented = true
+            
+        case .cancelAlert:
+            state.isAlertPresented = false
+            
+        case .confirmAlert:
+            state.isAlertPresented = false
         }
     }
 }

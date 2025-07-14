@@ -28,10 +28,15 @@ struct CourseDetailView: View {
     var body: some View {
         CourseDetailMapView(places: store.state.places)
             .customNavigationBar(
-                .courseDetail(
-                    backAction: appCoordinator.goBack,
-                    homeAction: appCoordinator.goToRoot
-                )
+                .courseDetail(backAction: {
+                    if store.state.isEditing {
+                        store.dispatch(.showAlert)
+                    } else {
+                        appCoordinator.goBack()
+                    }
+                }, homeAction: {
+                    appCoordinator.goToRoot()
+                })
             )
             .detailBottomSheet {
                 if !fromArchive {
@@ -62,6 +67,16 @@ struct CourseDetailView: View {
                 }
             }
             .toast(toastManager: toastManager)
+            .customAlert(
+                alertType: .leave,
+                title: "변경 사항을 저장하지 않고\n나가시겠어요?",
+                isPresented: store.state.isAlertPresented) {
+                    store.dispatch(.cancelAlert)
+                } onConfirm: {
+                    store.dispatch(.confirmAlert)
+                    appCoordinator.goBack()
+                }
+
     }
 }
 
