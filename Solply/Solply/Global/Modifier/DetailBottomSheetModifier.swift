@@ -13,7 +13,7 @@ struct DetailBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
     
     @State private var dragOffset: CGFloat = 0
     @State private var bottomSheetSize: CGSize = .zero
-    @State private var sheetState: DetailBottomSheetState = .small
+    @State private var sheetState: DetailBottomSheetState = .collapsed
     
     func body(content: Content) -> some View {
         ZStack {
@@ -50,15 +50,15 @@ struct DetailBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
                         )
                         
                         sheetContent()
-                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(maxHeight: sheetState.maxHeight)
+                            .clipped()
                     }
-                    .frame(height: sheetState.height, alignment: .top)
                     .sizeState(size: $bottomSheetSize)
                     .background(.coreWhite)
                     .cornerRadius(20, corners: [.topLeft, .topRight])
                     .onAppear {
                         withAnimation(.easeInOut(duration: 0.4)) {
-                            sheetState = .medium
+                            sheetState = .expanded
                         }
                     }
                 }
@@ -71,13 +71,13 @@ struct DetailBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
 
 private extension DetailBottomSheetModifier {
     enum DetailBottomSheetState {
-        case medium
-        case small
+        case expanded
+        case collapsed
         
-        var height: CGFloat {
+        var maxHeight: CGFloat {
             switch self {
-            case .medium: return 467.adjustedHeight
-            case .small: return 150.adjustedHeight
+            case .expanded: return 429.adjustedHeight // 467 - 28 - 10
+            case .collapsed: return 150.adjustedHeight
             }
         }
     }

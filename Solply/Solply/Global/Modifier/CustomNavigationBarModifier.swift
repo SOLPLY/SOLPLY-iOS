@@ -17,7 +17,7 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
         centerView: (() -> C)? = nil,
         leftView: (() -> L)? = nil,
         rightView: (() -> R)? = nil,
-        backgroundColor: Color = .clear
+        backgroundColor: Color
     ) {
         self.centerView = centerView
         self.leftView = leftView
@@ -39,16 +39,206 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
                 self.centerView?()
                 
             }
-            
-            // TODO: 네비게이션 패딩값 나오면 수정 필요
-            .padding(.horizontal, 0)
-            .padding(.vertical, 0)
+            .padding(.horizontal, 16.adjustedWidth)
+            .padding(.vertical, 16.adjustedHeight)
             .background(backgroundColor)
             
             content
             
             Spacer()
         }
+        .ignoresSafeArea(edges: .bottom)
         .navigationBarHidden(true)
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func customNavigationBar(_ navigationBarType: NavigationBarType) -> some View {
+        switch navigationBarType {
+        case .onboarding(let backAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        EmptyView()
+                    },
+                    leftView: {
+                        Button {
+                            backAction()
+                        } label: {
+                            Image(.backIconIos)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    rightView: {
+                        EmptyView()
+                    },
+                    backgroundColor: .gray100
+                )
+            )
+            
+        case .recommend(let filterTitle, let filterAction, let settingAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        EmptyView()
+                    },
+                    leftView: {
+                        HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                            Image(.townIcon)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            
+                            Button {
+                                filterAction()
+                            } label: {
+                                HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                                    Text(filterTitle)
+                                        .applySolplyFont(.body_16_m)
+                                    
+                                    Image(.arrowRightIcon)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                }
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    },
+                    rightView: {
+                        Button {
+                            settingAction()
+                        } label: {
+                            Image(.settingIcon)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    backgroundColor: .coreWhite
+                )
+            )
+            
+        case .placeDetail(let title, let backAction, let homeAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        Text(title)
+                            .applySolplyFont(.head_16_m)
+                    },
+                    leftView: {
+                        Button {
+                            backAction()
+                        } label: {
+                            Image(.backIconIos)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    rightView: {
+                        Button {
+                            homeAction()
+                        } label: {
+                            Image(.homeIcon)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    backgroundColor: .coreWhite
+                )
+            )
+            
+        case .courseDetail(let backAction, let homeAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        Text("코스 상세보기")
+                            .applySolplyFont(.head_16_m)
+                    },
+                    leftView: {
+                        Button {
+                            backAction()
+                        } label: {
+                            Image(.backIconIos)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    rightView: {
+                        Button {
+                            homeAction()
+                        } label: {
+                            Image(.homeIcon)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    backgroundColor: .coreWhite
+                )
+            )
+            
+        case .archive(let backAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        Text("수집함")
+                            .applySolplyFont(.head_16_m)
+                    },
+                    leftView: {
+                        Button {
+                            backAction()
+                        } label: {
+                            Image(.backIconIos)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    rightView: {
+                        EmptyView()
+                    },
+                    backgroundColor: .coreWhite
+                )
+            )
+            
+        case .archiveList(let title, let backAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        Text(title)
+                            .applySolplyFont(.head_16_m)
+                    },
+                    leftView: {
+                        Button {
+                            backAction()
+                        } label: {
+                            Image(.backIconIos)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    rightView: {
+                        EmptyView()
+                    },
+                    backgroundColor: .coreWhite
+                )
+            )
+        }
     }
 }

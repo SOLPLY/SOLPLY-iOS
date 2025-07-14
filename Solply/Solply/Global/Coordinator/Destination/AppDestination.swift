@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-enum AppDestination {
+enum AppDestination: Hashable {
     case archive
+    case archiveList(archiveCategory: SolplyContentType, town: String)
     case placeDetail
-    case courseDetail
+    case courseDetail(fromArchive: Bool)
 }
 
 extension AppDestination {
@@ -19,10 +20,12 @@ extension AppDestination {
         switch self {
         case .archive:
             ArchiveView()
+        case .archiveList(let archiveCategory, let town):
+            ArchiveListView(archiveCategory: archiveCategory, town: town)
         case .placeDetail:
             PlaceDetailView()
-        case .courseDetail:
-            CourseDetailView()
+        case .courseDetail(let fromArchive):
+            CourseDetailView(fromArchive: fromArchive)
         }
     }
 }
