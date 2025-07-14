@@ -48,7 +48,7 @@ extension TabBarView {
                     appCoordinator.navigate(to: .archive)
                 }
             }
-            .padding(.horizontal, 23.adjustedWidth)
+            .padding(.horizontal, 20.adjustedWidth)
             
             SolplyTabBar(
                 selectedTab: Binding(
