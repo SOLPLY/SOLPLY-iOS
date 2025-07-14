@@ -12,4 +12,8 @@ struct PlaceDetailState {
     var saveButtonSelected: Bool = false
     var saveButtonEnabled: Bool = true
     var findDirectionEnabled: Bool = true
+    
+    var selectedCourseIndex: Int = -1
+    
+    var toastContent: ToastContent?
 }
