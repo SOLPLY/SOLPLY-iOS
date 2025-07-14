@@ -11,10 +11,11 @@ struct ArchiveBar: View {
     private let archiveCategory: [SolplyContentType] = [.place, .course]
     private let action: ((SolplyContentType) -> Void)?
     
-    @State private var selected: SolplyContentType = .place
+    @Binding var selected: SolplyContentType
     @Namespace private var namespace
     
-    init(action: ((SolplyContentType) -> Void)? = nil) {
+    init(selected: Binding<SolplyContentType>, action: ((SolplyContentType) -> Void)? = nil) {
+        self._selected = selected
         self.action = action
     }
     
@@ -47,6 +48,6 @@ struct ArchiveBar: View {
     }
 }
 
-#Preview {
-    ArchiveBar()
-}
+//#Preview {
+//    ArchiveBar()
+//}
