@@ -39,7 +39,7 @@ struct CourseDetailView: View {
                         appCoordinator.goToRoot()
                     })
                 )
-                .detailBottomSheet {
+                .detailBottomSheet(maxState: .courseExpanded) {
                     if !fromArchive {
                         bottomSheetTopButton
                     }

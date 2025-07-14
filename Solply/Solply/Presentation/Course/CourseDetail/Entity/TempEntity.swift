@@ -25,7 +25,9 @@ struct Course {
                     isSaved: true,
                     placeCategoryType: .book,
                     title: "장소 이름응응응믕믕믕믕믕응으으으으",
-                    address: "상세주소오오오오오오오오오오오오오"
+                    address: "상세주소오오오오오오오오오오오오오",
+                    contactNumber: "010-0000-0000",
+                    snsLink: "상세 주소"
                 ),
                 Place(
                     imageURL: "",
@@ -35,7 +37,9 @@ struct Course {
                     isSaved: false,
                     placeCategoryType: .unique,
                     title: "장소 이름",
-                    address: "상세주소"
+                    address: "상세주소",
+                    contactNumber: "010-0000-0000",
+                    snsLink: "상세 주소"
                 ),
                 Place(
                     imageURL: "",
@@ -45,7 +49,9 @@ struct Course {
                     isSaved: true,
                     placeCategoryType: .cafe,
                     title: "장소 이름",
-                    address: "상세주소"
+                    address: "상세주소",
+                    contactNumber: "010-0000-0000",
+                    snsLink: "상세 주소"
                 ),
                 Place(
                     imageURL: "",
@@ -55,7 +61,9 @@ struct Course {
                     isSaved: false,
                     placeCategoryType: .food,
                     title: "장소 이름",
-                    address: "상세주소"
+                    address: "상세주소",
+                    contactNumber: "010-0000-0000",
+                    snsLink: "상세 주소"
                 ),
                 Place(
                     imageURL: "",
@@ -65,7 +73,9 @@ struct Course {
                     isSaved: false,
                     placeCategoryType: .shopping,
                     title: "장소 이름",
-                    address: "상세주소"
+                    address: "상세주소",
+                    contactNumber: "010-0000-0000",
+                    snsLink: "상세 주소"
                 ),
                 Place(
                     imageURL: "",
@@ -75,7 +85,9 @@ struct Course {
                     isSaved: false,
                     placeCategoryType: .book,
                     title: "장소 이름",
-                    address: "상세주소"
+                    address: "상세주소",
+                    contactNumber: "010-0000-0000",
+                    snsLink: "상세 주소"
                 )
             ]
         )
@@ -92,4 +104,21 @@ struct Place: Identifiable, Equatable {
     let placeCategoryType: PlaceCategoryType
     let title: String
     let address: String
+    let contactNumber: String
+    let snsLink: String
+    
+    static func mockData() -> Place {
+        return  Place(
+            imageURL: "",
+            latitude: 37.5694,
+            longitude: 126.9246,
+            isFocused: false,
+            isSaved: true,
+            placeCategoryType: .book,
+            title: "장소 이름응응응믕믕믕믕믕응으으으으",
+            address: "상세주소오오오오오오오오오오오오오",
+            contactNumber: "010-0000-0000",
+            snsLink: "sns 주소"
+        )
+    }
 }
