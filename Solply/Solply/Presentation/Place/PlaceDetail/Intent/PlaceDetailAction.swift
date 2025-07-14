@@ -11,4 +11,9 @@ enum PlaceDetailAction {
     case toggleAddToCourse
     case toggleSavePlace
     case requestFindDirection
+    
+    case selectCourseToAdd(index: Int)
+    case addPlaceToCourse(index: Int)
+    
+    case showToastView(ToastContent)
 }
