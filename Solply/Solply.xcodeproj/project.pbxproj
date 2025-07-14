@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		985476632E255FA5005164CF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 985476622E255FA5005164CF /* Lottie */; };
 		E34011482E151709008944E7 /* NMapsMap in Frameworks */ = {isa = PBXBuildFile; productRef = E34011472E151709008944E7 /* NMapsMap */; };
 		E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E36882822E0DD8AF008A7288 /* Kingfisher */; };
 		E36882862E0DD935008A7288 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = E36882852E0DD935008A7288 /* Moya */; };
@@ -45,6 +46,7 @@
 				E36882862E0DD935008A7288 /* Moya in Frameworks */,
 				E34011482E151709008944E7 /* NMapsMap in Frameworks */,
 				E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */,
+				985476632E255FA5005164CF /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +92,7 @@
 				E36882822E0DD8AF008A7288 /* Kingfisher */,
 				E36882852E0DD935008A7288 /* Moya */,
 				E34011472E151709008944E7 /* NMapsMap */,
+				985476622E255FA5005164CF /* Lottie */,
 			);
 			productName = Solply;
 			productReference = E36882732E0DD865008A7288 /* Solply.app */;
@@ -123,6 +126,7 @@
 				E36882812E0DD8AF008A7288 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				E36882842E0DD935008A7288 /* XCRemoteSwiftPackageReference "Moya" */,
 				E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */,
+				985476612E255FA5005164CF /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E36882742E0DD865008A7288 /* Products */;
@@ -366,6 +370,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		985476612E255FA5005164CF /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
 		E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/navermaps/SPM-NMapsMap";
@@ -393,6 +405,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		985476622E255FA5005164CF /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 985476612E255FA5005164CF /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
 		E34011472E151709008944E7 /* NMapsMap */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */;

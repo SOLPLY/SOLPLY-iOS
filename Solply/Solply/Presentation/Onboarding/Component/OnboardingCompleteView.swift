@@ -37,7 +37,6 @@ struct OnboardingCompleteView: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(height: 202.adjustedHeight)
         }
-        .navigationBarHidden(true)
         .ignoresSafeArea(edges: .bottom)
         .background(.gray100)
         .onAppear {
@@ -49,9 +48,4 @@ struct OnboardingCompleteView: View {
             }
         }
     }
-}
-
-#Preview {
-    OnboardingCompleteView(store: OnboardingStore())
-        .environmentObject(AppCoordinator())
 }

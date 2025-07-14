@@ -33,7 +33,7 @@ struct AddToCourseButton: View {
                 .frame(width: 112.adjustedWidth, height: 47.adjustedHeight,)
                 .background(isSelected ? .purple400 : .coreWhite)
                 .capsuleClipped()
-                .animation(nil, value: isSelected)
+                .animation(.easeInOut(duration: 0.2), value: isSelected)
         }
         .buttonStyle(.plain)
     }

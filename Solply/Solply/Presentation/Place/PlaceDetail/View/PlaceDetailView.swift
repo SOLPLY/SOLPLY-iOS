@@ -66,10 +66,19 @@ extension PlaceDetailView {
     }
     
     private var bottomSheetContent: some View {
-        VStack(alignment: .center, spacing: 0) {
-            PlaceInformationView()
+        ZStack {
+            if store.state.addButtonSelected {
+                AddPlaceToCourseView {
+                        store.dispatch(.toggleAddToCourse)
+                }
+                .transition(.move(edge: .trailing))
+            } else {
+                PlaceInformationView()
+                    .padding(.top, 8.adjustedHeight)
+                    .transition(.move(edge: .leading))
+            }
         }
-        
+        .animation(.easeInOut(duration: 0.2), value: store.state.addButtonSelected)
     }
 }
 
