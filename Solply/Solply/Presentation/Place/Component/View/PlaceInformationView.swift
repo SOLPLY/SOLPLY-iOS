@@ -72,7 +72,11 @@ extension PlaceInformationView {
         .padding(.vertical, 16.adjustedHeight)
         .padding(.horizontal, 20.adjustedWidth)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .addBorder(.roundedRectangle(cornerRadius: 20), borderColor: .gray200, borderWidth: 1)
+        .addBorder(
+            .roundedRectangle(cornerRadius: 20),
+            borderColor: .gray200,
+            borderWidth: 1
+        )
         .padding(.horizontal, 16.adjustedWidth)
     }
 }
