@@ -11,6 +11,8 @@ struct FilterPlaceGrid: View {
     
     // MARK: - Properties
     
+    @StateObject private var store = PlaceRecommendStore()
+    
     private let columns = [
         GridItem(.fixed(145.adjustedWidth)),
         GridItem(.fixed(145.adjustedWidth))
@@ -26,7 +28,22 @@ struct FilterPlaceGrid: View {
             
             VStack(alignment: .leading, spacing: 16.adjustedHeight) {
                 HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                    FilterButton(title: placeCategory.title)
+                    FilterButton(title: placeCategory.title) {
+                        store.dispatch(.toggleCategoryBottomSheet)
+                    }
+                    .sheet(
+                        isPresented: Binding(
+                            get: { store.state.isCategoryBottomSheetPresented },
+                            set: { isPresented in
+                                if !isPresented {
+                                    store.dispatch(.dismissCategoryBottomSheet)
+                                }
+                            }
+                        )
+                    ) {
+                        CategoryBottomSheet()
+                            .presentationDetents([.fraction(0.53)])
+                    }
                     
                     FilterButton(title: "추가옵션")
                         .visible(placeCategory == .all ? false : true)
@@ -48,6 +65,28 @@ struct FilterPlaceGrid: View {
             }
             .padding(.vertical, 20.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)
+        }
+    }
+}
+
+struct CategoryBottomSheet: View {
+    var body: some View {
+        VStack(alignment: .center, spacing: 0) {
+            HStack(alignment: .center, spacing: 0) {
+                Text("장소 유형")
+                    .applySolplyFont(.title_18_sb)
+                
+                Spacer()
+                
+                Button {
+                    
+                } label: {
+                    Image(.xIconSm)
+                        .resizable()
+                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                }
+            }
+            .padding(.horizontal, 16.adjustedWidth)
         }
     }
 }

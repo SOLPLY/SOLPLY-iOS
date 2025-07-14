@@ -8,5 +8,7 @@
 import Foundation
 
 enum PlaceRecommendAction {
-    
+    case toggleCategoryBottomSheet
+    case dismissCategoryBottomSheet
+//    case selectCategory
 }

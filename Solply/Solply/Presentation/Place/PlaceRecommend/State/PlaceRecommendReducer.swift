@@ -9,9 +9,11 @@ import Foundation
 
 struct PlaceRecommendReducer {
     static func reduce(state: inout PlaceRecommendState, action: PlaceRecommendAction) {
-//        switch action {
-//        default:
-//            return
-//        }
+        switch action {
+        case .toggleCategoryBottomSheet:
+            state.isCategoryBottomSheetPresented.toggle()
+        case .dismissCategoryBottomSheet:
+            state.isCategoryBottomSheetPresented = false
+        }
     }
 }
