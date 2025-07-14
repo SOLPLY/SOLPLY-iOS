@@ -35,13 +35,14 @@ enum CourseDetailReducer {
         case .toggleEdting:
             state.isEditing.toggle()
             state.focusedPlaceIndex = -1
+            state.canDelete = .hidden
             
             for index in state.places.indices {
                 state.places[index].isFocused = false
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
-            state.draggedPlace = draggedPlace
+            state.draggedPlace = state.canDelete == .dismissed ? nil : draggedPlace
             state.canDelete = (state.canDelete == .dismissed ? .hidden : .active)
             
         case .whileDragging(from: let fromIndex, to: let toIndex):
@@ -63,6 +64,7 @@ enum CourseDetailReducer {
             if let index = state.places.firstIndex(of: place) {
                 state.places.remove(at: index)
                 state.canDelete = .dismissed
+                state.draggedPlace = nil
             }
             
             state.isInDeleteZone = false
@@ -71,6 +73,12 @@ enum CourseDetailReducer {
             state.isInDeleteZone = true
             
         case .draggedOutDeleteZone:
+            state.isInDeleteZone = false
+            
+        case .showToastView(let toastContent):
+            state.toastContent = toastContent
+            state.draggedPlace = nil
+            state.canDelete = .dismissed
             state.isInDeleteZone = false
         }
     }

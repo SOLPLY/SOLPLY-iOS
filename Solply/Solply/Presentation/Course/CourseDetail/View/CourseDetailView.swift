@@ -55,6 +55,11 @@ struct CourseDetailView: View {
             .onAppear {
                 store.dispatch(.fetchCourseDetailData)
             }
+            .onChange(of: store.state.toastContent) { _, newValue in
+                toastManager.showToast(content: store.state.toastContent!) {
+                    
+                }
+            }
             .toast(toastManager: toastManager)
     }
 }
@@ -114,7 +119,9 @@ extension CourseDetailView {
     private var placeList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(alignment: .center, spacing: 12.adjustedHeight) {
-                ForEach(Array(store.state.places.enumerated()), id: \.element.id) { index, place in
+                ForEach(Array(store.state.places.enumerated()), id: \.element.id) {
+                    index,
+                    place in
                     DraggablePlaceCell(
                         order: index + 1,
                         mainImageURL: "",
@@ -133,14 +140,24 @@ extension CourseDetailView {
                     } saveAction: {
                         store.dispatch(.toggleSavePlace(index: index))
                         if store.state.places[index].isSaved {
-                            toastManager.showToast(
-                                type: .defaultToast,
-                                message: "'\(place.title.truncated(9))'가 수집함에 저장되었어요."
+                            store.dispatch(
+                                .showToastView(
+                                    ToastContent(
+                                        toastType: .defaultToast,
+                                        message: "'\(place.title.truncated(9))'가 수집함에 저장되었어요.",
+                                        buttonTitle: nil
+                                    )
+                                )
                             )
                         } else {
-                            toastManager.showToast(
-                                type: .defaultToast,
-                                message: "'\(place.title.truncated(9))'가 수집함에 삭제되었어요."
+                            store.dispatch(
+                                .showToastView(
+                                    ToastContent(
+                                        toastType: .defaultToast,
+                                        message: "'\(place.title.truncated(9))'가 수집함에 삭제되었어요.",
+                                        buttonTitle: nil
+                                    )
+                                )
                             )
                         }
                     }
@@ -171,6 +188,7 @@ extension CourseDetailView {
                             }
                         )
                     )
+                    
                 }
             }
             .padding(.bottom, 35.adjustedHeight)
@@ -188,7 +206,19 @@ extension CourseDetailView {
                 delegate: DeleteDropDelegate(
                     draggedPlace: store.state.draggedPlace,
                     onDelete: {
-                        store.dispatch(.deletePlace)
+                        if store.state.places.count > 2 {
+                            store.dispatch(.deletePlace)
+                        } else {
+                            store.dispatch(
+                                .showToastView(
+                                    ToastContent(
+                                        toastType: .withIconToast,
+                                        message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
+                                        buttonTitle: nil
+                                    )
+                                )
+                            )
+                        }
                     },
                     onEntered: {
                         store.dispatch(.draggedInDeleteZone)
