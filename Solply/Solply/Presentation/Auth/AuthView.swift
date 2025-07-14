@@ -60,8 +60,9 @@ struct AuthView: View {
                             .applySolplyFont(.button_16_m)
                             .foregroundColor(Color(red: 0.1, green: 0.1, blue: 0.1))
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
+                    .padding(.horizontal, 16.adjustedHeight)
+                    .padding(.vertical, 12.adjustedHeight)
+                    .buttonStyle(.plain)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color(red: 1, green: 0.9, blue: 0))
                     .cornerRadius(12)

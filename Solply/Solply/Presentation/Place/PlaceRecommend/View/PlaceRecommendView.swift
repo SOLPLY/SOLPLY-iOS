@@ -18,13 +18,34 @@ struct PlaceRecommendView: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .center, spacing: 0) {
+            VStack(alignment: .center, spacing: 28.adjustedHeight) {
+                HStack(alignment: .center, spacing: 0) {
+                    Text("차분함을 좋아하는\n숭이숭이숭이숭이님을 위한 오늘의 추천")
+                        .applySolplyFont(.display_20_sb)
+                    Spacer()
+                }
+                .padding(.horizontal, 20.adjustedWidth)
+                
                 TodayPlaceRecommendCarousel(placeRecommendItems: store.state.items)
+                
+                FilterPlaceGrid()
+                    .padding(.horizontal, 16.adjustedWidth)
+                
             }
-            .frame(height: 1000)
             .frame(maxWidth: .infinity)
+            .padding(.bottom, 112.adjustedHeight)
         }
         .background(.gray100)
+        .customNavigationBar(.recommend(
+            filterTitle: "연희동",
+            // TODO: - navigation 연결하기
+            filterAction: {
+                
+            },
+            settingAction: {
+                
+            }
+        ))
     }
 }
 

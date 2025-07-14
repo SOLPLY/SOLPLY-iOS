@@ -120,7 +120,7 @@ extension View {
                         }
                         .buttonStyle(.plain)
                     },
-                    backgroundColor: .coreWhite
+                    backgroundColor: .gray100
                 )
             )
             
