@@ -33,9 +33,11 @@ enum CourseDetailReducer {
             state.places[index].isSaved.toggle()
             
         case .toggleEdting:
-            state.isEditing.toggle()
-            state.focusedPlaceIndex = -1
-            state.canDelete = .hidden
+            if state.isEditing {
+                state.isSaveOptionPresented = true
+            } else {
+                state.isEditing = true
+            }
             
             for index in state.places.indices {
                 state.places[index].isFocused = false
@@ -90,6 +92,19 @@ enum CourseDetailReducer {
             
         case .confirmAlert:
             state.isAlertPresented = false
+            
+        case .saveCourseToCurrent:
+            // TODO: 지금 코스에 추가 API (Effect에서)
+            state.isSaveOptionPresented = false
+            state.isEditing = false
+            
+        case .saveCourseAsNew:
+            // TODO: 새코스에 추가 API (Effect에서)
+            state.isSaveOptionPresented = false
+            state.isEditing = false
+            
+        case .saveCourseCancel:
+            state.isSaveOptionPresented = false
         }
     }
 }

@@ -21,6 +21,7 @@ struct CourseDetailState {
     var toastContent: ToastContent?
     
     var isAlertPresented: Bool = false
+    var isSaveOptionPresented: Bool = false
     
     var draggedPlace: Place?
 }
