@@ -20,6 +20,8 @@ enum CourseDetailAction {
     case draggedInDeleteZone
     case draggedOutDeleteZone
     
+    case showToastView(ToastContent)
+    
     case fetchCourseDetailData
     case courseDetailDataFetched(Course)
 }
