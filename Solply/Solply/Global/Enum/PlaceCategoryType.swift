@@ -75,4 +75,16 @@ enum PlaceCategoryType: String {
         case .unique: return .green300
         }
     }
+    
+    var icon: ImageResource {
+        switch self {
+        case .all: return .allIcon
+        case .cafe: return .cafeIcon
+        case .food: return .foodIcon
+        case .book: return .bookIcon
+        case .shopping: return .shopIcon
+        case .walk: return .walkIcon
+        case .unique: return .uniqueIcon
+        }
+    }
 }

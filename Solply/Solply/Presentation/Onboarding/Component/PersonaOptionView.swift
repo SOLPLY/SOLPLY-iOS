@@ -34,19 +34,13 @@ struct PersonaOptionView: View {
 
             Spacer()
 
-            HStack(spacing: 12.adjustedWidth) {
-                CTASubButton(title: "건너뛰기", type: .clear) {
-                    store.dispatch(.skip)
-                }
-                .frame(width: 90.adjustedWidth)
-
-                CTAMainButton(title: "다음") {
-                    store.dispatch(.next)
-                }
-                .frame(maxWidth: .infinity)
+            CTAMainButton(
+                title: "다음",
+                isEnabled: store.state.personaOption != nil
+            ) {
+                store.dispatch(.next)
             }
             .padding(.bottom, 20.adjustedHeight)
         }
-        .background(Color.gray100)
     }
 }
