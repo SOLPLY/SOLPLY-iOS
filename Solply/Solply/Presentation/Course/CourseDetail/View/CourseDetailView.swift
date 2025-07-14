@@ -15,47 +15,75 @@ struct CourseDetailView: View {
     @StateObject private var store = CourseDetailStore()
     @StateObject private var toastManager = ToastManager()
     
-    private let fromeArchive: Bool
+    private let fromArchive: Bool
     
     // MARK: - Initializer
     
-    init(fromeArchive: Bool) {
-        self.fromeArchive = fromeArchive
+    init(fromArchive: Bool) {
+        self.fromArchive = fromArchive
     }
     
     // MARK: - Body
     
     var body: some View {
-        CourseDetailMapView(places: store.state.places)
-            .customNavigationBar(
-                .courseDetail(
-                    backAction: appCoordinator.goBack,
-                    homeAction: appCoordinator.goToRoot
+        ZStack(alignment: .center) {
+            CourseDetailMapView(places: store.state.places)
+                .customNavigationBar(
+                    .courseDetail(backAction: {
+                        if store.state.isEditing {
+                            store.dispatch(.showAlert)
+                        } else {
+                            appCoordinator.goBack()
+                        }
+                    }, homeAction: {
+                        appCoordinator.goToRoot()
+                    })
                 )
-            )
-            .detailBottomSheet {
-                if !fromeArchive {
-                    bottomSheetTopButton
-                }
-            } sheetContent: {
-                VStack(alignment: .center, spacing: 10.adjustedHeight) {
-                    title
-                    
-                    ZStack(alignment: .bottom) {
-                        placeList
+                .detailBottomSheet {
+                    if !fromArchive {
+                        bottomSheetTopButton
+                    }
+                } sheetContent: {
+                    VStack(alignment: .center, spacing: 10.adjustedHeight) {
+                        title
                         
-                        if store.state.canDelete == .active {
-                            deleteArea
+                        ZStack(alignment: .bottom) {
+                            placeList
+                            
+                            if store.state.canDelete == .active {
+                                deleteArea
+                            }
                         }
                     }
+                    .padding(.horizontal, 20.adjustedWidth)
+                    .padding(.top, 8.adjustedHeight)
                 }
-                .padding(.horizontal, 20.adjustedWidth)
-                .padding(.top, 8.adjustedHeight)
+                .onAppear {
+                    store.dispatch(.fetchCourseDetailData)
+                }
+                .onChange(of: store.state.toastContent) { _, toastContent in
+                    guard let toastContent else { return }
+                    toastManager.showToast(content: toastContent) {
+                        appCoordinator.navigate(to: .courseDetail(fromArchive: true))
+                    }
+                }
+                .toast(toastManager: toastManager)
+                .customAlert(
+                    alertType: .leave,
+                    title: "변경 사항을 저장하지 않고\n나가시겠어요?",
+                    isPresented: store.state.isAlertPresented) {
+                        store.dispatch(.cancelAlert)
+                    } onConfirm: {
+                        store.dispatch(.confirmAlert)
+                        appCoordinator.goBack()
+                    }
+            
+            if store.state.isSaveOptionPresented {
+                saveOption
+                    .transition(.opacity)
+                    .zIndex(10)
             }
-            .onAppear {
-                store.dispatch(.fetchCourseDetailData)
-            }
-            .toast(toastManager: toastManager)
+        }
     }
 }
 
@@ -69,6 +97,17 @@ extension CourseDetailView {
             isSelected: store.state.courseSaveSelected
         ) {
             store.dispatch(.toggleSaveCourse)
+            if store.state.courseSaveSelected {
+                store.dispatch(
+                    .showToastView(
+                        ToastContent(
+                            toastType: .withActionToast,
+                            message: "코스가 수집함에 저장되었어요.",
+                            buttonTitle: "코스 수정하기"
+                        )
+                    )
+                )
+            }
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 16.adjustedWidth)
@@ -77,7 +116,7 @@ extension CourseDetailView {
     private var title: some View {
         VStack(alignment: .leading, spacing: 4.adjustedHeight) {
             Group {
-                if fromeArchive {
+                if fromArchive {
                     HStack(alignment: .center, spacing: 4.adjustedWidth) {
                         Text(store.state.courseTitle)
                             .applySolplyFont(.title_18_sb)
@@ -133,14 +172,24 @@ extension CourseDetailView {
                     } saveAction: {
                         store.dispatch(.toggleSavePlace(index: index))
                         if store.state.places[index].isSaved {
-                            toastManager.showToast(
-                                type: .defaultToast,
-                                message: "'\(place.title.truncated(9))'가 수집함에 저장되었어요."
+                            store.dispatch(
+                                .showToastView(
+                                    ToastContent(
+                                        toastType: .defaultToast,
+                                        message: "'\(place.title.truncated(9))'가 수집함에 저장되었어요.",
+                                        buttonTitle: nil
+                                    )
+                                )
                             )
                         } else {
-                            toastManager.showToast(
-                                type: .defaultToast,
-                                message: "'\(place.title.truncated(9))'가 수집함에 삭제되었어요."
+                            store.dispatch(
+                                .showToastView(
+                                    ToastContent(
+                                        toastType: .defaultToast,
+                                        message: "'\(place.title.truncated(9))'가 수집함에 삭제되었어요.",
+                                        buttonTitle: nil
+                                    )
+                                )
                             )
                         }
                     }
@@ -171,6 +220,7 @@ extension CourseDetailView {
                             }
                         )
                     )
+                    
                 }
             }
             .padding(.bottom, 35.adjustedHeight)
@@ -188,7 +238,19 @@ extension CourseDetailView {
                 delegate: DeleteDropDelegate(
                     draggedPlace: store.state.draggedPlace,
                     onDelete: {
-                        store.dispatch(.deletePlace)
+                        if store.state.places.count > 2 {
+                            store.dispatch(.deletePlace)
+                        } else {
+                            store.dispatch(
+                                .showToastView(
+                                    ToastContent(
+                                        toastType: .withIconToast,
+                                        message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
+                                        buttonTitle: nil
+                                    )
+                                )
+                            )
+                        }
                     },
                     onEntered: {
                         store.dispatch(.draggedInDeleteZone)
@@ -203,9 +265,47 @@ extension CourseDetailView {
                 )
             )
     }
+    
+    private var saveOption: some View {
+        ZStack(alignment: .bottom) {
+            Color(.coreBlackO40)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        store.dispatch(.saveCourseCancel)
+                    }
+                }
+            
+            VStack(alignment: .center, spacing: 12.adjustedHeight) {
+                CourseSaveButton(title: "지금 코스에 저장") {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        store.dispatch(.saveCourseToCurrent)
+                    }
+                }
+                
+                CourseSaveButton(title: "새 코스로 저장") {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        store.dispatch(.saveCourseAsNew)
+                    }
+                    
+                    store.dispatch(
+                        .showToastView(
+                            ToastContent(
+                                toastType: .defaultToast,
+                                message: "새 코스로 저장되었어요.",
+                                buttonTitle: nil
+                            )
+                        )
+                    )
+                }
+            }
+            .padding(.bottom, 16.adjustedHeight)
+        }
+    }
 }
 
 #Preview {
-    CourseDetailView(fromeArchive: true)
+    CourseDetailView(fromArchive: true)
         .environmentObject(AppCoordinator())
 }

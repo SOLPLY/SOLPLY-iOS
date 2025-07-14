@@ -18,5 +18,10 @@ struct CourseDetailState {
     var canDelete: DeleteZoneState = .hidden
     var isInDeleteZone: Bool = false
     
+    var toastContent: ToastContent?
+    
+    var isAlertPresented: Bool = false
+    var isSaveOptionPresented: Bool = false
+    
     var draggedPlace: Place?
 }

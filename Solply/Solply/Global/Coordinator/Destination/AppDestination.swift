@@ -25,7 +25,7 @@ extension AppDestination {
         case .placeDetail:
             PlaceDetailView()
         case .courseDetail(let fromArchive):
-            CourseDetailView(fromeArchive: fromArchive)
+            CourseDetailView(fromArchive: fromArchive)
         }
     }
 }

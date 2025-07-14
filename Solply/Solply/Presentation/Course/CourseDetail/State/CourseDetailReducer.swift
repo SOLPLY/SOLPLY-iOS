@@ -33,15 +33,18 @@ enum CourseDetailReducer {
             state.places[index].isSaved.toggle()
             
         case .toggleEdting:
-            state.isEditing.toggle()
-            state.focusedPlaceIndex = -1
+            if state.isEditing {
+                state.isSaveOptionPresented = true
+            } else {
+                state.isEditing = true
+            }
             
             for index in state.places.indices {
                 state.places[index].isFocused = false
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
-            state.draggedPlace = draggedPlace
+            state.draggedPlace = state.canDelete == .dismissed ? nil : draggedPlace
             state.canDelete = (state.canDelete == .dismissed ? .hidden : .active)
             
         case .whileDragging(from: let fromIndex, to: let toIndex):
@@ -56,6 +59,7 @@ enum CourseDetailReducer {
         case .endDragging:
             state.draggedPlace = nil
             state.canDelete = .dismissed
+            state.isInDeleteZone = false
             
         case .deletePlace:
             guard let place = state.draggedPlace else { return }
@@ -63,6 +67,7 @@ enum CourseDetailReducer {
             if let index = state.places.firstIndex(of: place) {
                 state.places.remove(at: index)
                 state.canDelete = .dismissed
+                state.draggedPlace = nil
             }
             
             state.isInDeleteZone = false
@@ -72,6 +77,34 @@ enum CourseDetailReducer {
             
         case .draggedOutDeleteZone:
             state.isInDeleteZone = false
+            
+        case .showToastView(let toastContent):
+            state.toastContent = toastContent
+            state.draggedPlace = nil
+            state.canDelete = .dismissed
+            state.isInDeleteZone = false
+            
+        case .showAlert:
+            state.isAlertPresented = true
+            
+        case .cancelAlert:
+            state.isAlertPresented = false
+            
+        case .confirmAlert:
+            state.isAlertPresented = false
+            
+        case .saveCourseToCurrent:
+            // TODO: 지금 코스에 추가 API (Effect에서)
+            state.isSaveOptionPresented = false
+            state.isEditing = false
+            
+        case .saveCourseAsNew:
+            // TODO: 새코스에 추가 API (Effect에서)
+            state.isSaveOptionPresented = false
+            state.isEditing = false
+            
+        case .saveCourseCancel:
+            state.isSaveOptionPresented = false
         }
     }
 }
