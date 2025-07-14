@@ -12,7 +12,7 @@ final class AppCoordinator: ObservableObject {
     // MARK: - Properties
     
     @Published var path: [AppDestination] = []
-    @Published var root: RootDestination = .auth
+    @Published var root: RootDestination = .splash
     @Published var selectedTab: TabBarState = .place
     
     // MARK: - Functions
