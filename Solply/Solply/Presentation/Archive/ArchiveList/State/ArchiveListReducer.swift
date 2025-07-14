@@ -23,6 +23,17 @@ enum ArchiveListReducer {
         case .toggleCancel:
             state.selectedIndex.removeAll()
             state.activeDelete = false
+            
+        case .showAlert:
+            state.isPresented = true
+            
+        case .alertCancel:
+            state.isPresented = false
+            
+        case .alertDelete:
+            state.isPresented = false
+            state.activeDelete = false
+            print("삭제 API 연결")
         }
     }
 }

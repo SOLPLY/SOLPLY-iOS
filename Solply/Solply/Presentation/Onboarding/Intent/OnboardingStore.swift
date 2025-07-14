@@ -11,8 +11,11 @@ import Foundation
 final class OnboardingStore: ObservableObject {
 
     @Published private(set) var state = OnboardingState()
+    private let effect: OnboardingEffect = OnboardingEffect()
 
     func dispatch(_ action: OnboardingAction) {
+        OnboardingReducer.reduce(state: &state, action: action)
+        
         switch action {
         case .updateNickname(let nickname):
             if nickname.isEmpty {
@@ -24,9 +27,15 @@ final class OnboardingStore: ObservableObject {
             } else {
                 self.dispatch(.nicknameChecked(.valid))
             }
+        case .onboardingCompleteOnAppear:
+            Task {
+                let result = await effect.waitThenComplete()
+                self.dispatch(result)
+            }
             
         default:
-            OnboardingReducer.reduce(state: &state, action: action)
+            break
         }
     }
 }
+

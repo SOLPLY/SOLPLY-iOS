@@ -11,4 +11,5 @@ enum OnboardingStep: Int, CaseIterable {
     case townOption
     case personaOption
     case nickName
+    case onboardingComplete
 }

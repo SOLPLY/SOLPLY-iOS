@@ -11,6 +11,10 @@ struct NicknameView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store: OnboardingStore
+    
+    init(store: OnboardingStore) {
+        self.store = store
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -26,7 +30,6 @@ struct NicknameView: View {
                     store.dispatch(.updateNickname(text))
                 }
             )
-            
             
             .padding(.bottom, 24.adjustedHeight)
             
