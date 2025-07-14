@@ -58,7 +58,7 @@ struct CourseDetailView: View {
             .onChange(of: store.state.toastContent) { _, toastContent in
                 guard let toastContent else { return }
                 toastManager.showToast(content: toastContent) {
-                    
+                    appCoordinator.navigate(to: .courseDetail(fromArchive: true))
                 }
             }
             .toast(toastManager: toastManager)
@@ -75,6 +75,17 @@ extension CourseDetailView {
             isSelected: store.state.courseSaveSelected
         ) {
             store.dispatch(.toggleSaveCourse)
+            if store.state.courseSaveSelected {
+                store.dispatch(
+                    .showToastView(
+                        ToastContent(
+                            toastType: .withActionToast,
+                            message: "코스가 수집함에 저장되었어요.",
+                            buttonTitle: "코스 수정하기"
+                        )
+                    )
+                )
+            }
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 16.adjustedWidth)
