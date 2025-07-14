@@ -9,7 +9,6 @@ import SwiftUI
 
 import NMapsMap
 
-/// 네이버 지도를 SwiftUI에서 사용하기 위한 뷰입니다.
 struct CourseDetailMapView: UIViewRepresentable, Equatable {
     
     // MARK: - Properties
@@ -17,7 +16,12 @@ struct CourseDetailMapView: UIViewRepresentable, Equatable {
     private let markerManager = MarkerManager()
     private var places: [Place]
     
-    private let contentInset: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 440.adjustedHeight, right: 0)
+    private let contentInset: UIEdgeInsets = UIEdgeInsets(
+        top: 0,
+        left: 0,
+        bottom: 440.adjustedHeight,
+        right: 0
+    )
     
     private let defaultMarkerWidth: CGFloat = 36.adjustedWidth
     private let defaultMarkerHeight: CGFloat = 36.adjustedHeight
