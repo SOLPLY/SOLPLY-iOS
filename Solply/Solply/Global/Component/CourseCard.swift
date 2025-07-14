@@ -57,7 +57,7 @@ struct CourseCard: View {
                         Text(title)
                             .applySolplyFont(.title_14_m)
                             .foregroundStyle(.coreBlack)
-                            .frame(height: 36.adjustedHeight)
+                            .frame(height: 38.adjustedHeight)
                         
                         Spacer()
                         
