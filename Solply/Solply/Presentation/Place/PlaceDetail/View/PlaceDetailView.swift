@@ -50,9 +50,7 @@ extension PlaceDetailView {
             Spacer()
             
             AddToCourseButton(isSelected: store.state.addButtonSelected) {
-                withAnimation(.easeInOut(duration: 0.15)) {
-                    store.dispatch(.toggleAddToCourse)
-                }
+                store.dispatch(.toggleAddToCourse)
             }
             .animation(.easeIn(duration: 0.2), value: store.state.saveButtonSelected)
             
