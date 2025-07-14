@@ -53,6 +53,7 @@ struct AuthView: View {
                     HStack(alignment: .center, spacing: 12) {
                         Image(.kakaoTalkIcon)
                             .resizable()
+                            .aspectRatio(contentMode: .fit)
                             .frame(width: 28.adjustedHeight, height: 28.adjustedHeight)
                         
                         Text("카카오로 시작하기")
