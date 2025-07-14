@@ -10,31 +10,31 @@ import SwiftUI
 struct DetailBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModifier {
     
     // MARK: - Properties
-
-       let topContent: () -> TopContent
-       let sheetContent: () -> SheetContent
-       private let maxState: DetailBottomSheetState
-
-       @State private var dragOffset: CGFloat = 0
-       @State private var bottomSheetSize: CGSize = .zero
-       @State private var sheetState: DetailBottomSheetState = .collapsed
-
-       // MARK: - Initializer
-
-       init(
-           maxState: DetailBottomSheetState,
-           @ViewBuilder topContent: @escaping () -> TopContent,
-           @ViewBuilder sheetContent: @escaping () -> SheetContent
-       ) {
-           self.maxState = maxState
-           self.topContent = topContent
-           self.sheetContent = sheetContent
-       }
+    
+    let topContent: () -> TopContent
+    let sheetContent: () -> SheetContent
+    private let maxState: DetailBottomSheetState
+    
+    @State private var dragOffset: CGFloat = 0
+    @State private var bottomSheetSize: CGSize = .zero
+    @State private var sheetState: DetailBottomSheetState = .collapsed
+    
+    // MARK: - Initializer
+    
+    init(
+        maxState: DetailBottomSheetState,
+        @ViewBuilder topContent: @escaping () -> TopContent,
+        @ViewBuilder sheetContent: @escaping () -> SheetContent
+    ) {
+        self.maxState = maxState
+        self.topContent = topContent
+        self.sheetContent = sheetContent
+    }
     
     func body(content: Content) -> some View {
         ZStack {
             content
-
+            
             VStack(alignment: .center, spacing: 0) {
                 Spacer()
                 
