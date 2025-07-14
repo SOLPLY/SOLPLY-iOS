@@ -67,7 +67,10 @@ extension PlaceDetailView {
     
     private var bottomSheetContent: some View {
         VStack(alignment: .center, spacing: 0) {
-            PlaceInformationView()
+            // TODO: 뷰 스위칭
+//            PlaceInformationView()
+//                .padding(.top, 8.adjustedHeight)
+            AddPlaceToCourseView()
         }
         
     }
