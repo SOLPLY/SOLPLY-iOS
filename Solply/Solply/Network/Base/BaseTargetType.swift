@@ -28,6 +28,13 @@ extension BaseTargetType {
         switch headerType {
         case .contentTypeJSON:
             break
+        case .accessToken:
+            if let accessToken = TokenManager.shared.fetchAccessToken() {
+                header["Authorization"] = "Bearer \(accessToken)"
+            } else {
+                print("‼️ AccessToken이 없습니다 ‼️")
+            }
+            
         case .refreshToken(let refreshToken):
             header["Authorization"] = "Bearer \(refreshToken)"
         }
@@ -42,5 +49,6 @@ extension BaseTargetType {
 
 enum HTTPHeader {
     case contentTypeJSON
+    case accessToken // 추후 Interceptor로 수정 필요
     case refreshToken(String)
 }
