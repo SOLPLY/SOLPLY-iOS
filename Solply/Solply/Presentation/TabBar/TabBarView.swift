@@ -36,7 +36,7 @@ extension TabBarView {
             CourseRecommendView()
                 .visible(appCoordinator.selectedTab == .course)
         }
-        .animation(.easeInOut(duration: 0.1), value: appCoordinator.selectedTab)
+//        .animation(.easeInOut(duration: 0.1), value: appCoordinator.selectedTab)
     }
     
     private var tabBar: some View {
