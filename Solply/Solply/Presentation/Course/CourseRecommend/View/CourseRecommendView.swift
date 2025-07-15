@@ -12,12 +12,12 @@ struct CourseRecommendView: View {
     // MARK: - Properties
     
     @EnvironmentObject var appCoordinator: AppCoordinator
-    //    @StateObject private var store = PlaceRecommendStore()
+    @StateObject private var store = CourseRecommendStore()
     
     // MARK: - Body
     
     var body: some View {
-        ScrollView {
+        ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .center, spacing: 28.adjustedHeight) {
                 HStack(alignment: .center, spacing: 0) {
                     Text("차분함을 좋아하는\n숭이숭이숭이숭이님을 위한 오늘의 코스")
