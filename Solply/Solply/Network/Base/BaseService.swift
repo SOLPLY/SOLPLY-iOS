@@ -25,8 +25,8 @@ class BaseService<Target: BaseTargetType> {
     /// - T: ResponseModelType 프로토콜을 준수하는 타입 (응답이 없는 경우 EmptyResponseDTO 사용)
     func request<T: ResponseModelType>(
         with target: Target
-    ) async -> Result<BaseResponseBody<T>, NetworkError> {
-        await withCheckedContinuation { continuation in
+    ) async throws -> BaseResponseBody<T> {
+        try await withCheckedThrowingContinuation { continuation in
             provider.request(target) { result in
                 switch result {
                 case .success(let response):
@@ -34,32 +34,33 @@ class BaseService<Target: BaseTargetType> {
                     case 200...299:
                         do {
                             let decoded = try JSONDecoder().decode(BaseResponseBody<T>.self, from: response.data)
-                            continuation.resume(returning: .success(decoded))
+                            continuation.resume(returning: decoded)
                         } catch {
-                            continuation.resume(returning: .failure(.responseDecodingError))
+                            continuation.resume(throwing: NetworkError.responseDecodingError)
                         }
                         
                     case 400, 409:
-                        if let errorResponse = try? JSONDecoder().decode(ErrorResponseBody.self, from: response.data) {
-                            continuation.resume(returning: .failure(.apiError(message: errorResponse.message)))
+                        if let errorResponse = try? JSONDecoder().decode(BaseResponseBody<T>.self, from: response.data) {
+                            continuation.resume(throwing: NetworkError.apiError(message: errorResponse.message))
                         } else {
-                            continuation.resume(returning: .failure(.responseError))
+                            continuation.resume(throwing: NetworkError.responseError)
                         }
                         
                     case 401:
-                        continuation.resume(returning: .failure(.unauthorized))
+                        continuation.resume(throwing: NetworkError.unauthorized)
                     case 404:
-                        continuation.resume(returning: .failure(.notFound))
+                        continuation.resume(throwing: NetworkError.notFound)
                     case 500...599:
-                        continuation.resume(returning: .failure(.internalServerError))
+                        continuation.resume(throwing: NetworkError.internalServerError)
                     default:
-                        continuation.resume(returning: .failure(.responseError))
+                        continuation.resume(throwing: NetworkError.responseError)
                     }
                     
                 case .failure:
-                    continuation.resume(returning: .failure(.networkFail))
+                    continuation.resume(throwing: NetworkError.networkFail)
                 }
             }
         }
     }
+
 }
