@@ -30,7 +30,8 @@ struct OnboardingCompleteView: View {
                 .applySolplyFont(.display_20_sb)
                 .padding(.top, 84.adjustedHeight)
             
-            Spacer()
+            LottieView(jsonName: "Splash")
+                .frame(width: 230.adjustedHeight, height: 230.adjustedHeight)
             
             Image(.boxGraphic)
                 .resizable()
