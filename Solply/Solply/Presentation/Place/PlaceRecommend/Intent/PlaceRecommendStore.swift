@@ -12,11 +12,11 @@ final class PlaceRecommendStore: ObservableObject {
     @Published private(set) var state = PlaceRecommendState()
     
     func dispatch(_ action: PlaceRecommendAction) {
-//        PlaceRecommendReducer.reduce(state: &state, action: action)
-//
-//        switch action {
-//        default:
-//            break
-//        }
+        PlaceRecommendReducer.reduce(state: &state, action: action)
+
+        switch action {
+        default:
+            break
+        }
     }
 }
