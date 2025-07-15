@@ -13,9 +13,21 @@ struct UsuallyTownOptionView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @ObservedObject var store: UsuallyTownOptionStore
     
-    let initialTownOption: () -> TownOptionType
-    let confirmAction: (TownOptionType) -> Void
-    let backAction: () -> Void
+    private let selectedTownOption: () -> TownOptionType
+    private let confirmAction: (TownOptionType) -> Void
+    private let backAction: () -> Void
+    
+    init(
+        store: UsuallyTownOptionStore,
+        selectedTownOption: @escaping () -> TownOptionType,
+        confirmAction: @escaping (TownOptionType) -> Void,
+        backAction: @escaping () -> Void
+    ) {
+        self.store = store
+        self.selectedTownOption = selectedTownOption
+        self.confirmAction = confirmAction
+        self.backAction = backAction
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -49,7 +61,7 @@ struct UsuallyTownOptionView: View {
             .padding(.bottom, 33.adjustedHeight)
         }
         .onAppear {
-            store.dispatch(.selectOption(initialTownOption()))
+            store.dispatch(.selectOption(selectedTownOption()))
         }
         .customNavigationBar(.archiveList(title: "자주 가는 동네", backAction: backAction))
         }
@@ -61,7 +73,7 @@ struct UsuallyTownOptionView: View {
 
     return UsuallyTownOptionView(
         store: store,
-        initialTownOption: { .named("망원동") },
+        selectedTownOption: { .named("망원동") },
         confirmAction: { selected in
             print("프리뷰: \(selected)")
         },
