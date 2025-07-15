@@ -16,6 +16,6 @@ extension AuthService: AuthAPI {
         provider: String,
         request: AuthLoginRequestDTO
     ) async throws -> BaseResponseBody<AuthLoginResponseDTO> {
-        return try await self.request(with: .login(provider: provider, request: request))
+        return try await self.request(with: .submitLogin(provider: provider, request: request))
     }
 }
