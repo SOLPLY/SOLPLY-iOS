@@ -41,8 +41,18 @@ struct FilterPlaceGrid: View {
                             }
                         )
                     ) {
-                        CategoryBottomSheet()
-                            .presentationDetents([.fraction(0.53)])
+                        CategoryBottomSheet(
+                            state: store.state,
+                            isPresented: Binding(
+                                get: { store.state.isCategoryBottomSheetPresented },
+                                set: { isPresented in
+                                    if !isPresented {
+                                        store.dispatch(.dismissCategoryBottomSheet)
+                                    }
+                                }
+                            )
+                        )
+                            .presentationDetents([.fraction(0.54)])
                     }
                     
                     FilterButton(title: "추가옵션")
@@ -65,55 +75,6 @@ struct FilterPlaceGrid: View {
             }
             .padding(.vertical, 20.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)
-        }
-    }
-}
-
-struct CategoryBottomSheet: View {
-    var body: some View {
-        VStack(alignment: .center, spacing: 0) {
-            HStack(alignment: .center, spacing: 0) {
-                Text("장소 유형")
-                    .applySolplyFont(.title_18_sb)
-                
-                Spacer()
-                
-                Button {
-                    
-                } label: {
-                    Image(.xIconSm)
-                        .resizable()
-                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-                }
-            }
-            .padding(.horizontal, 16.adjustedWidth)
-            
-            ForEach(PlaceCategoryType.allCases) { category in
-                CategoryListRow(category: category)
-            }
-        }
-    }
-}
-
-struct CategoryListRow: View {
-    
-    private let category: PlaceCategoryType
-    
-    init(category: PlaceCategoryType) {
-        self.category = category
-    }
-    
-    var body: some View {
-        HStack(alignment: .center, spacing: 4) {
-            Image(category.icon)
-                .resizable()
-                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-            Text(category.title)
-                .applySolplyFont(.body_16_r)
-            Spacer()
-            Image(.checkIcon)
-                .resizable()
-                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
         }
     }
 }
