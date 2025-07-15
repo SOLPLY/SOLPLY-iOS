@@ -14,7 +14,7 @@ struct FilterPlaceGrid: View {
     @StateObject private var store = PlaceRecommendStore()
     
     private let columns = [
-        GridItem(.fixed(145.adjustedWidth)),
+        GridItem(.fixed(145.adjustedWidth), spacing: 12.5.adjustedWidth),
         GridItem(.fixed(145.adjustedWidth))
     ]
     
