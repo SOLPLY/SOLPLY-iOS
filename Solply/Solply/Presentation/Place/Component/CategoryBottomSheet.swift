@@ -25,7 +25,7 @@ struct CategoryBottomSheet: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .center, spacing: 20) {
+        VStack(alignment: .center, spacing: 20.adjustedHeight) {
             HStack(alignment: .center, spacing: 0) {
                 Text("장소 유형")
                     .applySolplyFont(.title_18_sb)
@@ -41,8 +41,9 @@ struct CategoryBottomSheet: View {
                         .buttonStyle(.plain)
                 }
             }
+            
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .center, spacing: 11) {
+                VStack(alignment: .center, spacing: 11.adjustedHeight) {
                     ForEach(PlaceCategoryType.allCases) { category in
                         CategoryListRow(
                             category: category,
@@ -96,12 +97,14 @@ struct CategoryListRow: View {
             HStack(alignment: .center, spacing: 4.adjustedWidth) {
                 Image(category.icon)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                 Text(category.title)
                     .applySolplyFont(.body_16_r)
                 Spacer()
                 Image(.selectIcon)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                     .visible(isSelectedCategory ? true : false)
             }

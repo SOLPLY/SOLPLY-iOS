@@ -42,9 +42,10 @@ struct MoreOptionHeader: View {
             } label: {
                 Image(.xIconSm)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-                    .buttonStyle(.plain)
             }
+            .buttonStyle(.plain)
             .visible(isButtonVisible ? true : false)
         }
     }
