@@ -51,7 +51,3 @@ struct FilterPlaceGrid: View {
         }
     }
 }
-
-#Preview {
-    FilterPlaceGrid()
-}
