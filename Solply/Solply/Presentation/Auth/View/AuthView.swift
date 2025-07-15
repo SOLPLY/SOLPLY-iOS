@@ -10,6 +10,7 @@ import SwiftUI
 struct AuthView: View {
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @StateObject private var store: AuthStore = AuthStore()
     
     var body: some View {
         ZStack {
@@ -48,7 +49,8 @@ struct AuthView: View {
                 Spacer()
                 
                 Button {
-                    appCoordinator.changeRoot(to: .onboarding)
+                    store.dispatch(.login(.kakao))
+//                    appCoordinator.changeRoot(to: .onboarding)
                 } label: {
                     HStack(alignment: .center, spacing: 12) {
                         Image(.kakaoTalkIcon)
