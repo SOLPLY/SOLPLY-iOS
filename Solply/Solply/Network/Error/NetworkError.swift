@@ -15,6 +15,7 @@ enum NetworkError: Error {
     case responseError // 기타 4xx, 5xx
     case responseDecodingError // JSON 디코딩 실패
     case networkFail // 인터넷 연결 실패 등
+    case unknownError // 알 수 없는 에러
 }
 
 extension NetworkError: CustomStringConvertible {
