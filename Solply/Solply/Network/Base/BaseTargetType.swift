@@ -15,7 +15,7 @@ protocol BaseTargetType: TargetType {
 
 extension BaseTargetType {
     var baseURL: URL {
-        guard let url = URL(string: "\(AppEnvironment.baseURL)") else {
+        guard let url = URL(string: "\(AppEnvironment.baseURL)/api") else {
             fatalError("Error: BaseURL을 찾을 수 없습니다.")
         }
         

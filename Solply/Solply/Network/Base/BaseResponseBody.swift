@@ -9,15 +9,17 @@ import Foundation
 
 /// 공통 응답 DTO
 struct BaseResponseBody<T: ResponseModelType>: ResponseModelType {
+    let success: Bool
     let code: Int
     let message: String
-    // TODO: 서버에서 nullable인지 확인 후 수정 필요
     let data: T?
 }
 
+// TODO: 일단 주석 해놓을게예
 /// 에러 응답 DTO
-struct ErrorResponseBody: ResponseModelType {
-    let code: Int
-    let message: String
-    // TODO: 서버에서 error상황에서 어떻게 넘겨주는지 확인 후 수정 필요
-}
+//struct ErrorResponseBody<T: ResponseModelType>: ResponseModelType {
+//    let success: Bool
+//    let code: Int
+//    let message: String
+//    let data: T?
+//}
