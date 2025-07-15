@@ -11,11 +11,16 @@ struct FilterPlaceGrid: View {
     
     // MARK: - Properties
     
+    @StateObject private var store = PlaceRecommendStore()
+    
     private let columns = [
-        GridItem(.fixed(145.adjustedWidth)),
+        GridItem(.fixed(145.adjustedWidth), spacing: 12.5.adjustedWidth),
         GridItem(.fixed(145.adjustedWidth))
     ]
-    private let placeCategory: PlaceCategoryType = .all
+    
+    private var placeCategory: PlaceCategoryType {
+        store.state.selectedCategory
+    }
     
     // MARK: - Body
     
@@ -26,10 +31,59 @@ struct FilterPlaceGrid: View {
             
             VStack(alignment: .leading, spacing: 16.adjustedHeight) {
                 HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                    FilterButton(title: placeCategory.title)
+                    FilterButton(title: placeCategory.title) {
+                        store.dispatch(.toggleCategoryBottomSheet)
+                    }
+                    .sheet(
+                        isPresented: Binding(
+                            get: { store.state.isCategoryBottomSheetPresented },
+                            set: { isPresented in
+                                if !isPresented {
+                                    store.dispatch(.dismissCategoryBottomSheet)
+                                }
+                            }
+                        )
+                    ) {
+                        CategoryBottomSheet(
+                            store: store,
+                            isPresented: Binding(
+                                get: { store.state.isCategoryBottomSheetPresented },
+                                set: { isPresented in
+                                    if !isPresented {
+                                        store.dispatch(.dismissCategoryBottomSheet)
+                                    }
+                                }
+                            )
+                        )
+                            .presentationDetents([.fraction(0.54)])
+                    }
                     
-                    FilterButton(title: "추가옵션")
-                        .visible(placeCategory == .all ? false : true)
+                    FilterButton(title: "추가옵션") {
+                        store.dispatch(.toggleMoreOptionBottomSheet)
+                    }
+                    .visible(placeCategory == .all ? false : true)
+                    .sheet(
+                        isPresented: Binding(
+                            get: { store.state.isMoreOptionBottomSheetPresented },
+                            set: { isPresented in
+                                if !isPresented {
+                                    store.dispatch(.dismissMoreOptionBottomSheet)
+                                }
+                            }
+                        )
+                    ) {
+                        MoreOptionBottomSheet(
+                            isPresented: Binding(
+                                get: { store.state.isMoreOptionBottomSheetPresented },
+                                set: { isPresented in
+                                    if !isPresented {
+                                        store.dispatch(.dismissMoreOptionBottomSheet)
+                                    }
+                                }
+                            )
+                        )
+                            .presentationDetents([.fraction(0.6)])
+                    }
                 }
                 
                 LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {

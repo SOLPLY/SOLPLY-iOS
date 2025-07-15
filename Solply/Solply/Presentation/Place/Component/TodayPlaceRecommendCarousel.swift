@@ -19,7 +19,9 @@ struct TodayPlaceRecommendCarousel: View {
     private let placeRecommendItems: [TempPlaceRecommendItem]
     private let cardWidth: CGFloat = 240.adjustedWidth
     private let cardSpacing: CGFloat = 16.adjustedWidth
-    private var cardOffset: CGFloat { cardWidth + cardSpacing }
+    private var cardOffset: CGFloat {
+        cardWidth / 2 + cardSpacing + (cardWidth * 0.75) / 2
+    }
     
     // MARK: - Initializer
     
@@ -37,7 +39,7 @@ struct TodayPlaceRecommendCarousel: View {
                 let totalOffset = baseX + dragOffset
 
                 let distanceFromCenter = abs(totalOffset)
-                let scale = max(0.85, 1.0 - (distanceFromCenter / (cardOffset * 2)))
+                let scale = max(0.75, 1.0 - (distanceFromCenter / (cardOffset * 2)))
 
                 TodayPlaceRecommendCard(
                     // TODO: - .temp 이미지 변경하기
