@@ -66,7 +66,13 @@ struct AuthEffect {
 // MARK: - Implementation
 
 extension AuthEffect: AuthAPI {
-    func submitLogin(provider: String, request: AuthLoginRequestDTO) async throws -> BaseResponseBody<AuthLoginResponseDTO> {
-        return try await service.submitLogin(provider: provider, request: request)
+    func submitLogin(
+        provider: String,
+        request: AuthLoginRequestDTO
+    ) async throws -> BaseResponseBody<AuthLoginResponseDTO> {
+        return try await service.submitLogin(
+            provider: provider,
+            request: request
+        )
     }
 }

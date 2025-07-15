@@ -14,7 +14,7 @@ struct AuthView: View {
     
     var body: some View {
         ZStack(alignment: .center) {
-            VStack(alignment: .leading, spacing:0) {
+            VStack(alignment: .leading, spacing: 0) {
                 Image(.loginGraphic)
                     .resizable()
                     .scaledToFill()
@@ -69,6 +69,7 @@ struct AuthView: View {
                     .padding(.horizontal, 24.adjustedHeight)
                     .padding(.bottom, 100.adjustedHeight)
                 }
+                .buttonStyle(.plain)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
