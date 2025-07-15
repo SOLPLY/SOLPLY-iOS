@@ -12,6 +12,7 @@ struct UsuallyTownOptionView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @ObservedObject var store: UsuallyTownOptionStore
     
+    let initialSelectedOption: () -> TownOptionType
     let onNext: (TownOptionType) -> Void
     let onBack: () -> Void
     
@@ -42,13 +43,17 @@ struct UsuallyTownOptionView: View {
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.bottom, 33.adjustedHeight)
         }
-        .customNavigationBar(.archiveList(title: "자주 가는 동네", backAction: onBack))
-            }
+        .onAppear {
+            store.dispatch(.selectOption(initialSelectedOption()))
         }
+        .customNavigationBar(.archiveList(title: "자주 가는 동네", backAction: onBack))
+    }
+}
 
 #Preview {
     UsuallyTownOptionView(
-        store: UsuallyTownOptionStore(),
+        store: UsuallyTownOptionStore(initialOption: .named("망원동")),
+        initialSelectedOption: { .named("망원동") },
         onNext: { selected in
             print("프리뷰: \(selected)")
         },

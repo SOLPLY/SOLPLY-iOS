@@ -8,6 +8,11 @@
 import Foundation
 
 struct UsuallyTownOptionState {
-    var selectedOption: TownOptionType = .named("망원동")
-    var isUserSelected: Bool = false
+    var selectedOption: TownOptionType
+    var isUserSelected: Bool
+    
+    init(initialOption: TownOptionType) {
+        self.selectedOption = initialOption
+        self.isUserSelected = false
+    }
 }
