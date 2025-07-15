@@ -50,7 +50,7 @@ struct CourseRecommendGrid: View {
     // MARK: - Properties
     
     private let columns = [
-        GridItem(.fixed(165.adjustedWidth)),
+        GridItem(.fixed(165.adjustedWidth), spacing: 12.5.adjustedWidth),
         GridItem(.fixed(165.adjustedWidth))
     ]
     private let placeCategory: PlaceCategoryType = .all
