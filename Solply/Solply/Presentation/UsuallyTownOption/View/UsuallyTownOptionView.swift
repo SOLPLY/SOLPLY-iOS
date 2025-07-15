@@ -13,20 +13,17 @@ struct UsuallyTownOptionView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @ObservedObject var store: UsuallyTownOptionStore
     
-    private let selectedTownOption: () -> TownOptionType
-    private let confirmAction: (TownOptionType) -> Void
-    private let backAction: () -> Void
+    private let selectedTownOption: (() -> TownOptionType)?
+    private let confirmAction: ((TownOptionType) -> Void)?
     
     init(
         store: UsuallyTownOptionStore,
-        selectedTownOption: @escaping () -> TownOptionType,
-        confirmAction: @escaping (TownOptionType) -> Void,
-        backAction: @escaping () -> Void
+        selectedTownOption: (() -> TownOptionType)? = nil,
+        confirmAction: ((TownOptionType) -> Void)? = nil
     ) {
         self.store = store
         self.selectedTownOption = selectedTownOption
         self.confirmAction = confirmAction
-        self.backAction = backAction
     }
     
     var body: some View {
@@ -45,40 +42,37 @@ struct UsuallyTownOptionView: View {
             }
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.top, 33.adjustedHeight)
-
+            
             Spacer()
-
+            
             CTAMainButton(
                 title: "완료",
                 isEnabled: true
             ) {
-                guard let selected = store.state.selectedOption else {
-                    return
-                }
-                confirmAction(selected)
+                guard let selected = store.state.selectedOption else { return }
+                confirmAction?(selected)
             }
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.bottom, 20.adjustedHeight)
         }
         .onAppear {
-            store.dispatch(.selectOption(selectedTownOption()))
+            if let initialOption = selectedTownOption?() {
+                store.dispatch(.selectOption(initialOption))
+            }
         }
-        .customNavigationBar(.archiveList(title: "자주 가는 동네", backAction: backAction))
-        }
+        .customNavigationBar(.archiveList(title: "자주 가는 동네", backAction: appCoordinator.goBack))
     }
+}
 
 #Preview {
     let store = UsuallyTownOptionStore()
     store.dispatch(.selectOption(.named("망원동")))
-
+    
     return UsuallyTownOptionView(
         store: store,
         selectedTownOption: { .named("망원동") },
         confirmAction: { selected in
             print("프리뷰: \(selected)")
-        },
-        backAction: {
-            print("뒤로가기")
         }
     )
     .environmentObject(AppCoordinator())
