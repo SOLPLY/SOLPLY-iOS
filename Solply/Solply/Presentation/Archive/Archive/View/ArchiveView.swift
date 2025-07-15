@@ -43,10 +43,10 @@ struct ArchiveView: View {
         
         Group {
                 if store.state.selectedCategory == .place {
-                    ArchiveFullView(archiveCatrgory: .place)
+                    ArchiveFullView(archiveCategory: .place)
                         .transition(.move(edge: .leading))
                 } else {
-                    ArchiveFullView(archiveCatrgory: .course)
+                    ArchiveFullView(archiveCategory: .course)
                         .transition(.move(edge: .trailing))
                 }
             }

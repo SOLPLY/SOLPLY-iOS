@@ -24,8 +24,8 @@ struct ArchiveFullView: View {
     
     // MARK: - Initializers
     
-    init(archiveCatrgory: SolplyContentType) {
-        self.archiveCategory = archiveCatrgory
+    init(archiveCategory: SolplyContentType) {
+        self.archiveCategory = archiveCategory
     }
     
     // MARK: - Body
