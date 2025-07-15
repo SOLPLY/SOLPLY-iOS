@@ -58,8 +58,32 @@ struct FilterPlaceGrid: View {
                             .presentationDetents([.fraction(0.54)])
                     }
                     
-                    FilterButton(title: "추가옵션")
-                        .visible(placeCategory == .all ? false : true)
+                    FilterButton(title: "추가옵션") {
+                        store.dispatch(.toggleMoreOptionBottomSheet)
+                    }
+                    .visible(placeCategory == .all ? false : true)
+                    .sheet(
+                        isPresented: Binding(
+                            get: { store.state.isMoreOptionBottomSheetPresented },
+                            set: { isPresented in
+                                if !isPresented {
+                                    store.dispatch(.dismissMoreOptionBottomSheet)
+                                }
+                            }
+                        )
+                    ) {
+                        MoreOptionBottomSheet(
+                            isPresented: Binding(
+                                get: { store.state.isMoreOptionBottomSheetPresented },
+                                set: { isPresented in
+                                    if !isPresented {
+                                        store.dispatch(.dismissMoreOptionBottomSheet)
+                                    }
+                                }
+                            )
+                        )
+                            .presentationDetents([.fraction(0.6)])
+                    }
                 }
                 
                 LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {

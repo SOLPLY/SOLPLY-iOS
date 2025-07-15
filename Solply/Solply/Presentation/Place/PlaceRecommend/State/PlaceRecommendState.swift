@@ -16,4 +16,9 @@ struct PlaceRecommendState {
     
     var isCategoryBottomSheetPresented: Bool = false
     var selectedCategory: PlaceCategoryType = .all
+    
+    var isMoreOptionBottomSheetPresented: Bool = false
+    
+    
+    
 }
