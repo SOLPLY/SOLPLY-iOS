@@ -11,6 +11,8 @@ import Moya
 
 final class AuthService: BaseService<AuthTargetType> { }
 
+// MARK: - Implementation
+
 extension AuthService: AuthAPI {
     func submitLogin(
         provider: String,
