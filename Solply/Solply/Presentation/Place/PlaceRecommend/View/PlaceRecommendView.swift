@@ -17,7 +17,7 @@ struct PlaceRecommendView: View {
     // MARK: - Body
     
     var body: some View {
-        ScrollView {
+        ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .center, spacing: 28.adjustedHeight) {
                 HStack(alignment: .center, spacing: 0) {
                     Text("차분함을 좋아하는\n숭이숭이숭이숭이님을 위한 오늘의 추천")
