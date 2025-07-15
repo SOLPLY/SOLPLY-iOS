@@ -26,7 +26,7 @@ struct PlaceRecommendView: View {
                 }
                 .padding(.horizontal, 20.adjustedWidth)
                 
-                TodayPlaceRecommendCarousel(placeRecommendItems: store.state.items)
+                TodayPlaceRecommendCarousel(placeRecommendItems: store.state.placeRecommendItems)
                 
                 FilterPlaceGrid()
                     .padding(.horizontal, 16.adjustedWidth)
