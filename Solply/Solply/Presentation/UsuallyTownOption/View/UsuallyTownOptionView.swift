@@ -58,7 +58,7 @@ struct UsuallyTownOptionView: View {
                 confirmAction(selected)
             }
             .padding(.horizontal, 16.adjustedWidth)
-            .padding(.bottom, 33.adjustedHeight)
+            .padding(.bottom, 20.adjustedHeight)
         }
         .onAppear {
             store.dispatch(.selectOption(selectedTownOption()))
