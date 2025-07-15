@@ -8,5 +8,8 @@
 import Foundation
 
 protocol AuthAPI {
-    func login(provider: String, request: AuthLoginRequestDTO) async throws -> BaseResponseBody<AuthLoginResponseDTO>
+    func submitLogin(
+        provider: String,
+        request: AuthLoginRequestDTO
+    ) async throws -> BaseResponseBody<AuthLoginResponseDTO>
 }

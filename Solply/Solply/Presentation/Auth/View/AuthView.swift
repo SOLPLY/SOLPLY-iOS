@@ -10,11 +10,11 @@ import SwiftUI
 struct AuthView: View {
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @StateObject private var store: AuthStore = AuthStore()
     
     var body: some View {
-        ZStack {
-            
-            VStack {
+        ZStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 0) {
                 Image(.loginGraphic)
                     .resizable()
                     .scaledToFill()
@@ -24,7 +24,7 @@ struct AuthView: View {
                     .padding(.bottom, 60.adjustedHeight)
             }
             
-            VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
                     Image(.logoFullVector)
                         .resizable()
@@ -48,7 +48,7 @@ struct AuthView: View {
                 Spacer()
                 
                 Button {
-                    appCoordinator.changeRoot(to: .onboarding)
+                    store.dispatch(.login(.kakao))
                 } label: {
                     HStack(alignment: .center, spacing: 12) {
                         Image(.kakaoTalkIcon)
@@ -69,10 +69,16 @@ struct AuthView: View {
                     .padding(.horizontal, 24.adjustedHeight)
                     .padding(.bottom, 100.adjustedHeight)
                 }
+                .buttonStyle(.plain)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.gray100)
+        .onChange(of: store.state.isLoggedIn) { _, newValue in
+            if newValue {
+                appCoordinator.changeRoot(to: .onboarding)
+            }
+        }
     }
 }
 

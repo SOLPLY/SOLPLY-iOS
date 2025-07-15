@@ -18,7 +18,7 @@ enum AppEnvironment {
     }()
     
     static let baseURL: String = {
-        guard let baseURL = Bundle.main.object(forInfoDictionaryKey: "Base_URL") as? String else {
+        guard let baseURL = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String else {
             fatalError("Info.plist에 Base_URL이 없습니다.")
         }
         

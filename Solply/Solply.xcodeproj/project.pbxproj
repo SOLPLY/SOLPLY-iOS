@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		985476632E255FA5005164CF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 985476622E255FA5005164CF /* Lottie */; };
 		E34011482E151709008944E7 /* NMapsMap in Frameworks */ = {isa = PBXBuildFile; productRef = E34011472E151709008944E7 /* NMapsMap */; };
+		E3430A9F2E2643C900EA1CE5 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E3430A9E2E2643C900EA1CE5 /* KakaoSDKAuth */; };
+		E3430AA12E2643C900EA1CE5 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = E3430AA02E2643C900EA1CE5 /* KakaoSDKCommon */; };
+		E3430AA32E2643C900EA1CE5 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = E3430AA22E2643C900EA1CE5 /* KakaoSDKUser */; };
 		E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E36882822E0DD8AF008A7288 /* Kingfisher */; };
 		E36882862E0DD935008A7288 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = E36882852E0DD935008A7288 /* Moya */; };
 /* End PBXBuildFile section */
@@ -46,7 +49,10 @@
 				E36882862E0DD935008A7288 /* Moya in Frameworks */,
 				E34011482E151709008944E7 /* NMapsMap in Frameworks */,
 				E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */,
+				E3430AA32E2643C900EA1CE5 /* KakaoSDKUser in Frameworks */,
 				985476632E255FA5005164CF /* Lottie in Frameworks */,
+				E3430AA12E2643C900EA1CE5 /* KakaoSDKCommon in Frameworks */,
+				E3430A9F2E2643C900EA1CE5 /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +99,9 @@
 				E36882852E0DD935008A7288 /* Moya */,
 				E34011472E151709008944E7 /* NMapsMap */,
 				985476622E255FA5005164CF /* Lottie */,
+				E3430A9E2E2643C900EA1CE5 /* KakaoSDKAuth */,
+				E3430AA02E2643C900EA1CE5 /* KakaoSDKCommon */,
+				E3430AA22E2643C900EA1CE5 /* KakaoSDKUser */,
 			);
 			productName = Solply;
 			productReference = E36882732E0DD865008A7288 /* Solply.app */;
@@ -127,6 +136,7 @@
 				E36882842E0DD935008A7288 /* XCRemoteSwiftPackageReference "Moya" */,
 				E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */,
 				985476612E255FA5005164CF /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				E3430A9D2E2643C900EA1CE5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E36882742E0DD865008A7288 /* Products */;
@@ -386,6 +396,14 @@
 				minimumVersion = 3.22.0;
 			};
 		};
+		E3430A9D2E2643C900EA1CE5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.24.5;
+			};
+		};
 		E36882812E0DD8AF008A7288 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -414,6 +432,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */;
 			productName = NMapsMap;
+		};
+		E3430A9E2E2643C900EA1CE5 /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3430A9D2E2643C900EA1CE5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		E3430AA02E2643C900EA1CE5 /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3430A9D2E2643C900EA1CE5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		E3430AA22E2643C900EA1CE5 /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3430A9D2E2643C900EA1CE5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
 		};
 		E36882822E0DD8AF008A7288 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
