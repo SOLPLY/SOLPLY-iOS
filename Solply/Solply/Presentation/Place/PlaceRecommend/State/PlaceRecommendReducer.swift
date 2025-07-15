@@ -14,6 +14,8 @@ struct PlaceRecommendReducer {
             state.isCategoryBottomSheetPresented.toggle()
         case .dismissCategoryBottomSheet:
             state.isCategoryBottomSheetPresented = false
+        case .selectCategory(let category):
+            state.selectedCategory = category
         }
     }
 }

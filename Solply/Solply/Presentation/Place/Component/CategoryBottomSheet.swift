@@ -11,14 +11,14 @@ struct CategoryBottomSheet: View {
     
     // MARK: - Properties
     
-    private var state: PlaceRecommendState
+    private var store: PlaceRecommendStore
     
     @Binding var isPresented: Bool
     
     // MARK: - Initializer
     
-    init(state: PlaceRecommendState, isPresented: Binding<Bool>) {
-        self.state = state
+    init(store: PlaceRecommendStore, isPresented: Binding<Bool>) {
+        self.store = store
         self._isPresented = isPresented
     }
     
@@ -38,6 +38,7 @@ struct CategoryBottomSheet: View {
                     Image(.xIconSm)
                         .resizable()
                         .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        .buttonStyle(.plain)
                 }
             }
             ScrollView(.vertical, showsIndicators: false) {
@@ -45,8 +46,10 @@ struct CategoryBottomSheet: View {
                     ForEach(PlaceCategoryType.allCases) { category in
                         CategoryListRow(
                             category: category,
-                            isSelectedCategory: category == state.selectedCategory
-                        )
+                            isSelectedCategory: category == store.state.selectedCategory
+                        ) {
+                            store.dispatch(.selectCategory(category))
+                        }
                         
                         Divider()
                             .foregroundStyle(.gray200)
@@ -69,27 +72,40 @@ struct CategoryListRow: View {
     private let category: PlaceCategoryType
     private let isSelectedCategory: Bool
     
+    private let action: (() -> Void)?
+    
     // MARK: - Initializer
     
-    init(category: PlaceCategoryType, isSelectedCategory: Bool) {
+    init(
+        category: PlaceCategoryType,
+        isSelectedCategory: Bool,
+        action: (() -> Void)? = nil
+    ) {
         self.category = category
         self.isSelectedCategory = isSelectedCategory
+        self.action = action
     }
     
     // MARK: - Body
     
     var body: some View {
-        HStack(alignment: .center, spacing: 4) {
-            Image(category.icon)
-                .resizable()
-                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-            Text(category.title)
-                .applySolplyFont(.body_16_r)
-            Spacer()
-            Image(.checkIcon)
-                .resizable()
-                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-                .visible(isSelectedCategory ? true : false)
+        Button {
+            action?()
+        } label: {
+            HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                Image(category.icon)
+                    .resizable()
+                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                Text(category.title)
+                    .applySolplyFont(.body_16_r)
+                Spacer()
+                Image(.selectIcon)
+                    .resizable()
+                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                    .visible(isSelectedCategory ? true : false)
+            }
+            .foregroundStyle(.coreBlack)
+            .buttonStyle(.plain)
         }
     }
 }

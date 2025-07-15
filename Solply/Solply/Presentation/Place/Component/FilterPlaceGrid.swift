@@ -17,7 +17,10 @@ struct FilterPlaceGrid: View {
         GridItem(.fixed(145.adjustedWidth)),
         GridItem(.fixed(145.adjustedWidth))
     ]
-    private let placeCategory: PlaceCategoryType = .all
+    
+    private var placeCategory: PlaceCategoryType {
+        store.state.selectedCategory
+    }
     
     // MARK: - Body
     
@@ -42,7 +45,7 @@ struct FilterPlaceGrid: View {
                         )
                     ) {
                         CategoryBottomSheet(
-                            state: store.state,
+                            store: store,
                             isPresented: Binding(
                                 get: { store.state.isCategoryBottomSheetPresented },
                                 set: { isPresented in
