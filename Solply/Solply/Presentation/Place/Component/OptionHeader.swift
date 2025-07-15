@@ -9,10 +9,14 @@ import SwiftUI
 
 struct OptionHeader: View {
     
+    // MARK: - Properties
+    
     @Binding var isPresented: Bool
     
     private let title: String
     private let isButtonVisible: Bool
+    
+    // MARK: - Initializer
     
     init(
         isPresented: Binding<Bool>,
@@ -23,6 +27,8 @@ struct OptionHeader: View {
         self.title = title
         self.isButtonVisible = isButtonVisible
     }
+    
+    // MARK: - Body
     
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
