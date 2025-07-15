@@ -20,13 +20,13 @@ struct MoreOptionBottomSheet: View {
             // 추후 확장성을 고려하고 ScrollView로 구현
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .center, spacing: 32.adjustedHeight) {
-                    OptionHeader(
+                    MoreOptionHeader(
                         isPresented: $isPresented,
                         title: "옵션 1",
                         isButtonVisible: true
                     )
                     
-                    OptionHeader(
+                    MoreOptionHeader(
                         isPresented: $isPresented,
                         title: "옵션 2",
                         isButtonVisible: false
