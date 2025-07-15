@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum PlaceCategoryType: String, CaseIterable, Identifiable{
+enum PlaceCategoryType: String, CaseIterable, Identifiable {
     case all = "ALL"
     case cafe = "CAFE"
     case food = "FOOD"

@@ -49,6 +49,7 @@ struct CategoryBottomSheet: View {
                             isSelectedCategory: category == store.state.selectedCategory
                         ) {
                             store.dispatch(.selectCategory(category))
+                            isPresented = false
                         }
                         
                         Divider()
