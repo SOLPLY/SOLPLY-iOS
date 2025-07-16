@@ -15,7 +15,7 @@ struct ArchiveFullView: View {
    
     private let archiveCategory: SolplyContentType
     private let columns = [GridItem(.fixed(165.adjustedWidth)), GridItem(.fixed(165.adjustedWidth))]
-    private let town: [String] = ["망원동", "연희동"]
+    private let townName: [String] = ["망원동", "연희동"]
     private let title: [String] = ["오감으로 수집하는 하루", "오감자"]
     private let tags: [[PlaceCategoryType]] = [
         [.book, .food],
@@ -33,7 +33,7 @@ struct ArchiveFullView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16.adjustedHeight) {
-                ForEach(Array(town.enumerated()), id: \.offset) { index, town in
+                ForEach(Array(townName.enumerated()), id: \.offset) { index, town in
                     archiveCell(index: index)
                 }
             }
@@ -59,7 +59,7 @@ extension ArchiveFullView {
                             .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                     }
                     
-                    Text(town[index])
+                    Text(townName[index])
                         .applySolplyFont(.title_15_m)
                         .padding(.leading, 8.adjustedWidth)
                 }
@@ -82,7 +82,7 @@ extension ArchiveFullView {
                             .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                     }
 
-                    Text(town[index])
+                    Text(townName[index])
                         .applySolplyFont(.title_15_m)
                         .padding(.leading, 8.adjustedWidth)
                 }
@@ -91,7 +91,7 @@ extension ArchiveFullView {
         }
         .animation(.easeInOut(duration: 0.2), value: archiveCategory)
         .onTapGesture {
-            appCoordinator.navigate(to: .archiveList(archiveCategory: archiveCategory, town: town[index]))
+            appCoordinator.navigate(to: .archiveList(archiveCategory: archiveCategory, townName: townName[index]))
         }
     }
 }
