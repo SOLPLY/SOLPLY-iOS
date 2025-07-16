@@ -14,6 +14,6 @@ enum ArchiveAction {
     case fetchPlaceThumbnail
     case fetchCourseThumbnail
     case placeThumbnailFetched(placeArchiveThumbnails: [PlaceArchiveThumbnailDTO])
-    case courseThumbnailFetched(courseArchiveThumnails: [CourseArchiveThumbnailDTO])
+    case courseThumbnailFetched(courseArchiveThumbnails: [CourseArchiveThumbnailDTO])
     case errorOccured(error: NetworkError)
 }

@@ -111,7 +111,7 @@ extension AddPlaceToCourseView {
                                         isSaved: course.isBookmarked,
                                         title: course.title,
                                         // TODO: - 이미지 수정 필요
-                                        image: "",
+                                        imageURL: "",
                                         courseCategory: course.mainTags,
                                         isSelected: true
                                     ) {

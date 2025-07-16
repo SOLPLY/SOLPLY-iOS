@@ -37,7 +37,7 @@ struct ArchiveEffect {
                 return .errorOccured(error: .responseError)
             }
             
-            return .courseThumbnailFetched(courseArchiveThumnails: data.folders)
+            return .courseThumbnailFetched(courseArchiveThumbnails: data.folders)
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)

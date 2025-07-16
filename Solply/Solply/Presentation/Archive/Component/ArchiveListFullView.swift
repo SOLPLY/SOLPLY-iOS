@@ -78,7 +78,7 @@ extension ArchiveListFullView {
                     CourseCard(
                         isSaved: true,
                         title: courseTitle[index],
-                        image: "",
+                        imageURL: "",
                         courseCategory: tags[index],
                         isSelected: store.state.selectedIndex.contains(index)
                     ) {

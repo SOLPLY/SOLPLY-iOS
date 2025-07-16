@@ -25,14 +25,14 @@ struct CourseCard: View {
     init(
         isSaved: Bool,
         title: String,
-        image: String,
+        imageURL: String,
         courseCategory: [PlaceCategoryType],
         isSelected: Bool,
         action: (() -> Void)? = nil,
     ) {
         self.isSaved = isSaved
         self.title = title
-        self.imageURL = image
+        self.imageURL = imageURL
         self.courseCategory = courseCategory
         self.isSelected = isSelected
         self.action = action
