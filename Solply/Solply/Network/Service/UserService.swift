@@ -8,3 +8,11 @@
 import Foundation
 
 import Moya
+
+final class UserService: BaseService<UserTargetType> { }
+
+extension UserService {
+    func fetchUserInformation() async throws -> BaseResponseBody<UserInformationResponseDTO> {
+        return try await self.request(with: .fetchUserInformation)
+    }
+}
