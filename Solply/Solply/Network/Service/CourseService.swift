@@ -37,3 +37,9 @@ extension CourseService {
         return try await self.request(with: .removeCourseBookmark(courseId: courseId))
     }
 }
+
+extension CourseService {
+    func fetchCourseThumbnail() async throws -> BaseResponseBody<CourseArchiveThumbnailResponseDTO> {
+        return try await self.request(with: .fetchCourseThumbnail)
+    }
+}

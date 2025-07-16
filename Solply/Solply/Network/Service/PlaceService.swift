@@ -12,7 +12,7 @@ import Moya
 final class PlaceService: BaseService<PlaceTargetType> { }
 
 extension PlaceService {
-    func fetchPlaceThumbnail() async throws -> BaseResponseBody<PlaceArchiveResponseDTO> {
+    func fetchPlaceThumbnail() async throws -> BaseResponseBody<PlaceArchiveThumbnailResponseDTO> {
         return try await self.request(with: .fetchPlaceThumbnail)
     }
 }
