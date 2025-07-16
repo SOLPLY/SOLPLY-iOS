@@ -16,9 +16,11 @@ final class CourseDetailStore: ObservableObject {
         CourseDetailReducer.reduce(state: &state, action: action)
         
         switch action {
-        case .fetchCourseDetailData:
-            let result = effect.fetchCourseDetailData()
-            self.dispatch(result)
+        case .fetchCourseDetail(let courseId):
+            Task {
+                let result = await effect.fetchCourseDetail(courseId: courseId)
+                self.dispatch(result)
+            }
             
         default:
             break

@@ -12,13 +12,13 @@ struct CourseDetailResponseDTO: ResponseModelType {
     let courseName: String
     let introduction: String
     let isBookmarked: Bool
-    let places: [PlaceDTO]
+    let places: [CourseDetailPlaceDTO]
 }
 
-struct PlaceDTO: ResponseModelType {
+struct CourseDetailPlaceDTO: ResponseModelType {
     let placeId: Int
     let placeName: String
-    let thumbnailUrl: String
+    let thumbnailUrl: String?
     let primaryTag: PlaceCategoryType
     let address: String
     let isBookmarked: Bool

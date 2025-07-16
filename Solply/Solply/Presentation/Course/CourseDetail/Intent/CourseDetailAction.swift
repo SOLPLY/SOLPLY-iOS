@@ -30,10 +30,8 @@ enum CourseDetailAction {
     case saveCourseAsNew
     case saveCourseCancel
     
-    case fetchCourseDetailData
-    case courseDetailDataFetched(CourseDetail)
-    
     // api
     case fetchCourseDetail(courseId: Int)
-    case courseDetailFetched
+    case courseDetailFetched(courseDetail: CourseDetailResponseDTO)
+    case errorOcurred(error: NetworkError)
 }

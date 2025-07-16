@@ -38,3 +38,20 @@ struct PlaceDetail: Identifiable, Equatable {
         )
     }
 }
+
+
+extension PlaceDetail {
+    init(dto: CourseDetailPlaceDTO) {
+        self.placeId = dto.placeId
+        self.thumbnailURL = dto.thumbnailUrl ?? ""
+        self.latitude = Double(dto.latitude) ?? 0.0
+        self.longitude = Double(dto.longitude) ?? 0.0
+        self.isFocused = false // 서버에 없음 → 기본값
+        self.isBookmarked = dto.isBookmarked
+        self.primaryTag = dto.primaryTag
+        self.placeName = dto.placeName
+        self.address = dto.address
+        self.contactNumber = "" // 서버에 없음 → 기본값
+        self.snsLink = ""       // 서버에 없음 → 기본값
+    }
+}
