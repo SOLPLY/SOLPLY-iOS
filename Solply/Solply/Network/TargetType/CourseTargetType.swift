@@ -14,6 +14,7 @@ enum CourseTargetType {
     case fetchCourseDetail(courseId: Int)
     case submitCourseBookmark(courseId: Int)
     case removeCourseBookmark(courseId: Int)
+    case fetchCourseThumbnail
 }
 
 extension CourseTargetType: BaseTargetType {
@@ -31,6 +32,8 @@ extension CourseTargetType: BaseTargetType {
             return "/courses/\(courseId)/bookmarks"
         case .removeCourseBookmark(courseId: let courseId):
             return "/courses/\(courseId)/bookmarks"
+        case .fetchCourseThumbnail:
+            return "/courses/bookmarks/folders"
         }
     }
     
@@ -40,6 +43,7 @@ extension CourseTargetType: BaseTargetType {
         case .fetchCourseDetail: return .get
         case .submitCourseBookmark: return .post
         case .removeCourseBookmark: return .delete
+        case .fetchCourseThumbnail: return .get
         }
     }
     
@@ -62,6 +66,9 @@ extension CourseTargetType: BaseTargetType {
             return .requestPlain
             
         case .removeCourseBookmark:
+            return .requestPlain
+            
+        case .fetchCourseThumbnail:
             return .requestPlain
         }
     }

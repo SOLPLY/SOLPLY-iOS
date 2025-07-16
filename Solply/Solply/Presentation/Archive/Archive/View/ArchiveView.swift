@@ -39,10 +39,11 @@ struct ArchiveView: View {
                         }
                     } else {
                         if store.state.selectedCategory == .place {
-                            ArchiveFullView(archiveCategory: .place)
+                            ArchiveFullView(archiveCategory: .place, store: store)
                                 .transition(.move(edge: .leading))
+                                
                         } else {
-                            ArchiveFullView(archiveCategory: .course)
+                            ArchiveFullView(archiveCategory: .course, store: store)
                                 .transition(.move(edge: .trailing))
                         }
                     }
@@ -71,6 +72,7 @@ struct ArchiveView: View {
         .customNavigationBar(.archive(backAction: appCoordinator.goBack))
         .onAppear {
             store.dispatch(.fetchPlaceThumbnail)
+            store.dispatch(.fetchCourseThumbnail)
         }
     }
 }

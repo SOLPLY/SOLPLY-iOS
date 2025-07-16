@@ -7,12 +7,15 @@
 
 import SwiftUI
 
+import Kingfisher
+
 struct CourseCard: View {
     
     // MARK: - Properties
     
     private let isSaved: Bool
     private let title: String
+    private let imageURL: String
     private let courseCategory: [PlaceCategoryType]
     private let isSelected: Bool
     private let action: (() -> Void)?
@@ -22,13 +25,14 @@ struct CourseCard: View {
     init(
         isSaved: Bool,
         title: String,
+        imageURL: String,
         courseCategory: [PlaceCategoryType],
         isSelected: Bool,
         action: (() -> Void)? = nil
-        
     ) {
         self.isSaved = isSaved
         self.title = title
+        self.imageURL = imageURL
         self.courseCategory = courseCategory
         self.isSelected = isSelected
         self.action = action
@@ -41,7 +45,7 @@ struct CourseCard: View {
             action?()
         } label: {
             ZStack(alignment: .bottom) {
-                Image(.place)
+                KFImage(URL(string: imageURL))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
@@ -87,9 +91,8 @@ struct CourseCard: View {
             }
         }
         .buttonStyle(.plain)
+        .onAppear {
+            print(self.imageURL)
+        }
     }
-}
-
-#Preview {
-    CourseCard(isSaved: true, title: "오감으로 수집하는 하루", courseCategory: [.food, .unique], isSelected: true)
 }

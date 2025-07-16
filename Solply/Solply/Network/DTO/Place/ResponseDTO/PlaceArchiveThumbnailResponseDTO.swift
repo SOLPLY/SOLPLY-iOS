@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PlaceArchiveResponseDTO: ResponseModelType {
+struct PlaceArchiveThumbnailResponseDTO: ResponseModelType {
     let folderThumbnailList: [PlaceArchiveThumbnailDTO]
 }
 
