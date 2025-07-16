@@ -40,4 +40,10 @@ enum CourseDetailAction {
     
     case removeCourseBookmark(courseId: Int)
     case courseBookmarkRemoved
+    
+    case submitPlaceBookmark(placeId: Int)
+    case placeBookmarkSubmited
+    
+    case removePlaceBookmark(placeId: Int)
+    case placeBookmarkRemoved
 }

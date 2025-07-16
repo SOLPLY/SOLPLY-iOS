@@ -17,3 +17,18 @@ extension PlaceService {
     }
 }
 
+extension PlaceService {
+    func submitPlaceBookmark(
+        placeId: Int
+    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .submitPlaceBookmark(placeId: placeId))
+    }
+}
+
+extension PlaceService {
+    func removePlaceBookmark(
+        placeId: Int
+    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .removePlaceBookmark(placeId: placeId))
+    }
+}

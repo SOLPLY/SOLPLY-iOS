@@ -9,6 +9,7 @@ import Foundation
 
 struct CourseDetailEffect {
     private let service = CourseService()
+    private let placeService = PlaceService()
     
     func fetchCourseDetail(courseId: Int) async -> CourseDetailAction {
         do {
@@ -45,6 +46,32 @@ struct CourseDetailEffect {
             let _ = try await service.removeCourseBookmark(courseId: courseId)
             
             return .courseBookmarkRemoved
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+    
+    func submitPlaceBookmark(placeId: Int) async -> CourseDetailAction {
+        do {
+            let _ = try await placeService.submitPlaceBookmark(placeId: placeId)
+            
+            return .placeBookmarkSubmited
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+    
+    func removePlaceBookmark(placeId: Int) async -> CourseDetailAction {
+        do {
+            let _ = try await placeService.removePlaceBookmark(placeId: placeId)
+            
+            return .placeBookmarkRemoved
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)

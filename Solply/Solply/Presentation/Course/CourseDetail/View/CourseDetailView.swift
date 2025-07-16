@@ -183,6 +183,8 @@ extension CourseDetailView {
                     } saveAction: {
                         store.dispatch(.toggleSavePlace(index: index))
                         if store.state.places[index].isBookmarked {
+                            store.dispatch(.submitPlaceBookmark(placeId: store.state.places[index].placeId))
+                            
                             store.dispatch(
                                 .showToastView(
                                     ToastContent(
@@ -193,6 +195,8 @@ extension CourseDetailView {
                                 )
                             )
                         } else {
+                            store.dispatch(.removePlaceBookmark(placeId: store.state.places[index].placeId))
+                            
                             store.dispatch(
                                 .showToastView(
                                     ToastContent(
