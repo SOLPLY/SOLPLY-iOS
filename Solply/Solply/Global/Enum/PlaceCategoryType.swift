@@ -15,7 +15,6 @@ enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, R
     case shopping = "SHOPPING"
     case unique = "UNIQUE_SPACE"
     case walk = "WALKING"
-
     
     var id: Self { self }
     
