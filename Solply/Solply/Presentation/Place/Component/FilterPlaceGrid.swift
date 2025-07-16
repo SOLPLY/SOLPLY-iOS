@@ -13,10 +13,24 @@ struct FilterPlaceGrid: View {
     
     @StateObject private var store = PlaceRecommendStore()
     
+    @State private var selectedOptionTags: [SelectableOptionTag] = []
+    
     private let columns = [
         GridItem(.fixed(145.adjustedWidth), spacing: 12.5.adjustedWidth),
         GridItem(.fixed(145.adjustedWidth))
     ]
+    
+    private var filteredCount: Int {
+        selectedOptionTags.count
+    }
+
+    private var filteredFirstTag: String {
+        selectedOptionTags.first?.name ?? ""
+    }
+
+    private var isSelectedEmpty: Bool {
+        selectedOptionTags.isEmpty
+    }
     
     private var placeCategory: PlaceCategoryType {
         store.state.selectedCategory
@@ -58,7 +72,7 @@ struct FilterPlaceGrid: View {
                             .presentationDetents([.fraction(0.54)])
                     }
                     
-                    FilterButton(title: "추가옵션") {
+                    FilterButton(title: isSelectedEmpty ? "추가옵션" : (filteredCount > 1 ? "\(filteredFirstTag) 외 \(filteredCount - 1)개" : "\(filteredFirstTag)")) {
                         store.dispatch(.toggleMoreOptionBottomSheet)
                     }
                     .visible(placeCategory == .all ? false : true)
@@ -73,6 +87,7 @@ struct FilterPlaceGrid: View {
                         )
                     ) {
                         MoreOptionBottomSheet(
+                            store: store,
                             isPresented: Binding(
                                 get: { store.state.isMoreOptionBottomSheetPresented },
                                 set: { isPresented in
@@ -81,7 +96,9 @@ struct FilterPlaceGrid: View {
                                     }
                                 }
                             )
-                        )
+                        ) { selectedTags in
+                            self.selectedOptionTags = selectedTags
+                        }
                             .presentationDetents([.fraction(0.6)])
                     }
                 }
