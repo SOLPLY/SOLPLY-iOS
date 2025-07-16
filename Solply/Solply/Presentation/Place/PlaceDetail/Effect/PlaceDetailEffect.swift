@@ -8,20 +8,9 @@
 import Foundation
 
 struct PlaceDetailEffect {
-    private let courseService: PlaceDetailAPI
-    
-    // TODO: 추후 plaecService만들면 주입
-//    private let placeService: PlaceDetailAPI
+    private let courseService = CourseService()
+//    private let placeService = PlaceService()
 
-//    init(courseService: PlaceDetailAPI, placeService: PlaceDetailAPI) {
-//        self.courseService = courseService
-//        self.placeService = placeService
-//    }
-    
-    init(courseService: PlaceDetailAPI) {
-        self.courseService = courseService
-    }
-    
     func fetchCourseArchive(townId: Int, placeId: Int?) async -> PlaceDetailAction {
         do {
             let response = try await courseService.fetchCourseArchive(townId: townId, placeId: placeId)
