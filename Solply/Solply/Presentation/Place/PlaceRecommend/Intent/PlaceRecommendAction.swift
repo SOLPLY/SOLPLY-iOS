@@ -14,4 +14,6 @@ enum PlaceRecommendAction {
     
     case toggleMoreOptionBottomSheet
     case dismissMoreOptionBottomSheet
+    
+    case confirmMoreOptionTags([SelectableOptionTag])
 }

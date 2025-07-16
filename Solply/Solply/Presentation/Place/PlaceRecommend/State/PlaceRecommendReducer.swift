@@ -21,6 +21,9 @@ struct PlaceRecommendReducer {
             state.isMoreOptionBottomSheetPresented = true
         case .dismissMoreOptionBottomSheet:
             state.isMoreOptionBottomSheetPresented = false
+            
+        case .confirmMoreOptionTags(let selectedTags):
+            state.selectedOptionTags = selectedTags
         }
     }
 }
