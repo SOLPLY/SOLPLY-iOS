@@ -26,7 +26,9 @@ struct CourseRecommendView: View {
                 }
                 .padding(.horizontal, 20.adjustedWidth)
                 
-                CourseRecommendGrid()
+                CourseRecommendGrid() { courseId in
+                    appCoordinator.navigate(to: .courseDetail(courseId: courseId, fromArchive: false))
+                }
             }
             .frame(maxWidth: .infinity)
             .padding(.bottom, 112.adjustedHeight)
