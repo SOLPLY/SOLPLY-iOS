@@ -25,12 +25,12 @@ enum CourseDetailReducer {
             
         case .courseDetailDataFetched(let course):
             state.isLoading = false
-            state.courseTitle = course.courseTitle
-            state.courseDescription = course.courseDescription
+            state.courseTitle = course.courseName
+            state.courseDescription = course.introduction
             state.places = course.places
             
         case .toggleSavePlace(let index):
-            state.places[index].isSaved.toggle()
+            state.places[index].isBookmarked.toggle()
             
         case .toggleEdting:
             if state.isEditing {
@@ -41,6 +41,7 @@ enum CourseDetailReducer {
             
             for index in state.places.indices {
                 state.places[index].isFocused = false
+                state.focusedPlaceIndex = -1
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
@@ -105,6 +106,14 @@ enum CourseDetailReducer {
             
         case .saveCourseCancel:
             state.isSaveOptionPresented = false
+            
+        case .fetchCourseDetail:
+            break
+            
+        case .courseDetailFetched:
+            // state에 데이터 바인딩
+            break
+            
         }
     }
 }

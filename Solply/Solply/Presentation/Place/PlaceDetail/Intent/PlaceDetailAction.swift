@@ -16,4 +16,8 @@ enum PlaceDetailAction {
     case addPlaceToCourse(index: Int)
     
     case showToastView(ToastContent)
+    
+    case fetchCourseArchive(townId: Int, placeId: Int)
+    case courseArchiveFetched([CourseArchiveDTO])
+    case errorOccurred(error: NetworkError)
 }

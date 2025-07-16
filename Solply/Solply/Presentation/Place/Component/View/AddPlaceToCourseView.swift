@@ -16,6 +16,8 @@ struct AddPlaceToCourseView: View {
         GridItem(.fixed(165.adjustedWidth))
     ]
     
+    private let courses: [CourseArchiveDTO]
+    
     private let selectedIndex: Int
     private let cardAction: ((Int) -> Void)?
     private let addAction: ((Int) -> Void)?
@@ -24,11 +26,13 @@ struct AddPlaceToCourseView: View {
     // MARK: - Initializer
     
     init(
+        courses: [CourseArchiveDTO],
         selectedIndex: Int,
         cardAction: ((Int) -> Void)? = nil,
         addAction: ((Int) -> Void)? = nil,
         backAction: (() -> Void)? = nil
     ) {
+        self.courses = courses
         self.selectedIndex = selectedIndex
         self.cardAction = cardAction
         self.addAction = addAction
@@ -42,6 +46,8 @@ struct AddPlaceToCourseView: View {
             navigationBar
             
             courseGrid
+            
+            Spacer()
         }
     }
 }
@@ -74,43 +80,68 @@ extension AddPlaceToCourseView {
     }
     
     private var courseGrid: some View {
-        ZStack(alignment: .bottom) {
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {
-                    ForEach(0..<4) { index in
-                        ZStack(alignment: .topTrailing) {
-                            CourseCard(
-                                isSaved: true,
-                                title: "오감으로 수집하는 하루",
-                                courseCategory: [.cafe, .shopping],
-                                isSelected: true
-                            ) {
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    cardAction?(selectedIndex == index ? -1 : index)
+        Group {
+            if courses.isEmpty {
+                VStack(alignment: .center, spacing: 28.adjustedHeight) {
+                    Text("저장된 코스가 없어요.")
+                        .applySolplyFont(.body_16_m)
+                        .foregroundStyle(.gray800)
+                        .padding(.top, 130.adjustedHeight)
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("나만의 코스 수집하러 가기")
+                            .foregroundStyle(.green800)
+                            .applySolplyFont(.button_16_m)
+                            .padding(.horizontal, 34.adjustedWidth)
+                            .padding(.vertical, 21.5.adjustedHeight)
+                            .background(.green300)
+                            .capsuleClipped()
+                    }
+                    .buttonStyle(.plain)
+                }
+            } else {
+                ZStack(alignment: .bottom) {
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {
+                            ForEach(Array(courses.enumerated()), id: \.element.courseId) { index, course in
+                                ZStack(alignment: .topTrailing) {
+                                    CourseCard(
+                                        isSaved: course.isBookmarked,
+                                        title: course.title,
+                                        courseCategory: course.mainTags,
+                                        isSelected: true
+                                    ) {
+                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                            cardAction?(selectedIndex == index ? -1 : index)
+                                        }
+                                    }
+                                    .opacity(course.isActive ? 1 : 0.3)
+                                    
+                                    if selectedIndex == index {
+                                        Image(.checkIcon)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
+                                            .padding(.top, 12.adjustedHeight)
+                                            .padding(.trailing, 12.adjustedWidth)
+                                    }
                                 }
                             }
+                            .padding(.top, 10.adjustedHeight)
                             
-                            if selectedIndex == index {
-                                Image(.checkIcon)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
-                                    .padding(.top, 12.adjustedHeight)
-                                    .padding(.trailing, 12.adjustedWidth)
+                            if selectedIndex != -1 {
+                                CTAMainButton(title: "이 코스에 추가할래요") {
+                                    addAction?(selectedIndex)
+                                }
+                                .padding(.horizontal, 20.adjustedWidth)
+                                .safeAreaInset(edge: .bottom) {
+                                    Color.clear.frame(height: 16)
+                                }
                             }
                         }
                     }
-                }
-                .padding(.top, 10.adjustedHeight)
-            }
-            
-            if selectedIndex != -1 {
-                CTAMainButton(title: "이 코스에 추가할래요") {
-                    addAction?(selectedIndex)
-                }
-                .padding(.horizontal, 20.adjustedWidth)
-                .safeAreaInset(edge: .bottom) {
-                    Color.clear.frame(height: 16)
                 }
             }
         }
