@@ -16,6 +16,11 @@ struct CourseRecommendGrid: View {
         GridItem(.fixed(165.adjustedWidth))
     ]
     private let placeCategory: PlaceCategoryType = .all
+    private let courseDetailAction: ((Int) -> Void)?
+    
+    init(courseDetailAction: ((Int) -> Void)? = nil) {
+        self.courseDetailAction = courseDetailAction
+    }
     
     // MARK: - Body
     
@@ -29,7 +34,8 @@ struct CourseRecommendGrid: View {
                         courseCategory: [.book, .cafe],
                         isSelected: true
                     ) {
-                        print("ㅇㅇ")
+                        // TODO: 코스 id 바인딩 필요!
+                        courseDetailAction?(1)
                     }
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                 }

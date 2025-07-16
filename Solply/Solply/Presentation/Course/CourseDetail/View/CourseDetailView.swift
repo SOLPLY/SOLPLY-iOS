@@ -15,11 +15,13 @@ struct CourseDetailView: View {
     @StateObject private var store = CourseDetailStore()
     @StateObject private var toastManager = ToastManager()
     
+    private let courseId: Int
     private let fromArchive: Bool
     
     // MARK: - Initializer
     
-    init(fromArchive: Bool) {
+    init(courseId: Int, fromArchive: Bool) {
+        self.courseId = courseId
         self.fromArchive = fromArchive
     }
     
@@ -60,13 +62,14 @@ struct CourseDetailView: View {
                 }
                 .onAppear {
                     // ID 바인딩
-                    store.dispatch(.fetchCourseDetail(courseId: 1))
+                    store.dispatch(.fetchCourseDetail(courseId: courseId))
                 }
                 .onChange(of: store.state.toastContent) { _, toastContent in
                     guard let toastContent else { return }
                     
                     toastManager.showToast(content: toastContent) {
-                        appCoordinator.navigate(to: .courseDetail(fromArchive: true))
+                        // TODO: 코스 id 바인딩 필요
+                        appCoordinator.navigate(to: .courseDetail(courseId: courseId, fromArchive: true))
                     }
                 }
                 .toast(toastManager: toastManager)
@@ -98,8 +101,14 @@ extension CourseDetailView {
             isEnabled: true,
             isSelected: store.state.courseSaveSelected
         ) {
-            store.dispatch(.toggleSaveCourse)
             if store.state.courseSaveSelected {
+                store.dispatch(.removeCourseBookmark(courseId: courseId))
+                store.dispatch(.toggleSaveCourse)
+                
+            } else {
+                store.dispatch(.submitCourseBookmark(courseId: courseId))
+                store.dispatch(.toggleSaveCourse)
+                
                 store.dispatch(
                     .showToastView(
                         ToastContent(
@@ -158,7 +167,7 @@ extension CourseDetailView {
                 ForEach(Array(store.state.places.enumerated()), id: \.element.id) { index, place in
                     DraggablePlaceCell(
                         order: index + 1,
-                        mainImageURL: "",
+                        mainImageURL: place.thumbnailURL,
                         placeCategoryType: place.primaryTag,
                         title: place.placeName,
                         address: place.address,
@@ -308,6 +317,6 @@ extension CourseDetailView {
 }
 
 #Preview {
-    CourseDetailView(fromArchive: true)
+    CourseDetailView(courseId: 1, fromArchive: true)
         .environmentObject(AppCoordinator())
 }

@@ -39,7 +39,8 @@ struct PlaceDetailView: View {
                 guard let toastContent else { return }
                 
                 toastManager.showToast(content: toastContent) {
-                    appCoordinator.navigate(to: .courseDetail(fromArchive: true))
+                    // TODO: courseId 바인딩 필요
+                    appCoordinator.navigate(to: .courseDetail(courseId: 1, fromArchive: true))
                 }
             }
             .toast(toastManager: toastManager)

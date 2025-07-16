@@ -12,6 +12,8 @@ import Moya
 enum CourseTargetType {
     case fetchCourseArchive(townId: Int, placeId: Int?)
     case fetchCourseDetail(courseId: Int)
+    case submitCourseBookmark(courseId: Int)
+    case removeCourseBookmark(courseId: Int)
 }
 
 extension CourseTargetType: BaseTargetType {
@@ -25,6 +27,10 @@ extension CourseTargetType: BaseTargetType {
             return "/courses/bookmarks"
         case .fetchCourseDetail(courseId: let courseId):
             return "/courses/\(courseId)"
+        case .submitCourseBookmark(courseId: let courseId):
+            return "/courses/\(courseId)/bookmarks"
+        case .removeCourseBookmark(courseId: let courseId):
+            return "/courses/\(courseId)/bookmarks"
         }
     }
     
@@ -32,6 +38,8 @@ extension CourseTargetType: BaseTargetType {
         switch self {
         case .fetchCourseArchive: return .get
         case .fetchCourseDetail: return .get
+        case .submitCourseBookmark: return .post
+        case .removeCourseBookmark: return .delete
         }
     }
     
@@ -48,6 +56,12 @@ extension CourseTargetType: BaseTargetType {
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
             
         case .fetchCourseDetail:
+            return .requestPlain
+            
+        case .submitCourseBookmark:
+            return .requestPlain
+            
+        case .removeCourseBookmark:
             return .requestPlain
         }
     }

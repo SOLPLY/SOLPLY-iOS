@@ -85,7 +85,8 @@ extension ArchiveListFullView {
                             print(index)
                             store.dispatch(.toggleArchiveList(index: index))
                         } else {
-                            appCoordinator.navigate(to: .courseDetail(fromArchive: true))
+                            // TODO: 코스 id 바인딩 필요 지금은 1
+                            appCoordinator.navigate(to: .courseDetail(courseId: 1, fromArchive: true))
                         }
                         
                         if store.state.activeCancel {
