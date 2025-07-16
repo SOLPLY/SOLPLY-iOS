@@ -22,6 +22,12 @@ final class PlaceDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .fetchPlaceDetail(let placeId):
+            Task {
+                let result = await effect.fetchPlaceDetail(placeId: placeId)
+                self.dispatch(result)
+            }
+            
         default:
             break
         }

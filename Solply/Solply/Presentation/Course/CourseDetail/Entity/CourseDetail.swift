@@ -11,7 +11,7 @@ struct CourseDetail {
     let courseId: Int
     let courseName: String
     let introduction: String
-    var places: [PlaceDetail]
+    var places: [PlaceDetailInCourse]
     
     static func mockData() -> CourseDetail {
         return CourseDetail(
@@ -19,7 +19,7 @@ struct CourseDetail {
             courseName: "오감으로 수집하는 하루우우우우우우우우우우우우우우우우우우우우우",
             introduction: "귀여운 당고 디저트와 커피, 에이드가 있는 펫 프렌들리 코스",
             places: [
-                PlaceDetail(
+                PlaceDetailInCourse(
                     placeId: 1,
                     thumbnailURL: "",
                     latitude: 37.5694,
@@ -32,7 +32,7 @@ struct CourseDetail {
                     contactNumber: "010-0000-0000",
                     snsLink: "상세 주소"
                 ),
-                PlaceDetail(
+                PlaceDetailInCourse(
                     placeId: 2,
                     thumbnailURL: "",
                     latitude: 37.5689,
@@ -45,7 +45,7 @@ struct CourseDetail {
                     contactNumber: "010-0000-0000",
                     snsLink: "상세 주소"
                 ),
-                PlaceDetail(
+                PlaceDetailInCourse(
                     placeId: 3,
                     thumbnailURL: "",
                     latitude: 37.5702,
@@ -58,7 +58,7 @@ struct CourseDetail {
                     contactNumber: "010-0000-0000",
                     snsLink: "상세 주소"
                 ),
-                PlaceDetail(
+                PlaceDetailInCourse(
                     placeId: 4,
                     thumbnailURL: "",
                     latitude: 37.5697,
@@ -71,7 +71,7 @@ struct CourseDetail {
                     contactNumber: "010-0000-0000",
                     snsLink: "상세 주소"
                 ),
-                PlaceDetail(
+                PlaceDetailInCourse(
                     placeId: 5,
                     thumbnailURL: "",
                     latitude: 37.5685,
@@ -84,7 +84,7 @@ struct CourseDetail {
                     contactNumber: "010-0000-0000",
                     snsLink: "상세 주소"
                 ),
-                PlaceDetail(
+                PlaceDetailInCourse(
                     placeId: 6,
                     thumbnailURL: "",
                     latitude: 37.5699,

@@ -13,7 +13,7 @@ enum CourseDetailAction {
     case toggleSavePlace(index: Int)
     case toggleEdting
     
-    case startDragging(draggedPlace: PlaceDetail)
+    case startDragging(draggedPlace: PlaceDetailInCourse)
     case whileDragging(from: Int, to: Int)
     case endDragging
     case deletePlace

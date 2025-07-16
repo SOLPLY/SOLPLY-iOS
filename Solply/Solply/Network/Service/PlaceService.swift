@@ -32,3 +32,11 @@ extension PlaceService {
         return try await self.request(with: .removePlaceBookmark(placeId: placeId))
     }
 }
+
+extension PlaceService {
+    func fetchPlaceDetail(
+        placeId: Int
+    ) async throws -> BaseResponseBody<PlaceDetailResponseDTO> {
+        return try await self.request(with: .fetchPlaceDetail(placeId: placeId))
+    }
+}

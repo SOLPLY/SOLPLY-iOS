@@ -52,7 +52,8 @@ struct TodayPlaceRecommendCarousel: View {
                 .scaleEffect(scale)
                 .offset(x: totalOffset)
                 .onTapGesture {
-                    appCoordinator.navigate(to: .placeDetail)
+                    // TODO: townId, placeId 바인딩 필요
+                    appCoordinator.navigate(to: .placeDetail(townId: 2, placeId: 1))
                 }
             }
         }
