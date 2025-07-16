@@ -17,7 +17,6 @@ struct CourseDetailEffect {
             guard let data = response.data else {
                 return .errorOcurred(error: .responseError)
             }
-            print(data)
             
             return .courseDetailFetched(courseDetail: data)
             
