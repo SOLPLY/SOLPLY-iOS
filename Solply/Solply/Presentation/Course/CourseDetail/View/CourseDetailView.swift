@@ -59,7 +59,8 @@ struct CourseDetailView: View {
                     .padding(.top, 8.adjustedHeight)
                 }
                 .onAppear {
-                    store.dispatch(.fetchCourseDetailData)
+                    // ID 바인딩
+                    store.dispatch(.fetchCourseDetail(courseId: 1))
                 }
                 .onChange(of: store.state.toastContent) { _, toastContent in
                     guard let toastContent else { return }

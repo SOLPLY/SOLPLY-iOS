@@ -42,7 +42,7 @@ extension CourseTargetType: BaseTargetType {
             
             // placeId를 서버에서 nullable하게 받음
             if let placeId = placeId {
-                params["placeId"] = placeId
+                params["candidatePlaceId"] = placeId
             }
             
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
