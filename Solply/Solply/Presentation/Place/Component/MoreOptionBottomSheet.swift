@@ -72,10 +72,6 @@ struct MoreOptionBottomSheet: View {
                 CTAMainButton(title: "완료") {
                     let selectedTags = (optionTags1 + optionTags2).filter { $0.isSelected }
                     // TODO: - 네트워크 로직 추가
-                    print("============== index = 0 ===============")
-                    print(selectedTags[0].name)
-                    print("============== count ===============")
-                    print(selectedTags.count)
                     
                     store.dispatch(.confirmMoreOptionTags(selectedTags))
                     
