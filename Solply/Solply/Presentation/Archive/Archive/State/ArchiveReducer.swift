@@ -16,8 +16,9 @@ enum ArchiveReducer {
         case .fetchPlaceThumbnail:
             break
             
-        case .placeThumbnailFetched:
-            break
+        case .placeThumbnailFetched(let placeArchiveThumbnails):
+            state.folderThumbnailList = placeArchiveThumbnails
+            print(placeArchiveThumbnails)
             
         case .errorOccured(let error):
             print(error)

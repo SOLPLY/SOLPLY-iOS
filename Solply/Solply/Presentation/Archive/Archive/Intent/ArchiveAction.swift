@@ -12,6 +12,6 @@ enum ArchiveAction {
     
     // api
     case fetchPlaceThumbnail
-    case placeThumbnailFetched
+    case placeThumbnailFetched(placeArchiveThumbnails: [PlaceArchiveThumbnailDTO])
     case errorOccured(error: NetworkError)
 }

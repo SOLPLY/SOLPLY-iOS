@@ -18,9 +18,7 @@ struct ArchiveEffect {
                 return .errorOccured(error: .responseError)
             }
             
-            print(data)
-            
-            return .placeThumbnailFetched
+            return .placeThumbnailFetched(placeArchiveThumbnails: data.folderThumbnailList)
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)
