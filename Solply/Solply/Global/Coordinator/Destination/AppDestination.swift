@@ -12,6 +12,7 @@ enum AppDestination: Hashable {
     case archiveList(archiveCategory: SolplyContentType, town: String)
     case placeDetail
     case courseDetail(fromArchive: Bool)
+    case frequentTown
 }
 
 extension AppDestination {
@@ -26,6 +27,8 @@ extension AppDestination {
             PlaceDetailView()
         case .courseDetail(let fromArchive):
             CourseDetailView(fromArchive: fromArchive)
+        case .frequentTown:
+            FrequentTownView()
         }
     }
 }

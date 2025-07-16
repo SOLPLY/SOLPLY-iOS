@@ -10,15 +10,11 @@ import SwiftUI
 struct FrequentTownView: View {
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @ObservedObject var store: FrequentTownStore
+    @ObservedObject var store = FrequentTownStore()
     
     private let confirmAction: ((TownOptionType) -> Void)?
     
-    init(
-        store: FrequentTownStore,
-        confirmAction: ((TownOptionType) -> Void)? = nil
-    ) {
-        self.store = store
+    init(confirmAction: ((TownOptionType) -> Void)? = nil) {
         self.confirmAction = confirmAction
     }
     
@@ -60,7 +56,6 @@ struct FrequentTownView: View {
     store.dispatch(.selectOption(.named("망원동")))
     
     return FrequentTownView(
-        store: store,
         confirmAction: { selected in
             print("프리뷰: \(selected)")
         }
