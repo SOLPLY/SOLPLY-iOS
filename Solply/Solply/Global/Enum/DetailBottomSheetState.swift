@@ -14,7 +14,7 @@ enum DetailBottomSheetState {
     
     var maxHeight: CGFloat {
         switch self {
-        case .courseExpanded: return 429.adjustedHeight // 467 - 28 - 10
+        case .courseExpanded: return 423.adjustedHeight // 467 - 28 - 15
         case .placeExpended: return 487.adjustedHeight // 525 - 28 - 10
         case .collapsed: return 150.adjustedHeight
         }
