@@ -14,6 +14,14 @@ struct CourseRecommendView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = CourseRecommendStore()
     
+    private let title: String
+    
+    // MARK: - Initializer
+    
+    init(title: String) {
+        self.title = title
+    }
+    
     // MARK: - Body
     
     var body: some View {

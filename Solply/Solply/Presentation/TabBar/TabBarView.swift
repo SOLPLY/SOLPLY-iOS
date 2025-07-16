@@ -13,6 +13,13 @@ struct TabBarView: View {
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
     
+    @State private var townName: String = ""
+    
+    @State private var placeRecommendTitle: String = ""
+    @State private var courseRecommendTitle: String = ""
+    
+    private let userService = UserService()
+    
     // MARK: - Body
     
     var body: some View {
@@ -23,7 +30,7 @@ struct TabBarView: View {
                 .padding(.bottom, 16.adjustedHeight)
         }
         .customNavigationBar(.recommend(
-            filterTitle: "연희동",
+            filterTitle: townName,
             filterAction: {
                 appCoordinator.navigate(to: .frequentTown)
             },
@@ -31,7 +38,21 @@ struct TabBarView: View {
                 
             }
         ))
+        .task {
+            await loadUserInfo()
+        }
     }
+    
+    private func loadUserInfo() async {
+            do {
+                let userInfo = try await fetchUserInformation()
+                townName = userInfo.townName
+                placeRecommendTitle = "\(userInfo.persona)\n\(userInfo.nickname)님을 위한 오늘의 추천)"
+                courseRecommendTitle = "\(userInfo.persona)\n\(userInfo.nickname)님을 위한 오늘의 코스"
+            } catch {
+                print("사용자 정보 가져오기 실패: \(error)")
+            }
+        }
 }
 
 // MARK: - Subviews
@@ -39,10 +60,10 @@ struct TabBarView: View {
 extension TabBarView {
     private var tabContent: some View {
         Group {
-            PlaceRecommendView()
+            PlaceRecommendView(title: placeRecommendTitle)
                 .visible(appCoordinator.selectedTab == .place)
             
-            CourseRecommendView()
+            CourseRecommendView(title: courseRecommendTitle)
                 .visible(appCoordinator.selectedTab == .course)
         }
 //        .animation(.easeInOut(duration: 0.1), value: appCoordinator.selectedTab)
@@ -67,6 +88,35 @@ extension TabBarView {
             )
         }
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)
+    }
+}
+
+// MARK: - Network
+
+extension TabBarView {
+    func fetchUserInformation() async throws -> UserInformation {
+        do {
+            let response = try await userService.fetchUserInformation()
+            
+            guard let data = response.data else {
+                throw NetworkError.responseError
+            }
+            
+            let nickname = data.nickname
+            let persona = data.persona
+            let townName = data.selectedTown.townName
+            
+            return UserInformation(
+                nickname: nickname,
+                persona: persona,
+                townName: townName
+            )
+        } catch let error as NetworkError {
+            throw error
+            
+        } catch {
+            throw error
+        }
     }
 }
 
