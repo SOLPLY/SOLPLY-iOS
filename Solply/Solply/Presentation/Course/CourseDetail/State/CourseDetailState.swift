@@ -11,7 +11,7 @@ struct CourseDetailState {
     var isLoading: Bool = false
     var courseTitle: String = ""
     var courseDescription: String = ""
-    var places: [PlaceDetail] = []
+    var places: [PlaceDetailInCourse] = []
     var focusedPlaceIndex: Int = -1
     var courseSaveSelected: Bool = false
     var isCourseBookmarked = false
@@ -24,5 +24,5 @@ struct CourseDetailState {
     var isAlertPresented: Bool = false
     var isSaveOptionPresented: Bool = false
     
-    var draggedPlace: PlaceDetail?
+    var draggedPlace: PlaceDetailInCourse?
 }

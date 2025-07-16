@@ -105,7 +105,7 @@ enum CourseDetailReducer {
             state.courseTitle = courseDetails.courseName
             state.courseDescription = courseDetails.introduction
             
-            let placeEntities: [PlaceDetail] = courseDetails.places.map { PlaceDetail(dto: $0) }
+            let placeEntities: [PlaceDetailInCourse] = courseDetails.places.map { PlaceDetailInCourse(dto: $0) }
             state.places = placeEntities
 
             state.isCourseBookmarked = courseDetails.isBookmarked

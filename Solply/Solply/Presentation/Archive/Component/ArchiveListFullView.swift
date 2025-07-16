@@ -63,7 +63,8 @@ extension ArchiveListFullView {
                         print(index)
                         store.dispatch(.toggleArchiveList(index: index))
                     } else {
-                        appCoordinator.navigate(to: .placeDetail)
+                        // TODO: townId, placeId 바인딩 필요
+                        appCoordinator.navigate(to: .placeDetail(townId: 1, placeId: 1))
                     }
                     
                     if store.state.activeCancel {

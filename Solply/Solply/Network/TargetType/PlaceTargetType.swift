@@ -13,6 +13,7 @@ enum PlaceTargetType {
     case fetchPlaceThumbnail
     case submitPlaceBookmark(placeId: Int)
     case removePlaceBookmark(placeId: Int)
+    case fetchPlaceDetail(placeId: Int)
 }
 
 extension PlaceTargetType: BaseTargetType {
@@ -21,6 +22,7 @@ extension PlaceTargetType: BaseTargetType {
         case .fetchPlaceThumbnail: return .accessToken
         case .submitPlaceBookmark: return .accessToken
         case .removePlaceBookmark: return .accessToken
+        case .fetchPlaceDetail: return .accessToken
         }
     }
     
@@ -32,6 +34,8 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/\(placeId)/bookmarks"
         case .removePlaceBookmark(placeId: let placeId):
             return "/places/\(placeId)/bookmarks"
+        case .fetchPlaceDetail(placeId: let placeId):
+            return "/places/\(placeId)"
         }
     }
     
@@ -40,6 +44,7 @@ extension PlaceTargetType: BaseTargetType {
         case .fetchPlaceThumbnail: return .get
         case .submitPlaceBookmark: return .post
         case .removePlaceBookmark: return .delete
+        case .fetchPlaceDetail: return .get
         }
     }
     
@@ -50,6 +55,8 @@ extension PlaceTargetType: BaseTargetType {
         case .submitPlaceBookmark:
             return .requestPlain
         case .removePlaceBookmark:
+            return .requestPlain
+        case .fetchPlaceDetail:
             return .requestPlain
         }
     }
