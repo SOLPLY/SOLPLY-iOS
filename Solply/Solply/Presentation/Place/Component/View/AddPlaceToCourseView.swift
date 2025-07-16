@@ -110,6 +110,8 @@ extension AddPlaceToCourseView {
                                     CourseCard(
                                         isSaved: course.isBookmarked,
                                         title: course.title,
+                                        // TODO: - 이미지 수정 필요
+                                        image: "",
                                         courseCategory: course.mainTags,
                                         isSelected: true
                                     ) {
