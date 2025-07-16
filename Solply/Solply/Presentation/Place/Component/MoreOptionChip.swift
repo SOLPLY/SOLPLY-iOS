@@ -36,6 +36,5 @@ struct MoreOptionChip: View {
                 borderColor: isSelected ? .clear : .gray300,
                 borderWidth: 0.75
             )
-
     }
 }
