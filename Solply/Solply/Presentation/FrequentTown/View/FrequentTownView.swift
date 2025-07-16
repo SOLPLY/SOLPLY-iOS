@@ -43,6 +43,8 @@ struct FrequentTownView: View {
             ) {
                 guard let selected = store.state.selectedOption else { return }
                 confirmAction?(selected)
+                // TODO: - API 통신 성공 시 .. 하도록 수정
+                appCoordinator.goToRoot()
             }
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.bottom, 20.adjustedHeight)
