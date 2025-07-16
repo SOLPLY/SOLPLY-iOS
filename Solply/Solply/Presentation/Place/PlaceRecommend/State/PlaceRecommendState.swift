@@ -33,6 +33,8 @@ struct PlaceRecommendState {
         
     ]
     
+    var selectedOptionTags: [SelectableOptionTag] = []
+
 }
 
 struct TempOptionTag : Hashable {

@@ -31,6 +31,8 @@ struct CourseRecommendGrid: View {
                     CourseCard(
                         isSaved: true,
                         title: "오감으로 수집하는 하루",
+                        // TODO: - 이미지 수정 필요
+                        imageURL: "",
                         courseCategory: [.book, .cafe],
                         isSelected: true
                     ) {
