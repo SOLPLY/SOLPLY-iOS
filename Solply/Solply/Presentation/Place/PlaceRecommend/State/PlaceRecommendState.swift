@@ -19,18 +19,36 @@ struct PlaceRecommendState {
     
     var isMoreOptionBottomSheetPresented: Bool = false
     
-    var moreOptionItems: [TempMoreOptionItem] = [
-        TempMoreOptionItem(
-            id: 1,
-            option1: ["독서", "작업", "커피/디저트", "힐링"],
-            option2: ["시그니처 메뉴", "감성 인테리어", "콘센트 많음", "시간 제한 없음", "채광 좋음", "창가석 있음"]
-        )
+    var tempOptionTags: [TempOptionTag] = [
+        TempOptionTag(tagId: 1, tagType: "OPTION1", name: "독서", parentId: 1),
+        TempOptionTag(tagId: 2, tagType: "OPTION1", name: "작업", parentId: 1),
+        TempOptionTag(tagId: 3, tagType: "OPTION1", name: "커피/디저트", parentId: 1),
+        TempOptionTag(tagId: 4, tagType: "OPTION1", name: "힐링", parentId: 1),
+        TempOptionTag(tagId: 5, tagType: "OPTION2", name: "시그니처 메뉴", parentId: 1),
+        TempOptionTag(tagId: 6, tagType: "OPTION2", name: "감성 인테리어", parentId: 1),
+        TempOptionTag(tagId: 7, tagType: "OPTION2", name: "콘센트 많음", parentId: 1),
+        TempOptionTag(tagId: 8, tagType: "OPTION2", name: "시간 제한 없음", parentId: 1),
+        TempOptionTag(tagId: 9, tagType: "OPTION2", name: "채광 좋음", parentId: 1),
+        TempOptionTag(tagId: 10, tagType: "OPTION2", name: "창가석 있음", parentId: 1),
+        
     ]
     
 }
 
-struct TempMoreOptionItem {
-    var id: PlaceCategoryType.RawValue
-    var option1: [String]
-    var option2: [String]?
+struct TempOptionTag : Hashable {
+    var tagId: Int
+    var tagType: String
+    var name: String
+    var parentId: Int?
+}
+
+struct SelectableOptionTag: Identifiable, Hashable {
+    let id: Int
+    let name: String
+    var isSelected: Bool = false
+
+    init(from tag: TempOptionTag) {
+        self.id = tag.tagId
+        self.name = tag.name
+    }
 }
