@@ -106,11 +106,41 @@ enum CourseDetailReducer {
             state.courseDescription = courseDetails.introduction
             
             let placeEntities: [PlaceDetail] = courseDetails.places.map { PlaceDetail(dto: $0) }
-            
             state.places = placeEntities
 
-        case .errorOcurred(let error):
+            state.isCourseBookmarked = courseDetails.isBookmarked
+            state.courseSaveSelected = courseDetails.isBookmarked
+
+        case .errorOccured(let error):
             print(error)
+            break
+            
+        case .submitCourseBookmark:
+            break
+            
+        case .courseBookmarkSubmited:
+            print("저장 완료")
+            break
+            
+        case .removeCourseBookmark:
+            break
+            
+        case .courseBookmarkRemoved:
+            print("저장 취소 완료")
+            break
+            
+        case .submitPlaceBookmark:
+            break
+            
+        case .placeBookmarkSubmited:
+            print("장소 저장 완료")
+            break
+            
+        case .removePlaceBookmark:
+            break
+            
+        case .placeBookmarkRemoved:
+            print("장소 저장 취소 완료")
             break
         }
     }

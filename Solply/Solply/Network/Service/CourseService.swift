@@ -25,3 +25,15 @@ extension CourseService {
         return try await self.request(with: .fetchCourseDetail(courseId: courseId))
     }
 }
+
+extension CourseService {
+    func submitCourseBookmark(courseId: Int) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .submitCourseBookmark(courseId: courseId))
+    }
+}
+
+extension CourseService {
+    func removeCourseBookmark(courseId: Int) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .removeCourseBookmark(courseId: courseId))
+    }
+}

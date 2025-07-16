@@ -28,29 +28,26 @@ struct ArchiveView: View {
             
             // TODO: - 데이터 연결 후 데이터 여부에 따라서 분기 처리 필요
             
-//            Group {
-//                if store.state.selectedCategory == .place {
-//                    ArchiveEmptyView(archiveCategory: .place)
-//                        .transition(.move(edge: .leading))
-//                } else {
-//                    ArchiveEmptyView(archiveCategory: .course)
-//                        .transition(.move(edge: .trailing))
-//                }
-//            }
-//            .animation(.easeInOut(duration: 0.2), value: store.state.selectedCategory)
-//        }
-//            
-        
-        Group {
-                if store.state.selectedCategory == .place {
-                    ArchiveFullView(archiveCategory: .place)
-                        .transition(.move(edge: .leading))
-                } else {
-                    ArchiveFullView(archiveCategory: .course)
-                        .transition(.move(edge: .trailing))
+            Group {
+                    if store.state.folderThumbnailList.isEmpty {
+                        if store.state.selectedCategory == .place {
+                            ArchiveEmptyView(archiveCategory: .place)
+                                .transition(.move(edge: .leading))
+                        } else {
+                            ArchiveEmptyView(archiveCategory: .course)
+                                .transition(.move(edge: .trailing))
+                        }
+                    } else {
+                        if store.state.selectedCategory == .place {
+                            ArchiveFullView(archiveCategory: .place)
+                                .transition(.move(edge: .leading))
+                        } else {
+                            ArchiveFullView(archiveCategory: .course)
+                                .transition(.move(edge: .trailing))
+                        }
+                    }
                 }
-            }
-            .animation(.easeInOut(duration: 0.2), value: store.state.selectedCategory)
+                .animation(.easeInOut(duration: 0.2), value: store.state.selectedCategory)
             .gesture(
                 DragGesture()
                     .onEnded { value in
@@ -72,5 +69,8 @@ struct ArchiveView: View {
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .customNavigationBar(.archive(backAction: appCoordinator.goBack))
+        .onAppear {
+            store.dispatch(.fetchPlaceThumbnail)
+        }
     }
 }

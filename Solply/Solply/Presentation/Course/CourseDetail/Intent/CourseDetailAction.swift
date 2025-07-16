@@ -33,5 +33,17 @@ enum CourseDetailAction {
     // api
     case fetchCourseDetail(courseId: Int)
     case courseDetailFetched(courseDetail: CourseDetailResponseDTO)
-    case errorOcurred(error: NetworkError)
+    case errorOccured(error: NetworkError)
+    
+    case submitCourseBookmark(courseId: Int)
+    case courseBookmarkSubmited
+    
+    case removeCourseBookmark(courseId: Int)
+    case courseBookmarkRemoved
+    
+    case submitPlaceBookmark(placeId: Int)
+    case placeBookmarkSubmited
+    
+    case removePlaceBookmark(placeId: Int)
+    case placeBookmarkRemoved
 }
