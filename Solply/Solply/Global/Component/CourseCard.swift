@@ -15,7 +15,7 @@ struct CourseCard: View {
     
     private let isSaved: Bool
     private let title: String
-    private let image: String
+    private let imageURL: String
     private let courseCategory: [PlaceCategoryType]
     private let isSelected: Bool
     private let action: (() -> Void)?
@@ -32,7 +32,7 @@ struct CourseCard: View {
     ) {
         self.isSaved = isSaved
         self.title = title
-        self.image = image
+        self.imageURL = image
         self.courseCategory = courseCategory
         self.isSelected = isSelected
         self.action = action
@@ -45,7 +45,7 @@ struct CourseCard: View {
             action?()
         } label: {
             ZStack(alignment: .bottom) {
-                KFImage(URL(string: image))
+                KFImage(URL(string: imageURL))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
@@ -92,11 +92,7 @@ struct CourseCard: View {
         }
         .buttonStyle(.plain)
         .onAppear {
-            print(self.image)
+            print(self.imageURL)
         }
     }
-}
-
-#Preview {
-    CourseCard(isSaved: true, title: "오감으로 수집하는 하루", image: "image", courseCategory: [.food, .unique], isSelected: true)
 }

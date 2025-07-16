@@ -23,9 +23,9 @@ enum ArchiveReducer {
         case .fetchCourseThumbnail:
             break
             
-        case .courseThumbnailFetched(let courseArchiveTumbnails):
-            state.folders = courseArchiveTumbnails
-            print(courseArchiveTumbnails)
+        case .courseThumbnailFetched(let courseArchiveThumbnails):
+            state.folders = courseArchiveThumbnails
+            print(courseArchiveThumbnails)
             
         case .errorOccured(let error):
             print(error)

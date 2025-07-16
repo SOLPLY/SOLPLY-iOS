@@ -15,7 +15,7 @@ struct ArchiveFullView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store: ArchiveStore
-   
+    
     private let archiveCategory: SolplyContentType
     private let columns = [GridItem(.fixed(165.adjustedWidth)), GridItem(.fixed(165.adjustedWidth))]
     
@@ -27,7 +27,7 @@ struct ArchiveFullView: View {
     }
     
     // MARK: - Body
-
+    
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16.adjustedHeight) {
@@ -50,20 +50,20 @@ extension ArchiveFullView {
     
     private func archivePlaceCell(index: Int, placeItem: PlaceArchiveThumbnailDTO) -> some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-            ZStack {
+            ZStack(alignment: .center) {
                 KFImage(URL(string: placeItem.folderThumbnailUrl ?? ""))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
-
+                
                 Image(.archiveFrame)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
             }
             .cornerRadius(20, corners: .allCorners)
-
-            Text(placeItem.townName ?? "nil")
+            
+            Text(placeItem.townName ?? "")
                 .applySolplyFont(.title_15_m)
                 .padding(.leading, 8.adjustedWidth)
         }
@@ -75,29 +75,29 @@ extension ArchiveFullView {
         .transition(.move(edge: .trailing))
         .animation(.easeInOut(duration: 0.2), value: archiveCategory)
     }
-
+    
     private func archiveCourseCell(index: Int, courseItem: CourseArchiveThumbnailDTO) -> some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             ZStack {
                 CourseCard(
                     isSaved: true,
-                    title: courseItem.courseName ?? "nil",
+                    title: courseItem.courseName ?? "",
                     image: courseItem.thumbnailUrl ?? "",
                     courseCategory: courseItem.primaryTags?.compactMap {
                         PlaceCategoryType(rawValue: $0)
-                        } ?? [],
+                    } ?? [],
                     isSelected: false
                 )
                 .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
-
+                
                 Image(.archiveFrame)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                     .cornerRadius(20, corners: .allCorners)
             }
-
-            Text(courseItem.townName ?? "nil")
+            
+            Text(courseItem.townName ?? "")
                 .applySolplyFont(.title_15_m)
                 .padding(.leading, 8.adjustedWidth)
         }

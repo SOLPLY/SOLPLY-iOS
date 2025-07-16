@@ -80,7 +80,7 @@ extension ArchiveListFullView {
                         title: courseTitle[index],
                         image: "",
                         courseCategory: tags[index],
-                        isSelected: store.state.selectedIndex.contains(index),
+                        isSelected: store.state.selectedIndex.contains(index)
                     ) {
                         if store.state.activeDelete {
                             print(index)
