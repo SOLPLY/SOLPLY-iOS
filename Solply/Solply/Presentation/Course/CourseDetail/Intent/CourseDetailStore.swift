@@ -34,6 +34,18 @@ final class CourseDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .submitPlaceBookmark(let placeId):
+            Task {
+                let result = await effect.submitPlaceBookmark(placeId: placeId)
+                self.dispatch(result)
+            }
+            
+        case .removePlaceBookmark(let placeId):
+            Task {
+                let result = await effect.removePlaceBookmark(placeId: placeId)
+                self.dispatch(result)
+            }
+            
         default:
             break
         }

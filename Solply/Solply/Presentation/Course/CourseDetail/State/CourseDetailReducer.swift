@@ -128,6 +128,20 @@ enum CourseDetailReducer {
         case .courseBookmarkRemoved:
             print("저장 취소 완료")
             break
+            
+        case .submitPlaceBookmark:
+            break
+            
+        case .placeBookmarkSubmited:
+            print("장소 저장 완료")
+            break
+            
+        case .removePlaceBookmark:
+            break
+            
+        case .placeBookmarkRemoved:
+            print("장소 저장 취소 완료")
+            break
         }
     }
 }
