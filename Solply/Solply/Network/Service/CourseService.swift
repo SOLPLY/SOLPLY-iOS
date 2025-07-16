@@ -20,7 +20,7 @@ extension CourseService: PlaceDetailAPI {
     }
 }
 
-extension CourseService: CourseDetailAPI {
+extension CourseService {
     func fetchCourseDetail(courseId: Int) async throws -> BaseResponseBody<CourseDetailResponseDTO> {
         return try await self.request(with: .fetchCourseDetail(courseId: courseId))
     }
