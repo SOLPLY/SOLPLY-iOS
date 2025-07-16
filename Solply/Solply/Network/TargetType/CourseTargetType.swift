@@ -13,7 +13,7 @@ enum CourseTargetType {
     case fetchCourseArchive(townId: Int, placeId: Int?)
     case fetchCourseDetail(courseId: Int)
     case submitCourseBookmark(courseId: Int)
-    case removeCourseBookmakr(courseId: Int)
+    case removeCourseBookmark(courseId: Int)
 }
 
 extension CourseTargetType: BaseTargetType {
@@ -29,7 +29,7 @@ extension CourseTargetType: BaseTargetType {
             return "/courses/\(courseId)"
         case .submitCourseBookmark(courseId: let courseId):
             return "/courses/\(courseId)/bookmarks"
-        case .removeCourseBookmakr(courseId: let courseId):
+        case .removeCourseBookmark(courseId: let courseId):
             return "/courses/\(courseId)/bookmarks"
         }
     }
@@ -39,7 +39,7 @@ extension CourseTargetType: BaseTargetType {
         case .fetchCourseArchive: return .get
         case .fetchCourseDetail: return .get
         case .submitCourseBookmark: return .post
-        case .removeCourseBookmakr: return .delete
+        case .removeCourseBookmark: return .delete
         }
     }
     
@@ -61,7 +61,7 @@ extension CourseTargetType: BaseTargetType {
         case .submitCourseBookmark:
             return .requestPlain
             
-        case .removeCourseBookmakr:
+        case .removeCourseBookmark:
             return .requestPlain
         }
     }

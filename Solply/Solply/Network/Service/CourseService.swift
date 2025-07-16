@@ -34,6 +34,6 @@ extension CourseService {
 
 extension CourseService {
     func removeCourseBookmark(courseId: Int) async throws -> BaseResponseBody<EmptyResponseDTO> {
-        return try await self.request(with: .removeCourseBookmakr(courseId: courseId))
+        return try await self.request(with: .removeCourseBookmark(courseId: courseId))
     }
 }
