@@ -38,7 +38,6 @@ struct PlaceDetailInCourse: Identifiable, Equatable {
     }
 }
 
-
 extension PlaceDetailInCourse {
     init(dto: CourseDetailPlaceDTO) {
         self.placeId = dto.placeId
