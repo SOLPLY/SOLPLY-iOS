@@ -14,7 +14,7 @@ struct CourseDetailMapView: UIViewRepresentable, Equatable {
     // MARK: - Properties
     
     private let markerManager = MarkerManager()
-    private var places: [Place]
+    private var places: [PlaceDetail]
     
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
@@ -32,7 +32,7 @@ struct CourseDetailMapView: UIViewRepresentable, Equatable {
     
     // MARK: - Initializer
 
-    init(places: [Place]) {
+    init(places: [PlaceDetail]) {
         self.places = places
     }
     
@@ -197,7 +197,7 @@ extension CourseDetailMapView {
     }
     
     /// 특정 장소로 카메라 이동하는 함수입니다.
-    private func moveCameraToPlace(_ place: Place, mapView: NMFMapView, animated: Bool = true) {
+    private func moveCameraToPlace(_ place: PlaceDetail, mapView: NMFMapView, animated: Bool = true) {
         let coordinate = NMGLatLng(lat: place.latitude, lng: place.longitude)
         let cameraUpdate = NMFCameraUpdate(scrollTo: coordinate)
         cameraUpdate.animation = animated ? .easeIn : .none

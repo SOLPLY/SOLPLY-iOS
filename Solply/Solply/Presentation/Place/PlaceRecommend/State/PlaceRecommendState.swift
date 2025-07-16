@@ -21,7 +21,7 @@ struct PlaceRecommendState {
     
     var moreOptionItems: [TempMoreOptionItem] = [
         TempMoreOptionItem(
-            id: 1,
+            id: "ALL",
             option1: ["독서", "작업", "커피/디저트", "힐링"],
             option2: ["시그니처 메뉴", "감성 인테리어", "콘센트 많음", "시간 제한 없음", "채광 좋음", "창가석 있음"]
         )

@@ -158,10 +158,10 @@ extension CourseDetailView {
                     DraggablePlaceCell(
                         order: index + 1,
                         mainImageURL: "",
-                        placeCategoryType: place.placeCategoryType,
-                        title: place.title,
+                        placeCategoryType: place.primaryTag,
+                        title: place.placeName,
                         address: place.address,
-                        isSaved: place.isSaved,
+                        isSaved: place.isBookmarked,
                         isFocused: (store.state.focusedPlaceIndex == index),
                         isEditing: store.state.isEditing
                     ) {
@@ -172,12 +172,12 @@ extension CourseDetailView {
                         print("findDirectionAction")
                     } saveAction: {
                         store.dispatch(.toggleSavePlace(index: index))
-                        if store.state.places[index].isSaved {
+                        if store.state.places[index].isBookmarked {
                             store.dispatch(
                                 .showToastView(
                                     ToastContent(
                                         toastType: .defaultToast,
-                                        message: "'\(place.title.truncated(9))'가 수집함에 저장되었어요.",
+                                        message: "'\(place.placeName.truncated(9))'가 수집함에 저장되었어요.",
                                         buttonTitle: nil
                                     )
                                 )
@@ -187,7 +187,7 @@ extension CourseDetailView {
                                 .showToastView(
                                     ToastContent(
                                         toastType: .defaultToast,
-                                        message: "'\(place.title.truncated(9))'가 수집함에 삭제되었어요.",
+                                        message: "'\(place.placeName.truncated(9))'가 수집함에 삭제되었어요.",
                                         buttonTitle: nil
                                     )
                                 )

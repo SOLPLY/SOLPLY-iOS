@@ -30,7 +30,10 @@ struct AuthEffect {
             let oauthToken = try await fetchKakaoToken()
             let request = AuthLoginRequestDTO(oauthAccessToken: oauthToken.accessToken)
             let response = try await service.submitLogin(provider: provider, request: request)
-            print(response)
+            if let accessToken = response.data?.accessToken,
+               let refreshToken = response.data?.refreshToken {
+                TokenManager.shared.saveTokens(accessToken: accessToken, refreshToken: refreshToken)
+            }
             return .loginSuccess
         } catch let error as NetworkError {
             return .loginFailed(error)

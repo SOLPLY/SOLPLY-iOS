@@ -16,12 +16,10 @@ enum AuthReducer {
             
         case .loginSuccess:
             state.isLoggedIn = true
-            print(state.isLoggedIn)
             
         case .loginFailed(let networkError):
-            print(networkError.description)
             state.isLoggedIn = false
-            print(state.isLoggedIn)
+            print(networkError.description)
         }
     }
 }

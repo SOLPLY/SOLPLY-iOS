@@ -13,7 +13,7 @@ enum CourseDetailAction {
     case toggleSavePlace(index: Int)
     case toggleEdting
     
-    case startDragging(draggedPlace: Place)
+    case startDragging(draggedPlace: PlaceDetail)
     case whileDragging(from: Int, to: Int)
     case endDragging
     case deletePlace
@@ -31,5 +31,9 @@ enum CourseDetailAction {
     case saveCourseCancel
     
     case fetchCourseDetailData
-    case courseDetailDataFetched(Course)
+    case courseDetailDataFetched(CourseDetail)
+    
+    // api
+    case fetchCourseDetail(courseId: Int)
+    case courseDetailFetched
 }

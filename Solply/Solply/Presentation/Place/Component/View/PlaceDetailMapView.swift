@@ -13,7 +13,7 @@ struct PlaceDetailMapView: UIViewRepresentable {
     
     // MARK: - Properties
     
-    private let place: Place
+    private let place: PlaceDetail
     private let zoomLevel: Double = 16
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
@@ -24,7 +24,7 @@ struct PlaceDetailMapView: UIViewRepresentable {
     
     // MARK: - Init
     
-    init(place: Place) {
+    init(place: PlaceDetail) {
         self.place = place
     }
     

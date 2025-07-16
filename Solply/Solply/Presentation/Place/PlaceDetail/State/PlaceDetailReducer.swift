@@ -29,6 +29,16 @@ enum PlaceDetailReducer {
             
         case .showToastView(let toastContent):
             state.toastContent = toastContent
+            
+        case .fetchCourseArchive:
+            break
+            
+        case .courseArchiveFetched(let courseArchive):
+            state.courses = courseArchive
+            break
+            
+        case .errorOccurred(let error):
+            print(error)
         }
     }
 }

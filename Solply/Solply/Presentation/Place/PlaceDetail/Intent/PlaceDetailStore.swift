@@ -10,11 +10,18 @@ import Foundation
 @MainActor
 final class PlaceDetailStore: ObservableObject {
     @Published private(set) var state = PlaceDetailState()
+    private let effect = PlaceDetailEffect()
     
     func dispatch(_ action: PlaceDetailAction) {
         PlaceDetailReducer.reduce(state: &state, action: action)
         
         switch action {
+        case .fetchCourseArchive(let townId, let placeId):
+            Task {
+                let result = await effect.fetchCourseArchive(townId: townId, placeId: placeId)
+                self.dispatch(result)
+            }
+            
         default:
             break
         }

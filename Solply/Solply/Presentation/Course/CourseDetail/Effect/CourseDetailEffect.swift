@@ -11,6 +11,6 @@ struct CourseDetailEffect {
     
     // TODO: 나중에 API 연결
     func fetchCourseDetailData() -> CourseDetailAction {
-        return .courseDetailDataFetched(Course.mockData())
+        return .courseDetailDataFetched(CourseDetail.mockData())
     }
 }
