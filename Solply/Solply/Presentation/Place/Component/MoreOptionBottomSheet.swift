@@ -17,10 +17,16 @@ struct MoreOptionBottomSheet: View {
     @State private var optionTags1: [SelectableOptionTag] = []
     @State private var optionTags2: [SelectableOptionTag] = []
     
+    private let action: (([SelectableOptionTag]) -> Void)?
+    
     // MARK: - Initializer
     
-    init(isPresented: Binding<Bool>) {
+    init(
+        isPresented: Binding<Bool>,
+        action: (([SelectableOptionTag]) -> Void)? = nil
+    ) {
         self._isPresented = isPresented
+        self.action = action
     }
     
     // MARK: - Body
@@ -62,7 +68,15 @@ struct MoreOptionBottomSheet: View {
                 .frame(maxWidth: .infinity)
                 
                 CTAMainButton(title: "완료") {
+                    let selectedTags = (optionTags1 + optionTags2).filter { $0.isSelected }
                     // TODO: - 네트워크 로직 추가
+                    print("============== index = 0 ===============")
+                    print(selectedTags[0].name)
+                    print("============== count ===============")
+                    print(selectedTags.count)
+                    
+                    action?(selectedTags)
+                    
                     isPresented = false
                 }
                 .frame(width: 210.adjustedWidth)
