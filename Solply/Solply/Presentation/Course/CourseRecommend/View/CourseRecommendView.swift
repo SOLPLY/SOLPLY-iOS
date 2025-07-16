@@ -32,16 +32,6 @@ struct CourseRecommendView: View {
             .padding(.bottom, 112.adjustedHeight)
         }
         .background(.gray100)
-        .customNavigationBar(.recommend(
-            filterTitle: "연희동",
-            // TODO: - navigation 연결하기
-            filterAction: {
-                
-            },
-            settingAction: {
-                
-            }
-        ))
     }
 }
 
