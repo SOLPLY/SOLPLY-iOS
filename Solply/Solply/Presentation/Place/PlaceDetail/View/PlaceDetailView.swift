@@ -91,8 +91,14 @@ extension PlaceDetailView {
             SolplySaveButton(
                 contentType: .place,
                 isEnabled: store.state.saveButtonEnabled,
-                isSelected: store.state.saveButtonSelected
+                isSelected: store.state.isBookmarked
             ) {
+                if store.state.isBookmarked {
+                    store.dispatch(.removePlaceBookmark(placeId: placeId))
+                } else {
+                    store.dispatch(.submitPlaceBookmark(placeId: placeId))
+                }
+                
                 store.dispatch(.toggleSavePlace)
                 if store.state.saveButtonSelected {
                     store.dispatch(

@@ -16,6 +16,7 @@ enum PlaceDetailReducer {
             state.saveButtonEnabled = state.addButtonSelected ? false : true
             
         case .toggleSavePlace:
+            state.isBookmarked.toggle()
             state.saveButtonSelected.toggle()
             
         case .requestFindDirection:
@@ -48,7 +49,7 @@ enum PlaceDetailReducer {
             state.courses = courseArchive
             break
             
-        case .errorOccurred(let error):
+        case .errorOccured(let error):
             print(error)
             
         case .fetchPlaceDetail:
@@ -71,7 +72,20 @@ enum PlaceDetailReducer {
             state.longtitude = Double(placeDetail.longitude) ?? 0.0
             state.placeDefaultId = placeDetail.placeDefaultId
             state.placeType = placeDetail.placeType
-//            print(placeDetail)
+            
+        case .submitPlaceBookmark:
+            break
+            
+        case .placeBookmarkSubmited:
+            print("장소 저장 완료")
+            break
+            
+        case .removePlaceBookmark:
+            break
+            
+        case .placeBookmarkRemoved:
+            print("장소 저장 취소 완료")
+            break
         }
     }
 }
