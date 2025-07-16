@@ -9,7 +9,7 @@ import SwiftUI
 
 enum AppDestination: Hashable {
     case archive
-    case archiveList(archiveCategory: SolplyContentType, town: String)
+    case archiveList(archiveCategory: SolplyContentType, townName: String)
     case placeDetail
     case courseDetail(courseId: Int, fromArchive: Bool)
     case frequentTown
