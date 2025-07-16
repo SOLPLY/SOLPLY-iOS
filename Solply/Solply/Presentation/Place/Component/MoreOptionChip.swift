@@ -9,13 +9,19 @@ import SwiftUI
 
 struct MoreOptionChip: View {
     
+    // MARK: - Properties
+    
     private let title: String
     private var isSelected: Bool
+    
+    // MARK: - Initializer
     
     init(title: String, isSelected: Bool) {
         self.title = title
         self.isSelected = isSelected
     }
+    
+    // MARK: - Body
     
     var body: some View {
         Text(title)
