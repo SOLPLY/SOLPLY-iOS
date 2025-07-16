@@ -9,4 +9,9 @@ import Foundation
 
 enum ArchiveAction {
     case toggleArchiveBar(archiveCategory: SolplyContentType)
+    
+    // api
+    case fetchPlaceThumbnail
+    case placeThumbnailFetched
+    case errorOccured(error: NetworkError)
 }

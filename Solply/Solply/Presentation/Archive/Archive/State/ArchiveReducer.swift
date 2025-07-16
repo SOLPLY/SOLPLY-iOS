@@ -12,6 +12,16 @@ enum ArchiveReducer {
         switch action {
         case .toggleArchiveBar(let archiveCategory):
             state.selectedCategory = archiveCategory
+            
+        case .fetchPlaceThumbnail:
+            break
+            
+        case .placeThumbnailFetched:
+            break
+            
+        case .errorOccured(let error):
+            print(error)
+            break
         }
     }
 }
