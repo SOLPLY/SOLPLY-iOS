@@ -52,7 +52,12 @@ struct MoreOptionBottomSheet: View {
             
             HStack(alignment: .center, spacing: 12.adjustedWidth) {
                 CTASubButton(title: "초기화") {
-                    
+                    optionTags1.indices.forEach { index in
+                        optionTags1[index].isSelected = false
+                    }
+                    optionTags2.indices.forEach { index in
+                        optionTags2[index].isSelected = false
+                    }
                 }
                 .frame(maxWidth: .infinity)
                 
