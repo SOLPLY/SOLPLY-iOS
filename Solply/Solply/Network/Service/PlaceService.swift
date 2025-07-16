@@ -9,3 +9,11 @@ import Foundation
 
 import Moya
 
+final class PlaceService: BaseService<PlaceTargetType> { }
+
+extension PlaceService {
+    func fetchPlaceThumbnail() async throws -> BaseResponseBody<PlaceArchiveResponseDTO> {
+        return try await self.request(with: .fetchPlaceThumbnail)
+    }
+}
+

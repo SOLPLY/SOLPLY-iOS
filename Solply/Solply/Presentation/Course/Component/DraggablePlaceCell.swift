@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import Kingfisher
+
 struct DraggablePlaceCell: View {
     
     // MARK: - Properties
@@ -81,7 +83,7 @@ extension DraggablePlaceCell {
     
     private var placeCell: some View {
         HStack(alignment: .top, spacing: 8.adjustedWidth) {
-            Image(.place)
+            KFImage(URL(string: mainImageURL))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(
