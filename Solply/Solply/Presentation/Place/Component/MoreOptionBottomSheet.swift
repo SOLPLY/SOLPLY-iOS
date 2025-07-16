@@ -11,7 +11,7 @@ struct MoreOptionBottomSheet: View {
     
     // MARK: - Properties
     
-    @StateObject private var store = PlaceRecommendStore()
+    @ObservedObject private var store: PlaceRecommendStore
     @Binding var isPresented: Bool
     
     @State private var optionTags1: [SelectableOptionTag] = []
@@ -22,9 +22,11 @@ struct MoreOptionBottomSheet: View {
     // MARK: - Initializer
     
     init(
+        store: PlaceRecommendStore,
         isPresented: Binding<Bool>,
         action: (([SelectableOptionTag]) -> Void)? = nil
     ) {
+        self.store = store
         self._isPresented = isPresented
         self.action = action
     }
@@ -75,6 +77,8 @@ struct MoreOptionBottomSheet: View {
                     print("============== count ===============")
                     print(selectedTags.count)
                     
+                    store.dispatch(.confirmMoreOptionTags(selectedTags))
+                    
                     action?(selectedTags)
                     
                     isPresented = false
@@ -86,11 +90,19 @@ struct MoreOptionBottomSheet: View {
         .onAppear {
             optionTags1 = store.state.tempOptionTags
                 .filter { $0.tagType == "OPTION1" }
-                .map { SelectableOptionTag(from: $0) }
+                .map { tag in
+                    var tagModel = SelectableOptionTag(from: tag)
+                    tagModel.isSelected = store.state.selectedOptionTags.contains(where: { $0.id == tagModel.id })
+                    return tagModel
+                }
             
             optionTags2 = store.state.tempOptionTags
                 .filter { $0.tagType == "OPTION2" }
-                .map { SelectableOptionTag(from: $0) }
+                .map { tag in
+                    var tagModel = SelectableOptionTag(from: tag)
+                    tagModel.isSelected = store.state.selectedOptionTags.contains(where: { $0.id == tagModel.id })
+                    return tagModel
+                }
         }
     }
 }

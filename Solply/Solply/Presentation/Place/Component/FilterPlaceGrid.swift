@@ -28,8 +28,8 @@ struct FilterPlaceGrid: View {
         selectedOptionTags.first?.name ?? ""
     }
 
-    private var isSelected: Bool {
-        !selectedOptionTags.isEmpty
+    private var isSelectedEmpty: Bool {
+        selectedOptionTags.isEmpty
     }
     
     private var placeCategory: PlaceCategoryType {
@@ -72,7 +72,7 @@ struct FilterPlaceGrid: View {
                             .presentationDetents([.fraction(0.54)])
                     }
                     
-                    FilterButton(title: isSelected ? "\(filteredFirstTag) 외 \(filteredCount - 1)개" : "추가옵션") {
+                    FilterButton(title: isSelectedEmpty ? "추가옵션" : (filteredCount > 1 ? "\(filteredFirstTag) 외 \(filteredCount - 1)개" : "\(filteredFirstTag)")) {
                         store.dispatch(.toggleMoreOptionBottomSheet)
                     }
                     .visible(placeCategory == .all ? false : true)
@@ -87,6 +87,7 @@ struct FilterPlaceGrid: View {
                         )
                     ) {
                         MoreOptionBottomSheet(
+                            store: store,
                             isPresented: Binding(
                                 get: { store.state.isMoreOptionBottomSheetPresented },
                                 set: { isPresented in
