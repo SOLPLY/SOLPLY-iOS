@@ -167,7 +167,7 @@ extension CourseDetailView {
                 ForEach(Array(store.state.places.enumerated()), id: \.element.id) { index, place in
                     DraggablePlaceCell(
                         order: index + 1,
-                        mainImageURL: "",
+                        mainImageURL: place.thumbnailURL,
                         placeCategoryType: place.primaryTag,
                         title: place.placeName,
                         address: place.address,
