@@ -28,7 +28,7 @@ struct CourseCard: View {
         imageURL: String,
         courseCategory: [PlaceCategoryType],
         isSelected: Bool,
-        action: (() -> Void)? = nil,
+        action: (() -> Void)? = nil
     ) {
         self.isSaved = isSaved
         self.title = title
