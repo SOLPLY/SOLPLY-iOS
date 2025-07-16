@@ -20,17 +20,8 @@ enum CourseDetailReducer {
                 state.places[index].isFocused = (index == state.focusedPlaceIndex)
             }
             
-        case .fetchCourseDetailData:
-            state.isLoading = true
-            
-        case .courseDetailDataFetched(let course):
-            state.isLoading = false
-            state.courseTitle = course.courseTitle
-            state.courseDescription = course.courseDescription
-            state.places = course.places
-            
         case .toggleSavePlace(let index):
-            state.places[index].isSaved.toggle()
+            state.places[index].isBookmarked.toggle()
             
         case .toggleEdting:
             if state.isEditing {
@@ -41,6 +32,7 @@ enum CourseDetailReducer {
             
             for index in state.places.indices {
                 state.places[index].isFocused = false
+                state.focusedPlaceIndex = -1
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
@@ -105,6 +97,21 @@ enum CourseDetailReducer {
             
         case .saveCourseCancel:
             state.isSaveOptionPresented = false
+            
+        case .fetchCourseDetail:
+            break
+            
+        case .courseDetailFetched(let courseDetails):
+            state.courseTitle = courseDetails.courseName
+            state.courseDescription = courseDetails.introduction
+            
+            let placeEntities: [PlaceDetail] = courseDetails.places.map { PlaceDetail(dto: $0) }
+            
+            state.places = placeEntities
+
+        case .errorOcurred(let error):
+            print(error)
+            break
         }
     }
 }

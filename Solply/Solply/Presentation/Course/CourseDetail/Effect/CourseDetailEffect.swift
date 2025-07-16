@@ -8,9 +8,22 @@
 import Foundation
 
 struct CourseDetailEffect {
+    private let service = CourseService()
     
-    // TODO: 나중에 API 연결
-    func fetchCourseDetailData() -> CourseDetailAction {
-        return .courseDetailDataFetched(Course.mockData())
+    func fetchCourseDetail(courseId: Int) async -> CourseDetailAction {
+        do {
+            let response = try await service.fetchCourseDetail(courseId: courseId)
+            
+            guard let data = response.data else {
+                return .errorOcurred(error: .responseError)
+            }
+            
+            return .courseDetailFetched(courseDetail: data)
+            
+        } catch let error as NetworkError {
+            return .errorOcurred(error: error)
+        } catch {
+            return .errorOcurred(error: .unknownError)
+        }
     }
 }

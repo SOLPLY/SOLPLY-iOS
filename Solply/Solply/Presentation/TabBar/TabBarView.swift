@@ -22,6 +22,15 @@ struct TabBarView: View {
             tabBar
                 .padding(.bottom, 16.adjustedHeight)
         }
+        .customNavigationBar(.recommend(
+            filterTitle: "연희동",
+            filterAction: {
+                appCoordinator.navigate(to: .frequentTown)
+            },
+            settingAction: {
+                
+            }
+        ))
     }
 }
 

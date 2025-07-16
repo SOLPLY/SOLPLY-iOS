@@ -18,7 +18,7 @@ struct PlaceDetailView: View {
     // MARK: - Body
     
     var body: some View {
-        PlaceDetailMapView(place: Place.mockData())
+        PlaceDetailMapView(place: PlaceDetail.mockData())
             .customNavigationBar(
                 .placeDetail(
                     title: "이거는 받아야지",
@@ -91,7 +91,10 @@ extension PlaceDetailView {
     private var bottomSheetContent: some View {
         ZStack {
             if store.state.addButtonSelected {
-                AddPlaceToCourseView(selectedIndex: store.state.selectedCourseIndex) { index in
+                AddPlaceToCourseView(
+                    courses: store.state.courses,
+                    selectedIndex: store.state.selectedCourseIndex
+                ) { index in
                     store.dispatch(.selectCourseToAdd(index: index))
                 } addAction: { index in
                     store.dispatch(.addPlaceToCourse(index: index))
@@ -111,6 +114,9 @@ extension PlaceDetailView {
                     store.dispatch(.selectCourseToAdd(index: -1))
                 }
                 .transition(.move(edge: .trailing))
+                .onAppear {
+                    store.dispatch(.fetchCourseArchive(townId: 1, placeId: 1))
+                }
             } else {
                 PlaceInformationView()
                     .padding(.top, 8.adjustedHeight)

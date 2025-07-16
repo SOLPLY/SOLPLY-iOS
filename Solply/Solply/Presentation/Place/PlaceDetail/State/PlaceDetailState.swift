@@ -13,6 +13,8 @@ struct PlaceDetailState {
     var saveButtonEnabled: Bool = true
     var findDirectionEnabled: Bool = true
     
+    var courses: [CourseArchiveDTO] = []
+    
     var selectedCourseIndex: Int = -1
     
     var toastContent: ToastContent?

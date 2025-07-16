@@ -13,7 +13,7 @@ enum CourseDetailAction {
     case toggleSavePlace(index: Int)
     case toggleEdting
     
-    case startDragging(draggedPlace: Place)
+    case startDragging(draggedPlace: PlaceDetail)
     case whileDragging(from: Int, to: Int)
     case endDragging
     case deletePlace
@@ -30,6 +30,8 @@ enum CourseDetailAction {
     case saveCourseAsNew
     case saveCourseCancel
     
-    case fetchCourseDetailData
-    case courseDetailDataFetched(Course)
+    // api
+    case fetchCourseDetail(courseId: Int)
+    case courseDetailFetched(courseDetail: CourseDetailResponseDTO)
+    case errorOcurred(error: NetworkError)
 }

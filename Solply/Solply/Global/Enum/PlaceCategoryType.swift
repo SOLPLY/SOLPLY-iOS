@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-enum PlaceCategoryType: Int, CaseIterable, Identifiable {
-    case all = 0
-    case cafe
-    case food
-    case book
-    case shopping
-    case unique
-    case walk
+enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, RequestModelType {
+    case all = "ALL"
+    case cafe = "CAFE"
+    case food = "FOOD"
+    case book = "BOOK"
+    case shopping = "SHOPPING"
+    case unique = "UNIQUE_SPACE"
+    case walk = "WALKING"
 
     
     var id: Self { self }
