@@ -14,9 +14,9 @@ struct CourseArchiveResponseDTO: ResponseModelType {
 struct CourseArchiveDTO: ResponseModelType {
     let courseId: Int
     let title: String
-    let placeCount: Int
+    let placeCount: Int?
     let thumbnailImage: String
     let mainTags: [PlaceCategoryType]
     let isBookmarked: Bool
-    let isActive: Bool
+    let isActive: Bool?
 }
