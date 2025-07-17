@@ -18,6 +18,7 @@ enum CourseTargetType {
     case removeCourseList(courseIds: [Int])
     case fetchCourseRecommend(townId: Int)
     case submitAddPlace(courseId: Int, placeId: Int)
+    case updateCourseDetail(courseId: Int, request: CourseCreateRequestDTO)
 }
 
 extension CourseTargetType: BaseTargetType {
@@ -43,6 +44,8 @@ extension CourseTargetType: BaseTargetType {
             return "/recommend/courses"
         case .submitAddPlace(courseId: let courseId, placeId: let placeId):
             return "/courses/\(courseId)/places/\(placeId)"
+        case .updateCourseDetail(courseId: let courseId, request: _):
+            return "/courses/\(courseId)"
         }
     }
     
@@ -56,6 +59,7 @@ extension CourseTargetType: BaseTargetType {
         case .removeCourseList: return .delete
         case .fetchCourseRecommend: return .get
         case .submitAddPlace: return .post
+        case .updateCourseDetail: return .put
         }
     }
     
@@ -94,6 +98,9 @@ extension CourseTargetType: BaseTargetType {
             
         case .submitAddPlace:
             return .requestPlain
+            
+        case .updateCourseDetail(courseId: _, request: let request):
+            return .requestJSONEncodable(request)
         }
     }
 }
