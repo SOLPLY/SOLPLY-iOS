@@ -19,6 +19,8 @@ enum PlaceDetailAction {
     
     case copyToClipboard(text: String)
     
+    case updateUserCoordinate(latitude: Double, longitude: Double)
+    
     // api
     
     case fetchCourseArchive(townId: Int, placeId: Int)

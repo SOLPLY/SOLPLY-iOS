@@ -20,7 +20,7 @@ enum PlaceDetailReducer {
             state.saveButtonSelected.toggle()
             
         case .requestFindDirection:
-            print("길찾기 버트 누름")
+            break
             
         case .selectCourseToAdd(let index):
             state.selectedCourseIndex = index
@@ -41,6 +41,10 @@ enum PlaceDetailReducer {
                     buttonTitle: nil
                 )
             }
+            
+        case .updateUserCoordinate(latitude: let latitude, longitude: let longitude):
+            state.userLatitude = latitude
+            state.userLongitude = longitude
             
         case .fetchCourseArchive:
             break

@@ -10,38 +10,48 @@ import CoreLocation
 
 final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
-    // MARK: - Properties
-    
     private let locationManager = CLLocationManager()
-
+    
     @Published var latitude: Double = 0.0
     @Published var longitude: Double = 0.0
     @Published var authorizationStatus: CLAuthorizationStatus = .notDetermined
     
-    // MARK: - Initializer
-
     override init() {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
     }
     
-    // MARK: - Functions
-
-    /// 위치 업데이트 함수
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
-        latitude = location.coordinate.latitude
-        longitude = location.coordinate.longitude
+    func requestPermissionAndStartUpdates() {
+        let status = locationManager.authorizationStatus
+        
+        switch status {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse, .authorizedAlways:
+            locationManager.startUpdatingLocation()
+        default:
+            break // 권한 거부 등
+        }
     }
 
-    /// 권한 상태 변경 함수
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        authorizationStatus = manager.authorizationStatus
-        if authorizationStatus == .authorizedWhenInUse || authorizationStatus == .authorizedAlways {
-            locationManager.startUpdatingLocation()
+        let status = manager.authorizationStatus
+        DispatchQueue.main.async {
+            self.authorizationStatus = status
+            
+            if status == .authorizedWhenInUse || status == .authorizedAlways {
+                self.locationManager.startUpdatingLocation()
+            }
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.first else { return }
+        DispatchQueue.main.async {
+            self.latitude = location.coordinate.latitude
+            self.longitude = location.coordinate.longitude
+        }
+        locationManager.stopUpdatingLocation()
     }
 }
