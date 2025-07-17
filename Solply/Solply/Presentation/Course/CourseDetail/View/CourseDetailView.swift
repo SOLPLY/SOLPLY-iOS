@@ -209,7 +209,7 @@ extension CourseDetailView {
                                 .showToastView(
                                     ToastContent(
                                         toastType: .defaultToast,
-                                        message: "'\(place.placeName.truncated(9))'가 수집함에 삭제되었어요.",
+                                        message: "'\(place.placeName.truncated(9))'가 수집함에서 삭제되었어요.",
                                         buttonTitle: nil
                                     )
                                 )

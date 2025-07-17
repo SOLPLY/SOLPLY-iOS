@@ -49,6 +49,14 @@ final class PlaceDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
+            
+        case .submitAddPlace(let courseId, let placeId):
+            Task {
+                let result = await effect.submitAddPlace(courseId: courseId, placeId: placeId)
+                self.dispatch(result)
+            }
+            
+            
         default:
             break
         }

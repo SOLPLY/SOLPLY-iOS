@@ -60,7 +60,7 @@ struct PlaceDetailEffect {
         do {
             let _ = try await placeService.submitPlaceBookmark(placeId: placeId)
             
-            return .placeBookmarkSubmited
+            return .placeBookmarkSubmitted
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)
@@ -74,6 +74,21 @@ struct PlaceDetailEffect {
             let _ = try await placeService.removePlaceBookmark(placeId: placeId)
             
             return . placeBookmarkRemoved
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+    
+    
+    func submitAddPlace(courseId: Int, placeId: Int) async -> PlaceDetailAction {
+        do {
+            let response = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
+            print(response)
+            
+            return .addPlaceSubmitted
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)

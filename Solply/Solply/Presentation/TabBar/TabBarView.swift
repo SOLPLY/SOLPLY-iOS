@@ -23,6 +23,7 @@ struct TabBarView: View {
             tabContent
             
             tabBar
+                .zIndex(10)
                 .padding(.bottom, 16.adjustedHeight)
         }
         .onAppear {
@@ -51,7 +52,6 @@ extension TabBarView {
             CourseRecommendView()
                 .visible(appCoordinator.selectedTab == .course)
         }
-//        .animation(.easeInOut(duration: 0.1), value: appCoordinator.selectedTab)
     }
     
     private var tabBar: some View {

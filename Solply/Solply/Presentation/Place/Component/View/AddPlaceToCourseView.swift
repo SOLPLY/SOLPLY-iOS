@@ -12,7 +12,7 @@ struct AddPlaceToCourseView: View {
     // MARK: - Properties
     
     private let columns = [
-        GridItem(.fixed(165.adjustedWidth)),
+        GridItem(.fixed(165.adjustedWidth), spacing: 11.adjustedWidth),
         GridItem(.fixed(165.adjustedWidth))
     ]
     
@@ -110,8 +110,7 @@ extension AddPlaceToCourseView {
                                     CourseCard(
                                         isSaved: course.isBookmarked ?? false,
                                         courseName: course.courseName,
-                                        // TODO: - 이미지 수정 필요
-                                        imageUrl: "",
+                                        imageUrl: course.thumbnailImage,
                                         courseCategory: course.mainTags,
                                         isSelected: true
                                     ) {
@@ -134,16 +133,19 @@ extension AddPlaceToCourseView {
                             }
                             .padding(.top, 10.adjustedHeight)
                             
-                            if selectedIndex != -1 {
-                                CTAMainButton(title: "이 코스에 추가할래요") {
-                                    addAction?(selectedIndex)
-                                }
-                                .padding(.horizontal, 20.adjustedWidth)
-                                .safeAreaInset(edge: .bottom) {
-                                    Color.clear.frame(height: 16)
-                                }
-                            }
+                            Spacer()
                         }
+                    }
+                    
+                    if selectedIndex != -1 {
+                        CTAMainButton(title: "이 코스에 추가할래요") {
+                            addAction?(selectedIndex)
+                        }
+                        .padding(.horizontal, 20.adjustedWidth)
+                        .safeAreaInset(edge: .bottom) {
+                            Color.clear.frame(height: 16)
+                        }
+                        .zIndex(10)
                     }
                 }
             }

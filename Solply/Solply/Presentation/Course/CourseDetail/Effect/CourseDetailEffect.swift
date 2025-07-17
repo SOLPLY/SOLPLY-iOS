@@ -48,7 +48,7 @@ struct CourseDetailEffect {
         do {
             let _ = try await service.submitCourseBookmark(courseId: courseId)
             
-            return .courseBookmarkSubmited
+            return .courseBookmarkSubmitted
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)
@@ -74,7 +74,7 @@ struct CourseDetailEffect {
         do {
             let _ = try await placeService.submitPlaceBookmark(placeId: placeId)
             
-            return .placeBookmarkSubmited
+            return .placeBookmarkSubmitted
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)

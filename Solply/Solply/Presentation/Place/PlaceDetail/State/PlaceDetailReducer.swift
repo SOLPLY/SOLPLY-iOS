@@ -32,15 +32,12 @@ enum PlaceDetailReducer {
             state.toastContent = toastContent
             
         case .copyToClipboard(let text):
-            if UIPasteboard.general.hasStrings {
-                UIPasteboard.general.string = text
-                
-                state.toastContent = ToastContent(
-                    toastType: .defaultToast,
-                    message: "클립보드에 복사되었습니다",
-                    buttonTitle: nil
-                )
-            }
+            UIPasteboard.general.string = text
+                if UIPasteboard.general.string == text {
+                    print("✅ 클립보드에 복사 성공")
+                } else {
+                    print("❌ 클립보드 복사 실패")
+                }
             
         case .updateUserCoordinate(latitude: let latitude, longitude: let longitude):
             state.userLatitude = latitude
@@ -80,7 +77,7 @@ enum PlaceDetailReducer {
         case .submitPlaceBookmark:
             break
             
-        case .placeBookmarkSubmited:
+        case .placeBookmarkSubmitted:
             print("장소 저장 완료")
             break
             
@@ -90,6 +87,16 @@ enum PlaceDetailReducer {
         case .placeBookmarkRemoved:
             print("장소 저장 취소 완료")
             break
+            
+        case .submitAddPlace:
+            break
+            
+        case .addPlaceSubmitted:
+            print("내 코스에 장소 추가")
+            break
+            
+        case .updateAddPlaceCourseId(let courseId):
+            state.addPlaceCourseId = courseId
         }
     }
 }
