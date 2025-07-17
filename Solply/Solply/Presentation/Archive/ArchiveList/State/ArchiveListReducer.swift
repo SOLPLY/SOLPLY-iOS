@@ -8,20 +8,20 @@
 import Foundation
 
 enum ArchiveListReducer {
-    static func reduce(state: inout ArchiveListState, action: ArchiveListAction) {
+    @MainActor static func reduce(state: inout ArchiveListState, action: ArchiveListAction) {
         switch action {
-        case .toggleArchiveList(let index):
-            if state.selectedIndex.contains(index) {
-                state.selectedIndex.remove(index)
+        case .toggleArchiveList(let courseId):
+            if state.selectedCourseIds.contains(courseId) {
+                state.selectedCourseIds.remove(courseId)
             } else {
-                state.selectedIndex.insert(index)
+                state.selectedCourseIds.insert(courseId)
             }
             
         case .toggleSelect:
             state.activeDelete = true
             
         case .toggleCancel:
-            state.selectedIndex.removeAll()
+            state.selectedCourseIds.removeAll()
             state.activeDelete = false
             
         case .showAlert:
@@ -33,7 +33,6 @@ enum ArchiveListReducer {
         case .alertDelete:
             state.isPresented = false
             state.activeDelete = false
-            print("삭제 API 연결")
             
         case .fetchCourseList:
             break
@@ -41,6 +40,17 @@ enum ArchiveListReducer {
         case .courseListFetched(let courseLists):
             state.courses = courseLists
             print(courseLists)
+            
+        case .removeCourseList:
+            break
+            
+        case .CourseListRemoved:
+            state.courses.removeAll { course in
+                state.selectedCourseIds.contains(course.courseId)
+            }
+
+            state.selectedCourseIds.removeAll()
+            state.activeDelete = false
             
         case .errorOccured(let error):
             print(error)

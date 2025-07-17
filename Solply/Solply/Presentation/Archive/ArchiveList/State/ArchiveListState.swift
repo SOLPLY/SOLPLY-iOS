@@ -8,7 +8,7 @@
 import Foundation
 
 struct ArchiveListState {
-    var selectedIndex: Set<Int> = []
+    var selectedCourseIds: Set<Int> = []
     var activeDelete: Bool = false
     var activeCancel: Bool = false
     

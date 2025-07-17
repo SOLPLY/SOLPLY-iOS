@@ -9,7 +9,7 @@ import Foundation
 
 struct CourseRecommend: Identifiable, Equatable {
     let id: Int
-    let title: String
+    let courseName: String
     let imageUrl: String
     let courseCategory: [PlaceCategoryType]
     let isBookmarked: Bool
@@ -18,7 +18,7 @@ struct CourseRecommend: Identifiable, Equatable {
 extension CourseRecommend {
     init(dto: CourseDTO) {
         self.id = dto.courseId
-        self.title = dto.title
+        self.courseName = dto.courseName
         self.imageUrl = dto.thumbnailImage
         self.courseCategory = dto.mainTags
         self.isBookmarked = dto.isBookmarked
