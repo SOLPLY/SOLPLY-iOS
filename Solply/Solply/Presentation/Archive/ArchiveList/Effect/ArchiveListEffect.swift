@@ -26,4 +26,17 @@ struct ArchiveListEffect {
             return .errorOccured(error: .unknownError)
         }
     }
+    
+    func removeCourseList(CourseIds: [Int]) async -> ArchiveListAction {
+        do {
+            let _ = try await courseService.removeCourseList(CourseIds: CourseIds)
+            
+            return .CourseListRemoved
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
 }

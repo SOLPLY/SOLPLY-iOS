@@ -35,7 +35,7 @@ struct CourseRecommendGrid: View {
                 ForEach(store.state.courses) { course in
                     CourseCard(
                         isSaved: course.isBookmarked,
-                        title: course.title,
+                        courseName: course.courseName,
                         imageUrl: course.imageUrl,
                         courseCategory: course.courseCategory,
                         isSelected: true

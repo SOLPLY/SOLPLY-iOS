@@ -13,10 +13,11 @@ struct CourseArchiveResponseDTO: ResponseModelType {
 
 struct CourseArchiveDTO: ResponseModelType {
     let courseId: Int
-    let title: String
-    let placeCount: Int?
+    let courseName: String
     let thumbnailImage: String
     let mainTags: [PlaceCategoryType]
-    let isBookmarked: Bool
+    let isBookmarked: Bool?
+    let isDuplicated: Bool?
+    let isPlaceCountLimited: Bool?
     let isActive: Bool?
 }

@@ -22,6 +22,12 @@ final class ArchiveListStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .removeCourseList(let CourseIds):
+            Task {
+                let result = await effect.removeCourseList(CourseIds: CourseIds)
+                self.dispatch(result)
+            }
+            
         default:
             break
         }

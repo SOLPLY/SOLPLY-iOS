@@ -83,6 +83,7 @@ struct ArchiveListView: View {
             store.dispatch(.alertCancel)
         } onConfirm: {
             store.dispatch(.alertDelete)
+            store.dispatch(.removeCourseList(CourseIds: [1]))
         }
     }
 }
