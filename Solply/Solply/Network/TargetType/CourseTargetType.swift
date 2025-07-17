@@ -15,7 +15,7 @@ enum CourseTargetType {
     case submitCourseBookmark(courseId: Int)
     case removeCourseBookmark(courseId: Int)
     case fetchCourseThumbnail
-    case removeCourseList(CourseIds: [Int])
+    case removeCourseList(courseIds: [Int])
     case fetchCourseRecommend(townId: Int)
 }
 
@@ -36,7 +36,7 @@ extension CourseTargetType: BaseTargetType {
             return "/courses/\(courseId)/bookmarks"
         case .fetchCourseThumbnail:
             return "/courses/bookmarks/folders"
-        case .removeCourseList(CourseIds: _):
+        case .removeCourseList(courseIds: _):
             return "/courses/bookmarks"
         case .fetchCourseRecommend:
             return "/recommend/courses"
