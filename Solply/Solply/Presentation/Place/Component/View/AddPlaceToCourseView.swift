@@ -108,9 +108,9 @@ extension AddPlaceToCourseView {
                             ForEach(Array(courses.enumerated()), id: \.element.courseId) { index, course in
                                 ZStack(alignment: .topTrailing) {
                                     CourseCard(
-                                        imageURL: course.thumbnailImage,
                                         isSaved: course.isBookmarked ?? false,
                                         courseName: course.courseName,
+                                        imageUrl: course.thumbnailImage,
                                         courseCategory: course.mainTags,
                                         isSelected: true
                                     ) {
