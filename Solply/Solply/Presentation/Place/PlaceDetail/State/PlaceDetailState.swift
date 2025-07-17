@@ -12,6 +12,8 @@ struct PlaceDetailState {
     var saveButtonSelected: Bool = false
     var saveButtonEnabled: Bool = true
     var findDirectionEnabled: Bool = true
+    var userLatitude: Double = 0.0
+    var userLongitude: Double = 0.0
     
     var courses: [CourseArchiveDTO] = []
     

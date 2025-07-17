@@ -10,19 +10,24 @@ import SwiftUI
 struct NicknameTextField: View {
 
     @State private var text: String = ""
-    private var state: NicknameTextFieldState
+    private let state: NicknameTextFieldState
     private let maxLength: Int = 8
     private let onChange: ((String) -> Void)?
-    
-    init(state: NicknameTextFieldState, onChange: ((String) -> Void)? = nil) {
+    private let onSubmit: ((String) -> Void)?
+
+    init(
+        state: NicknameTextFieldState,
+        onChange: ((String) -> Void)? = nil,
+        onSubmit: ((String) -> Void)? = nil
+    ) {
         self.state = state
         self.onChange = onChange
+        self.onSubmit = onSubmit
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             HStack(spacing: 8.adjustedHeight) {
-
                 ZStack(alignment: .leading) {
                     if text.isEmpty {
                         Text("여기에 입력하세요.")
@@ -33,6 +38,7 @@ struct NicknameTextField: View {
                     TextField("", text: $text)
                         .applySolplyFont(.body_16_r)
                         .foregroundColor(.gray800)
+                        .submitLabel(.done)
                         .onChange(of: text) { _, newValue in
                             if newValue.count > maxLength {
                                 text = String(newValue.prefix(maxLength))
@@ -40,6 +46,10 @@ struct NicknameTextField: View {
                             } else {
                                 onChange?(text)
                             }
+                        }
+                        .submitLabel(.done)
+                        .onSubmit {
+                            onSubmit?(text)
                         }
                 }
 
@@ -71,7 +81,7 @@ struct NicknameTextField: View {
                 Text("\(text.count)/\(maxLength)")
                     .applySolplyFont(.caption_12_r)
                     .foregroundColor(
-                        state == .valid ? .gray400 :
+                        state == .editing ? .gray400 :
                         state == .invalidCharacter || state == .duplicate ? .red500 :
                         .gray400
                     )

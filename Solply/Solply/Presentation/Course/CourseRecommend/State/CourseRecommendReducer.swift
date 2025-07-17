@@ -9,9 +9,16 @@ import Foundation
 
 struct CourseRecommendReducer {
     static func reduce(state: inout CourseRecommendState, action: CourseRecommendAction) {
-//        switch action {
-//        default:
-//            return
-//        }
+        switch action {
+            
+        case .fetchCourseRecommend:
+            break
+            
+        case .courseRecommendFetched(let courses):
+            state.courses = courses.map { CourseRecommend(dto: $0) }
+            
+        case .errorOccurred(error: let error):
+            print(error)
+        }
     }
 }

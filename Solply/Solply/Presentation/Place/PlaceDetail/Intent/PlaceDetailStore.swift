@@ -16,6 +16,15 @@ final class PlaceDetailStore: ObservableObject {
         PlaceDetailReducer.reduce(state: &state, action: action)
         
         switch action {
+        case .requestFindDirection:
+            effect.findDirection(
+                startLatitude: state.userLatitude,
+                startLongitude: state.userLongitude,
+                destinationLatitude: state.latitude,
+                destinationLongitude: state.longtitude,
+                destinationName: state.placeName
+            )
+            
         case .fetchCourseArchive(let townId, let placeId):
             Task {
                 let result = await effect.fetchCourseArchive(townId: townId, placeId: placeId)

@@ -12,7 +12,7 @@ struct PlaceCard: View {
     // MARK: - Properties
     
     private let isSaved: Bool
-    private let title: String
+    private let placeName: String
     private let placeCategory: MainTagType
     private let isSelected: Bool
     private let size: CGFloat
@@ -22,14 +22,14 @@ struct PlaceCard: View {
     
     init(
         isSaved: Bool,
-        title: String,
+        placeName: String,
         placeCategory: MainTagType,
         isSelected: Bool,
         size: CGFloat = 165,
         action: (() -> Void)? = nil
     ) {
         self.isSaved = isSaved
-        self.title = title
+        self.placeName = placeName
         self.placeCategory = placeCategory
         self.isSelected = isSelected
         self.size = size
@@ -37,37 +37,35 @@ struct PlaceCard: View {
     }
     
     // MARK: - Body
-
+    
     var body: some View {
-        Button {
-            action?()
-        } label: {
-            VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                ZStack(alignment: .bottomTrailing) {
-                    Image(.place)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: size.adjustedWidth, height: size.adjustedHeight)
-                        .cornerRadius(20, corners: .allCorners)
-                    
-                    if isSaved {
-                        Image(placeCategory.savedBadge ?? "")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-                            .padding(.horizontal, 12.adjustedWidth)
-                            .padding(.vertical, 12.adjustedHeight)
-                    }
-                }
+        VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+            ZStack(alignment: .bottomTrailing) {
+                Image(.place)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: size.adjustedWidth, height: size.adjustedHeight)
+                    .cornerRadius(20, corners: .allCorners)
                 
-                HStack(alignment: .center, spacing: 4.adjustedWidth) {
-                    PlaceCategoryTag(placeCategory: placeCategory)
-                    Text(title)
-                        .applySolplyFont(.body_14_m)
-                        .foregroundStyle(.coreBlack)
+                if isSaved {
+                    Image(placeCategory.savedBadge ?? "")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        .padding(.horizontal, 12.adjustedWidth)
+                        .padding(.vertical, 12.adjustedHeight)
                 }
             }
+            
+            HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                PlaceCategoryTag(placeCategory: placeCategory)
+                Text(placeName)
+                    .applySolplyFont(.body_14_m)
+                    .foregroundStyle(.coreBlack)
+            }
         }
-        .buttonStyle(.plain)
+        .onTapGesture {
+            action?()
+        }
     }
 }

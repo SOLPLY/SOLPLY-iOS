@@ -8,20 +8,28 @@
 import Foundation
 
 enum ArchiveListReducer {
-    static func reduce(state: inout ArchiveListState, action: ArchiveListAction) {
+    @MainActor static func reduce(state: inout ArchiveListState, action: ArchiveListAction) {
         switch action {
-        case .toggleArchiveList(let index):
-            if state.selectedIndex.contains(index) {
-                state.selectedIndex.remove(index)
+        case .toggleCourseArchiveList(let courseId):
+            if state.selectedCourseIds.contains(courseId) {
+                state.selectedCourseIds.remove(courseId)
             } else {
-                state.selectedIndex.insert(index)
+                state.selectedCourseIds.insert(courseId)
+            }
+            
+        case .togglePlaceArchiveList(let placeId):
+            if state.selectedPlaceIds.contains(placeId) {
+                state.selectedPlaceIds.remove(placeId)
+            } else {
+                state.selectedPlaceIds.insert(placeId)
             }
             
         case .toggleSelect:
             state.activeDelete = true
             
         case .toggleCancel:
-            state.selectedIndex.removeAll()
+            state.selectedPlaceIds.removeAll()
+            state.selectedCourseIds.removeAll()
             state.activeDelete = false
             
         case .showAlert:
@@ -33,7 +41,6 @@ enum ArchiveListReducer {
         case .alertDelete:
             state.isPresented = false
             state.activeDelete = false
-            print("삭제 API 연결")
             
         case .fetchCourseList:
             break
@@ -41,6 +48,30 @@ enum ArchiveListReducer {
         case .courseListFetched(let courseLists):
             state.courses = courseLists
             print(courseLists)
+            
+        case .removeCourseList:
+            break
+            
+        case .courseListRemoved:
+            state.courses.removeAll { course in
+                state.selectedCourseIds.contains(course.courseId)
+            }
+
+            state.selectedCourseIds.removeAll()
+            state.activeDelete = false
+            
+        case .removePlaceList:
+            print("장소 삭제")
+            break
+            
+        case .placeListRemoved:
+            print("장소 삭제")
+            state.places.removeAll() { place in
+                state.selectedPlaceIds.contains(place.placeId)
+            }
+            
+            state.selectedPlaceIds.removeAll()
+            state.activeDelete = false
             
         case .errorOccured(let error):
             print(error)

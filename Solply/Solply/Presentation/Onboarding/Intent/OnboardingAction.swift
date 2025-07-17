@@ -11,15 +11,32 @@ enum OnboardingAction {
     case next
     case goBack
     case skip
-    
-    case selectTown(TownOptionType)
-    case selectPersona(PersonaType)
-    
+
     case updateNickname(String)
+    case updateNicknameText(String)
     case textFieldFullFilled(Bool)
+
+    case checkNickname(String)
+    case checkNicknameSuccess(Bool)
+    case checkNicknameFailure(String)
+
+    case fetchTown
+    case fetchTownSuccess(selectedTown: Town, townList: [Town])
+    case fetchTownFailure(String)
+
+    case fetchPersona
+    case fetchPersonaSuccess([Persona])
+    case fetchPersonaFailure(String)
     
+    case selectTown(Town)
+    case selectPersona(Persona)
+
+    case nicknameChecked(NicknameTextFieldState)
+
+    case completeOnboardingRequest
+    case completeOnboardingSuccess
+    case completeOnboardingFailure(String)
+
     case onboardingCompleteOnAppear
     case isLottieFinished
-    
-    case nicknameChecked(NicknameTextFieldState)
 }

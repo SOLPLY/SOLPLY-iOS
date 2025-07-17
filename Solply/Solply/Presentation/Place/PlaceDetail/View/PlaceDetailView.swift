@@ -14,6 +14,7 @@ struct PlaceDetailView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceDetailStore()
     @StateObject private var toastManager = ToastManager()
+    @StateObject private var locationManager = LocationManager()
     
     private let townId: Int
     private let placeId: Int
@@ -48,8 +49,10 @@ struct PlaceDetailView: View {
             )
         )
         .onAppear {
-            // TODO: placeId 바인딩 필요
             store.dispatch(.fetchPlaceDetail(placeId: placeId))
+        }
+        .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
+            store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
         }
         .detailBottomSheet(maxState: .placeExpended) {
             bottomSheetTopButtons
@@ -132,7 +135,7 @@ extension PlaceDetailView {
                             ToastContent(
                                 toastType: .withActionToast,
                                 // TODO: 데이터 바인딩
-                                message: "‘\(store.state.courses[index].title.truncated(8))’에 추가되었어요.",
+                                message: "‘\(store.state.courses[index].courseName.truncated(8))’에 추가되었어요.",
                                 buttonTitle: "자세히 보기"
                             )
                         )

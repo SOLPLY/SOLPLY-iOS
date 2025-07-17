@@ -43,6 +43,7 @@ struct ArchiveFullView: View {
             }
             .padding(.top, 16.adjustedHeight)
         }
+        .background(.gray100)
     }
 }
 
@@ -81,8 +82,8 @@ extension ArchiveFullView {
             ZStack {
                 CourseCard(
                     isSaved: true,
-                    title: courseItem.courseName ?? "",
-                    imageURL: courseItem.thumbnailUrl ?? "",
+                    courseName: courseItem.courseName ?? "",
+                    imageUrl: courseItem.thumbnailUrl ?? "",
                     courseCategory: courseItem.primaryTags?.compactMap {
                         MainTagType(rawValue: $0)
                     } ?? [],

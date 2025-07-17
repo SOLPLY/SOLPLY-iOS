@@ -19,6 +19,9 @@ struct CourseDetailState {
     var canDelete: DeleteZoneState = .hidden
     var isInDeleteZone: Bool = false
     
+    var userLatitude: Double = 0.0
+    var userLongitude: Double = 0.0
+    
     var toastContent: ToastContent?
     
     var isAlertPresented: Bool = false
