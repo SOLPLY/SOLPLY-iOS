@@ -5,8 +5,10 @@
 //  Created by 선영주 on 7/15/25.
 //
 
-import Foundation
-
 enum FrequentTownAction {
-    case selectOption(TownOptionType)
+    case fetchTownList
+    case fetchSuccess(selectedTown: Town?, townList: [Town])
+    case fetchFailure(message: String)
+    
+    case selectTown(Town)
 }
