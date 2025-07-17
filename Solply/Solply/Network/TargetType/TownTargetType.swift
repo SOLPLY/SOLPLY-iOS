@@ -9,6 +9,11 @@ import Foundation
 
 import Moya
 
-enum TownTargetType {
+enum TownTargetType: BaseTargetType {
+    case fetchTownList
     
+    var headerType: HTTPHeader { .accessToken }
+    var path: String { "/users/towns" }
+    var method: Moya.Method { .get }
+    var task: Task { .requestPlain }
 }

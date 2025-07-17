@@ -12,9 +12,9 @@ struct FrequentTownView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @ObservedObject var store = FrequentTownStore()
     
-    private let confirmAction: ((TownOptionType) -> Void)?
+    private let confirmAction: ((Town) -> Void)?
     
-    init(confirmAction: ((TownOptionType) -> Void)? = nil) {
+    init(confirmAction: ((Town) -> Void)? = nil) {
         self.confirmAction = confirmAction
     }
     
@@ -22,14 +22,21 @@ struct FrequentTownView: View {
         VStack(alignment: .leading, spacing: 0) {
             
             HStack(alignment: .center, spacing: 16.adjustedWidth) {
-                ForEach(TownOptionType.allCases, id: \.self) { option in
-                    let isSelected = store.state.selectedOption == option
+                ForEach(store.state.townList, id: \.self) { town in
+                    let isSelected = store.state.selectedTown == town
                     TownOptionButton(
-                        type: option,
+                        title: town.name,
                         isSelected: isSelected
                     ) {
-                        store.dispatch(.selectOption(option))
+                        store.dispatch(.selectTown(town))
                     }
+                }
+                
+                TownOptionButton(
+                    title: nil,
+                    isSelected: false
+                ) {
+                    print("➕ 추가 버튼 눌림 (FrequentTownView)")
                 }
             }
             .padding(.horizontal, 16.adjustedWidth)
@@ -39,28 +46,18 @@ struct FrequentTownView: View {
             
             CTAMainButton(
                 title: "완료",
-                isEnabled: true
+                isEnabled: store.state.selectedTown != nil
             ) {
-                guard let selected = store.state.selectedOption else { return }
+                guard let selected = store.state.selectedTown else { return }
                 confirmAction?(selected)
-                // TODO: - API 통신 성공 시 .. 하도록 수정
                 appCoordinator.goToRoot()
             }
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.bottom, 20.adjustedHeight)
         }
         .customNavigationBar(.archiveList(title: "자주 가는 동네", backAction: appCoordinator.goBack))
-    }
-}
-
-#Preview {
-    let store = FrequentTownStore()
-    store.dispatch(.selectOption(.named("망원동")))
-    
-    return FrequentTownView(
-        confirmAction: { selected in
-            print("프리뷰: \(selected)")
+        .onAppear {
+            store.dispatch(.fetchTown)
         }
-    )
-    .environmentObject(AppCoordinator())
+    }
 }

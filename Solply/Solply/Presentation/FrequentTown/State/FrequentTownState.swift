@@ -8,6 +8,7 @@
 import Foundation
 
 struct FrequentTownState {
-    var selectedOption: TownOptionType? = nil
+    var townList: [Town] = []
+    var selectedTown: Town? = nil
+    var errorMessage: String? = nil
 }
-

@@ -9,33 +9,69 @@ import Foundation
 
 @MainActor
 final class OnboardingStore: ObservableObject {
-
+    
     @Published private(set) var state = OnboardingState()
-    private let effect: OnboardingEffect = OnboardingEffect()
-
+    private let effect = OnboardingEffect()
+    
     func dispatch(_ action: OnboardingAction) {
         OnboardingReducer.reduce(state: &state, action: action)
         
         switch action {
+            
         case .updateNickname(let nickname):
+            state.nickname = nickname
+            
             if nickname.isEmpty {
-                self.dispatch(.nicknameChecked(.placeholder))
-            } else if nickname.contains(where: { !$0.isLetter && !$0.isNumber }) {
-                self.dispatch(.nicknameChecked(.invalidCharacter))
-            } else if nickname == "중복된이름" {
-                self.dispatch(.nicknameChecked(.duplicate))
+                state.nicknameType = .placeholder
             } else {
-                self.dispatch(.nicknameChecked(.valid))
+                state.nicknameType = .editing
             }
-        case .onboardingCompleteOnAppear:
+
+        case .checkNickname(let nickname):
+            if nickname.isEmpty {
+                dispatch(.nicknameChecked(.placeholder))
+            } else if nickname.contains(where: { !$0.isLetter && !$0.isNumber }) {
+                dispatch(.nicknameChecked(.invalidCharacter))
+            } else {
+                Task {
+                    let result = await effect.checkNickname(nickname)
+                    dispatch(result)
+                }
+            }
+        
+        case .fetchTown:
             Task {
-                let result = await effect.waitThenComplete()
-                self.dispatch(result)
+                let result = await effect.fetchTownList()
+                dispatch(result)
             }
+            
+        case .fetchPersona:
+            Task {
+                let result = await effect.fetchPersonaList()
+                dispatch(result)
+            }
+            
+        case .onboardingCompleteOnAppear:
+            guard let selectedTown = state.selectedTown,
+                  let selectedPersona = state.selectedPersona else {
+                print("❗️ 선택된 동네나 페르소나가 없습니다.")
+                return
+            }
+
+            Task {
+                let result = await effect.completeOnboarding(
+                    selectedTownId: selectedTown.id,
+                    favoriteTownIdList: state.townList.map { $0.id },
+                    persona: selectedPersona.type,
+                    nickname: state.nickname
+                )
+                dispatch(result)
+            }
+        case .isLottieFinished:
+            state.isLottieFinished = true
             
         default:
             break
         }
     }
 }
-

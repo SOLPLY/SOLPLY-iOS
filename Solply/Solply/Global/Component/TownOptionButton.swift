@@ -11,18 +11,18 @@ struct TownOptionButton: View {
 
     // MARK: - Properties
     
-    private let type: TownOptionType
+    private let title: String?
     private let isSelected: Bool
     private let action: (() -> Void)?
 
     // MARK: - Initializer
     
     init(
-        type: TownOptionType,
+        title: String?,
         isSelected: Bool = false,
         action: (() -> Void)? = nil
     ) {
-        self.type = type
+        self.title = title
         self.isSelected = isSelected
         self.action = action
     }
@@ -40,7 +40,7 @@ struct TownOptionButton: View {
 
     private var content: some View {
         VStack(alignment: .leading, spacing: 10.adjustedWidth) {
-            if let title = type.title {
+            if let title = title {
                 Text(title)
                     .applySolplyFont(.button_16_m)
                     .foregroundColor(.gray900)
@@ -54,8 +54,22 @@ struct TownOptionButton: View {
             }
         }
         .frame(width: 100.adjustedWidth, height: 100.adjustedHeight)
-        .background(type.backgroundColor(isSelected: isSelected))
+        .background(backgroundColor)
         .capsuleClipped()
-        .addBorder(.circle, borderColor: type.borderColor(isSelected: isSelected), borderWidth: 1)
+        .addBorder(.circle, borderColor: borderColor, borderWidth: 1)
+    }
+    
+    private var backgroundColor: Color {
+        if title == nil {
+            return .gray200
+        }
+        return isSelected ? .red100 : .gray100
+    }
+
+    private var borderColor: Color {
+        if title == nil {
+            return .gray200
+        }
+        return isSelected ? .red300 : .gray300
     }
 }

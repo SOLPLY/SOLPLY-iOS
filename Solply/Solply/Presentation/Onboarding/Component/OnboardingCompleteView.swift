@@ -18,7 +18,6 @@ struct OnboardingCompleteView: View {
     
     init(store: OnboardingStore) {
         self.store = store
-        print(store.state.nickname)
     }
 
     // MARK: - Body

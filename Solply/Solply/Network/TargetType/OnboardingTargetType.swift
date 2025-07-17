@@ -10,5 +10,43 @@ import Foundation
 import Moya
 
 enum OnboardingTargetType {
+    case fetchPersonaList
+    case fetchOnboardingCompleteInfo
+    case completeOnboarding(OnboardingRequestDTO)
+}
+
+extension OnboardingTargetType: BaseTargetType {
     
+    var headerType: HTTPHeader {
+        return .accessToken
+    }
+    
+    var path: String {
+        switch self {
+        case .fetchPersonaList:
+            return "/onboarding/questions/persona"
+        case .fetchOnboardingCompleteInfo:
+            return "/onboarding/complete"
+        case .completeOnboarding:
+            return "/onboarding/users"
+        }
+    }
+    
+    var method: Moya.Method {
+        switch self {
+        case .completeOnboarding:
+            return .patch
+        default:
+            return .get
+        }
+    }
+    
+    var task: Task {
+        switch self {
+        case .fetchPersonaList, .fetchOnboardingCompleteInfo:
+            return .requestPlain
+        case .completeOnboarding(let requestDTO):
+            return .requestJSONEncodable(requestDTO)
+        }
+    }
 }
