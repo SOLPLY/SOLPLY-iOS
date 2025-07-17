@@ -89,4 +89,16 @@ enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, R
         case .walk: return .walkIcon
         }
     }
+    
+    var parendId: Int {
+        switch self {
+        case .all: return 0
+        case .cafe: return 1
+        case .food: return 2
+        case .book: return 3
+        case .shopping: return 4
+        case .unique: return 5
+        case .walk: return 6
+        }
+    }
 }
