@@ -64,8 +64,9 @@ struct PlaceDetailView: View {
             guard let toastContent else { return }
             
             toastManager.showToast(content: toastContent) {
-                // TODO: courseId 바인딩 필요
-                appCoordinator.navigate(to: .courseDetail(courseId: 1, fromArchive: true))
+                if let addPlaceCourseId = store.state.addPlaceCourseId {
+                    appCoordinator.navigate(to: .courseDetail(courseId: addPlaceCourseId, fromArchive: true))
+                }
             }
         }
         .toast(toastManager: toastManager)
@@ -129,6 +130,7 @@ extension PlaceDetailView {
                 ) { index in
                     store.dispatch(.selectCourseToAdd(index: index))
                 } addAction: { index in
+                    store.dispatch(.updateAddPlaceCourseId(courseId: store.state.courses[index].courseId))
                     store.dispatch(.submitAddPlace(courseId: store.state.courses[index].courseId, placeId: placeId))
                     store.dispatch(.addPlaceToCourse(index: index))
                     store.dispatch(.toggleAddToCourse)

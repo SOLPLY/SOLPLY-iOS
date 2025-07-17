@@ -20,6 +20,7 @@ enum PlaceDetailAction {
     case copyToClipboard(text: String)
     
     case updateUserCoordinate(latitude: Double, longitude: Double)
+    case updateAddPlaceCourseId(courseId: Int)
     
     // api
     

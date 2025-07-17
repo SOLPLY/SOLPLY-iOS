@@ -94,6 +94,9 @@ enum PlaceDetailReducer {
         case .addPlaceSubmited:
             print("내 코스에 장소 추가")
             break
+            
+        case .updateAddPlaceCourseId(let courseId):
+            state.addPlaceCourseId = courseId
         }
     }
 }
