@@ -19,6 +19,7 @@ struct PlaceRecommendState {
     
     var selectedSubTags: [SelectableSubTag] = []
 
+    var fetchedPlaceList: [Place] = []
 }
 
 struct SelectableSubTag: Identifiable, Hashable {
