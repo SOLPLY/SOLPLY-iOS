@@ -40,3 +40,11 @@ extension PlaceService {
         return try await self.request(with: .fetchPlaceDetail(placeId: placeId))
     }
 }
+
+extension PlaceService {
+    func fetchPlaceRecommend(
+        townId: Int
+    ) async throws -> BaseResponseBody<PlaceRecommendResponseDTO> {
+        return try await self.request(with: .fetchPlaceRecommend(townId: townId))
+    }
+}

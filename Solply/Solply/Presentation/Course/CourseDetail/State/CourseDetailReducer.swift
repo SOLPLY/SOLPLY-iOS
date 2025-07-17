@@ -23,6 +23,9 @@ enum CourseDetailReducer {
         case .toggleSavePlace(let index):
             state.places[index].isBookmarked.toggle()
             
+        case .requestFindDirection:
+            break
+            
         case .toggleEdting:
             if state.isEditing {
                 state.isSaveOptionPresented = true
@@ -97,6 +100,10 @@ enum CourseDetailReducer {
             
         case .saveCourseCancel:
             state.isSaveOptionPresented = false
+            
+        case .updateUserCoordinate(let latitude, let longitude):
+            state.userLatitude = latitude
+            state.userLongitude = longitude
             
         case .fetchCourseDetail:
             break

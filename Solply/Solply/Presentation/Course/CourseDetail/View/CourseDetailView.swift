@@ -14,6 +14,7 @@ struct CourseDetailView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = CourseDetailStore()
     @StateObject private var toastManager = ToastManager()
+    @StateObject private var locationManager = LocationManager()
     
     private let courseId: Int
     private let fromArchive: Bool
@@ -88,6 +89,9 @@ struct CourseDetailView: View {
                     .transition(.opacity)
                     .zIndex(10)
             }
+        }
+        .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
+            store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
         }
     }
 }
@@ -177,9 +181,13 @@ extension CourseDetailView {
                     ) {
                         store.dispatch(.focusPlace(index: index))
                     } detailAction: {
-                        print("detailAction")
+                        print("장소 상세")
                     } findDirectionAction: {
-                        print("findDirectionAction")
+                        store.dispatch(.requestFindDirection(
+                            destinationLatitude: store.state.places[index].latitude,
+                            destinationLongitude: store.state.places[index].longitude,
+                            destinationName: store.state.places[index].placeName)
+                        )
                     } saveAction: {
                         store.dispatch(.toggleSavePlace(index: index))
                         if store.state.places[index].isBookmarked {

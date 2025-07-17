@@ -84,7 +84,7 @@ private extension PlaceDetailMapView {
         mapView.isIndoorMapEnabled = false
         mapView.contentInset = contentInset
         mapView.isZoomGestureEnabled = true
-        mapView.positionMode = .normal
+        mapView.positionMode = .disabled
         mapView.logoAlign = .rightTop
         mapView.logoInteractionEnabled = true
         return mapView

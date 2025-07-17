@@ -8,11 +8,7 @@
 import Foundation
 
 struct PlaceRecommendState {
-    var placeRecommendItems: [TempPlaceRecommendItem] = [
-        TempPlaceRecommendItem(id: 0, category: .food, title: "장소 0", description: "0번 장소 설명입니다"),
-        TempPlaceRecommendItem(id: 1, category: .cafe, title: "장소 1", description: "1번 장소 설명입니다"),
-        TempPlaceRecommendItem(id: 2, category: .book, title: "장소 2", description: "2번 장소 설명입니다")
-    ]
+    var placeRecommendItems: [PlaceRecommend] = []
     
     var isCategoryBottomSheetPresented: Bool = false
     var selectedCategory: PlaceCategoryType = .all

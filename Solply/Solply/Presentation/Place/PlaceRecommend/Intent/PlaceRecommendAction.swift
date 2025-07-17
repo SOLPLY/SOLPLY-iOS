@@ -16,4 +16,9 @@ enum PlaceRecommendAction {
     case dismissMoreOptionBottomSheet
     
     case confirmMoreOptionTags([SelectableOptionTag])
+    
+    // api
+    case fetchPlaceRecommend(townId: Int)
+    case placeRecommendFetched([PlaceInfoDTO])
+    case errorOccurred(error: NetworkError)
 }
