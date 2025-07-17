@@ -22,6 +22,7 @@ struct AddPlaceToCourseView: View {
     private let cardAction: ((Int) -> Void)?
     private let addAction: ((Int) -> Void)?
     private let backAction: (() -> Void)?
+    private let addCourseAction: (() -> Void)?
     
     // MARK: - Initializer
     
@@ -30,13 +31,15 @@ struct AddPlaceToCourseView: View {
         selectedIndex: Int,
         cardAction: ((Int) -> Void)? = nil,
         addAction: ((Int) -> Void)? = nil,
-        backAction: (() -> Void)? = nil
+        backAction: (() -> Void)? = nil,
+        addCourseAction: (() -> Void)? = nil
     ) {
         self.courses = courses
         self.selectedIndex = selectedIndex
         self.cardAction = cardAction
         self.addAction = addAction
         self.backAction = backAction
+        self.addCourseAction = addCourseAction
     }
     
     // MARK: - Body
@@ -89,7 +92,7 @@ extension AddPlaceToCourseView {
                         .padding(.top, 130.adjustedHeight)
                     
                     Button {
-                        
+                        addCourseAction?()
                     } label: {
                         Text("나만의 코스 수집하러 가기")
                             .foregroundStyle(.green800)

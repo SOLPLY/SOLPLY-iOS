@@ -32,6 +32,11 @@ struct ArchiveEmptyView: View {
             
             Button {
                 appCoordinator.goBack()
+                if archiveCategory == .course {
+                    appCoordinator.switchTab(to: .course)
+                } else {
+                    appCoordinator.switchTab(to: .place)
+                }
             } label: {
                 Text("나만의 \(archiveCategory.title) 수집하러 가기")
                     .foregroundStyle(archiveCategory.title == "장소" ? .purple700 : .green800)
