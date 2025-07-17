@@ -57,4 +57,32 @@ struct PlaceRecommendEffect {
             return .errorOccurred(error: .unknownError)
         }
     }
+    
+    func fetchPlaceList(
+        townId: Int,
+        isBookmarkSearch: Bool,
+        mainTagId: Int?,
+        subTagAIdList: [Int]?,
+        subTagBIdList: [Int]?
+    ) async -> PlaceRecommendAction {
+        do {
+            let response = try await placeService.fetchPlaceList(
+                townId: townId,
+                isBookmarkSearch: isBookmarkSearch,
+                mainTagId: mainTagId,
+                subTagAIdList: subTagAIdList,
+                subTagBIdList: subTagBIdList
+            )
+            
+            guard let data = response.data else {
+                return .errorOccurred(error: .responseError)
+            }
+            
+            return .placeListFetched(data.places)
+        } catch let error as NetworkError {
+            return .errorOccurred(error: error)
+        } catch {
+            return .errorOccurred(error: .unknownError)
+        }
+    }
 }

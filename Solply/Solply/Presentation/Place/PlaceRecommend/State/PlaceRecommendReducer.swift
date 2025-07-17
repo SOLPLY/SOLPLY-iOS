@@ -22,7 +22,10 @@ struct PlaceRecommendReducer {
         case .dismissSubTagBottomSheet:
             state.isSubTagBottomSheetPresented = false
             
-        case .confirmSubTags(let selectedTags):
+        case .resetSubTags:
+            state.selectedSubTags.removeAll()
+            
+        case .updateSubTags(let selectedTags):
             state.selectedSubTags = selectedTags
             
             // api
@@ -43,6 +46,12 @@ struct PlaceRecommendReducer {
         
         case .subTagsFetched(let subTags):
             state.fetchedSubTags = subTags.map { SubTag(dto: $0) }
+            
+        case .fetchPlaceList:
+            break
+            
+        case .placeListFetched(let placeList):
+            state.fetchedPlaceList = placeList.map { Place(dto: $0) }
             
         case .errorOccurred(error: let error):
             print(error)
