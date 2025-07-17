@@ -44,7 +44,6 @@ struct MainTagBottomSheet: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .center, spacing: 11.adjustedHeight) {
-                    // TODO: 여기를 state로 바꿔야하려나
                     ForEach(MainTagType.allCases) { category in
                         CategoryListRow(
                             category: category,
@@ -65,7 +64,6 @@ struct MainTagBottomSheet: View {
                     }
                 }
             }
-            // UI상, ScrollView로 감싸주었고 스크롤은 굳이 필요하지 않아서 disable로 설정해둠.
             .scrollDisabled(true)
         }
         .padding(.horizontal, 16.adjustedWidth)

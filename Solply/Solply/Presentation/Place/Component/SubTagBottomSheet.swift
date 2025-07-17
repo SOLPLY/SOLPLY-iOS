@@ -35,7 +35,6 @@ struct SubTagBottomSheet: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            // 추후 확장성을 고려하고 ScrollView로 구현
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .center, spacing: 32.adjustedHeight) {
                     SubTagSection(

@@ -48,54 +48,30 @@ enum SubTagType: String, ResponseModelType, RequestModelType {
     
     var title: String {
         switch self {
-        case .coffeeDessert:
-            return "커피/디저트"
-        case .work:
-            return "작업"
-        case .reading:
-            return "독서"
-        case .healing:
-            return "힐링"
-        case .signatureMenu:
-            return "시그니처메뉴"
-        case .moodInterior:
-            return "감성인테리어"
-        case .sunlight:
-            return "채광좋음"
-        case .manyPlug:
-            return "콘센트많음"
-        case .noTimeLimit:
-            return "시간제한없음"
-        case .barTable:
-            return "바테이블"
-        case .koreanFood:
-            return "한식"
-        case .chineseFood:
-            return "중식"
-        case .japaneseFood:
-            return "일식"
-        case .westernFood:
-            return "양식"
-        case .bar:
-            return "바/술집"
-        case .bakery:
-            return "베이커리"
-        case .asianFood:
-            return "아시안푸드"
-        case .singleMenu:
-            return "1인메뉴"
-        case .selfService:
-            return "셀프서비스"
-        case .art:
-            return "문화예술"
-        case .workshop:
-            return "공방/클래스"
-        case .lifestyleShop:
-            return "소품샵"
-        case .vintageShop:
-            return "빈티지샵"
-        case .popupMarket:
-            return "팝업/플리마켓"
+        case .coffeeDessert: return "커피/디저트"
+        case .work: return "작업"
+        case .reading: return "독서"
+        case .healing: return "힐링"
+        case .signatureMenu: return "시그니처메뉴"
+        case .moodInterior: return "감성인테리어"
+        case .sunlight: return "채광좋음"
+        case .manyPlug: return "콘센트많음"
+        case .noTimeLimit: return "시간제한없음"
+        case .barTable: return "바테이블"
+        case .koreanFood: return "한식"
+        case .chineseFood: return "중식"
+        case .japaneseFood: return "일식"
+        case .westernFood: return "양식"
+        case .bar: return "바/술집"
+        case .bakery: return "베이커리"
+        case .asianFood: return "아시안푸드"
+        case .singleMenu: return "1인메뉴"
+        case .selfService: return "셀프서비스"
+        case .art: return "문화예술"
+        case .workshop: return "공방/클래스"
+        case .lifestyleShop: return "소품샵"
+        case .vintageShop: return "빈티지샵"
+        case .popupMarket: return "팝업/플리마켓"
         }
     }
 }
