@@ -11,28 +11,27 @@ struct FilterPlaceGrid: View {
     
     // MARK: - Properties
     
-    @StateObject private var store = PlaceRecommendStore()
-    
-    @State private var selectedOptionTags: [SelectableSubTag] = []
-    
+    @EnvironmentObject var appCoordinator: AppCoordinator
+    @ObservedObject var store: PlaceRecommendStore
+        
     private let columns = [
         GridItem(.fixed(145.adjustedWidth), spacing: 12.5.adjustedWidth),
         GridItem(.fixed(145.adjustedWidth))
     ]
     
     private var filteredCount: Int {
-        selectedOptionTags.count
+        store.state.selectedSubTags.count
     }
 
     private var filteredFirstTag: String {
-        selectedOptionTags.first?.name.title ?? ""
+        store.state.selectedSubTags.first?.name.title ?? ""
     }
 
     private var isSelectedEmpty: Bool {
-        selectedOptionTags.isEmpty
+        store.state.selectedSubTags.isEmpty
     }
     
-    private var placeCategory: MainTagType {
+    private var mainTag: MainTagType {
         store.state.selectedMainTag
     }
     
@@ -45,14 +44,22 @@ struct FilterPlaceGrid: View {
             
             VStack(alignment: .leading, spacing: 16.adjustedHeight) {
                 HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                    FilterButton(title: placeCategory.title) {
+                    FilterButton(title: mainTag.title) {
                         store.dispatch(.toggleMainTagBottomSheet)
                     }
                     .sheet(
                         isPresented: Binding(
                             get: { store.state.isMainTagBottomSheetPresented },
-                            set: { isPresented in
+                            set: { isPresented, selectedTag in
                                 if !isPresented {
+                                    store.dispatch(.resetSubTags)
+                                    store.dispatch(.fetchPlaceList(
+                                        townId: 2,
+                                        isBookmarkSearch: false,
+                                        mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
+                                        subTagAIdList: [],
+                                        subTagBIdList: []
+                                    ))
                                     store.dispatch(.dismissMainTagBottomSheet)
                                 }
                             }
@@ -76,7 +83,7 @@ struct FilterPlaceGrid: View {
                         store.dispatch(.toggleSubTagBottomSheet)
                     }
                     .visible(
-                        store.state.fetchedSubTags.isEmpty || placeCategory == .all ? false : true
+                        store.state.fetchedSubTags.isEmpty || mainTag == .all ? false : true
                     )
                     .sheet(
                         isPresented: Binding(
@@ -99,31 +106,57 @@ struct FilterPlaceGrid: View {
                                 }
                             )
                         ) { selectedTags in
-                            self.selectedOptionTags = selectedTags
+                            store.dispatch(.updateSubTags(selectedTags))
+                            
+                            let subTagAIdList = selectedTags
+                                .filter { $0.tagType == "OPTION1" && $0.isSelected }
+                                .map { $0.id }
+                            
+                            let subTagBIdList = selectedTags
+                                .filter { $0.tagType == "OPTION2" && $0.isSelected }
+                                .map { $0.id }
+                            
+                            store.dispatch(.fetchPlaceList(
+                                townId: 2,
+                                isBookmarkSearch: false,
+                                mainTagId: store.state.selectedMainTag.parentId,
+                                subTagAIdList: subTagAIdList,
+                                subTagBIdList: subTagBIdList
+                            ))
                         }
                             .presentationDetents([.fraction(0.6)])
                     }
                 }
                 
                 LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {
-                    ForEach(0..<10) { index in
+                    ForEach(store.state.fetchedPlaceList) { place in
                         PlaceCard(
-                            isSaved: true,
-                            placeName: "유어마인드",
-                            placeCategory: .shopping,
+                            isSaved: place.isBookmarked,
+                            thumbnailUrl: place.thumbnailUrl,
+                            placeName: place.placeName,
+                            placeCategory: place.mainTag,
                             isSelected: true,
                             size: 145
                         ) {
-                            print("gg")
+                            // TODO: - townId 바인딩 필요
+                            appCoordinator.navigate(to: .placeDetail(townId: 2, placeId: place.placeId))
                         }
                     }
                 }
             }
             .onChange(of: store.state.selectedMainTag) { _, _ in
-                selectedOptionTags = []
+                store.dispatch(.resetSubTags)
             }
             .padding(.vertical, 20.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)
         }
+    }
+}
+
+extension FilterPlaceGrid {
+    private func isSameSelection(_ new: [SelectableSubTag], _ old: [SelectableSubTag]) -> Bool {
+        let newSelected = new.filter { $0.isSelected }.map { $0.id }.sorted()
+        let oldSelected = old.filter { $0.isSelected }.map { $0.id }.sorted()
+        return newSelected == oldSelected
     }
 }

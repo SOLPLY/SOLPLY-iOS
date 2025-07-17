@@ -13,6 +13,8 @@ struct PlaceInformationView: View {
     
     // MARK: - Properties
     
+    @Environment(\.openURL) private var openURL
+    
     private let primaryTag: MainTagType
     private let placeName: String
     private let introduction: String
@@ -102,13 +104,24 @@ extension PlaceInformationView {
     
     private var information: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-            PlaceInformationRow(title: "주소", value: address)
-            PlaceInformationRow(title: "전화번호", value: contactNumber)
+            PlaceInformationWithCopyRow(title: "주소", value: address) {
+                copyAction?(address)
+            }
+            
+            if !contactNumber.isEmpty {
+                PlaceInformationWithCopyRow(title: "전화번호", value: contactNumber) {
+                    copyAction?(contactNumber)
+                }
+            } else {
+                PlaceInformationRow(title: "전화번호", value: "")
+            }
+            
             PlaceInformationRow(title: "운영시간", value: openingHours)
             if !snsLink.isEmpty {
                 PlaceInformationRow(title: "바로가기", value: snsLink[0].snsPlatform) {
-                    print(snsLink[0].url)
-                    copyAction?(snsLink[0].url)
+                    if let url = URL(string: snsLink[0].url) {
+                        openURL(url)
+                    }
                 }
             }
         }
@@ -123,4 +136,30 @@ extension PlaceInformationView {
         .padding(.horizontal, 16.adjustedWidth)
         .padding(.bottom, 40.adjustedHeight)
     }
+}
+
+// MARK: - Preview
+
+#Preview {
+    PlaceInformationView(
+        primaryTag: .cafe,
+        placeName: "빈티지 카페 마망",
+        introduction: "감성 가득한 빈티지 소품과 함께하는 공간",
+        imageURLs: [
+            "https://example.com/image1.jpg",
+            "https://example.com/image2.jpg"
+        ],
+        address: "서울 마포구 망원로 42",
+        contactNumber: "02-1234-5678",
+        openingHours: "매일 11:00 - 22:00",
+        snsLink: [
+            PlaceDetailSnsLink(
+                snsPlatform: "Instagram",
+                url: "https://instagram.com/mamang_vintage"
+            )
+        ],
+        copyAction: { copiedText in
+            print("📋 복사됨: \(copiedText)")
+        }
+    )
 }

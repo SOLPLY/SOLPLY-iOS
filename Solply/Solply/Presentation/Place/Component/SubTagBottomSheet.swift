@@ -65,6 +65,8 @@ struct SubTagBottomSheet: View {
                     optionTags2.indices.forEach { index in
                         optionTags2[index].isSelected = false
                     }
+                    
+                    store.dispatch(.resetSubTags)
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -72,7 +74,7 @@ struct SubTagBottomSheet: View {
                     let selectedTags = (optionTags1 + optionTags2).filter { $0.isSelected }
                     // TODO: - 네트워크 로직 추가
                     
-                    store.dispatch(.confirmSubTags(selectedTags))
+                    store.dispatch(.updateSubTags(selectedTags))
                     
                     action?(selectedTags)
                     
