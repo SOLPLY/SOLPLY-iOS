@@ -119,7 +119,8 @@ extension AddPlaceToCourseView {
                                             cardAction?(selectedIndex == index ? -1 : index)
                                         }
                                     }
-                                    .opacity(course.isActive ? 1 : 0.3)
+                                    .opacity((course.isActive ?? true) ? 1 : 0.3)
+
                                     
                                     if selectedIndex == index {
                                         Image(.checkIcon)

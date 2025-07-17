@@ -34,6 +34,17 @@ enum ArchiveListReducer {
             state.isPresented = false
             state.activeDelete = false
             print("삭제 API 연결")
+            
+        case .fetchCourseList:
+            break
+            
+        case .courseListFetched(let courseLists):
+            state.courses = courseLists
+            print(courseLists)
+            
+        case .errorOccured(let error):
+            print(error)
+            break
         }
     }
 }
