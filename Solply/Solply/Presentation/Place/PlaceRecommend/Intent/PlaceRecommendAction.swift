@@ -14,8 +14,9 @@ enum PlaceRecommendAction {
     
     case toggleSubTagBottomSheet
     case dismissSubTagBottomSheet
-    
-    case confirmSubTags([SelectableSubTag])
+        
+    case resetSubTags
+    case updateSubTags([SelectableSubTag])
     
     // api
     case fetchPlaceRecommend(townId: Int)
@@ -26,6 +27,15 @@ enum PlaceRecommendAction {
     
     case fetchSubTags(parentId: Int)
     case subTagsFetched([SubTagDTO])
+    
+    case fetchPlaceList(
+        townId: Int,
+        isBookmarkSearch: Bool,
+        mainTagId: Int?,
+        subTagAIdList: [Int]?,
+        subTagBIdList: [Int]?
+    )
+    case placeListFetched([PlaceDTO])
     
     case errorOccurred(error: NetworkError)
 }

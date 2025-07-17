@@ -52,6 +52,7 @@ extension ArchiveListFullView {
         ZStack(alignment: .topTrailing) {
             PlaceCard(
                 isSaved: true,
+                thumbnailUrl: "",
                 placeName: item.placeName,
                 placeCategory: .book, // TODO: 실제 태그 처리
                 isSelected: store.state.selectedPlaceIds.contains(item.placeId)
