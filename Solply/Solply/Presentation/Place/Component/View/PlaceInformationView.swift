@@ -94,10 +94,10 @@ extension PlaceInformationView {
                         .cornerRadius(20, corners: .allCorners)
                 }
             }
-            .scrollTargetLayout() // 정렬 되어야 할 뷰 레이아웃에 붙여줍니다.
+            .scrollTargetLayout()
             .padding(.horizontal, 16.adjustedWidth)
         }
-        .scrollTargetBehavior(.viewAligned) // 스크롤 영역 가장자리에 콘텐츠 뷰가 딱 맞게 정렬됩니다.
+        .scrollTargetBehavior(.viewAligned)
     }
     
     private var information: some View {
