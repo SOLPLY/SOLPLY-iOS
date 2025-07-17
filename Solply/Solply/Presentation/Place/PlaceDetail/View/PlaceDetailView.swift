@@ -50,6 +50,7 @@ struct PlaceDetailView: View {
         .onAppear {
             // TODO: placeId 바인딩 필요
             store.dispatch(.fetchPlaceDetail(placeId: placeId))
+            store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
         }
         .detailBottomSheet(maxState: .placeExpended) {
             bottomSheetTopButtons
@@ -142,9 +143,6 @@ extension PlaceDetailView {
                     store.dispatch(.selectCourseToAdd(index: -1))
                 }
                 .transition(.move(edge: .trailing))
-                .onAppear {
-                    store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
-                }
             } else {
                 PlaceInformationView(
                     primaryTag: store.state.primaryTag,

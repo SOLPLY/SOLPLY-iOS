@@ -121,5 +121,6 @@ extension PlaceInformationView {
             borderWidth: 1
         )
         .padding(.horizontal, 16.adjustedWidth)
+        .padding(.bottom, 40.adjustedHeight)
     }
 }
