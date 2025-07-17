@@ -8,7 +8,7 @@
 import Foundation
 
 enum ArchiveListAction {
-    case toggleArchiveList(index: Int)
+    case toggleArchiveList(courseId: Int)
     case toggleSelect
     case toggleCancel
     
@@ -19,5 +19,9 @@ enum ArchiveListAction {
     // api
     case fetchCourseList(townId: Int, placeId: Int?)
     case courseListFetched(courseLists: [CourseArchiveDTO])
+    
+    case removeCourseList(CourseIds: [Int])
+    case CourseListRemoved
+    
     case errorOccured(error: NetworkError)
 }

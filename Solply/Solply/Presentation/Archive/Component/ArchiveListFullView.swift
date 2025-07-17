@@ -57,18 +57,18 @@ extension ArchiveListFullView {
                     isSaved: true,
                     title: placeTitle[index],
                     placeCategory: .book,
-                    isSelected: store.state.selectedIndex.contains(index)
+                    isSelected: store.state.selectedCourseIds.contains(item.courseId)
                 ) {
                     if store.state.activeDelete {
-                        print(index)
-                        store.dispatch(.toggleArchiveList(index: index))
+                        print("courseId: \(item.courseId)")
+                        store.dispatch(.toggleArchiveList(courseId: item.courseId))
                     } else {
                         // TODO: townId, placeId 바인딩 필요
                         appCoordinator.navigate(to: .placeDetail(townId: 1, placeId: 1))
                     }
                     
                     if store.state.activeCancel {
-                        store.dispatch(.toggleArchiveList(index: index))
+                        store.dispatch(.toggleArchiveList(courseId: item.courseId))
                     }
                 }
                 .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
@@ -78,28 +78,28 @@ extension ArchiveListFullView {
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                     CourseCard(
                         isSaved: true,
-                        title: item.title,
+                        title: item.courseName,
                         imageURL: item.thumbnailImage,
                         courseCategory: item.mainTags,
-                        isSelected: store.state.selectedIndex.contains(index)
+                        isSelected: store.state.selectedCourseIds.contains(item.courseId)
                     ) {
                         if store.state.activeDelete {
-                            print(index)
-                            store.dispatch(.toggleArchiveList(index: index))
+                            print("courseId: \(item.courseId)")
+                            store.dispatch(.toggleArchiveList(courseId: item.courseId))
                         } else {
                             // TODO: 코스 id 바인딩 필요 지금은 1
                             appCoordinator.navigate(to: .courseDetail(courseId: 1, fromArchive: true))
                         }
                         
                         if store.state.activeCancel {
-                            store.dispatch(.toggleArchiveList(index: index))
+                            store.dispatch(.toggleArchiveList(courseId: item.courseId))
                         }
                     }
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                 }
             }
 
-            if store.state.selectedIndex.contains(index) {
+            if store.state.selectedCourseIds.contains(item.courseId) {
                 Image(.checkIcon)
                     .resizable()
                     .aspectRatio(contentMode: .fit)

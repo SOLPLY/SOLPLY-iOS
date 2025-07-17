@@ -10,12 +10,12 @@ import SwiftUI
 struct ArchiveView: View {
     
     // MARK: - Properties
-
+    
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject var store = ArchiveStore()
     
     // MARK: - Body
-
+    
     var body: some View {
         
         VStack(alignment: .leading, spacing: 0) {
@@ -29,26 +29,27 @@ struct ArchiveView: View {
             // TODO: - 데이터 연결 후 데이터 여부에 따라서 분기 처리 필요
             
             Group {
+                switch store.state.selectedCategory {
+                case .place:
                     if store.state.folderThumbnailList.isEmpty {
-                        if store.state.selectedCategory == .place {
-                            ArchiveEmptyView(archiveCategory: .place)
-                                .transition(.move(edge: .leading))
-                        } else {
-                            ArchiveEmptyView(archiveCategory: .course)
-                                .transition(.move(edge: .trailing))
-                        }
+                        ArchiveEmptyView(archiveCategory: .place)
+                            .transition(.move(edge: .leading))
                     } else {
-                        if store.state.selectedCategory == .place {
-                            ArchiveFullView(archiveCategory: .place, store: store)
-                                .transition(.move(edge: .leading))
-                                
-                        } else {
-                            ArchiveFullView(archiveCategory: .course, store: store)
-                                .transition(.move(edge: .trailing))
-                        }
+                        ArchiveFullView(archiveCategory: .place, store: store)
+                            .transition(.move(edge: .leading))
+                    }
+
+                case .course:
+                    if store.state.folders.isEmpty {
+                        ArchiveEmptyView(archiveCategory: .course)
+                            .transition(.move(edge: .trailing))
+                    } else {
+                        ArchiveFullView(archiveCategory: .course, store: store)
+                            .transition(.move(edge: .trailing))
                     }
                 }
-                .animation(.easeInOut(duration: 0.2), value: store.state.selectedCategory)
+            }
+            .animation(.easeInOut(duration: 0.2), value: store.state.selectedCategory)
             .gesture(
                 DragGesture()
                     .onEnded { value in
