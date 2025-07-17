@@ -1,5 +1,5 @@
 //
-//  MoreOptionHeader.swift
+//  SubTagHeader.swift
 //  Solply
 //
 //  Created by seozero on 7/15/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MoreOptionHeader: View {
+struct SubTagHeader: View {
     
     // MARK: - Properties
     

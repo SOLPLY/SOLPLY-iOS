@@ -1,5 +1,5 @@
 //
-//  CategoryBottomSheet.swift
+//  MainTagBottomSheet.swift
 //  Solply
 //
 //  Created by seozero on 7/15/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CategoryBottomSheet: View {
+struct MainTagBottomSheet: View {
     
     // MARK: - Properties
     
@@ -44,13 +44,20 @@ struct CategoryBottomSheet: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .center, spacing: 11.adjustedHeight) {
-                    ForEach(PlaceCategoryType.allCases) { category in
+                    // TODO: 여기를 state로 바꿔야하려나
+                    ForEach(MainTagType.allCases) { category in
                         CategoryListRow(
                             category: category,
-                            isSelectedCategory: category == store.state.selectedCategory
+                            isSelectedCategory: category == store.state.selectedMainTag
                         ) {
-                            store.dispatch(.selectCategory(category))
-                            isPresented = false
+                            store.dispatch(.selectMainTag(category))
+                            store.dispatch(.fetchSubTags(parentId: category.parentId)) {
+                                if !store.state.fetchedSubTags.isEmpty {
+                                    isPresented = false
+                                } else {
+                                    isPresented = false
+                                }
+                            }
                         }
                         
                         Divider()
@@ -71,7 +78,7 @@ struct CategoryListRow: View {
     
     // MARK: - Properties
     
-    private let category: PlaceCategoryType
+    private let category: MainTagType
     private let isSelectedCategory: Bool
     
     private let action: (() -> Void)?
@@ -79,7 +86,7 @@ struct CategoryListRow: View {
     // MARK: - Initializer
     
     init(
-        category: PlaceCategoryType,
+        category: MainTagType,
         isSelectedCategory: Bool,
         action: (() -> Void)? = nil
     ) {

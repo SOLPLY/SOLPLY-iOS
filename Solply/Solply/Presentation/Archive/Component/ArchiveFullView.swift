@@ -84,7 +84,7 @@ extension ArchiveFullView {
                     title: courseItem.courseName ?? "",
                     imageURL: courseItem.thumbnailUrl ?? "",
                     courseCategory: courseItem.primaryTags?.compactMap {
-                        PlaceCategoryType(rawValue: $0)
+                        MainTagType(rawValue: $0)
                     } ?? [],
                     isSelected: false
                 )

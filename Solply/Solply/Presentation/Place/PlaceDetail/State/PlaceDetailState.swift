@@ -20,7 +20,7 @@ struct PlaceDetailState {
     var toastContent: ToastContent?
     
     var isBookmarked: Bool = false
-    var primaryTag: PlaceCategoryType = .all
+    var primaryTag: MainTagType = .all
     var placeName: String = ""
     var introduction: String = ""
     var imageURLs: [String] = []

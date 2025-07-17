@@ -16,7 +16,7 @@ struct CourseCard: View {
     private let isSaved: Bool
     private let title: String
     private let imageURL: String
-    private let courseCategory: [PlaceCategoryType]
+    private let courseCategory: [MainTagType]
     private let isSelected: Bool
     private let action: (() -> Void)?
     
@@ -26,7 +26,7 @@ struct CourseCard: View {
         isSaved: Bool,
         title: String,
         imageURL: String,
-        courseCategory: [PlaceCategoryType],
+        courseCategory: [MainTagType],
         isSelected: Bool,
         action: (() -> Void)? = nil
     ) {

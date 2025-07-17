@@ -10,7 +10,7 @@ import Foundation
 struct PlaceRecommend: Identifiable, Equatable {
     let id: Int
     let thumbnailUrl: String
-    let category: PlaceCategoryType
+    let category: MainTagType
     let title: String
     let introduction: String
 }

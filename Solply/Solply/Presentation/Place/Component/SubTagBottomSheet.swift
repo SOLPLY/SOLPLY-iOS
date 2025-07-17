@@ -1,5 +1,5 @@
 //
-//  MoreOptionBottomSheet.swift
+//  SubTagBottomSheet.swift
 //  Solply
 //
 //  Created by seozero on 7/15/25.
@@ -7,24 +7,24 @@
 
 import SwiftUI
 
-struct MoreOptionBottomSheet: View {
+struct SubTagBottomSheet: View {
     
     // MARK: - Properties
     
     @ObservedObject private var store: PlaceRecommendStore
     @Binding var isPresented: Bool
     
-    @State private var optionTags1: [SelectableOptionTag] = []
-    @State private var optionTags2: [SelectableOptionTag] = []
+    @State private var optionTags1: [SelectableSubTag] = []
+    @State private var optionTags2: [SelectableSubTag] = []
     
-    private let action: (([SelectableOptionTag]) -> Void)?
+    private let action: (([SelectableSubTag]) -> Void)?
     
     // MARK: - Initializer
     
     init(
         store: PlaceRecommendStore,
         isPresented: Binding<Bool>,
-        action: (([SelectableOptionTag]) -> Void)? = nil
+        action: (([SelectableSubTag]) -> Void)? = nil
     ) {
         self.store = store
         self._isPresented = isPresented
@@ -38,14 +38,14 @@ struct MoreOptionBottomSheet: View {
             // 추후 확장성을 고려하고 ScrollView로 구현
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .center, spacing: 32.adjustedHeight) {
-                    MoreOptionSection(
+                    SubTagSection(
                         isPresented: $isPresented,
                         tags: $optionTags1,
                         title: "옵션 1",
                         isButtonVisible: true
                     )
                     
-                    MoreOptionSection(
+                    SubTagSection(
                         isPresented: $isPresented,
                         tags: $optionTags2,
                         title: "옵션 2",
@@ -73,7 +73,7 @@ struct MoreOptionBottomSheet: View {
                     let selectedTags = (optionTags1 + optionTags2).filter { $0.isSelected }
                     // TODO: - 네트워크 로직 추가
                     
-                    store.dispatch(.confirmMoreOptionTags(selectedTags))
+                    store.dispatch(.confirmSubTags(selectedTags))
                     
                     action?(selectedTags)
                     
@@ -84,21 +84,18 @@ struct MoreOptionBottomSheet: View {
         }
         .padding(.horizontal, 16.adjustedWidth)
         .onAppear {
-            optionTags1 = store.state.tempOptionTags
-                .filter { $0.tagType == "OPTION1" }
-                .map { tag in
-                    var tagModel = SelectableOptionTag(from: tag)
-                    tagModel.isSelected = store.state.selectedOptionTags.contains(where: { $0.id == tagModel.id })
-                    return tagModel
-                }
-            
-            optionTags2 = store.state.tempOptionTags
-                .filter { $0.tagType == "OPTION2" }
-                .map { tag in
-                    var tagModel = SelectableOptionTag(from: tag)
-                    tagModel.isSelected = store.state.selectedOptionTags.contains(where: { $0.id == tagModel.id })
-                    return tagModel
-                }
+            let domainTags = store.state.fetchedSubTags.map {
+                SubTag(id: $0.id, tagType: $0.tagType, name: $0.name)
+            }
+
+            let selectableTags = domainTags.map { tag in
+                var tagModel = SelectableSubTag(from: tag)
+                tagModel.isSelected = store.state.selectedSubTags.contains { $0.id == tag.id }
+                return tagModel
+            }
+
+            optionTags1 = selectableTags.filter { $0.tagType == "OPTION1" }
+            optionTags2 = selectableTags.filter { $0.tagType == "OPTION2" }
         }
     }
 }

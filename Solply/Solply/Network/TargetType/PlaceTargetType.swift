@@ -38,7 +38,7 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/\(placeId)/bookmarks"
         case .fetchPlaceDetail(placeId: let placeId):
             return "/places/\(placeId)"
-        case .fetchPlaceRecommend(townId: let townId):
+        case .fetchPlaceRecommend:
             return "/recommend/places"
         }
     }

@@ -16,7 +16,7 @@ struct CourseArchiveDTO: ResponseModelType {
     let title: String
     let placeCount: Int?
     let thumbnailImage: String
-    let mainTags: [PlaceCategoryType]
+    let mainTags: [MainTagType]
     let isBookmarked: Bool
     let isActive: Bool?
 }

@@ -19,7 +19,7 @@ struct ArchiveListFullView: View {
     private let town: [String] = ["망원동", "연희동"]
     private let placeTitle: [String] = ["유어마인드", "내마인드", "니마인드"]
     private let courseTitle: [String] = ["오감으로 수집하는 하루", "오감자", "찍어먹는 오감자"]
-    private let tags: [[PlaceCategoryType]] = [
+    private let tags: [[MainTagType]] = [
         [.book, .food],
         [.walk, .unique],
         [.shopping, .unique]
