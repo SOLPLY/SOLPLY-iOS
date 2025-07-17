@@ -13,4 +13,5 @@ struct ArchiveListState {
     var activeCancel: Bool = false
     
     var isPresented: Bool = false
+    var courses: [CourseArchiveDTO] = []
 }
