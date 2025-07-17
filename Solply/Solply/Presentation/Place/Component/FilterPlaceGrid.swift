@@ -107,7 +107,7 @@ struct FilterPlaceGrid: View {
                     ForEach(0..<10) { index in
                         PlaceCard(
                             isSaved: true,
-                            title: "유어마인드",
+                            placeName: "유어마인드",
                             placeCategory: .shopping,
                             isSelected: true,
                             size: 145

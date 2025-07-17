@@ -51,8 +51,8 @@ extension CourseService {
 }
 
 extension CourseService {
-    func removeCourseList(CourseIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO> {
-        return try await self.request(with: .removeCourseList(CourseIds: CourseIds))
+    func removeCourseList(courseIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .removeCourseList(courseIds: courseIds))
     }
 }
 
