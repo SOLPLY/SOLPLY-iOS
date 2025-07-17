@@ -26,7 +26,9 @@ struct PlaceRecommendView: View {
                 }
                 .padding(.horizontal, 20.adjustedWidth)
                 
-                TodayPlaceRecommendCarousel(placeRecommendItems: store.state.placeRecommendItems)
+                if !store.state.placeRecommendItems.isEmpty {
+                    TodayPlaceRecommendCarousel(store: store)
+                }
                 
                 FilterPlaceGrid()
                     .padding(.horizontal, 16.adjustedWidth)
@@ -36,6 +38,10 @@ struct PlaceRecommendView: View {
             .padding(.bottom, 112.adjustedHeight)
         }
         .background(.gray100)
+        .task {
+            // TODO: - townId 바인딩 필요
+            store.dispatch(.fetchPlaceRecommend(townId: 2))
+        }
     }
 }
 
