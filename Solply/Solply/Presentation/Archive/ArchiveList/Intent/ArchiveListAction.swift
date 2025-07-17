@@ -8,7 +8,8 @@
 import Foundation
 
 enum ArchiveListAction {
-    case toggleArchiveList(courseId: Int)
+    case toggleCourseArchiveList(courseId: Int)
+    case togglePlaceArchiveList(placeId: Int)
     case toggleSelect
     case toggleCancel
     
@@ -22,6 +23,9 @@ enum ArchiveListAction {
     
     case removeCourseList(CourseIds: [Int])
     case CourseListRemoved
+    
+    case removePlaceList(PlaceIds: [Int])
+    case PlaceListRemoved
     
     case errorOccured(error: NetworkError)
 }

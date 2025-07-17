@@ -10,17 +10,25 @@ import Foundation
 enum ArchiveListReducer {
     @MainActor static func reduce(state: inout ArchiveListState, action: ArchiveListAction) {
         switch action {
-        case .toggleArchiveList(let courseId):
+        case .toggleCourseArchiveList(let courseId):
             if state.selectedCourseIds.contains(courseId) {
                 state.selectedCourseIds.remove(courseId)
             } else {
                 state.selectedCourseIds.insert(courseId)
             }
             
+        case .togglePlaceArchiveList(let placeId):
+            if state.selectedPlaceIds.contains(placeId) {
+                state.selectedPlaceIds.remove(placeId)
+            } else {
+                state.selectedPlaceIds.insert(placeId)
+            }
+            
         case .toggleSelect:
             state.activeDelete = true
             
         case .toggleCancel:
+            state.selectedPlaceIds.removeAll()
             state.selectedCourseIds.removeAll()
             state.activeDelete = false
             
@@ -50,6 +58,19 @@ enum ArchiveListReducer {
             }
 
             state.selectedCourseIds.removeAll()
+            state.activeDelete = false
+            
+        case .removePlaceList:
+            print("장소 삭제")
+            break
+            
+        case .PlaceListRemoved:
+            print("장소 삭제")
+            state.places.removeAll() { place in
+                state.selectedPlaceIds.contains(place.placeId)
+            }
+            
+            state.selectedPlaceIds.removeAll()
             state.activeDelete = false
             
         case .errorOccured(let error):
