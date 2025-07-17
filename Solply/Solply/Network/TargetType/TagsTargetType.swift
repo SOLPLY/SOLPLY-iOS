@@ -16,12 +16,7 @@ enum TagsTargetType {
 
 extension TagsTargetType: BaseTargetType {
     var headerType: HTTPHeader {
-        switch self {
-        case .fetchMainTags:
-            return .accessToken
-        case .fetchSubTags:
-            return .accessToken
-        }
+        return .accessToken
     }
     
     var path: String {
