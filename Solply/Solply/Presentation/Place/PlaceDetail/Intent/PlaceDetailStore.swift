@@ -17,7 +17,7 @@ final class PlaceDetailStore: ObservableObject {
         
         switch action {
         case .requestFindDirection:
-            effect.openNaverMapRoute(
+            effect.findDirection(
                 startLatitude: state.userLatitude,
                 startLongitude: state.userLongitude,
                 destinationLatitude: state.latitude,
