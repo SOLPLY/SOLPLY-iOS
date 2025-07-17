@@ -42,7 +42,6 @@ struct TodayPlaceRecommendCarousel: View {
                 let scale = max(0.75, 1.0 - (distanceFromCenter / (cardOffset * 2)))
                 
                 TodayPlaceRecommendCard(
-                    // TODO: - .temp 이미지 변경하기
                     thumbnailImageUrl: store.state.placeRecommendItems[index].thumbnailUrl,
                     category: store.state.placeRecommendItems[index].category,
                     title: store.state.placeRecommendItems[index].title,

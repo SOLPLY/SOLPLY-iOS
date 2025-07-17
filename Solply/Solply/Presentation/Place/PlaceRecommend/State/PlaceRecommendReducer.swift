@@ -30,8 +30,6 @@ struct PlaceRecommendReducer {
             break
             
         case .placeRecommendFetched(let placeRecommend):
-            print("✅ placeRecommendFetched: \(placeRecommend)")
-
             state.placeRecommendItems = placeRecommend.prefix(3).map { PlaceRecommend(dto: $0) }
             
         case .errorOccurred(error: let error):

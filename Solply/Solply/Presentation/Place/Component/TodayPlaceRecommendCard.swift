@@ -40,7 +40,6 @@ struct TodayPlaceRecommendCard: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 240.adjustedWidth, height: 240.adjustedHeight)
-                .clipped()
                 .cornerRadius(20, corners: .allCorners)
             
             LinearGradient(
@@ -49,8 +48,7 @@ struct TodayPlaceRecommendCard: View {
                 endPoint: .center
             )
             .frame(width: 240.adjustedWidth, height: 240.adjustedHeight)
-            .cornerRadius(20)
-            .clipped()
+            .cornerRadius(20, corners: .allCorners)
             .allowsHitTesting(false)
             
             VStack(alignment: .leading, spacing: 4.adjustedHeight) {
