@@ -17,6 +17,7 @@ enum CourseTargetType {
     case fetchCourseThumbnail
     case removeCourseList(CourseIds: [Int])
     case fetchCourseRecommend(townId: Int)
+    case submitAddPlace(courseId: Int, placeId: Int)
 }
 
 extension CourseTargetType: BaseTargetType {
@@ -40,6 +41,8 @@ extension CourseTargetType: BaseTargetType {
             return "/courses/bookmarks"
         case .fetchCourseRecommend:
             return "/recommend/courses"
+        case .submitAddPlace(courseId: let courseId, placeId: let placeId):
+            return "/courses/\(courseId)/places/\(placeId)"
         }
     }
     
@@ -52,6 +55,7 @@ extension CourseTargetType: BaseTargetType {
         case .fetchCourseThumbnail: return .get
         case .removeCourseList: return .delete
         case .fetchCourseRecommend: return .get
+        case .submitAddPlace: return .post
         }
     }
     
@@ -87,6 +91,9 @@ extension CourseTargetType: BaseTargetType {
         case .fetchCourseRecommend(let townId):
             let params: [String: Any] = ["townId": townId]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
+            
+        case .submitAddPlace:
+            return .requestPlain
         }
     }
 }

@@ -129,6 +129,7 @@ extension PlaceDetailView {
                 ) { index in
                     store.dispatch(.selectCourseToAdd(index: index))
                 } addAction: { index in
+                    store.dispatch(.submitAddPlace(courseId: store.state.courses[index].courseId, placeId: placeId))
                     store.dispatch(.addPlaceToCourse(index: index))
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(
@@ -141,6 +142,7 @@ extension PlaceDetailView {
                             )
                         )
                     )
+                    store.dispatch(.fetchPlaceDetail(placeId: placeId))
                 } backAction: {
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(.selectCourseToAdd(index: -1))
@@ -158,6 +160,15 @@ extension PlaceDetailView {
                     snsLink: store.state.snsLink
                 ) { text in
                     store.dispatch(.copyToClipboard(text: text))
+                    store.dispatch(
+                        .showToastView(
+                            ToastContent(
+                                toastType: .defaultToast,
+                                message: "클리보드에 복사되었습니다",
+                                buttonTitle: nil
+                            )
+                        )
+                    )
                 }
                 .padding(.top, 8.adjustedHeight)
                 .transition(.move(edge: .leading))

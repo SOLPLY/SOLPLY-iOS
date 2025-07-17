@@ -145,6 +145,7 @@ extension AddPlaceToCourseView {
                         .safeAreaInset(edge: .bottom) {
                             Color.clear.frame(height: 16)
                         }
+                        .zIndex(10)
                     }
                 }
             }

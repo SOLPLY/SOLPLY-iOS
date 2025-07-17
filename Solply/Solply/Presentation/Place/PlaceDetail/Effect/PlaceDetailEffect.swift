@@ -81,4 +81,19 @@ struct PlaceDetailEffect {
             return .errorOccured(error: .unknownError)
         }
     }
+    
+    
+    func submitAddPlace(courseId: Int, placeId: Int) async -> PlaceDetailAction {
+        do {
+            let response = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
+            print(response)
+            
+            return .addPlaceSubmited
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
 }
