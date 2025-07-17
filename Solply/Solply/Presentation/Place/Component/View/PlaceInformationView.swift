@@ -94,8 +94,10 @@ extension PlaceInformationView {
                         .cornerRadius(20, corners: .allCorners)
                 }
             }
+            .scrollTargetLayout()
             .padding(.horizontal, 16.adjustedWidth)
         }
+        .scrollTargetBehavior(.viewAligned)
     }
     
     private var information: some View {
