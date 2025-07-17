@@ -25,7 +25,7 @@ struct PlaceInformationRow: View {
     
     // MARK: - Body
     var body: some View {
-        HStack(alignment: .center, spacing: 16.adjustedWidth) {
+        HStack(alignment: .top, spacing: 16.adjustedWidth) {
             Text(title)
                 .applySolplyFont(.caption_14_m)
                 .foregroundStyle(.coreBlack)
@@ -40,14 +40,12 @@ struct PlaceInformationRow: View {
                         .applySolplyFont(.caption_14_r)
                         .underline()
                         .foregroundStyle(.coreBlack)
-                        .frame(height: 21.adjustedHeight)
                 }
                 .buttonStyle(.plain)
             } else {
                 Text(value)
                     .applySolplyFont(.caption_14_r)
                     .foregroundStyle(.coreBlack)
-                    .frame(height: 21.adjustedHeight)
             }
         }
     }

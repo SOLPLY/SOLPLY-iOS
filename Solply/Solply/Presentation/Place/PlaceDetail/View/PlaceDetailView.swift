@@ -14,36 +14,62 @@ struct PlaceDetailView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceDetailStore()
     @StateObject private var toastManager = ToastManager()
+    @StateObject private var locationManager = LocationManager()
+    
+    private let townId: Int
+    private let placeId: Int
+    
+    // MARK: - Initializer
+    
+    init(townId: Int, placeId: Int) {
+        self.townId = townId
+        self.placeId = placeId
+    }
     
     // MARK: - Body
     
     var body: some View {
-        PlaceDetailMapView(place: PlaceDetail.mockData())
-            .customNavigationBar(
-                .placeDetail(
-                    title: "이거는 받아야지",
-                    backAction: {
-                        appCoordinator.goBack()
-                    },
-                    homeAction: {
-                        appCoordinator.goToRoot()
-                    }
-                )
+        PlaceDetailMapView(
+            latitude: store.state.latitude,
+            longitude: store.state.longtitude,
+            addButtonSelected: store.state.addButtonSelected,
+            saveButtonSelected: store.state.saveButtonSelected,
+            saveButtonEnabled: store.state.saveButtonEnabled,
+            findDirectionEnabled: store.state.findDirectionEnabled
+        )
+        .customNavigationBar(
+            .placeDetail(
+                title: store.state.placeName,
+                backAction: {
+                    appCoordinator.goBack()
+                },
+                homeAction: {
+                    appCoordinator.goToRoot()
+                }
             )
-            .detailBottomSheet(maxState: .placeExpended) {
-                bottomSheetTopButtons
-            } sheetContent: {
-                bottomSheetContent
-            }
-            .onChange(of: store.state.toastContent) { _, toastContent in
-                guard let toastContent else { return }
-                
-                toastManager.showToast(content: toastContent) {
-                    // TODO: courseId 바인딩 필요
-                    appCoordinator.navigate(to: .courseDetail(courseId: 1, fromArchive: true))
+        )
+        .onAppear {
+            store.dispatch(.fetchPlaceDetail(placeId: placeId))
+            store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+        }
+        .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
+            store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
+        }
+        .detailBottomSheet(maxState: .placeExpended) {
+            bottomSheetTopButtons
+        } sheetContent: {
+            bottomSheetContent
+        }
+        .onChange(of: store.state.toastContent) { _, toastContent in
+            guard let toastContent else { return }
+            
+            toastManager.showToast(content: toastContent) {
+                if let addPlaceCourseId = store.state.addPlaceCourseId {
+                    appCoordinator.navigate(to: .courseDetail(courseId: addPlaceCourseId, fromArchive: true))
                 }
             }
-            .toast(toastManager: toastManager)
+        }
+        .toast(toastManager: toastManager)
     }
 }
 
@@ -70,8 +96,14 @@ extension PlaceDetailView {
             SolplySaveButton(
                 contentType: .place,
                 isEnabled: store.state.saveButtonEnabled,
-                isSelected: store.state.saveButtonSelected
+                isSelected: store.state.isBookmarked
             ) {
+                if store.state.isBookmarked {
+                    store.dispatch(.removePlaceBookmark(placeId: placeId))
+                } else {
+                    store.dispatch(.submitPlaceBookmark(placeId: placeId))
+                }
+                
                 store.dispatch(.toggleSavePlace)
                 if store.state.saveButtonSelected {
                     store.dispatch(
@@ -98,30 +130,52 @@ extension PlaceDetailView {
                 ) { index in
                     store.dispatch(.selectCourseToAdd(index: index))
                 } addAction: { index in
+                    store.dispatch(.updateAddPlaceCourseId(courseId: store.state.courses[index].courseId))
+                    store.dispatch(.submitAddPlace(courseId: store.state.courses[index].courseId, placeId: placeId))
                     store.dispatch(.addPlaceToCourse(index: index))
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(
                         .showToastView(
                             ToastContent(
                                 toastType: .withActionToast,
-                                // TODO: 데이터 바인딩
-                                message: "‘오감으로 수집하..’에 추가되었어요.",
+                                message: "‘\(store.state.courses[index].courseName.truncated(8))’에 추가되었어요.",
                                 buttonTitle: "자세히 보기"
                             )
                         )
                     )
+                    store.dispatch(.fetchPlaceDetail(placeId: placeId))
                 } backAction: {
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(.selectCourseToAdd(index: -1))
+                } addCourseAction: {
+                    appCoordinator.goBack()
+                    appCoordinator.switchTab(to: .course)
                 }
                 .transition(.move(edge: .trailing))
-                .onAppear {
-                    store.dispatch(.fetchCourseArchive(townId: 1, placeId: 1))
-                }
             } else {
-                PlaceInformationView()
-                    .padding(.top, 8.adjustedHeight)
-                    .transition(.move(edge: .leading))
+                PlaceInformationView(
+                    primaryTag: store.state.primaryTag,
+                    placeName: store.state.placeName,
+                    introduction: store.state.introduction,
+                    imageURLs: store.state.imageURLs,
+                    address: store.state.address,
+                    contactNumber: store.state.contactNumber,
+                    openingHours: store.state.openingHours,
+                    snsLink: store.state.snsLink
+                ) { text in
+                    store.dispatch(.copyToClipboard(text: text))
+                    store.dispatch(
+                        .showToastView(
+                            ToastContent(
+                                toastType: .defaultToast,
+                                message: "클립보드에 복사되었습니다",
+                                buttonTitle: nil
+                            )
+                        )
+                    )
+                }
+                .padding(.top, 8.adjustedHeight)
+                .transition(.move(edge: .leading))
             }
         }
         .animation(.easeInOut(duration: 0.2), value: store.state.addButtonSelected)
@@ -129,6 +183,6 @@ extension PlaceDetailView {
 }
 
 #Preview {
-    PlaceDetailView()
+    PlaceDetailView(townId: 1, placeId: 1)
         .environmentObject(AppCoordinator())
 }

@@ -9,13 +9,8 @@ import SwiftUI
 
 struct NicknameView: View {
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store: OnboardingStore
     
-    init(store: OnboardingStore) {
-        self.store = store
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("솔플리와 함께할 준비 되셨나요?\n닉네임을 알려주세요.")
@@ -28,9 +23,11 @@ struct NicknameView: View {
                 state: store.state.nicknameType,
                 onChange: { text in
                     store.dispatch(.updateNickname(text))
+                },
+                onSubmit: { text in
+                    store.dispatch(.checkNickname(text))
                 }
             )
-            
             .padding(.bottom, 24.adjustedHeight)
             
             Spacer()

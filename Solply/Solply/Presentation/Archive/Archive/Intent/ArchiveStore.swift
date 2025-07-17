@@ -21,6 +21,11 @@ final class ArchiveStore: ObservableObject {
                 let result = await effect.fetchPlaceThumbnail()
                 self.dispatch(result)
             }
+        case .fetchCourseThumbnail:
+            Task {
+                let result = await effect.fetchCourseThumbnail()
+                self.dispatch(result)
+            }
             
         default:
             break

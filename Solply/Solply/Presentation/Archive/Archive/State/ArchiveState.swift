@@ -11,4 +11,5 @@ struct ArchiveState {
     var selectedCategory: SolplyContentType = .place
     
     var folderThumbnailList : [PlaceArchiveThumbnailDTO] = []
+    var folders: [CourseArchiveThumbnailDTO] = []
 }

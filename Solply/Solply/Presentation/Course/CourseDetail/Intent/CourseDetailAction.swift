@@ -13,7 +13,7 @@ enum CourseDetailAction {
     case toggleSavePlace(index: Int)
     case toggleEdting
     
-    case startDragging(draggedPlace: PlaceDetail)
+    case startDragging(draggedPlace: PlaceDetailInCourse)
     case whileDragging(from: Int, to: Int)
     case endDragging
     case deletePlace
@@ -30,19 +30,26 @@ enum CourseDetailAction {
     case saveCourseAsNew
     case saveCourseCancel
     
+    case requestFindDirection(
+        destinationLatitude: Double,
+        destinationLongitude: Double,
+        destinationName: String
+    )
+    case updateUserCoordinate(latitude: Double, longitude: Double)
+    
     // api
     case fetchCourseDetail(courseId: Int)
     case courseDetailFetched(courseDetail: CourseDetailResponseDTO)
     case errorOccured(error: NetworkError)
     
     case submitCourseBookmark(courseId: Int)
-    case courseBookmarkSubmited
+    case courseBookmarkSubmitted
     
     case removeCourseBookmark(courseId: Int)
     case courseBookmarkRemoved
     
     case submitPlaceBookmark(placeId: Int)
-    case placeBookmarkSubmited
+    case placeBookmarkSubmitted
     
     case removePlaceBookmark(placeId: Int)
     case placeBookmarkRemoved

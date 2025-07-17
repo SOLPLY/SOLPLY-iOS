@@ -7,37 +7,50 @@
 
 import SwiftUI
 
+import Kingfisher
+
 struct TodayPlaceRecommendCard: View {
     
     // MARK: - Properties
     
-    private let backgroundImage: UIImage
-    private let category: PlaceCategoryType
+    private let thumbnailImageUrl: String
+    private let category: MainTagType
     private let title: String
-    private let desciption: String
+    private let introduction: String
     
     // MARK: - Initializer
     
     init(
-        backgroundImage: UIImage,
-        category: PlaceCategoryType,
+        thumbnailImageUrl: String,
+        category: MainTagType,
         title: String,
-        description: String
+        introduction: String
     ) {
-        self.backgroundImage = backgroundImage
+        self.thumbnailImageUrl = thumbnailImageUrl
         self.category = category
         self.title = title
-        self.desciption = description
+        self.introduction = introduction
     }
     
     // MARK: - Body
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            Image(.temp)
+            KFImage(URL(string: thumbnailImageUrl))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
+                .frame(width: 240.adjustedWidth, height: 240.adjustedHeight)
                 .cornerRadius(20, corners: .allCorners)
+            
+            LinearGradient(
+                gradient: Gradient(colors: [Color.black.opacity(0.8), Color.clear]),
+                startPoint: .bottom,
+                endPoint: .center
+            )
+            .frame(width: 240.adjustedWidth, height: 240.adjustedHeight)
+            .cornerRadius(20, corners: .allCorners)
+            .allowsHitTesting(false)
+            
             VStack(alignment: .leading, spacing: 4.adjustedHeight) {
                 PlaceCategoryTag(placeCategory: category)
                 
@@ -45,7 +58,7 @@ struct TodayPlaceRecommendCard: View {
                     .applySolplyFont(.display_16_sb)
                     .foregroundStyle(.coreWhite)
                 
-                Text(desciption)
+                Text(introduction)
                     .applySolplyFont(.display_12_r)
                     .foregroundStyle(.coreWhite)
                     .lineLimit(2)
@@ -53,6 +66,5 @@ struct TodayPlaceRecommendCard: View {
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.bottom, 16.adjustedHeight)
         }
-        .frame(width: 240.adjustedWidth, height: 240.adjustedHeight)
     }
 }

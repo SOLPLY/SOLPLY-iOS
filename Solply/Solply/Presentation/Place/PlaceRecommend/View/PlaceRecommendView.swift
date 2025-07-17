@@ -34,9 +34,11 @@ struct PlaceRecommendView: View {
                 }
                 .padding(.horizontal, 20.adjustedWidth)
                 
-                TodayPlaceRecommendCarousel(placeRecommendItems: store.state.placeRecommendItems)
+                if !store.state.placeRecommendItems.isEmpty {
+                    TodayPlaceRecommendCarousel(store: store)
+                }
                 
-                FilterPlaceGrid()
+                FilterPlaceGrid(store: store)
                     .padding(.horizontal, 16.adjustedWidth)
                 
             }
@@ -44,6 +46,27 @@ struct PlaceRecommendView: View {
             .padding(.bottom, 112.adjustedHeight)
         }
         .background(.gray100)
+        .task {
+            // TODO: - townId 바인딩 필요
+            store.dispatch(.fetchPlaceRecommend(townId: 2))
+            
+            let subTagAIdList = store.state.selectedSubTags
+                .filter { $0.tagType == "OPTION1" && $0.isSelected }
+                .map { $0.id }
+            
+            let subTagBIdList = store.state.selectedSubTags
+                .filter { $0.tagType == "OPTION2" && $0.isSelected }
+                .map { $0.id }
+            
+            // TODO: - townId 바인딩 필요
+            store.dispatch(.fetchPlaceList(
+                townId: 2,
+                isBookmarkSearch: false,
+                mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
+                subTagAIdList: subTagAIdList,
+                subTagBIdList: subTagBIdList
+            ))
+        }
     }
 }
 

@@ -23,6 +23,9 @@ enum CourseDetailReducer {
         case .toggleSavePlace(let index):
             state.places[index].isBookmarked.toggle()
             
+        case .requestFindDirection:
+            break
+            
         case .toggleEdting:
             if state.isEditing {
                 state.isSaveOptionPresented = true
@@ -98,6 +101,10 @@ enum CourseDetailReducer {
         case .saveCourseCancel:
             state.isSaveOptionPresented = false
             
+        case .updateUserCoordinate(let latitude, let longitude):
+            state.userLatitude = latitude
+            state.userLongitude = longitude
+            
         case .fetchCourseDetail:
             break
             
@@ -105,7 +112,7 @@ enum CourseDetailReducer {
             state.courseTitle = courseDetails.courseName
             state.courseDescription = courseDetails.introduction
             
-            let placeEntities: [PlaceDetail] = courseDetails.places.map { PlaceDetail(dto: $0) }
+            let placeEntities: [PlaceDetailInCourse] = courseDetails.places.map { PlaceDetailInCourse(dto: $0) }
             state.places = placeEntities
 
             state.isCourseBookmarked = courseDetails.isBookmarked
@@ -118,7 +125,7 @@ enum CourseDetailReducer {
         case .submitCourseBookmark:
             break
             
-        case .courseBookmarkSubmited:
+        case .courseBookmarkSubmitted:
             print("저장 완료")
             break
             
@@ -132,7 +139,7 @@ enum CourseDetailReducer {
         case .submitPlaceBookmark:
             break
             
-        case .placeBookmarkSubmited:
+        case .placeBookmarkSubmitted:
             print("장소 저장 완료")
             break
             

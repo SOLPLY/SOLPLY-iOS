@@ -11,14 +11,20 @@ struct CourseRecommendGrid: View {
     
     // MARK: - Properties
     
+    @ObservedObject var store: CourseRecommendStore
+    
     private let columns = [
         GridItem(.fixed(165.adjustedWidth), spacing: 12.5.adjustedWidth),
         GridItem(.fixed(165.adjustedWidth))
     ]
-    private let placeCategory: PlaceCategoryType = .all
+    private let placeCategory: MainTagType = .all
     private let courseDetailAction: ((Int) -> Void)?
     
-    init(courseDetailAction: ((Int) -> Void)? = nil) {
+    init(
+        store: CourseRecommendStore,
+        courseDetailAction: ((Int) -> Void)? = nil
+    ) {
+        self.store = store
         self.courseDetailAction = courseDetailAction
     }
     
@@ -27,15 +33,15 @@ struct CourseRecommendGrid: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16.adjustedHeight) {
             LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {
-                ForEach(0..<10) { index in
+                ForEach(store.state.courses) { course in
                     CourseCard(
-                        isSaved: true,
-                        title: "오감으로 수집하는 하루",
-                        courseCategory: [.book, .cafe],
+                        isSaved: course.isBookmarked,
+                        courseName: course.courseName,
+                        imageUrl: course.imageUrl,
+                        courseCategory: course.courseCategory,
                         isSelected: true
                     ) {
-                        // TODO: 코스 id 바인딩 필요!
-                        courseDetailAction?(1)
+                        courseDetailAction?(course.id)
                     }
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                 }

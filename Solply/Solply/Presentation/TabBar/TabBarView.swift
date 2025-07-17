@@ -7,11 +7,14 @@
 
 import SwiftUI
 
+import CoreLocation
+
 struct TabBarView: View {
     
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @StateObject private var locationManager = LocationManager()
     
     @State private var townName: String = ""
     
@@ -27,7 +30,11 @@ struct TabBarView: View {
             tabContent
             
             tabBar
+                .zIndex(10)
                 .padding(.bottom, 16.adjustedHeight)
+        }
+        .onAppear {
+            locationManager.requestPermissionAndStartUpdates()
         }
         .customNavigationBar(.recommend(
             filterTitle: townName,
@@ -66,7 +73,6 @@ extension TabBarView {
             CourseRecommendView(title: courseRecommendTitle)
                 .visible(appCoordinator.selectedTab == .course)
         }
-//        .animation(.easeInOut(duration: 0.1), value: appCoordinator.selectedTab)
     }
     
     private var tabBar: some View {

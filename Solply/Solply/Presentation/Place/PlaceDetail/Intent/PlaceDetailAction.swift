@@ -17,7 +17,26 @@ enum PlaceDetailAction {
     
     case showToastView(ToastContent)
     
+    case copyToClipboard(text: String)
+    
+    case updateUserCoordinate(latitude: Double, longitude: Double)
+    case updateAddPlaceCourseId(courseId: Int)
+    
+    // api
+    
     case fetchCourseArchive(townId: Int, placeId: Int)
     case courseArchiveFetched([CourseArchiveDTO])
-    case errorOccurred(error: NetworkError)
+    case errorOccured(error: NetworkError)
+    
+    case fetchPlaceDetail(placeId: Int)
+    case placeDetailFetched(PlaceDetailResponseDTO)
+    
+    case submitPlaceBookmark(placeId: Int)
+    case placeBookmarkSubmitted
+    
+    case removePlaceBookmark(placeId: Int)
+    case placeBookmarkRemoved
+    
+    case submitAddPlace(courseId: Int, placeId: Int)
+    case addPlaceSubmitted
 }

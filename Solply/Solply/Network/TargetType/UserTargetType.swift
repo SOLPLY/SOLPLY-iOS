@@ -11,6 +11,7 @@ import Moya
 
 enum UserTargetType {
     case fetchUserInformation
+    case checkNickname(nickname: String)
 }
 
 extension UserTargetType: BaseTargetType {
@@ -22,12 +23,16 @@ extension UserTargetType: BaseTargetType {
         switch self {
         case .fetchUserInformation:
             return "/users"
+        case .checkNickname:
+            return "/users/check-nickname"
         }
     }
     
     var method: Moya.Method {
         switch self {
         case .fetchUserInformation: return .get
+        case .checkNickname:
+            return .get
         }
     }
     
@@ -35,8 +40,8 @@ extension UserTargetType: BaseTargetType {
         switch self {
         case .fetchUserInformation:
             return .requestPlain
+        case .checkNickname(let nickname):
+            return .requestParameters(parameters: ["nickname": nickname], encoding: URLEncoding.queryString)
         }
     }
-    
-    
 }

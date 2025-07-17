@@ -50,7 +50,7 @@ struct CustomAlertModifier: ViewModifier {
                                     .frame(width: 236.adjustedWidth, height: 65.adjustedHeight)
                                     .multilineTextAlignment(.center)
                                 
-                                HStack(spacing: 12.adjustedWidth) {
+                                HStack(alignment: .center, spacing: 0.adjustedWidth) {
                                     Button {
                                         onCancel?()
                                     } label: {
@@ -73,8 +73,6 @@ struct CustomAlertModifier: ViewModifier {
                                 }
                             }
                             .frame(width: 260.adjustedWidth, height: 145.adjustedHeight)
-                            .padding(.vertical, 12.adjustedHeight)
-                            .padding(.horizontal, 12.adjustedWidth)
                             .background(.coreWhite)
                             .cornerRadius(12)
                         }

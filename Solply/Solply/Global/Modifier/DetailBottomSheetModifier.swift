@@ -73,9 +73,9 @@ struct DetailBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
                     .background(.coreWhite)
                     .cornerRadius(20, corners: [.topLeft, .topRight])
                     .onAppear {
-                        withAnimation(.easeInOut(duration: 0.4)) {
+//                        withAnimation(.easeInOut(duration: 0.4)) {
                             sheetState = maxState
-                        }
+//                        }
                     }
                 }
                 .offset(y: 0 + dragOffset)

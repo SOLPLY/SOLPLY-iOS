@@ -14,6 +14,10 @@ enum CourseTargetType {
     case fetchCourseDetail(courseId: Int)
     case submitCourseBookmark(courseId: Int)
     case removeCourseBookmark(courseId: Int)
+    case fetchCourseThumbnail
+    case removeCourseList(courseIds: [Int])
+    case fetchCourseRecommend(townId: Int)
+    case submitAddPlace(courseId: Int, placeId: Int)
 }
 
 extension CourseTargetType: BaseTargetType {
@@ -31,6 +35,14 @@ extension CourseTargetType: BaseTargetType {
             return "/courses/\(courseId)/bookmarks"
         case .removeCourseBookmark(courseId: let courseId):
             return "/courses/\(courseId)/bookmarks"
+        case .fetchCourseThumbnail:
+            return "/courses/bookmarks/folders"
+        case .removeCourseList(courseIds: _):
+            return "/courses/bookmarks"
+        case .fetchCourseRecommend:
+            return "/recommend/courses"
+        case .submitAddPlace(courseId: let courseId, placeId: let placeId):
+            return "/courses/\(courseId)/places/\(placeId)"
         }
     }
     
@@ -40,6 +52,10 @@ extension CourseTargetType: BaseTargetType {
         case .fetchCourseDetail: return .get
         case .submitCourseBookmark: return .post
         case .removeCourseBookmark: return .delete
+        case .fetchCourseThumbnail: return .get
+        case .removeCourseList: return .delete
+        case .fetchCourseRecommend: return .get
+        case .submitAddPlace: return .post
         }
     }
     
@@ -62,6 +78,21 @@ extension CourseTargetType: BaseTargetType {
             return .requestPlain
             
         case .removeCourseBookmark:
+            return .requestPlain
+            
+        case .fetchCourseThumbnail:
+            return .requestPlain
+            
+        case .removeCourseList(let courseIds):
+            let joinedCourseIds = courseIds.map { String($0) }.joined(separator: ",")
+            let params: [String: Any] = ["courseIds": joinedCourseIds]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
+            
+        case .fetchCourseRecommend(let townId):
+            let params: [String: Any] = ["townId": townId]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
+            
+        case .submitAddPlace:
             return .requestPlain
         }
     }

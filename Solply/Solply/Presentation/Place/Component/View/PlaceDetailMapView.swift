@@ -13,7 +13,14 @@ struct PlaceDetailMapView: UIViewRepresentable {
     
     // MARK: - Properties
     
-    private let place: PlaceDetail
+    private var latitude: Double
+    private var longitude: Double
+    var addButtonSelected: Bool
+    var saveButtonSelected: Bool
+    var saveButtonEnabled: Bool
+    var findDirectionEnabled: Bool
+    
+    
     private let zoomLevel: Double = 16
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
@@ -24,8 +31,20 @@ struct PlaceDetailMapView: UIViewRepresentable {
     
     // MARK: - Init
     
-    init(place: PlaceDetail) {
-        self.place = place
+    init(
+        latitude: Double,
+        longitude: Double,
+        addButtonSelected: Bool,
+        saveButtonSelected: Bool,
+        saveButtonEnabled: Bool,
+        findDirectionEnabled: Bool
+    ) {
+        self.latitude = latitude
+        self.longitude = longitude
+        self.addButtonSelected = addButtonSelected
+        self.saveButtonSelected = saveButtonSelected
+        self.saveButtonEnabled = saveButtonEnabled
+        self.findDirectionEnabled = findDirectionEnabled
     }
     
     // MARK: - Functions
@@ -33,17 +52,11 @@ struct PlaceDetailMapView: UIViewRepresentable {
     func makeUIView(context: Context) -> NMFMapView {
         let mapView = configureMapView()
         configureCamera(mapView)
-//        addMarker(to: mapView, context: context)
         return mapView
     }
     
     func updateUIView(_ mapView: NMFMapView, context: Context) {
-        // 마커가 없는 경우에만 추가
-        if context.coordinator.marker == nil {
-            addMarker(to: mapView, context: context)
-        }
-        
-        // 항상 카메라 위치는 업데이트
+        addMarker(to: mapView, context: context) // 조건 없이 무조건 호출
         configureCamera(mapView)
     }
     
@@ -71,7 +84,7 @@ private extension PlaceDetailMapView {
         mapView.isIndoorMapEnabled = false
         mapView.contentInset = contentInset
         mapView.isZoomGestureEnabled = true
-        mapView.positionMode = .normal
+        mapView.positionMode = .disabled
         mapView.logoAlign = .rightTop
         mapView.logoInteractionEnabled = true
         return mapView
@@ -80,7 +93,7 @@ private extension PlaceDetailMapView {
     func configureCamera(_ mapView: NMFMapView) {
         DispatchQueue.main.async {
             let cameraUpdate = NMFCameraUpdate(
-                scrollTo: NMGLatLng(lat: place.latitude, lng: place.longitude),
+                scrollTo: NMGLatLng(lat: latitude, lng: longitude),
                 zoomTo: zoomLevel
             )
             cameraUpdate.animation = .fly
@@ -91,7 +104,7 @@ private extension PlaceDetailMapView {
     func addMarker(to mapView: NMFMapView, context: Context) {
         let marker = NMFMarker()
         marker.iconImage = NMFOverlayImage(name: "map-mark-place")
-        marker.position = NMGLatLng(lat: place.latitude, lng: place.longitude)
+        marker.position = NMGLatLng(lat: latitude, lng: longitude)
         marker.width = 36.adjustedWidth
         marker.height = 36.adjustedHeight
         marker.anchor = CGPoint(x: 0.5, y: 0.5)
