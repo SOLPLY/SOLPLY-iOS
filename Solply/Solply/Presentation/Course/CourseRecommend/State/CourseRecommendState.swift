@@ -8,5 +8,5 @@
 import Foundation
 
 struct CourseRecommendState {
-    
+    var courses: [CourseRecommend] = []
 }

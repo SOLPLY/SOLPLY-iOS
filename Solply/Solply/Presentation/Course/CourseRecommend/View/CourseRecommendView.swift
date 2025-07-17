@@ -26,7 +26,7 @@ struct CourseRecommendView: View {
                 }
                 .padding(.horizontal, 20.adjustedWidth)
                 
-                CourseRecommendGrid() { courseId in
+                CourseRecommendGrid(store: store) { courseId in
                     appCoordinator.navigate(to: .courseDetail(courseId: courseId, fromArchive: false))
                 }
             }
@@ -34,6 +34,10 @@ struct CourseRecommendView: View {
             .padding(.bottom, 112.adjustedHeight)
         }
         .background(.gray100)
+        .task {
+            // TODO: - TownId 바인딩 필요
+            store.dispatch(.fetchCourseRecommend(townId: 2))
+        }
     }
 }
 

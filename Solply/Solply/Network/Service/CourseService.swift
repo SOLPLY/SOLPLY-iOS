@@ -43,3 +43,9 @@ extension CourseService {
         return try await self.request(with: .fetchCourseThumbnail)
     }
 }
+
+extension CourseService {
+    func fetchCourseRecommend(townId: Int) async throws -> BaseResponseBody<CourseRecommendResponseDTO> {
+        return try await self.request(with: .fetchCourseRecommend(townId: townId))
+    }
+}
