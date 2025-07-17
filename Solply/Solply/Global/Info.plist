@@ -15,13 +15,17 @@
 			</array>
 		</dict>
 	</array>
+    
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>kakaokompassauth</string>
+        <string>kakaolink</string>
+        <string>kakaotalk</string>
+        <string>nmap</string>
+    </array>
+        
 	<key>KAKAO_NATIVE_APP_KEY</key>
 	<string>$(KAKAO_NATIVE_APP_KEY)</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>kakaokompassauth</string>
-		<string>kakaolink</string>
-	</array>
 	<key>NMFClientId</key>
 	<string>$(NMFNcpKeyId)</string>
 	<key>NSAppTransportSecurity</key>

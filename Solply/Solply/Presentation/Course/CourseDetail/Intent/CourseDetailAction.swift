@@ -30,6 +30,13 @@ enum CourseDetailAction {
     case saveCourseAsNew
     case saveCourseCancel
     
+    case requestFindDirection(
+        destinationLatitude: Double,
+        destinationLongitude: Double,
+        destinationName: String
+    )
+    case updateUserCoordinate(latitude: Double, longitude: Double)
+    
     // api
     case fetchCourseDetail(courseId: Int)
     case courseDetailFetched(courseDetail: CourseDetailResponseDTO)
