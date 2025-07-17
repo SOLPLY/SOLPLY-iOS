@@ -138,7 +138,6 @@ extension PlaceDetailView {
                         .showToastView(
                             ToastContent(
                                 toastType: .withActionToast,
-                                // TODO: 데이터 바인딩
                                 message: "‘\(store.state.courses[index].courseName.truncated(8))’에 추가되었어요.",
                                 buttonTitle: "자세히 보기"
                             )
@@ -148,6 +147,9 @@ extension PlaceDetailView {
                 } backAction: {
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(.selectCourseToAdd(index: -1))
+                } addCourseAction: {
+                    appCoordinator.goBack()
+                    appCoordinator.switchTab(to: .course)
                 }
                 .transition(.move(edge: .trailing))
             } else {

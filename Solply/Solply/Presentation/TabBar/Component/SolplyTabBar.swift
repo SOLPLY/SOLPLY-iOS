@@ -13,6 +13,7 @@ struct SolplyTabBar: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appCoordinator: AppCoordinator
     @Binding private var selectedTab: TabBarState
     @State private var capsuleOffsetX: CGFloat = 0
     @State private var isDragging: Bool = false
@@ -38,6 +39,9 @@ struct SolplyTabBar: View {
         .padding(.vertical, 6.adjustedHeight)
         .background(.gray900)
         .capsuleClipped()
+        .onChange(of: selectedTab) {
+            capsuleOffsetX = calculateCapsuleOffsetX(for: selectedTab)
+        }
     }
 }
 
