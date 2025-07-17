@@ -52,7 +52,7 @@ enum ArchiveListReducer {
         case .removeCourseList:
             break
             
-        case .CourseListRemoved:
+        case .courseListRemoved:
             state.courses.removeAll { course in
                 state.selectedCourseIds.contains(course.courseId)
             }
@@ -64,7 +64,7 @@ enum ArchiveListReducer {
             print("장소 삭제")
             break
             
-        case .PlaceListRemoved:
+        case .placeListRemoved:
             print("장소 삭제")
             state.places.removeAll() { place in
                 state.selectedPlaceIds.contains(place.placeId)

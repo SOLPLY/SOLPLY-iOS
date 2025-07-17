@@ -28,7 +28,6 @@ struct ArchiveListView: View {
     
     var body: some View {
         ScrollView {
-            
             VStack(alignment: .trailing, spacing: 16.adjustedHeight) {
                 if store.state.activeDelete {
                     HStack {
@@ -57,6 +56,7 @@ struct ArchiveListView: View {
                 } else {
                     HStack {
                         Spacer()
+                        
                         Button {
                             store.dispatch(.toggleSelect)
                         } label: {

@@ -15,19 +15,12 @@ enum PlaceTargetType {
     case removePlaceBookmark(placeId: Int)
     case fetchPlaceDetail(placeId: Int)
     case fetchPlaceRecommend(townId: Int)
-    case removePlaceList(PlaceIds: [Int])
+    case removePlaceList(placeIds: [Int])
 }
 
 extension PlaceTargetType: BaseTargetType {
     var headerType: HTTPHeader {
-        switch self {
-        case .fetchPlaceThumbnail: return .accessToken
-        case .submitPlaceBookmark: return .accessToken
-        case .removePlaceBookmark: return .accessToken
-        case .fetchPlaceDetail: return .accessToken
-        case .fetchPlaceRecommend: return .accessToken
-        case .removePlaceList: return .accessToken
-        }
+        return .accessToken
     }
     
     var path: String {
@@ -42,7 +35,7 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/\(placeId)"
         case .fetchPlaceRecommend:
             return "/recommend/places"
-        case .removePlaceList(PlaceIds: _):
+        case .removePlaceList(placeIds: _):
             return "/places/bookmarks/"
         }
     }

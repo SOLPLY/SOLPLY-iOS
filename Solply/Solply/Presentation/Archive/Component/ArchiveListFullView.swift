@@ -59,8 +59,9 @@ extension ArchiveListFullView {
                 if store.state.activeDelete {
                     store.dispatch(.togglePlaceArchiveList(placeId: item.placeId))
                 } else {
-                    appCoordinator.navigate(to: .placeDetail(townId: 1, placeId: 1)) // TODO
+                    appCoordinator.navigate(to: .placeDetail(townId: 1, placeId: 1))
                 }
+                
                 if store.state.activeCancel {
                     store.dispatch(.togglePlaceArchiveList(placeId: item.placeId))
                 }
@@ -91,8 +92,9 @@ extension ArchiveListFullView {
                     if store.state.activeDelete {
                         store.dispatch(.toggleCourseArchiveList(courseId: item.courseId))
                     } else {
-                        appCoordinator.navigate(to: .courseDetail(courseId: item.courseId, fromArchive: true)) // TODO
+                        appCoordinator.navigate(to: .courseDetail(courseId: item.courseId, fromArchive: true)) 
                     }
+                    
                     if store.state.activeCancel {
                         store.dispatch(.toggleCourseArchiveList(courseId: item.courseId))
                     }
