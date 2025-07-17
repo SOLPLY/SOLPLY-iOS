@@ -11,7 +11,7 @@ enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, R
     case all = "ALL"
     case cafe = "CAFE"
     case food = "FOOD"
-    case book = "BOOK"
+    case book = "BOOKSTORE"
     case shopping = "SHOPPING"
     case unique = "UNIQUE_SPACE"
     case walk = "WALKING"
