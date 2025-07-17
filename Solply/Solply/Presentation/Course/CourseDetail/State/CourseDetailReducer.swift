@@ -125,7 +125,7 @@ enum CourseDetailReducer {
         case .submitCourseBookmark:
             break
             
-        case .courseBookmarkSubmited:
+        case .courseBookmarkSubmitted:
             print("저장 완료")
             break
             
@@ -139,7 +139,7 @@ enum CourseDetailReducer {
         case .submitPlaceBookmark:
             break
             
-        case .placeBookmarkSubmited:
+        case .placeBookmarkSubmitted:
             print("장소 저장 완료")
             break
             

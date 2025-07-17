@@ -166,7 +166,7 @@ extension PlaceDetailView {
                         .showToastView(
                             ToastContent(
                                 toastType: .defaultToast,
-                                message: "클리보드에 복사되었습니다",
+                                message: "클립보드에 복사되었습니다",
                                 buttonTitle: nil
                             )
                         )

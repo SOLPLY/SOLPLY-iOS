@@ -77,7 +77,7 @@ enum PlaceDetailReducer {
         case .submitPlaceBookmark:
             break
             
-        case .placeBookmarkSubmited:
+        case .placeBookmarkSubmitted:
             print("장소 저장 완료")
             break
             
@@ -91,7 +91,7 @@ enum PlaceDetailReducer {
         case .submitAddPlace:
             break
             
-        case .addPlaceSubmited:
+        case .addPlaceSubmitted:
             print("내 코스에 장소 추가")
             break
             

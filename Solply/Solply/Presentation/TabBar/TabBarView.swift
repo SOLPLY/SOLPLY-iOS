@@ -24,7 +24,7 @@ struct TabBarView: View {
             
             tabBar
                 .zIndex(10)
-//                .padding(.bottom, 16.adjustedHeight)
+                .padding(.bottom, 16.adjustedHeight)
         }
         .onAppear {
             locationManager.requestPermissionAndStartUpdates()

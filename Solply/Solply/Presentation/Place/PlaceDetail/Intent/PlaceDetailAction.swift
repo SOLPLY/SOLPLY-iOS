@@ -32,11 +32,11 @@ enum PlaceDetailAction {
     case placeDetailFetched(PlaceDetailResponseDTO)
     
     case submitPlaceBookmark(placeId: Int)
-    case placeBookmarkSubmited
+    case placeBookmarkSubmitted
     
     case removePlaceBookmark(placeId: Int)
     case placeBookmarkRemoved
     
     case submitAddPlace(courseId: Int, placeId: Int)
-    case addPlaceSubmited
+    case addPlaceSubmitted
 }
