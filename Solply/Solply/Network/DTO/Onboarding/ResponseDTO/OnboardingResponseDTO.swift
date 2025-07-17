@@ -9,12 +9,12 @@ import Foundation
 
 // MARK: - Response DTO
 
-struct OnboardingResponseDTO: Decodable, ResponseModelType {
+struct OnboardingResponseDTO: ResponseModelType {
     let personaList: [PersonaDTO]
     let completeInfo: OnboardingCompleteResponseDTO?
 }
 
-struct PersonaDTO: Decodable, Hashable {
+struct PersonaDTO: ResponseModelType ,Hashable {
     let personaType: String
     let description: String
 
@@ -26,7 +26,7 @@ struct PersonaDTO: Decodable, Hashable {
     }
 }
 
-struct OnboardingCompleteResponseDTO: Decodable, ResponseModelType {
+struct OnboardingCompleteResponseDTO: ResponseModelType {
     let selectedTownId: Int
     let selectedTownName: String
     let persona: String

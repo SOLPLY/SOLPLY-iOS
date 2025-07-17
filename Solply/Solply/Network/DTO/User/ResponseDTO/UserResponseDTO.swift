@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct CheckNicknameResponseDTO: Decodable, ResponseModelType {
+struct CheckNicknameResponseDTO: ResponseModelType {
     let isDuplicated: Bool
 }
