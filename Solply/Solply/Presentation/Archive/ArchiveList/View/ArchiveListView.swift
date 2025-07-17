@@ -72,6 +72,9 @@ struct ArchiveListView: View {
             }
         }
         .customNavigationBar(.archiveList(title: town, backAction: appCoordinator.goBack))
+        .onAppear {
+            store.dispatch(.fetchCourseList(townId: 2, placeId: nil))
+        }
         .customAlert(
             alertType: .delete,
             title: "선택한 장소를 삭제할까요?",

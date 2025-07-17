@@ -37,8 +37,8 @@ struct ArchiveListFullView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16.adjustedHeight) {
-                ForEach(Array(courseTitle.enumerated()), id: \.offset) { index, _ in
-                    archiveCell(index: index)
+                ForEach(Array(store.state.courses.enumerated()), id: \.offset) { index, item in
+                    archiveCell(index: index, item: item)
                 }
             }
             .padding(.top, 16.adjustedHeight)
@@ -49,7 +49,7 @@ struct ArchiveListFullView: View {
 // MARK: - Functions
 
 extension ArchiveListFullView {
-    private func archiveCell(index: Int) -> some View {
+    private func archiveCell(index: Int, item: CourseArchiveDTO) -> some View {
         ZStack(alignment: .topTrailing) {
             switch archiveCategory {
             case .place:
@@ -77,9 +77,9 @@ extension ArchiveListFullView {
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                     CourseCard(
                         isSaved: true,
-                        title: courseTitle[index],
-                        imageURL: "",
-                        courseCategory: tags[index],
+                        title: item.title,
+                        imageURL: item.thumbnailImage,
+                        courseCategory: item.mainTags,
                         isSelected: store.state.selectedIndex.contains(index)
                     ) {
                         if store.state.activeDelete {
