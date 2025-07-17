@@ -13,7 +13,7 @@ struct CourseRecommendResponseDTO: ResponseModelType {
 
 struct CourseDTO: ResponseModelType {
     let courseId: Int
-    let title: String
+    let courseName: String
     let thumbnailImage: String
     let mainTags: [PlaceCategoryType]
     let isBookmarked: Bool

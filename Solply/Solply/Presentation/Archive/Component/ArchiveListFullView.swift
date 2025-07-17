@@ -78,7 +78,7 @@ extension ArchiveListFullView {
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                     CourseCard(
                         isSaved: true,
-                        title: item.courseName,
+                        courseName: item.courseName,
                         imageUrl: item.thumbnailImage,
                         courseCategory: item.mainTags,
                         isSelected: store.state.selectedCourseIds.contains(item.courseId)

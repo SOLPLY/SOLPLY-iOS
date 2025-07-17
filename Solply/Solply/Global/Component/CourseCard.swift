@@ -14,7 +14,7 @@ struct CourseCard: View {
     // MARK: - Properties
     
     private let isSaved: Bool
-    private let title: String
+    private let courseName: String
     private let imageUrl: String
     private let courseCategory: [PlaceCategoryType]
     private let isSelected: Bool
@@ -24,14 +24,14 @@ struct CourseCard: View {
     
     init(
         isSaved: Bool,
-        title: String,
+        courseName: String,
         imageUrl: String,
         courseCategory: [PlaceCategoryType],
         isSelected: Bool,
         action: (() -> Void)? = nil
     ) {
         self.isSaved = isSaved
-        self.title = title
+        self.courseName = courseName
         self.imageUrl = imageUrl
         self.courseCategory = courseCategory
         self.isSelected = isSelected
@@ -58,7 +58,7 @@ struct CourseCard: View {
                 
                 VStack(alignment: .leading, spacing: 12.adjustedHeight) {
                     HStack(alignment: .center, spacing: 0) {
-                        Text(title)
+                        Text(courseName)
                             .applySolplyFont(.title_14_m)
                             .foregroundStyle(.coreBlack)
                             .frame(height: 38.adjustedHeight)

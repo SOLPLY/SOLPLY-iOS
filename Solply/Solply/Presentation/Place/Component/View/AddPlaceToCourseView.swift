@@ -109,7 +109,7 @@ extension AddPlaceToCourseView {
                                 ZStack(alignment: .topTrailing) {
                                     CourseCard(
                                         isSaved: course.isBookmarked ?? false,
-                                        title: course.courseName,
+                                        courseName: course.courseName,
                                         // TODO: - 이미지 수정 필요
                                         imageUrl: "",
                                         courseCategory: course.mainTags,

@@ -81,7 +81,7 @@ extension ArchiveFullView {
             ZStack {
                 CourseCard(
                     isSaved: true,
-                    title: courseItem.courseName ?? "",
+                    courseName: courseItem.courseName ?? "",
                     imageUrl: courseItem.thumbnailUrl ?? "",
                     courseCategory: courseItem.primaryTags?.compactMap {
                         PlaceCategoryType(rawValue: $0)
