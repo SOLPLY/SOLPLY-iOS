@@ -21,13 +21,22 @@ struct TownOptionView: View {
                 .padding(.bottom, 28.adjustedHeight)
             
             HStack(spacing: 20.adjustedWidth) {
-                ForEach(TownOptionType.allCases, id: \.self) { type in
+                ForEach(store.state.townList, id: \.self) { town in
                     TownOptionButton(
-                        type: type,
-                        isSelected: store.state.townOption == type
+                        title: town.name,
+                        isSelected: store.state.selectedTown == town
                     ) {
-                        store.dispatch(.selectTown(type))
+                        print("✅ 선택한 동네: \(town.name)")
+                        store.dispatch(.selectTown(town))
                     }
+                }
+                
+                TownOptionButton(
+                    title: nil,
+                    isSelected: false
+                ) {
+                    print("➕ 추가 버튼 눌림")
+                    // TODO: 추후 개발 예정
                 }
             }
             .padding(.bottom, 32.adjustedHeight)
@@ -36,12 +45,16 @@ struct TownOptionView: View {
             
             CTAMainButton(
                 title: "다음",
-                isEnabled: store.state.townOption != nil
+                isEnabled: store.state.selectedTown != nil
             ) {
+                print("➡️ 다음 버튼 눌림. 현재 선택된 동네: \(store.state.selectedTown?.name ?? "없음")")
                 store.dispatch(.next)
             }
                 
         }
         .padding(.bottom, 20.adjustedHeight)
+        .onAppear {
+            store.dispatch(.fetchTown)
+        }
     }
 }

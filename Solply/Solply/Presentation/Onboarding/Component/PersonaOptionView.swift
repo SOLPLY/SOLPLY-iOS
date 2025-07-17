@@ -21,11 +21,12 @@ struct PersonaOptionView: View {
                 .padding(.bottom, 28.adjustedHeight)
 
             VStack(spacing: 16.adjustedHeight) {
-                ForEach(PersonaType.allCases, id: \.self) { persona in
+                ForEach(store.state.personaList, id: \.self) { persona in
                     PersonaOptionButton(
-                        title: persona.personaString,
-                        isSelected: store.state.personaOption == persona
+                        title: persona.description,
+                        isSelected: store.state.selectedPersona?.type == persona.type
                     ) {
+                        print("✅ [페르소나 선택] \(persona.description)")
                         store.dispatch(.selectPersona(persona))
                     }
                 }
@@ -36,11 +37,17 @@ struct PersonaOptionView: View {
 
             CTAMainButton(
                 title: "다음",
-                isEnabled: store.state.personaOption != nil
+                isEnabled: store.state.selectedPersona != nil
             ) {
+                let selected = store.state.selectedPersona?.description ?? "없음"
+                print("➡️ [다음 버튼] 눌림 - 선택된 페르소나: \(selected)")
                 store.dispatch(.next)
             }
             .padding(.bottom, 20.adjustedHeight)
+        }
+        .onAppear {
+            print("🧘 [OnAppear] PersonaOptionView 진입 -> 페르소나 리스트 요청")
+            store.dispatch(.fetchPersona)
         }
     }
 }

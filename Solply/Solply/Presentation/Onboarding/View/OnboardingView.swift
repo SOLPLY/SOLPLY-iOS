@@ -35,8 +35,10 @@ struct OnboardingView: View {
                 .animation(.easeOut(duration: 0.2), value: store.state.step)
                 .padding(.horizontal, 20.adjustedHeight)
                 .background(.gray100)
-                .onChange(of: store.state.isLottieFinished) { _, newValue in
-                    appCoordinator.changeRoot(to: .tabBar)
+                .onChange(of: store.state.isOnboardingFinished) { oldValue, newValue in
+                    if newValue {
+                        appCoordinator.changeRoot(to: .tabBar)
+                    }
                 }
                 .customNavigationBar(.onboarding(backAction: {
                     switch store.state.step {
@@ -53,6 +55,13 @@ struct OnboardingView: View {
                     OnboardingCompleteView(store: store)
                 }
             }
+        }
+        .onTapGesture {
+            hideKeyboard()
+            
+            if store.state.step == .nickName {
+                    store.dispatch(.checkNickname(store.state.nickname))
+                }
         }
     }
 }
