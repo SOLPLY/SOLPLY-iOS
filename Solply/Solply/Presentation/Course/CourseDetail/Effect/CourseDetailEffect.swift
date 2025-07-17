@@ -5,11 +5,27 @@
 //  Created by 김승원 on 7/9/25.
 //
 
-import Foundation
+import UIKit
 
 struct CourseDetailEffect {
     private let service = CourseService()
     private let placeService = PlaceService()
+    
+    func findDirection(
+        startLatitude: Double,
+        startLongitude: Double,
+        destinationLatitude: Double,
+        destinationLongitude: Double,
+        destinationName: String
+    ) {
+        NaverMapRouteHelper.findDirection(
+            startLatitude: startLatitude,
+            startLongitude: startLongitude,
+            destinationLatitude: destinationLatitude,
+            destinationLongitude: destinationLongitude,
+            destinationName: destinationName
+        )
+    }
     
     func fetchCourseDetail(courseId: Int) async -> CourseDetailAction {
         do {

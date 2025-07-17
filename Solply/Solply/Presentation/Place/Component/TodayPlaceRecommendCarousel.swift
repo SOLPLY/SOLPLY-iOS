@@ -12,11 +12,11 @@ struct TodayPlaceRecommendCarousel: View {
     // MARK: - Properties
     
     @EnvironmentObject var appCoordinator: AppCoordinator
-
+    @ObservedObject private var store: PlaceRecommendStore
+    
     @State private var currentIndex: Int = 1
     @State private var dragOffset: CGFloat = 0
-
-    private let placeRecommendItems: [TempPlaceRecommendItem]
+    
     private let cardWidth: CGFloat = 240.adjustedWidth
     private let cardSpacing: CGFloat = 16.adjustedWidth
     private var cardOffset: CGFloat {
@@ -25,28 +25,27 @@ struct TodayPlaceRecommendCarousel: View {
     
     // MARK: - Initializer
     
-    init(placeRecommendItems: [TempPlaceRecommendItem]) {
-        self.placeRecommendItems = placeRecommendItems
+    init(store: PlaceRecommendStore) {
+        self.store = store
     }
     
     // MARK: - Body
-
+    
     var body: some View {
         ZStack {
             ForEach(-2...2, id: \.self) { offsetIndex in
-                let index = (currentIndex + offsetIndex + placeRecommendItems.count) % placeRecommendItems.count
+                let index = (currentIndex + offsetIndex + store.state.placeRecommendItems.count) % store.state.placeRecommendItems.count
                 let baseX = CGFloat(offsetIndex) * cardOffset
                 let totalOffset = baseX + dragOffset
-
+                
                 let distanceFromCenter = abs(totalOffset)
                 let scale = max(0.75, 1.0 - (distanceFromCenter / (cardOffset * 2)))
-
+                
                 TodayPlaceRecommendCard(
-                    // TODO: - .temp 이미지 변경하기
-                    backgroundImage: .temp,
-                    category: placeRecommendItems[index].category,
-                    title: placeRecommendItems[index].title,
-                    description: placeRecommendItems[index].description
+                    thumbnailImageUrl: store.state.placeRecommendItems[index].thumbnailUrl,
+                    category: store.state.placeRecommendItems[index].category,
+                    title: store.state.placeRecommendItems[index].title,
+                    introduction: store.state.placeRecommendItems[index].introduction
                 )
                 .frame(width: cardWidth, height: cardWidth)
                 .scaleEffect(scale)
@@ -69,10 +68,10 @@ struct TodayPlaceRecommendCarousel: View {
                     var targetOffset: CGFloat = 0
                     
                     if value.translation.width < -threshold {
-                        newIndex = (currentIndex + 1) % placeRecommendItems.count
+                        newIndex = (currentIndex + 1) % store.state.placeRecommendItems.count
                         targetOffset = -cardOffset
                     } else if value.translation.width > threshold {
-                        newIndex = (currentIndex - 1 + placeRecommendItems.count) % placeRecommendItems.count
+                        newIndex = (currentIndex - 1 + store.state.placeRecommendItems.count) % store.state.placeRecommendItems.count
                         targetOffset = cardOffset
                     }
                     
@@ -86,5 +85,6 @@ struct TodayPlaceRecommendCarousel: View {
                     }
                 }
         )
+        
     }
 }

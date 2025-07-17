@@ -45,6 +45,12 @@ extension CourseService {
 }
 
 extension CourseService {
+    func fetchCourseRecommend(townId: Int) async throws -> BaseResponseBody<CourseRecommendResponseDTO> {
+        return try await self.request(with: .fetchCourseRecommend(townId: townId))
+    }
+}
+
+extension CourseService {
     func removeCourseList(CourseIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO> {
         return try await self.request(with: .removeCourseList(CourseIds: CourseIds))
     }

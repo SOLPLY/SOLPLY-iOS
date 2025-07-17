@@ -8,5 +8,8 @@
 import Foundation
 
 enum CourseRecommendAction {
-    
+    // api
+    case fetchCourseRecommend(townId: Int)
+    case courseRecommendFetched([CourseDTO])
+    case errorOccurred(error: NetworkError)
 }

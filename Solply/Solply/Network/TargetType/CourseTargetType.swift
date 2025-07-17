@@ -16,6 +16,7 @@ enum CourseTargetType {
     case removeCourseBookmark(courseId: Int)
     case fetchCourseThumbnail
     case removeCourseList(CourseIds: [Int])
+    case fetchCourseRecommend(townId: Int)
 }
 
 extension CourseTargetType: BaseTargetType {
@@ -37,6 +38,8 @@ extension CourseTargetType: BaseTargetType {
             return "/courses/bookmarks/folders"
         case .removeCourseList(CourseIds: _):
             return "/courses/bookmarks"
+        case .fetchCourseRecommend:
+            return "/recommend/courses"
         }
     }
     
@@ -48,6 +51,7 @@ extension CourseTargetType: BaseTargetType {
         case .removeCourseBookmark: return .delete
         case .fetchCourseThumbnail: return .get
         case .removeCourseList: return .delete
+        case .fetchCourseRecommend: return .get
         }
     }
     
@@ -78,6 +82,10 @@ extension CourseTargetType: BaseTargetType {
         case .removeCourseList(let courseIds):
             let joinedCourseIds = courseIds.map { String($0) }.joined(separator: ",")
             let params: [String: Any] = ["courseIds": joinedCourseIds]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
+            
+        case .fetchCourseRecommend(let townId):
+            let params: [String: Any] = ["townId": townId]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
