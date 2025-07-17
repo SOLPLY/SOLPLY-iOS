@@ -91,8 +91,5 @@ struct CourseCard: View {
             }
         }
         .buttonStyle(.plain)
-        .onAppear {
-            print(self.imageURL)
-        }
     }
 }
