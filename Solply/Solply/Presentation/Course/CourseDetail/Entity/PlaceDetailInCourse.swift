@@ -15,7 +15,7 @@ struct PlaceDetailInCourse: Identifiable, Equatable {
     let longitude: Double
     var isFocused: Bool
     var isBookmarked: Bool
-    let primaryTag: PlaceCategoryType
+    let primaryTag: MainTagType
     let placeName: String
     let address: String
     let contactNumber: String

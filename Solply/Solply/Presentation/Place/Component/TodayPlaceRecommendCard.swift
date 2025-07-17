@@ -14,7 +14,7 @@ struct TodayPlaceRecommendCard: View {
     // MARK: - Properties
     
     private let thumbnailImageUrl: String
-    private let category: PlaceCategoryType
+    private let category: MainTagType
     private let title: String
     private let introduction: String
     
@@ -22,7 +22,7 @@ struct TodayPlaceRecommendCard: View {
     
     init(
         thumbnailImageUrl: String,
-        category: PlaceCategoryType,
+        category: MainTagType,
         title: String,
         introduction: String
     ) {

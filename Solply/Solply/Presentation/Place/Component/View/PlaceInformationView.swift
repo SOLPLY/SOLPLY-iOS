@@ -13,7 +13,7 @@ struct PlaceInformationView: View {
     
     // MARK: - Properties
     
-    private let primaryTag: PlaceCategoryType
+    private let primaryTag: MainTagType
     private let placeName: String
     private let introduction: String
     private let imageURLs: [String]
@@ -26,7 +26,7 @@ struct PlaceInformationView: View {
     // MARK: - Initializer
     
     init(
-        primaryTag: PlaceCategoryType,
+        primaryTag: MainTagType,
         placeName: String,
         introduction: String,
         imageURLs: [String],

@@ -13,7 +13,7 @@ struct PlaceCard: View {
     
     private let isSaved: Bool
     private let placeName: String
-    private let placeCategory: PlaceCategoryType
+    private let placeCategory: MainTagType
     private let isSelected: Bool
     private let size: CGFloat
     private let action: (() -> Void)?
@@ -23,7 +23,7 @@ struct PlaceCard: View {
     init(
         isSaved: Bool,
         placeName: String,
-        placeCategory: PlaceCategoryType,
+        placeCategory: MainTagType,
         isSelected: Bool,
         size: CGFloat = 165,
         action: (() -> Void)? = nil
