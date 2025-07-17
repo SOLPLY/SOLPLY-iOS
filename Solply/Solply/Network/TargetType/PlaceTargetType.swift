@@ -14,6 +14,7 @@ enum PlaceTargetType {
     case submitPlaceBookmark(placeId: Int)
     case removePlaceBookmark(placeId: Int)
     case fetchPlaceDetail(placeId: Int)
+    case fetchPlaceRecommend(townId: Int)
 }
 
 extension PlaceTargetType: BaseTargetType {
@@ -23,6 +24,7 @@ extension PlaceTargetType: BaseTargetType {
         case .submitPlaceBookmark: return .accessToken
         case .removePlaceBookmark: return .accessToken
         case .fetchPlaceDetail: return .accessToken
+        case .fetchPlaceRecommend: return .accessToken
         }
     }
     
@@ -36,6 +38,8 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/\(placeId)/bookmarks"
         case .fetchPlaceDetail(placeId: let placeId):
             return "/places/\(placeId)"
+        case .fetchPlaceRecommend(townId: let townId):
+            return "/recommend/places"
         }
     }
     
@@ -45,6 +49,7 @@ extension PlaceTargetType: BaseTargetType {
         case .submitPlaceBookmark: return .post
         case .removePlaceBookmark: return .delete
         case .fetchPlaceDetail: return .get
+        case .fetchPlaceRecommend: return .get
         }
     }
     
@@ -58,6 +63,9 @@ extension PlaceTargetType: BaseTargetType {
             return .requestPlain
         case .fetchPlaceDetail:
             return .requestPlain
+        case .fetchPlaceRecommend(let townId):
+            let params: [String: Any] = ["townId": townId]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
 }
