@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct DropViewDelegate: DropDelegate {
-    let destinationPlace : PlaceDetail
-    let places: [PlaceDetail]
-    let draggedPlace : PlaceDetail?
+    let destinationPlace : PlaceDetailInCourse
+    let places: [PlaceDetailInCourse]
+    let draggedPlace : PlaceDetailInCourse?
     let isEditing: Bool
     let onMove: (Int, Int) -> Void
     let onDragEnd: () -> Void
@@ -43,7 +43,7 @@ struct DropViewDelegate: DropDelegate {
 }
 
 struct DeleteDropDelegate: DropDelegate {
-    let draggedPlace: PlaceDetail?
+    let draggedPlace: PlaceDetailInCourse?
     let onDelete: () -> Void
     let onEntered: () -> Void
     let onExited: () -> Void

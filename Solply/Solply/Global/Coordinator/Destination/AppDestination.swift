@@ -10,7 +10,7 @@ import SwiftUI
 enum AppDestination: Hashable {
     case archive
     case archiveList(archiveCategory: SolplyContentType, townName: String)
-    case placeDetail
+    case placeDetail(townId: Int, placeId: Int)
     case courseDetail(courseId: Int, fromArchive: Bool)
     case frequentTown
 }
@@ -23,8 +23,8 @@ extension AppDestination {
             ArchiveView()
         case .archiveList(let archiveCategory, let town):
             ArchiveListView(archiveCategory: archiveCategory, town: town)
-        case .placeDetail:
-            PlaceDetailView()
+        case .placeDetail(let townId, let placeId):
+            PlaceDetailView(townId: townId, placeId: placeId)
         case .courseDetail(let courseId, let fromArchive):
             CourseDetailView(courseId: courseId, fromArchive: fromArchive)
         case .frequentTown:
