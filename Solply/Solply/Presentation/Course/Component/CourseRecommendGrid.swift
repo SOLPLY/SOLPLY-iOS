@@ -17,6 +17,7 @@ struct CourseRecommendGrid: View {
         GridItem(.fixed(165.adjustedWidth), spacing: 12.5.adjustedWidth),
         GridItem(.fixed(165.adjustedWidth))
     ]
+    private let placeCategory: MainTagType = .all
     private let courseDetailAction: ((Int) -> Void)?
     
     init(

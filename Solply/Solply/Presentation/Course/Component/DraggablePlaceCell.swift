@@ -15,7 +15,7 @@ struct DraggablePlaceCell: View {
     
     private let order: Int
     private let mainImageURL: String
-    private let placeCategoryType: PlaceCategoryType
+    private let placeCategoryType: MainTagType
     private let title: String
     private let address: String
     private let isSaved: Bool
@@ -31,7 +31,7 @@ struct DraggablePlaceCell: View {
     init(
         order: Int,
         mainImageURL: String,
-        placeCategoryType: PlaceCategoryType,
+        placeCategoryType: MainTagType,
         title: String,
         address: String,
         isSaved: Bool,

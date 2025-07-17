@@ -13,7 +13,7 @@ struct FilterPlaceGrid: View {
     
     @StateObject private var store = PlaceRecommendStore()
     
-    @State private var selectedOptionTags: [SelectableOptionTag] = []
+    @State private var selectedOptionTags: [SelectableSubTag] = []
     
     private let columns = [
         GridItem(.fixed(145.adjustedWidth), spacing: 12.5.adjustedWidth),
@@ -25,15 +25,15 @@ struct FilterPlaceGrid: View {
     }
 
     private var filteredFirstTag: String {
-        selectedOptionTags.first?.name ?? ""
+        selectedOptionTags.first?.name.title ?? ""
     }
 
     private var isSelectedEmpty: Bool {
         selectedOptionTags.isEmpty
     }
     
-    private var placeCategory: PlaceCategoryType {
-        store.state.selectedCategory
+    private var placeCategory: MainTagType {
+        store.state.selectedMainTag
     }
     
     // MARK: - Body
@@ -46,25 +46,25 @@ struct FilterPlaceGrid: View {
             VStack(alignment: .leading, spacing: 16.adjustedHeight) {
                 HStack(alignment: .center, spacing: 8.adjustedWidth) {
                     FilterButton(title: placeCategory.title) {
-                        store.dispatch(.toggleCategoryBottomSheet)
+                        store.dispatch(.toggleMainTagBottomSheet)
                     }
                     .sheet(
                         isPresented: Binding(
-                            get: { store.state.isCategoryBottomSheetPresented },
+                            get: { store.state.isMainTagBottomSheetPresented },
                             set: { isPresented in
                                 if !isPresented {
-                                    store.dispatch(.dismissCategoryBottomSheet)
+                                    store.dispatch(.dismissMainTagBottomSheet)
                                 }
                             }
                         )
                     ) {
-                        CategoryBottomSheet(
+                        MainTagBottomSheet(
                             store: store,
                             isPresented: Binding(
-                                get: { store.state.isCategoryBottomSheetPresented },
+                                get: { store.state.isMainTagBottomSheetPresented },
                                 set: { isPresented in
                                     if !isPresented {
-                                        store.dispatch(.dismissCategoryBottomSheet)
+                                        store.dispatch(.dismissMainTagBottomSheet)
                                     }
                                 }
                             )
@@ -73,26 +73,28 @@ struct FilterPlaceGrid: View {
                     }
                     
                     FilterButton(title: isSelectedEmpty ? "추가옵션" : (filteredCount > 1 ? "\(filteredFirstTag) 외 \(filteredCount - 1)개" : "\(filteredFirstTag)")) {
-                        store.dispatch(.toggleMoreOptionBottomSheet)
+                        store.dispatch(.toggleSubTagBottomSheet)
                     }
-                    .visible(placeCategory == .all ? false : true)
+                    .visible(
+                        store.state.fetchedSubTags.isEmpty || placeCategory == .all ? false : true
+                    )
                     .sheet(
                         isPresented: Binding(
-                            get: { store.state.isMoreOptionBottomSheetPresented },
+                            get: { store.state.isSubTagBottomSheetPresented },
                             set: { isPresented in
                                 if !isPresented {
-                                    store.dispatch(.dismissMoreOptionBottomSheet)
+                                    store.dispatch(.dismissSubTagBottomSheet)
                                 }
                             }
                         )
                     ) {
-                        MoreOptionBottomSheet(
+                        SubTagBottomSheet(
                             store: store,
                             isPresented: Binding(
-                                get: { store.state.isMoreOptionBottomSheetPresented },
+                                get: { store.state.isSubTagBottomSheetPresented },
                                 set: { isPresented in
                                     if !isPresented {
-                                        store.dispatch(.dismissMoreOptionBottomSheet)
+                                        store.dispatch(.dismissSubTagBottomSheet)
                                     }
                                 }
                             )
@@ -116,6 +118,9 @@ struct FilterPlaceGrid: View {
                         }
                     }
                 }
+            }
+            .onChange(of: store.state.selectedMainTag) { _, _ in
+                selectedOptionTags = []
             }
             .padding(.vertical, 20.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)

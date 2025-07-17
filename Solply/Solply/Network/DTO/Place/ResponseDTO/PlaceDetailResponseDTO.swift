@@ -10,7 +10,7 @@ import Foundation
 struct PlaceDetailResponseDTO: ResponseModelType {
     let placeId: Int
     let placeName: String
-    let primaryTag: PlaceCategoryType
+    let primaryTag: MainTagType
     let introduction: String
     let imageInfos: [ImageInfoDTO]
     let address: String

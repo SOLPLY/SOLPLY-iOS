@@ -8,17 +8,24 @@
 import Foundation
 
 enum PlaceRecommendAction {
-    case toggleCategoryBottomSheet
-    case dismissCategoryBottomSheet
-    case selectCategory(PlaceCategoryType)
+    case toggleMainTagBottomSheet
+    case dismissMainTagBottomSheet
+    case selectMainTag(MainTagType)
     
-    case toggleMoreOptionBottomSheet
-    case dismissMoreOptionBottomSheet
+    case toggleSubTagBottomSheet
+    case dismissSubTagBottomSheet
     
-    case confirmMoreOptionTags([SelectableOptionTag])
+    case confirmSubTags([SelectableSubTag])
     
     // api
     case fetchPlaceRecommend(townId: Int)
     case placeRecommendFetched([PlaceInfoDTO])
+    
+    case fetchMainTags
+    case mainTagsFetched([MainTagDTO])
+    
+    case fetchSubTags(parentId: Int)
+    case subTagsFetched([SubTagDTO])
+    
     case errorOccurred(error: NetworkError)
 }

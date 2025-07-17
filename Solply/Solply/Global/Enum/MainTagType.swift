@@ -1,5 +1,5 @@
 //
-//  PlaceCategoryType.swift
+//  MainTagType.swift
 //  Solply
 //
 //  Created by seozero on 7/8/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, RequestModelType {
+enum MainTagType: String, CaseIterable, Identifiable, ResponseModelType, RequestModelType {
     case all = "ALL"
     case cafe = "CAFE"
     case food = "FOOD"
@@ -87,6 +87,18 @@ enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, R
         case .shopping: return .shopIcon
         case .unique: return .uniqueIcon
         case .walk: return .walkIcon
+        }
+    }
+    
+    var parentId: Int {
+        switch self {
+        case .all: return 0
+        case .cafe: return 1
+        case .food: return 2
+        case .book: return 3
+        case .shopping: return 4
+        case .unique: return 5
+        case .walk: return 6
         }
     }
 }

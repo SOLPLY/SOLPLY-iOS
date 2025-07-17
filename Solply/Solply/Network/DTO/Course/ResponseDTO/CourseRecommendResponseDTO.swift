@@ -15,6 +15,6 @@ struct CourseDTO: ResponseModelType {
     let courseId: Int
     let courseName: String
     let thumbnailImage: String
-    let mainTags: [PlaceCategoryType]
+    let mainTags: [MainTagType]
     let isBookmarked: Bool
 }

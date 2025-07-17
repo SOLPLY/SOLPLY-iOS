@@ -11,7 +11,7 @@ struct PlaceDetail: Identifiable, Equatable {
     let id = UUID()
     let placeId: Int
     let placeName: String
-    let primaryTag: PlaceCategoryType
+    let primaryTag: MainTagType
     let introduction: String
     let imageInfos: [PlaceDetailImageInfo]
     let address: String

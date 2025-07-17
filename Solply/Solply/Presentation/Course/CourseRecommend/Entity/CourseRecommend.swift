@@ -11,7 +11,7 @@ struct CourseRecommend: Identifiable, Equatable {
     let id: Int
     let courseName: String
     let imageUrl: String
-    let courseCategory: [PlaceCategoryType]
+    let courseCategory: [MainTagType]
     let isBookmarked: Bool
 }
 
