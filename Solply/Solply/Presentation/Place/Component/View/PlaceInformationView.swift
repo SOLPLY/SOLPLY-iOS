@@ -36,7 +36,7 @@ struct PlaceInformationView: View {
         contactNumber: String,
         openingHours: String,
         snsLink: [PlaceDetailSnsLink],
-        copyAction: ((String) -> Void)? = nil,
+        copyAction: ((String) -> Void)? = nil
     ) {
         self.primaryTag = primaryTag
         self.placeName = placeName
