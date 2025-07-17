@@ -82,7 +82,7 @@ extension ArchiveFullView {
                 CourseCard(
                     isSaved: true,
                     title: courseItem.courseName ?? "",
-                    imageURL: courseItem.thumbnailUrl ?? "",
+                    imageUrl: courseItem.thumbnailUrl ?? "",
                     courseCategory: courseItem.primaryTags?.compactMap {
                         PlaceCategoryType(rawValue: $0)
                     } ?? [],
