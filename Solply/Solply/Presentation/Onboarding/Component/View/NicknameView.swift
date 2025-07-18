@@ -38,6 +38,7 @@ struct NicknameView: View {
             ) {
                 store.dispatch(.next)
             }
+            .frame(width: 335.adjustedWidth)
         }
         .padding(.bottom, 20.adjustedHeight)
     }

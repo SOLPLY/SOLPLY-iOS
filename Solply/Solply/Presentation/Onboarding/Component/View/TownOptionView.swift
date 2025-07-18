@@ -27,7 +27,9 @@ struct TownOptionView: View {
                         isSelected: store.state.selectedTown == town
                     ) {
                         print("✅ 선택한 동네: \(town.name)")
-                        store.dispatch(.selectTown(town))
+                        withAnimation(nil) {
+                            store.dispatch(.selectTown(town))
+                        }
                     }
                 }
                 
@@ -50,6 +52,7 @@ struct TownOptionView: View {
                 print("➡️ 다음 버튼 눌림. 현재 선택된 동네: \(store.state.selectedTown?.name ?? "없음")")
                 store.dispatch(.next)
             }
+            .frame(width: 335.adjustedWidth)
                 
         }
         .padding(.bottom, 20.adjustedHeight)

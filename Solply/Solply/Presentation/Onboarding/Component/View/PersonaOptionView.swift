@@ -27,7 +27,9 @@ struct PersonaOptionView: View {
                         isSelected: store.state.selectedPersona?.type == persona.type
                     ) {
                         print("✅ [페르소나 선택] \(persona.description)")
-                        store.dispatch(.selectPersona(persona))
+                        withAnimation(nil) {
+                            store.dispatch(.selectPersona(persona))
+                        }
                     }
                 }
             }
@@ -43,6 +45,7 @@ struct PersonaOptionView: View {
                 print("➡️ [다음 버튼] 눌림 - 선택된 페르소나: \(selected)")
                 store.dispatch(.next)
             }
+            .frame(width: 335.adjustedWidth)
             .padding(.bottom, 20.adjustedHeight)
         }
         .onAppear {
