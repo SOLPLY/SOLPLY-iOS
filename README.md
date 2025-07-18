@@ -28,7 +28,7 @@
 
 # 🔥 Coding Convention
 [Swift 스타일쉐어 가이드](https://github.com/StyleShare/swift-style-guide)를 기반으로 <br>
-기반으로 팀원의 기존 스타일을 반영하였습니다.
+팀원의 기존 스타일을 반영하였습니다.
 
 # 📂 Foldering
 
