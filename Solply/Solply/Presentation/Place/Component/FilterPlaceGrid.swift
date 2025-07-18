@@ -156,6 +156,28 @@ struct FilterPlaceGrid: View {
             .onChange(of: store.state.selectedMainTag) { _, _ in
                 store.dispatch(.resetSubTags)
             }
+            .onChange(of: townId) { _, _ in
+                
+                store.dispatch(.fetchSubTags(
+                    parentId: store.state.selectedMainTag.parentId
+                ))
+                
+                let subTagAIdList = store.state.fetchedSubTags
+                    .filter { $0.tagType == "OPTION1" }
+                    .map { $0.id }
+                
+                let subTagBIdList = store.state.fetchedSubTags
+                    .filter { $0.tagType == "OPTION2" }
+                    .map { $0.id }
+                
+                store.dispatch(.fetchPlaceList(
+                    townId: townId,
+                    isBookmarkSearch: false,
+                    mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
+                    subTagAIdList: subTagAIdList,
+                    subTagBIdList: subTagBIdList
+                ))
+            }
             .padding(.vertical, 20.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)
         }
