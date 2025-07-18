@@ -4,6 +4,8 @@
 <dict>
 	<key>BASE_URL</key>
 	<string>$(BASE_URL)</string>
+	<key>CFBundleDisplayName</key>
+	<string>솔플리</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -15,15 +17,13 @@
 			</array>
 		</dict>
 	</array>
-    
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>kakaokompassauth</string>
-        <string>kakaolink</string>
-        <string>kakaotalk</string>
-        <string>nmap</string>
-    </array>
-        
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaokompassauth</string>
+		<string>kakaolink</string>
+		<string>kakaotalk</string>
+		<string>nmap</string>
+	</array>
 	<key>KAKAO_NATIVE_APP_KEY</key>
 	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>NMFClientId</key>
