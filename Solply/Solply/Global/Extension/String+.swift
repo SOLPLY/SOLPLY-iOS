@@ -16,3 +16,10 @@ extension String {
         return self
     }
 }
+
+extension String {
+    func removingTextAfterParenthesis() -> String {
+        guard let range = self.range(of: " (") else { return self }
+        return String(self[..<range.lowerBound])
+    }
+}

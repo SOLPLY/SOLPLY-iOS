@@ -109,7 +109,7 @@ enum CourseDetailReducer {
             break
             
         case .courseDetailFetched(let courseDetails):
-            state.courseTitle = courseDetails.courseName
+            state.courseName = courseDetails.courseName
             state.courseDescription = courseDetails.introduction
             
             let placeEntities: [PlaceDetailInCourse] = courseDetails.places.map { PlaceDetailInCourse(dto: $0) }
@@ -149,6 +149,19 @@ enum CourseDetailReducer {
         case .placeBookmarkRemoved:
             print("장소 저장 취소 완료")
             break
+            
+        case .updateCourseDetail:
+            break
+            
+        case .courseDetailUpdated(updatedCourseId: let updatedCourseId):
+            state.updatedCourseId = updatedCourseId
+            break
+            
+        case .submitCreateCourseDetail:
+            break
+            
+        case .createCourseDetailSubmitted(createdCourseId: let createdCourseId):
+            state.updatedCourseId = createdCourseId
         }
     }
 }

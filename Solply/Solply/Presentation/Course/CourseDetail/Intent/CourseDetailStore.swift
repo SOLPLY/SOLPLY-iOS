@@ -59,6 +59,18 @@ final class CourseDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .updateCourseDetail(let courseId, let request):
+            Task {
+                let result = await effect.updateCourseDetail(courseId: courseId, request: request)
+                self.dispatch(result)
+            }
+            
+        case .submitCreateCourseDetail(let request):
+            Task {
+                let result = await effect.submitCreateCourseDetail(request: request)
+                self.dispatch(result)
+            }
+            
         default:
             break
         }

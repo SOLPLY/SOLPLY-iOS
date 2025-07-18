@@ -64,3 +64,20 @@ extension CourseService {
         return try await self.request(with: .submitAddPlace(courseId: courseId, placeId: placeId))
     }
 }
+
+extension CourseService {
+    func updateCourseDetail(
+        courseId: Int,
+        request: CourseUpdateRequestDTO
+    ) async throws -> BaseResponseBody<CourseUpdateResponseDTO> {
+        return try await self.request(with: .updateCourseDetail(courseId: courseId, request: request))
+    }
+}
+
+extension CourseService {
+    func submitCreateCourseDetail(
+        request: CourseCreateRequestDTO
+    ) async throws -> BaseResponseBody<CourseCreateResponseDTO> {
+        return try await self.request(with: .submitCreateCourseDetail(request: request))
+    }
+}
