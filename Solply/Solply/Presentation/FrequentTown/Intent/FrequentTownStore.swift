@@ -9,24 +9,41 @@ import Foundation
 
 @MainActor
 final class FrequentTownStore: ObservableObject {
-    @Published var state = OnboardingState() // 일단은 OnboardingState 사용
+    
+    @Published private(set) var state = FrequentTownState()
     private let effect = FrequentTownEffect()
     
-    func dispatch(_ action: OnboardingAction) {
-        OnboardingReducer.reduce(state: &state, action: action)
+    func dispatch(_ action: FrequentTownAction) {
+        FrequentTownReducer.reduce(state: &state, action: action)
         
         switch action {
         case .fetchTown:
-            Task {
-                let result = await effect.fetchTownList()
-                dispatch(result)
-            }
+            fetchTownList()
             
-        case .fetchTownSuccess, .fetchTownFailure, .selectTown:
-            break
+        case .saveTown:
+            saveSelectedTown()
             
         default:
             break
+        }
+    }
+    
+    private func fetchTownList() {
+        Task {
+            let result = await effect.fetchTownList()
+            dispatch(result)
+        }
+    }
+    
+    private func saveSelectedTown() {
+        guard let selectedTown = state.selectedTown else {
+            print("❗️ 선택된 동네가 없습니다.")
+            return
+        }
+        
+        Task {
+            let result = await effect.saveTown(selectedTown: selectedTown)
+            dispatch(result)
         }
     }
 }
