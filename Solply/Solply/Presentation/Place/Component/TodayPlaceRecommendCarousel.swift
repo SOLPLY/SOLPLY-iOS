@@ -8,39 +8,44 @@
 import SwiftUI
 
 struct TodayPlaceRecommendCarousel: View {
-    
+
     // MARK: - Properties
-    
+
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject private var store: PlaceRecommendStore
-    
+
     @State private var currentIndex: Int = 1
     @State private var dragOffset: CGFloat = 0
-    
+
+    private let townId: Int
+
     private let cardWidth: CGFloat = 240.adjustedWidth
     private let cardSpacing: CGFloat = 16.adjustedWidth
     private var cardOffset: CGFloat {
         cardWidth / 2 + cardSpacing + (cardWidth * 0.75) / 2
     }
-    
+
     // MARK: - Initializer
-    
-    init(store: PlaceRecommendStore) {
+
+    init(store: PlaceRecommendStore, townId: Int) {
         self.store = store
+        self.townId = townId
     }
-    
+
     // MARK: - Body
-    
+
     var body: some View {
         ZStack {
             ForEach(-2...2, id: \.self) { offsetIndex in
-                let index = (currentIndex + offsetIndex + store.state.placeRecommendItems.count) % store.state.placeRecommendItems.count
+                let index =
+                    (currentIndex + offsetIndex + store.state.placeRecommendItems.count)
+                    % store.state.placeRecommendItems.count
                 let baseX = CGFloat(offsetIndex) * cardOffset
                 let totalOffset = baseX + dragOffset
-                
+
                 let distanceFromCenter = abs(totalOffset)
                 let scale = max(0.75, 1.0 - (distanceFromCenter / (cardOffset * 2)))
-                
+
                 TodayPlaceRecommendCard(
                     thumbnailImageUrl: store.state.placeRecommendItems[index].thumbnailUrl,
                     category: store.state.placeRecommendItems[index].category,
@@ -51,11 +56,12 @@ struct TodayPlaceRecommendCarousel: View {
                 .scaleEffect(scale)
                 .offset(x: totalOffset)
                 .onTapGesture {
-                    // TODO: townId 바인딩 필요
-                    appCoordinator.navigate(to: .placeDetail(
-                        townId: 2,
-                        placeId: store.state.placeRecommendItems[index].id
-                    ))
+                    appCoordinator.navigate(
+                        to: .placeDetail(
+                            townId: townId,
+                            placeId: store.state.placeRecommendItems[index].id
+                        )
+                    )
                 }
             }
         }
@@ -69,25 +75,27 @@ struct TodayPlaceRecommendCarousel: View {
                     let threshold: CGFloat = 50.adjustedWidth
                     var newIndex = currentIndex
                     var targetOffset: CGFloat = 0
-                    
+
                     if value.translation.width < -threshold {
                         newIndex = (currentIndex + 1) % store.state.placeRecommendItems.count
                         targetOffset = -cardOffset
                     } else if value.translation.width > threshold {
-                        newIndex = (currentIndex - 1 + store.state.placeRecommendItems.count) % store.state.placeRecommendItems.count
+                        newIndex =
+                            (currentIndex - 1 + store.state.placeRecommendItems.count)
+                            % store.state.placeRecommendItems.count
                         targetOffset = cardOffset
                     }
-                    
+
                     withAnimation(.easeOut(duration: 0.2)) {
                         dragOffset = targetOffset
                     }
-                    
+
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         dragOffset = 0
                         currentIndex = newIndex
                     }
                 }
         )
-        
+
     }
 }
