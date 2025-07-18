@@ -72,7 +72,7 @@ extension ArchiveFullView {
         }
         .onTapGesture {
             appCoordinator.navigate(
-                to: .archiveList(archiveCategory: .place, townName: placeItem.townName ?? "", townId: townId)
+                to: .archiveList(archiveCategory: .place, townName: placeItem.townName ?? "", townId: placeItem.townId ?? 2)
             )
         }
         .transition(.move(edge: .trailing))
@@ -106,7 +106,7 @@ extension ArchiveFullView {
         }
         .onTapGesture {
             appCoordinator.navigate(
-                to: .archiveList(archiveCategory: .course, townName: courseItem.townName ?? "", townId: townId)
+                to: .archiveList(archiveCategory: .course, townName: courseItem.townName ?? "", townId: courseItem.townId ?? 3)
             )
         }
         .transition(.move(edge: .leading))
