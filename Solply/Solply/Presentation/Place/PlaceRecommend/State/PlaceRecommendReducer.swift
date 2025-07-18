@@ -22,6 +22,9 @@ struct PlaceRecommendReducer {
         case .dismissSubTagBottomSheet:
             state.isSubTagBottomSheetPresented = false
             
+        case .updateMainTag:
+            state.previousMainTag = state.selectedMainTag
+            
         case .resetSubTags:
             state.selectedSubTags.removeAll()
             

@@ -52,6 +52,7 @@ struct FilterPlaceGrid: View {
             VStack(alignment: .leading, spacing: 16.adjustedHeight) {
                 HStack(alignment: .center, spacing: 8.adjustedWidth) {
                     FilterButton(title: mainTag.title) {
+                        store.dispatch(.updateMainTag)
                         store.dispatch(.toggleMainTagBottomSheet)
                     }
                     .sheet(
@@ -59,14 +60,20 @@ struct FilterPlaceGrid: View {
                             get: { store.state.isMainTagBottomSheetPresented },
                             set: { isPresented, selectedTag in
                                 if !isPresented {
-                                    store.dispatch(.resetSubTags)
-                                    store.dispatch(.fetchPlaceList(
-                                        townId: townId,
-                                        isBookmarkSearch: false,
-                                        mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                                        subTagAIdList: [],
-                                        subTagBIdList: []
-                                    ))
+                                    let current = store.state.selectedMainTag
+                                    let previous = store.state.previousMainTag
+                                    
+                                    if current != previous {
+                                        store.dispatch(.resetSubTags)
+                                        store.dispatch(.fetchPlaceList(
+                                            townId: townId,
+                                            isBookmarkSearch: false,
+                                            mainTagId: current.parentId == 0 ? nil : current.parentId,
+                                            subTagAIdList: [],
+                                            subTagBIdList: []
+                                        ))
+                                    }
+                                    
                                     store.dispatch(.dismissMainTagBottomSheet)
                                 }
                             }
