@@ -30,7 +30,7 @@ final class FrequentTownStore: ObservableObject {
 }
 
 extension FrequentTownStore {
-    func fetchTownList(){
+    func fetchTownList() {
         Task {
             let result = await effect.fetchTownList()
             dispatch(result)
@@ -42,9 +42,12 @@ extension FrequentTownStore {
             print("❗️ 선택된 동네가 없습니다.")
             return
         }
-        
+
         Task {
-            let result = await effect.saveTown(selectedTown: selectedTown)
+            let result = await effect.saveTown(
+                selectedTown: selectedTown,
+                favoriteTownList: state.townList
+            )
             dispatch(result)
         }
     }
