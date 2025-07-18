@@ -22,6 +22,24 @@ final class ArchiveListStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .fetchPlaceList(
+            let townId,
+            let isBookmarkSearch,
+            let mainTagId,
+            let subTagAIdList,
+            let subTagBIdList
+        ):
+            Task {
+                let result = await effect.fetchPlaceList(
+                    townId: townId,
+                    isBookmarkSearch: isBookmarkSearch,
+                    mainTagId: mainTagId,
+                    subTagAIdList: subTagAIdList,
+                    subTagBIdList: subTagBIdList
+                )
+                self.dispatch(result)
+            }
+            
         case .removeCourseList(let courseIds):
             Task {
                 let result = await effect.removeCourseList(courseIds: courseIds)

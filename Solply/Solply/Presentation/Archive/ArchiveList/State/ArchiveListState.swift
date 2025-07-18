@@ -15,5 +15,5 @@ struct ArchiveListState {
     
     var isPresented: Bool = false
     var courses: [CourseArchiveDTO] = []
-    var places: [PlaceArchiveDTO] = []
+    var places: [PlaceDTO] = []
 }
