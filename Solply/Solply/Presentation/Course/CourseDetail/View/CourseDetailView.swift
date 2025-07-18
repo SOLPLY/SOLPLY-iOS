@@ -16,7 +16,7 @@ struct CourseDetailView: View {
     @StateObject private var toastManager = ToastManager()
     @StateObject private var locationManager = LocationManager()
     
-    private let courseId: Int
+    private var courseId: Int
     private let fromArchive: Bool
     
     // MARK: - Initializer
@@ -90,6 +90,9 @@ struct CourseDetailView: View {
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
+        }
+        .onChange(of: store.state.updatedCourseId) { _, newValue in
+            store.dispatch(.fetchCourseDetail(courseId: newValue))
         }
     }
 }

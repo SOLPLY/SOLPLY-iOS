@@ -154,8 +154,7 @@ enum CourseDetailReducer {
             break
             
         case .courseDetailUpdated(updatedCourseId: let updatedCourseId):
-            print(updatedCourseId)
-            print("업데이트 완료")
+            state.updatedCourseId = updatedCourseId
             break
         }
     }
