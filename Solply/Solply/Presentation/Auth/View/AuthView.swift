@@ -76,7 +76,11 @@ struct AuthView: View {
         .background(.gray100)
         .onChange(of: store.state.isLoggedIn) { _, newValue in
             if newValue {
-                appCoordinator.changeRoot(to: .onboarding)
+                if store.state.isNewUser {
+                    appCoordinator.changeRoot(to: .onboarding)
+                } else {
+                    appCoordinator.changeRoot(to: .tabBar)
+                }
             }
         }
     }

@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Moya
+
 import KakaoSDKUser
 import KakaoSDKAuth
 
@@ -24,17 +26,47 @@ struct AuthEffect {
 
     // MARK: - Functions
     
+//    @MainActor
+//    func login(provider: String) async -> AuthAction {
+//        do {
+//            let oauthToken = try await fetchKakaoToken()
+//            let request = AuthLoginRequestDTO(oauthAccessToken: oauthToken.accessToken)
+//            let response = try await service.submitLogin(provider: provider, request: request)
+//            if let accessToken = response.data?.accessToken,
+//               let refreshToken = response.data?.refreshToken {
+//                TokenManager.shared.saveTokens(accessToken: accessToken, refreshToken: refreshToken)
+//            }
+//            return .loginSuccess
+//        } catch let error as NetworkError {
+//            return .loginFailed(error)
+//        } catch {
+//            return .loginFailed(.unknownError)
+//        }
+//    }
+    
     @MainActor
     func login(provider: String) async -> AuthAction {
         do {
             let oauthToken = try await fetchKakaoToken()
             let request = AuthLoginRequestDTO(oauthAccessToken: oauthToken.accessToken)
             let response = try await service.submitLogin(provider: provider, request: request)
-            if let accessToken = response.data?.accessToken,
-               let refreshToken = response.data?.refreshToken {
-                TokenManager.shared.saveTokens(accessToken: accessToken, refreshToken: refreshToken)
+
+            guard let data = response.data else {
+                return .loginFailed(.unknownError)
             }
-            return .loginSuccess
+
+            // ✅ 토큰 저장
+            TokenManager.shared.saveTokens(
+                accessToken: data.accessToken,
+                refreshToken: data.refreshToken
+            )
+
+            // ✅ isNewUser 분기처리
+            return .loginSuccess(
+                accessToken: data.accessToken,
+                refreshToken: data.refreshToken,
+                isNewUser: data.isNewUser
+            )
         } catch let error as NetworkError {
             return .loginFailed(error)
         } catch {
