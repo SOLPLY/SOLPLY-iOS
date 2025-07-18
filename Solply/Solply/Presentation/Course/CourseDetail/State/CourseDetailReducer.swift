@@ -149,6 +149,13 @@ enum CourseDetailReducer {
         case .placeBookmarkRemoved:
             print("장소 저장 취소 완료")
             break
+            
+        case .updateCourseDetail:
+            break
+            
+        case .courseDetailUpdated(updatedCourseId: let updatedCourseId):
+            state.updatedCourseId = updatedCourseId
+            break
         }
     }
 }

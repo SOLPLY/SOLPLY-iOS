@@ -8,6 +8,8 @@
 import Foundation
 
 struct CourseDetailState {
+    var updatedCourseId: Int = -1
+    
     var isLoading: Bool = false
     var courseTitle: String = ""
     var courseDescription: String = ""

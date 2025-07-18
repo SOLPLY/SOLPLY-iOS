@@ -16,7 +16,7 @@ struct CourseDetailView: View {
     @StateObject private var toastManager = ToastManager()
     @StateObject private var locationManager = LocationManager()
     
-    private let courseId: Int
+    private var courseId: Int
     private let fromArchive: Bool
     
     // MARK: - Initializer
@@ -62,14 +62,12 @@ struct CourseDetailView: View {
                     .padding(.top, 8.adjustedHeight)
                 }
                 .onAppear {
-                    // ID 바인딩
                     store.dispatch(.fetchCourseDetail(courseId: courseId))
                 }
                 .onChange(of: store.state.toastContent) { _, toastContent in
                     guard let toastContent else { return }
                     
                     toastManager.showToast(content: toastContent) {
-                        // TODO: 코스 id 바인딩 필요
                         appCoordinator.navigate(to: .courseDetail(courseId: courseId, fromArchive: true))
                     }
                 }
@@ -92,6 +90,9 @@ struct CourseDetailView: View {
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
+        }
+        .onChange(of: store.state.updatedCourseId) { _, newValue in
+            store.dispatch(.fetchCourseDetail(courseId: newValue))
         }
     }
 }
@@ -302,12 +303,28 @@ extension CourseDetailView {
             
             VStack(alignment: .center, spacing: 12.adjustedHeight) {
                 CourseSaveButton(title: "지금 코스에 저장") {
+                    store.dispatch(
+                        .updateCourseDetail(
+                            courseId: courseId,
+                            request: CourseCreateRequestDTO(
+                                courseName: store.state.courseTitle,
+                                courseDescription: store.state.courseDescription,
+                                places: store.state.places.enumerated().map { index, place in
+                                    PlaceOrderDTO(
+                                        placeId: place.placeId,
+                                        placeOrder: index + 1
+                                    )
+                                }
+                            )
+                        )
+                    )
                     withAnimation(.easeInOut(duration: 0.2)) {
                         store.dispatch(.saveCourseToCurrent)
                     }
                 }
                 
                 CourseSaveButton(title: "새 코스로 저장") {
+                    // 새 코스 생성 API
                     withAnimation(.easeInOut(duration: 0.2)) {
                         store.dispatch(.saveCourseAsNew)
                     }
