@@ -80,6 +80,7 @@ struct DetailBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
                 }
                 .offset(y: 0 + dragOffset)
             }
+            .shadow(color: .coreBlack.opacity(0.1), radius: 8, x: 0, y: -1)
             .ignoresSafeArea(edges: .bottom)
         }
     }

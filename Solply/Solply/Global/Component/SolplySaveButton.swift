@@ -59,6 +59,7 @@ struct SolplySaveButton: View {
             .animation(.easeInOut(duration: 0.2), value: isEnabled)
             .animation(.easeInOut(duration: 0.2), value: isSelected)
         }
+        .shadow(color: .coreBlack.opacity(0.1), radius: 6, x: 0, y: 3.55)
         .allowsHitTesting(isEnabled)
         .buttonStyle(.plain)
     }
