@@ -83,7 +83,7 @@ extension TabBarView {
                 Spacer()
                 
                 ArchiveButton {
-                    appCoordinator.navigate(to: .archive)
+                    appCoordinator.navigate(to: .archive(townId: townId))
                 }
             }
             .padding(.horizontal, 20.adjustedWidth)

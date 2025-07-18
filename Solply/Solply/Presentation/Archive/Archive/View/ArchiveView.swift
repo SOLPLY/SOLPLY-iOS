@@ -14,6 +14,14 @@ struct ArchiveView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject var store = ArchiveStore()
     
+    private let townId: Int
+    
+    // MARK: - Initializer
+    
+    init(townId: Int) {
+        self.townId = townId
+    }
+    
     // MARK: - Body
     
     var body: some View {
@@ -35,7 +43,7 @@ struct ArchiveView: View {
                         ArchiveEmptyView(archiveCategory: .place)
                             .transition(.move(edge: .leading))
                     } else {
-                        ArchiveFullView(archiveCategory: .place, store: store)
+                        ArchiveFullView(archiveCategory: .place, store: store, townId: townId)
                             .transition(.move(edge: .leading))
                     }
 
@@ -44,7 +52,7 @@ struct ArchiveView: View {
                         ArchiveEmptyView(archiveCategory: .course)
                             .transition(.move(edge: .trailing))
                     } else {
-                        ArchiveFullView(archiveCategory: .course, store: store)
+                        ArchiveFullView(archiveCategory: .course, store: store, townId: townId)
                             .transition(.move(edge: .trailing))
                     }
                 }

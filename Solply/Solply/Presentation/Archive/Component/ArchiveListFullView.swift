@@ -16,12 +16,14 @@ struct ArchiveListFullView: View {
    
     private let archiveCategory: SolplyContentType
     private let columns = [GridItem(.fixed(165.adjustedWidth)), GridItem(.fixed(165.adjustedWidth))]
+    private let townId: Int
     
     // MARK: - Initializers
     
-    init(archiveCategory: SolplyContentType, store: ArchiveListStore) {
+    init(archiveCategory: SolplyContentType, store: ArchiveListStore, townId: Int) {
         self.archiveCategory = archiveCategory
         self.store = store
+        self.townId = townId
     }
     
     // MARK: - Body
@@ -60,7 +62,7 @@ extension ArchiveListFullView {
                 if store.state.activeDelete {
                     store.dispatch(.togglePlaceArchiveList(placeId: item.placeId))
                 } else {
-                    appCoordinator.navigate(to: .placeDetail(townId: 1, placeId: 1))
+                    appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: item.placeId))
                 }
                 
                 if store.state.activeCancel {

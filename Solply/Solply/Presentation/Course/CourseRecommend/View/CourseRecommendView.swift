@@ -44,6 +44,9 @@ struct CourseRecommendView: View {
             .frame(maxWidth: .infinity)
             .padding(.bottom, 112.adjustedHeight)
         }
+        .onChange(of: townId) { _, townId in
+            store.dispatch(.fetchCourseRecommend(townId: townId))
+        }
         .background(.gray100)
         .task {
             store.dispatch(.fetchCourseRecommend(townId: townId))

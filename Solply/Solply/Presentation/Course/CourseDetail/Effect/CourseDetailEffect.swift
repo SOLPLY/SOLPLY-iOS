@@ -124,7 +124,7 @@ struct CourseDetailEffect {
             return .createCourseDetailSubmitted(createdCourseId: data.courseId)
             
         } catch let error as NetworkError {
-            return .errorOccured(error: .unknownError)
+            return .errorOccured(error: error)
         } catch {
             return .errorOccured(error: .unknownError)
         }
