@@ -42,6 +42,8 @@ enum ArchiveListReducer {
             state.isPresented = false
             state.activeDelete = false
             
+        
+            
         case .fetchCourseList:
             break
             
@@ -72,6 +74,12 @@ enum ArchiveListReducer {
             
             state.selectedPlaceIds.removeAll()
             state.activeDelete = false
+            
+        case .fetchPlaceList:
+            break
+            
+        case .placeListFetched(let placeList):
+            state.places = placeList
             
         case .errorOccured(let error):
             print(error)
