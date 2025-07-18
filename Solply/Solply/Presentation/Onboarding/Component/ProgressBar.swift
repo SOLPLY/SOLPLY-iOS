@@ -38,7 +38,7 @@ struct ProgressBar: View {
 
 extension ProgressBar {
     private func progressWidth(totalWidth: CGFloat) -> CGFloat {
-        let totalSteps = Double(OnboardingStep.allCases.count)
+        let totalSteps = 3.0
         let currentStep = Double(step.rawValue + 1)
         let progress = currentStep / totalSteps
         
