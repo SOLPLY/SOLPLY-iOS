@@ -95,7 +95,13 @@ extension ArchiveListFullView {
                     if store.state.activeDelete {
                         store.dispatch(.toggleCourseArchiveList(courseId: item.courseId))
                     } else {
-                        appCoordinator.navigate(to: .courseDetail(courseId: item.courseId, fromArchive: true)) 
+                        appCoordinator.navigate(
+                            to: .courseDetail(
+                                townId: townId,
+                                courseId: item.courseId,
+                                fromArchive: true
+                            )
+                        ) 
                     }
                     
                     if store.state.activeCancel {

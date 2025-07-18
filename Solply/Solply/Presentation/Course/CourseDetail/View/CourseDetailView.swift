@@ -16,12 +16,14 @@ struct CourseDetailView: View {
     @StateObject private var toastManager = ToastManager()
     @StateObject private var locationManager = LocationManager()
     
+    private var townId: Int
     private var courseId: Int
     private let fromArchive: Bool
     
     // MARK: - Initializer
     
-    init(courseId: Int, fromArchive: Bool) {
+    init(townId: Int, courseId: Int, fromArchive: Bool) {
+        self.townId = townId
         self.courseId = courseId
         self.fromArchive = fromArchive
     }
@@ -68,7 +70,13 @@ struct CourseDetailView: View {
                     guard let toastContent else { return }
                     
                     toastManager.showToast(content: toastContent) {
-                        appCoordinator.navigate(to: .courseDetail(courseId: courseId, fromArchive: true))
+                        appCoordinator.navigate(
+                            to: .courseDetail(
+                                townId: townId,
+                                courseId: courseId,
+                                fromArchive: true
+                            )
+                        )
                     }
                 }
                 .toast(toastManager: toastManager)
@@ -182,7 +190,7 @@ extension CourseDetailView {
                     ) {
                         store.dispatch(.focusPlace(index: index))
                     } detailAction: {
-                        print("장소 상세")
+                        appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: store.state.places[index].placeId))
                     } findDirectionAction: {
                         store.dispatch(.requestFindDirection(
                             destinationLatitude: store.state.places[index].latitude,
@@ -359,6 +367,6 @@ extension CourseDetailView {
 }
 
 #Preview {
-    CourseDetailView(courseId: 1, fromArchive: true)
+    CourseDetailView(townId: 1, courseId: 1, fromArchive: true)
         .environmentObject(AppCoordinator())
 }
