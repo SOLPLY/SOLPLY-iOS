@@ -125,6 +125,11 @@ extension AddPlaceToCourseView {
                                     RoundedRectangle(cornerRadius: 20)
                                         .foregroundStyle(.coreWhite)
                                         .opacity((course.isActive ?? true) ? 0 : 0.7)
+                                        .onTapGesture {
+                                            withAnimation(.easeInOut(duration: 0.2)) {
+                                                cardAction?(selectedIndex == index ? -1 : index)
+                                            }
+                                        }
                                     
                                     if selectedIndex == index {
                                         Image(.checkIcon)
