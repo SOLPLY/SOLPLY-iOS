@@ -134,7 +134,7 @@ extension CourseDetailView {
             Group {
                 if fromArchive {
                     HStack(alignment: .center, spacing: 4.adjustedWidth) {
-                        Text(store.state.courseTitle)
+                        Text(store.state.courseName)
                             .applySolplyFont(.title_18_sb)
                             .frame(width: 307.adjustedWidth, alignment: .leading)
                         
@@ -152,7 +152,7 @@ extension CourseDetailView {
                     }
                     
                 } else {
-                    Text(store.state.courseTitle)
+                    Text(store.state.courseName)
                         .applySolplyFont(.title_18_sb)
                         .frame(width: 335.adjustedWidth, alignment: .leading)
                 }
@@ -307,7 +307,7 @@ extension CourseDetailView {
                         .updateCourseDetail(
                             courseId: courseId,
                             request: CourseUpdateRequestDTO(
-                                courseName: store.state.courseTitle,
+                                courseName: store.state.courseName,
                                 courseDescription: store.state.courseDescription,
                                 places: store.state.places.enumerated().map { index, place in
                                     PlaceOrderDTO(
@@ -327,7 +327,7 @@ extension CourseDetailView {
                     store.dispatch(
                         .submitCreateCourseDetail(
                             request: CourseCreateRequestDTO(
-                                courseName: store.state.courseTitle.removingTextAfterParenthesis(),
+                                courseName: store.state.courseName.removingTextAfterParenthesis(),
                                 courseDescription: store.state.courseDescription,
                                 places: store.state.places.enumerated().map { index, place in
                                     PlaceOrderDTO(

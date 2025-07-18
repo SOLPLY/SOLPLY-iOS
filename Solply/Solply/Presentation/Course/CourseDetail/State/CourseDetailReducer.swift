@@ -109,7 +109,7 @@ enum CourseDetailReducer {
             break
             
         case .courseDetailFetched(let courseDetails):
-            state.courseTitle = courseDetails.courseName
+            state.courseName = courseDetails.courseName
             state.courseDescription = courseDetails.introduction
             
             let placeEntities: [PlaceDetailInCourse] = courseDetails.places.map { PlaceDetailInCourse(dto: $0) }
