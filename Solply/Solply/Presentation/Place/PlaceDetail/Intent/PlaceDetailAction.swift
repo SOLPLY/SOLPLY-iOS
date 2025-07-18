@@ -20,6 +20,7 @@ enum PlaceDetailAction {
     case copyToClipboard(text: String)
     
     case updateUserCoordinate(latitude: Double, longitude: Double)
+    case updateAddPlaceCourseId(courseId: Int)
     
     // api
     
@@ -31,8 +32,11 @@ enum PlaceDetailAction {
     case placeDetailFetched(PlaceDetailResponseDTO)
     
     case submitPlaceBookmark(placeId: Int)
-    case placeBookmarkSubmited
+    case placeBookmarkSubmitted
     
     case removePlaceBookmark(placeId: Int)
     case placeBookmarkRemoved
+    
+    case submitAddPlace(courseId: Int, placeId: Int)
+    case addPlaceSubmitted
 }

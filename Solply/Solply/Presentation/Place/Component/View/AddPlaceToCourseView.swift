@@ -12,7 +12,7 @@ struct AddPlaceToCourseView: View {
     // MARK: - Properties
     
     private let columns = [
-        GridItem(.fixed(165.adjustedWidth)),
+        GridItem(.fixed(165.adjustedWidth), spacing: 11.adjustedWidth),
         GridItem(.fixed(165.adjustedWidth))
     ]
     
@@ -22,6 +22,7 @@ struct AddPlaceToCourseView: View {
     private let cardAction: ((Int) -> Void)?
     private let addAction: ((Int) -> Void)?
     private let backAction: (() -> Void)?
+    private let addCourseAction: (() -> Void)?
     
     // MARK: - Initializer
     
@@ -30,13 +31,15 @@ struct AddPlaceToCourseView: View {
         selectedIndex: Int,
         cardAction: ((Int) -> Void)? = nil,
         addAction: ((Int) -> Void)? = nil,
-        backAction: (() -> Void)? = nil
+        backAction: (() -> Void)? = nil,
+        addCourseAction: (() -> Void)? = nil
     ) {
         self.courses = courses
         self.selectedIndex = selectedIndex
         self.cardAction = cardAction
         self.addAction = addAction
         self.backAction = backAction
+        self.addCourseAction = addCourseAction
     }
     
     // MARK: - Body
@@ -89,7 +92,7 @@ extension AddPlaceToCourseView {
                         .padding(.top, 130.adjustedHeight)
                     
                     Button {
-                        
+                        addCourseAction?()
                     } label: {
                         Text("나만의 코스 수집하러 가기")
                             .foregroundStyle(.green800)
@@ -110,8 +113,7 @@ extension AddPlaceToCourseView {
                                     CourseCard(
                                         isSaved: course.isBookmarked ?? false,
                                         courseName: course.courseName,
-                                        // TODO: - 이미지 수정 필요
-                                        imageUrl: "",
+                                        imageUrl: course.thumbnailImage,
                                         courseCategory: course.mainTags,
                                         isSelected: true
                                     ) {
@@ -134,16 +136,19 @@ extension AddPlaceToCourseView {
                             }
                             .padding(.top, 10.adjustedHeight)
                             
-                            if selectedIndex != -1 {
-                                CTAMainButton(title: "이 코스에 추가할래요") {
-                                    addAction?(selectedIndex)
-                                }
-                                .padding(.horizontal, 20.adjustedWidth)
-                                .safeAreaInset(edge: .bottom) {
-                                    Color.clear.frame(height: 16)
-                                }
-                            }
+                            Spacer()
                         }
+                    }
+                    
+                    if selectedIndex != -1 {
+                        CTAMainButton(title: "이 코스에 추가할래요") {
+                            addAction?(selectedIndex)
+                        }
+                        .padding(.horizontal, 20.adjustedWidth)
+                        .safeAreaInset(edge: .bottom) {
+                            Color.clear.frame(height: 16)
+                        }
+                        .zIndex(10)
                     }
                 }
             }

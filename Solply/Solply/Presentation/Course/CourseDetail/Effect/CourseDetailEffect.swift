@@ -48,7 +48,7 @@ struct CourseDetailEffect {
         do {
             let _ = try await service.submitCourseBookmark(courseId: courseId)
             
-            return .courseBookmarkSubmited
+            return .courseBookmarkSubmitted
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)
@@ -74,7 +74,7 @@ struct CourseDetailEffect {
         do {
             let _ = try await placeService.submitPlaceBookmark(placeId: placeId)
             
-            return .placeBookmarkSubmited
+            return .placeBookmarkSubmitted
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)
@@ -91,6 +91,40 @@ struct CourseDetailEffect {
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+    
+    func updateCourseDetail(courseId: Int, request: CourseUpdateRequestDTO) async -> CourseDetailAction {
+        do {
+            let response = try await service.updateCourseDetail(courseId: courseId, request: request)
+            
+            guard let data = response.data else {
+                return .errorOccured(error: .responseError)
+            }
+            
+            return .courseDetailUpdated(updatedCourseId: data.updatedCourseId)
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+    
+    func submitCreateCourseDetail(request: CourseCreateRequestDTO) async -> CourseDetailAction {
+        do {
+            let response = try await service.submitCreateCourseDetail(request: request)
+            
+            guard let data = response.data else {
+                return .errorOccured(error: .responseError)
+            }
+            
+            return .createCourseDetailSubmitted(createdCourseId: data.courseId)
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: .unknownError)
         } catch {
             return .errorOccured(error: .unknownError)
         }

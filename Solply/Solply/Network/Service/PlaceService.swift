@@ -48,3 +48,30 @@ extension PlaceService {
         return try await self.request(with: .fetchPlaceRecommend(townId: townId))
     }
 }
+
+extension PlaceService {
+    func removePlaceList(placeIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .removePlaceList(placeIds: placeIds))
+    }
+}
+
+extension PlaceService {
+    func fetchPlaceList(
+        townId: Int,
+        isBookmarkSearch: Bool = false,
+        mainTagId: Int? = nil,
+        subTagAIdList: [Int]? = nil,
+        subTagBIdList: [Int]? = nil
+    ) async throws -> BaseResponseBody<PlaceListResponseDTO> {
+        return try await self.request(
+            with: .fetchPlaceList(
+                townId: townId,
+                isBookmarkSearch: isBookmarkSearch,
+                mainTagId: mainTagId,
+                subTagAIdList: subTagAIdList,
+                subTagBIdList: subTagBIdList
+            )
+        )
+    }
+        
+}

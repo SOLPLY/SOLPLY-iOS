@@ -51,7 +51,33 @@ extension CourseService {
 }
 
 extension CourseService {
-    func removeCourseList(CourseIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO> {
-        return try await self.request(with: .removeCourseList(CourseIds: CourseIds))
+    func removeCourseList(courseIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .removeCourseList(courseIds: courseIds))
+    }
+}
+
+extension CourseService {
+    func submitAddPlace(
+        courseId: Int,
+        placeId: Int
+    ) async throws -> BaseResponseBody<CourseAddPlaceResponseDTO> {
+        return try await self.request(with: .submitAddPlace(courseId: courseId, placeId: placeId))
+    }
+}
+
+extension CourseService {
+    func updateCourseDetail(
+        courseId: Int,
+        request: CourseUpdateRequestDTO
+    ) async throws -> BaseResponseBody<CourseUpdateResponseDTO> {
+        return try await self.request(with: .updateCourseDetail(courseId: courseId, request: request))
+    }
+}
+
+extension CourseService {
+    func submitCreateCourseDetail(
+        request: CourseCreateRequestDTO
+    ) async throws -> BaseResponseBody<CourseCreateResponseDTO> {
+        return try await self.request(with: .submitCreateCourseDetail(request: request))
     }
 }

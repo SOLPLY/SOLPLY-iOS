@@ -9,13 +9,14 @@ import Foundation
 
 struct PlaceDetailInCourse: Identifiable, Equatable {
     let id = UUID()
+    let placeOrder: Int
     let placeId: Int
     let thumbnailURL: String
     let latitude: Double
     let longitude: Double
     var isFocused: Bool
     var isBookmarked: Bool
-    let primaryTag: PlaceCategoryType
+    let primaryTag: MainTagType
     let placeName: String
     let address: String
     let contactNumber: String
@@ -23,6 +24,7 @@ struct PlaceDetailInCourse: Identifiable, Equatable {
     
     static func mockData() -> PlaceDetailInCourse {
         return  PlaceDetailInCourse(
+            placeOrder: 1,
             placeId: 1,
             thumbnailURL: "",
             latitude: 37.5694,
@@ -40,6 +42,7 @@ struct PlaceDetailInCourse: Identifiable, Equatable {
 
 extension PlaceDetailInCourse {
     init(dto: CourseDetailPlaceDTO) {
+        self.placeOrder = dto.placeOrder
         self.placeId = dto.placeId
         self.thumbnailURL = dto.thumbnailUrl ?? ""
         self.latitude = Double(dto.latitude) ?? 0.0

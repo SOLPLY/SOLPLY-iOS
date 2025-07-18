@@ -11,7 +11,7 @@ struct ChipButtonsContainerView: View {
     
     // MARK: - Properties
     
-    @Binding var tags: [SelectableOptionTag]
+    @Binding var tags: [SelectableSubTag]
     @State var totalHeight: CGFloat = .zero
     let verticalSpacing: CGFloat
     let horizontalSpacing: CGFloat
@@ -19,7 +19,7 @@ struct ChipButtonsContainerView: View {
     // MARK: - Initializer
     
     init(
-        tags: Binding<[SelectableOptionTag]>,
+        tags: Binding<[SelectableSubTag]>,
         verticalSpacing: CGFloat = 8,
         horizontalSpacing: CGFloat = 8,
     ) {
@@ -37,7 +37,7 @@ struct ChipButtonsContainerView: View {
         GeometryReader { geometry in
             ZStack(alignment: .topLeading) {
                 ForEach(tags.indices, id: \.self) { index in
-                    MoreOptionChip(title: tags[index].name, isSelected: tags[index].isSelected)
+                    SubTagChip(title: tags[index].name.title, isSelected: tags[index].isSelected)
                         .id(tags[index].id)
                         .alignmentGuide(.leading) { view in
                             if abs(width - view.width) > geometry.size.width {
@@ -54,6 +54,7 @@ struct ChipButtonsContainerView: View {
                                 width -= view.width
                                 width -= horizontalSpacing
                             }
+                            
                             return result
                         }
                         .alignmentGuide(.top) { _ in

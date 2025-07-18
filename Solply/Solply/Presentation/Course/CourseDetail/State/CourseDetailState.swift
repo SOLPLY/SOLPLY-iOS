@@ -8,8 +8,10 @@
 import Foundation
 
 struct CourseDetailState {
+    var updatedCourseId: Int = -1
+    
     var isLoading: Bool = false
-    var courseTitle: String = ""
+    var courseName: String = ""
     var courseDescription: String = ""
     var places: [PlaceDetailInCourse] = []
     var focusedPlaceIndex: Int = -1

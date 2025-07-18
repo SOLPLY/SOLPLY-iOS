@@ -50,6 +50,7 @@ struct PlaceDetailView: View {
         )
         .onAppear {
             store.dispatch(.fetchPlaceDetail(placeId: placeId))
+            store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
@@ -63,8 +64,9 @@ struct PlaceDetailView: View {
             guard let toastContent else { return }
             
             toastManager.showToast(content: toastContent) {
-                // TODO: courseId 바인딩 필요
-                appCoordinator.navigate(to: .courseDetail(courseId: 1, fromArchive: true))
+                if let addPlaceCourseId = store.state.addPlaceCourseId {
+                    appCoordinator.navigate(to: .courseDetail(courseId: addPlaceCourseId, fromArchive: true))
+                }
             }
         }
         .toast(toastManager: toastManager)
@@ -128,26 +130,28 @@ extension PlaceDetailView {
                 ) { index in
                     store.dispatch(.selectCourseToAdd(index: index))
                 } addAction: { index in
+                    store.dispatch(.updateAddPlaceCourseId(courseId: store.state.courses[index].courseId))
+                    store.dispatch(.submitAddPlace(courseId: store.state.courses[index].courseId, placeId: placeId))
                     store.dispatch(.addPlaceToCourse(index: index))
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(
                         .showToastView(
                             ToastContent(
                                 toastType: .withActionToast,
-                                // TODO: 데이터 바인딩
                                 message: "‘\(store.state.courses[index].courseName.truncated(8))’에 추가되었어요.",
                                 buttonTitle: "자세히 보기"
                             )
                         )
                     )
+                    store.dispatch(.fetchPlaceDetail(placeId: placeId))
                 } backAction: {
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(.selectCourseToAdd(index: -1))
+                } addCourseAction: {
+                    appCoordinator.goBack()
+                    appCoordinator.switchTab(to: .course)
                 }
                 .transition(.move(edge: .trailing))
-                .onAppear {
-                    store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
-                }
             } else {
                 PlaceInformationView(
                     primaryTag: store.state.primaryTag,
@@ -160,6 +164,15 @@ extension PlaceDetailView {
                     snsLink: store.state.snsLink
                 ) { text in
                     store.dispatch(.copyToClipboard(text: text))
+                    store.dispatch(
+                        .showToastView(
+                            ToastContent(
+                                toastType: .defaultToast,
+                                message: "클립보드에 복사되었습니다",
+                                buttonTitle: nil
+                            )
+                        )
+                    )
                 }
                 .padding(.top, 8.adjustedHeight)
                 .transition(.move(edge: .leading))

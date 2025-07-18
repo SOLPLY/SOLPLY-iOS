@@ -1,5 +1,5 @@
 //
-//  PlaceCategoryType.swift
+//  MainTagType.swift
 //  Solply
 //
 //  Created by seozero on 7/8/25.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, RequestModelType {
+enum MainTagType: String, CaseIterable, Identifiable, ResponseModelType, RequestModelType {
     case all = "ALL"
     case cafe = "CAFE"
     case food = "FOOD"
-    case book = "BOOKSTORE"
     case shopping = "SHOPPING"
+    case book = "BOOKSTORE"
     case unique = "UNIQUE_SPACE"
     case walk = "WALKING"
     
@@ -23,8 +23,8 @@ enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, R
         case .all: return "전체"
         case .cafe: return "카페"
         case .food: return "음식"
-        case .book: return "서점/책방"
         case .shopping: return "쇼핑"
+        case .book: return "서점/책방"
         case .unique: return "이색공간"
         case .walk: return "산책"
         }
@@ -35,8 +35,8 @@ enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, R
         case .all: return nil
         case .cafe: return .red100
         case .food: return .yellow100
-        case .book: return .purple100
         case .shopping: return .purple100
+        case .book: return .purple100
         case .unique: return .green100
         case .walk: return .green100
         }
@@ -47,8 +47,8 @@ enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, R
         case .all: return nil
         case .cafe: return .red500
         case .food: return .yellow500
-        case .book: return .purple600
         case .shopping: return .purple600
+        case .book: return .purple600
         case .unique: return .green500
         case .walk: return .green500
         }
@@ -59,8 +59,8 @@ enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, R
         case .all: return nil
         case .cafe: return "save-icon-red"
         case .food: return "save-icon-yellow"
-        case .book: return "save-icon-purple"
         case .shopping: return "save-icon-purple"
+        case .book: return "save-icon-purple"
         case .unique: return "save-icon-green"
         case .walk: return "save-icon-green"
         }
@@ -71,8 +71,8 @@ enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, R
         case .all: return nil
         case .cafe: return .red300
         case .food: return .yellow200
-        case .book: return .purple300
         case .shopping: return .purple300
+        case .book: return .purple300
         case .unique: return .green300
         case .walk: return .green300
         }
@@ -83,10 +83,22 @@ enum PlaceCategoryType: String, CaseIterable, Identifiable, ResponseModelType, R
         case .all: return .allIcon
         case .cafe: return .cafeIcon
         case .food: return .foodIcon
-        case .book: return .bookIcon
         case .shopping: return .shopIcon
+        case .book: return .bookIcon
         case .unique: return .uniqueIcon
         case .walk: return .walkIcon
+        }
+    }
+    
+    var parentId: Int {
+        switch self {
+        case .all: return 0
+        case .cafe: return 1
+        case .food: return 2
+        case .shopping: return 3
+        case .book: return 4
+        case .unique: return 5
+        case .walk: return 6
         }
     }
 }

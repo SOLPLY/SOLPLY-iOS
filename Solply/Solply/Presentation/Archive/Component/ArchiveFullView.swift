@@ -43,6 +43,7 @@ struct ArchiveFullView: View {
             }
             .padding(.top, 16.adjustedHeight)
         }
+        .background(.gray100)
     }
 }
 
@@ -84,7 +85,7 @@ extension ArchiveFullView {
                     courseName: courseItem.courseName ?? "",
                     imageUrl: courseItem.thumbnailUrl ?? "",
                     courseCategory: courseItem.primaryTags?.compactMap {
-                        PlaceCategoryType(rawValue: $0)
+                        MainTagType(rawValue: $0)
                     } ?? [],
                     isSelected: false
                 )

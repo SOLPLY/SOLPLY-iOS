@@ -19,7 +19,7 @@ struct CourseDetailPlaceDTO: ResponseModelType {
     let placeId: Int
     let placeName: String
     let thumbnailUrl: String?
-    let primaryTag: PlaceCategoryType
+    let primaryTag: MainTagType
     let address: String
     let isBookmarked: Bool
     let placeOrder: Int

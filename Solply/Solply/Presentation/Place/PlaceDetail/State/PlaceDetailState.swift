@@ -14,6 +14,7 @@ struct PlaceDetailState {
     var findDirectionEnabled: Bool = true
     var userLatitude: Double = 0.0
     var userLongitude: Double = 0.0
+    var addPlaceCourseId: Int?
     
     var courses: [CourseArchiveDTO] = []
     
@@ -22,7 +23,7 @@ struct PlaceDetailState {
     var toastContent: ToastContent?
     
     var isBookmarked: Bool = false
-    var primaryTag: PlaceCategoryType = .all
+    var primaryTag: MainTagType = .all
     var placeName: String = ""
     var introduction: String = ""
     var imageURLs: [String] = []

@@ -11,11 +11,11 @@ struct PlaceCategoryTag: View {
     
     // MARK: - Properties
     
-    private let placeCategory: PlaceCategoryType
+    private let placeCategory: MainTagType
     
     // MARK: - Initializer
 
-    init(placeCategory: PlaceCategoryType) {
+    init(placeCategory: MainTagType) {
         self.placeCategory = placeCategory
     }
     

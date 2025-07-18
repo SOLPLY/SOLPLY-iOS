@@ -43,14 +43,20 @@ enum CourseDetailAction {
     case errorOccured(error: NetworkError)
     
     case submitCourseBookmark(courseId: Int)
-    case courseBookmarkSubmited
+    case courseBookmarkSubmitted
     
     case removeCourseBookmark(courseId: Int)
     case courseBookmarkRemoved
     
     case submitPlaceBookmark(placeId: Int)
-    case placeBookmarkSubmited
+    case placeBookmarkSubmitted
     
     case removePlaceBookmark(placeId: Int)
     case placeBookmarkRemoved
+    
+    case updateCourseDetail(courseId: Int, request: CourseUpdateRequestDTO)
+    case courseDetailUpdated(updatedCourseId: Int)
+    
+    case submitCreateCourseDetail(request: CourseCreateRequestDTO)
+    case createCourseDetailSubmitted(createdCourseId: Int)
 }

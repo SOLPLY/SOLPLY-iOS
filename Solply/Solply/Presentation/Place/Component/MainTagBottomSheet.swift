@@ -1,5 +1,5 @@
 //
-//  CategoryBottomSheet.swift
+//  MainTagBottomSheet.swift
 //  Solply
 //
 //  Created by seozero on 7/15/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CategoryBottomSheet: View {
+struct MainTagBottomSheet: View {
     
     // MARK: - Properties
     
@@ -44,13 +44,19 @@ struct CategoryBottomSheet: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .center, spacing: 11.adjustedHeight) {
-                    ForEach(PlaceCategoryType.allCases) { category in
+                    ForEach(MainTagType.allCases) { category in
                         CategoryListRow(
                             category: category,
-                            isSelectedCategory: category == store.state.selectedCategory
+                            isSelectedCategory: category == store.state.selectedMainTag
                         ) {
-                            store.dispatch(.selectCategory(category))
-                            isPresented = false
+                            store.dispatch(.selectMainTag(category))
+                            store.dispatch(.fetchSubTags(parentId: category.parentId)) {
+                                if !store.state.fetchedSubTags.isEmpty {
+                                    isPresented = false
+                                } else {
+                                    isPresented = false
+                                }
+                            }
                         }
                         
                         Divider()
@@ -58,7 +64,6 @@ struct CategoryBottomSheet: View {
                     }
                 }
             }
-            // UI상, ScrollView로 감싸주었고 스크롤은 굳이 필요하지 않아서 disable로 설정해둠.
             .scrollDisabled(true)
         }
         .padding(.horizontal, 16.adjustedWidth)
@@ -71,7 +76,7 @@ struct CategoryListRow: View {
     
     // MARK: - Properties
     
-    private let category: PlaceCategoryType
+    private let category: MainTagType
     private let isSelectedCategory: Bool
     
     private let action: (() -> Void)?
@@ -79,7 +84,7 @@ struct CategoryListRow: View {
     // MARK: - Initializer
     
     init(
-        category: PlaceCategoryType,
+        category: MainTagType,
         isSelectedCategory: Bool,
         action: (() -> Void)? = nil
     ) {

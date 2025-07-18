@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MoreOptionChip: View {
+struct SubTagChip: View {
     
     // MARK: - Properties
     

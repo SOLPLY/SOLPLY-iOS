@@ -15,17 +15,19 @@ enum PlaceTargetType {
     case removePlaceBookmark(placeId: Int)
     case fetchPlaceDetail(placeId: Int)
     case fetchPlaceRecommend(townId: Int)
+    case removePlaceList(placeIds: [Int])
+    case fetchPlaceList(
+        townId: Int,
+        isBookmarkSearch: Bool,
+        mainTagId: Int?,
+        subTagAIdList: [Int]?,
+        subTagBIdList: [Int]?
+    )
 }
 
 extension PlaceTargetType: BaseTargetType {
     var headerType: HTTPHeader {
-        switch self {
-        case .fetchPlaceThumbnail: return .accessToken
-        case .submitPlaceBookmark: return .accessToken
-        case .removePlaceBookmark: return .accessToken
-        case .fetchPlaceDetail: return .accessToken
-        case .fetchPlaceRecommend: return .accessToken
-        }
+        return .accessToken
     }
     
     var path: String {
@@ -40,6 +42,10 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/\(placeId)"
         case .fetchPlaceRecommend:
             return "/recommend/places"
+        case .removePlaceList(placeIds: _):
+            return "/places/bookmarks/"
+        case .fetchPlaceList:
+            return "/places"
         }
     }
     
@@ -50,6 +56,8 @@ extension PlaceTargetType: BaseTargetType {
         case .removePlaceBookmark: return .delete
         case .fetchPlaceDetail: return .get
         case .fetchPlaceRecommend: return .get
+        case .removePlaceList: return .delete
+        case .fetchPlaceList: return .get
         }
     }
     
@@ -65,6 +73,38 @@ extension PlaceTargetType: BaseTargetType {
             return .requestPlain
         case .fetchPlaceRecommend(let townId):
             let params: [String: Any] = ["townId": townId]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
+        case .removePlaceList(let placeIds):
+            let joinedPlaceIds = placeIds.map { String($0) }.joined(separator: ",")
+            let params: [String: Any] = ["placeIds": joinedPlaceIds]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
+        case .fetchPlaceList(
+            let townId,
+            let isBookmarkSearch,
+            let mainTagId,
+            let subTagAIdList,
+            let subTagBIdList
+        ):
+            var params: [String: Any] = [
+                "townId": townId,
+                "isBookmarkSearch": isBookmarkSearch
+            ]
+            
+            // mainTagId가 nil이 아닌 경우에만 추가
+            if let mainTagId = mainTagId {
+                params["mainTagId"] = mainTagId
+            }
+            
+            // subTagAIdList가 nil이 아니고 비어있지 않은 경우
+            if let subTagAIdList = subTagAIdList, !subTagAIdList.isEmpty {
+                params["subTagAIdList"] = subTagAIdList.map { String($0) }.joined(separator: ",")
+            }
+            
+            // subTagBIdList가 nil이 아니고 비어있지 않은 경우
+            if let subTagBIdList = subTagBIdList, !subTagBIdList.isEmpty {
+                params["subTagBIdList"] = subTagBIdList.map { String($0) }.joined(separator: ",")
+            }
+            
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
