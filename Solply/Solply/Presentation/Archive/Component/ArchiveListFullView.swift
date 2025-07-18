@@ -48,14 +48,14 @@ struct ArchiveListFullView: View {
 
 extension ArchiveListFullView {
     
-    private func archivePlaceCell(index: Int, item: PlaceArchiveDTO) -> some View {
+    private func archivePlaceCell(index: Int, item: PlaceDTO) -> some View {
         ZStack(alignment: .topTrailing) {
             PlaceCard(
                 isSaved: true,
-                thumbnailUrl: "",
+                thumbnailUrl: item.thumbnailImageUrl,
                 placeName: item.placeName,
-                placeCategory: .book, // TODO: 실제 태그 처리
-                isSelected: store.state.selectedPlaceIds.contains(item.placeId)
+                placeCategory: item.primaryTag,
+                isSelected: store.state.selectedPlaceIds.contains(item.placeId),
             ) {
                 if store.state.activeDelete {
                     store.dispatch(.togglePlaceArchiveList(placeId: item.placeId))
