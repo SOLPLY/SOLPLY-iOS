@@ -9,8 +9,9 @@ import Foundation
 
 struct UserInformation {
     let nickname: String
-    let persona: String
+    let persona: PersonaType
     let townName: String
+    let townId: Int
 }
 
 extension UserInformation {
@@ -18,5 +19,6 @@ extension UserInformation {
         nickname = dto.nickname
         persona = dto.persona
         townName = dto.selectedTown.townName
+        townId = dto.selectedTown.townId
     }
 }

@@ -20,6 +20,7 @@ struct TabBarView: View {
     
     @State private var placeRecommendTitle: String = ""
     @State private var courseRecommendTitle: String = ""
+    @State private var townId: Int = 0
     
     private let userService = UserService()
     
@@ -51,15 +52,16 @@ struct TabBarView: View {
     }
     
     private func loadUserInfo() async {
-            do {
-                let userInfo = try await fetchUserInformation()
-                townName = userInfo.townName
-                placeRecommendTitle = "\(userInfo.persona)\n\(userInfo.nickname)님을 위한 오늘의 추천)"
-                courseRecommendTitle = "\(userInfo.persona)\n\(userInfo.nickname)님을 위한 오늘의 코스"
-            } catch {
-                print("사용자 정보 가져오기 실패: \(error)")
-            }
+        do {
+            let userInfo = try await fetchUserInformation()
+            townName = userInfo.townName
+            townId = userInfo.townId
+            placeRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 추천"
+            courseRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 코스"
+        } catch {
+            print("사용자 정보 가져오기 실패: \(error)")
         }
+    }
 }
 
 // MARK: - Subviews
@@ -67,10 +69,10 @@ struct TabBarView: View {
 extension TabBarView {
     private var tabContent: some View {
         Group {
-            PlaceRecommendView(title: placeRecommendTitle)
+            PlaceRecommendView(title: placeRecommendTitle, townId: $townId)
                 .visible(appCoordinator.selectedTab == .place)
             
-            CourseRecommendView(title: courseRecommendTitle)
+            CourseRecommendView(title: courseRecommendTitle, townId: $townId)
                 .visible(appCoordinator.selectedTab == .course)
         }
     }
@@ -108,14 +110,11 @@ extension TabBarView {
                 throw NetworkError.responseError
             }
             
-            let nickname = data.nickname
-            let persona = data.persona
-            let townName = data.selectedTown.townName
-            
             return UserInformation(
-                nickname: nickname,
-                persona: persona,
-                townName: townName
+                nickname: data.nickname,
+                persona: data.persona,
+                townName: data.selectedTown.townName,
+                townId: data.selectedTown.townId
             )
         } catch let error as NetworkError {
             throw error

@@ -10,11 +10,11 @@ import Foundation
 struct UserInformationResponseDTO: ResponseModelType {
     let userId: Int
     let nickname: String
-    let selectedTown: TownDTO
-    let persona: String
+    let selectedTown: SelectedTownDTO
+    let persona: PersonaType
 }
 
-struct TownDTO: ResponseModelType{
+struct SelectedTownDTO: ResponseModelType{
     let townId: Int
     let townName: String
 }

@@ -14,12 +14,15 @@ struct PlaceRecommendView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceRecommendStore()
     
+    @Binding var townId: Int
+    
     private let title: String
     
     // MARK: - Initializer
     
-    init(title: String) {
+    init(title: String, townId: Binding<Int>) {
         self.title = title
+        self._townId = townId
     }
     
     // MARK: - Body
@@ -35,10 +38,10 @@ struct PlaceRecommendView: View {
                 .padding(.horizontal, 20.adjustedWidth)
                 
                 if !store.state.placeRecommendItems.isEmpty {
-                    TodayPlaceRecommendCarousel(store: store)
+                    TodayPlaceRecommendCarousel(store: store, townId: townId)
                 }
                 
-                FilterPlaceGrid(store: store)
+                FilterPlaceGrid(store: store, townId: townId)
                     .padding(.horizontal, 16.adjustedWidth)
                 
             }
@@ -46,9 +49,18 @@ struct PlaceRecommendView: View {
             .padding(.bottom, 112.adjustedHeight)
         }
         .background(.gray100)
-        .task {
-            // TODO: - townId 바인딩 필요
-            store.dispatch(.fetchPlaceRecommend(townId: 2))
+        .onAppear {
+            store.dispatch(.fetchPlaceRecommend(townId: townId))
+            store.dispatch(.fetchPlaceList(
+                townId: townId,
+                isBookmarkSearch: false,
+                mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
+                subTagAIdList: [],
+                subTagBIdList: []
+            ))
+        }
+        .onChange(of: townId) { _, newTownId in
+            store.dispatch(.fetchPlaceRecommend(townId: newTownId))
             
             let subTagAIdList = store.state.selectedSubTags
                 .filter { $0.tagType == "OPTION1" && $0.isSelected }
@@ -58,9 +70,8 @@ struct PlaceRecommendView: View {
                 .filter { $0.tagType == "OPTION2" && $0.isSelected }
                 .map { $0.id }
             
-            // TODO: - townId 바인딩 필요
             store.dispatch(.fetchPlaceList(
-                townId: 2,
+                townId: newTownId,
                 isBookmarkSearch: false,
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
                 subTagAIdList: subTagAIdList,
@@ -68,9 +79,4 @@ struct PlaceRecommendView: View {
             ))
         }
     }
-}
-
-#Preview {
-    PlaceRecommendView()
-        .environmentObject(AppCoordinator())
 }
