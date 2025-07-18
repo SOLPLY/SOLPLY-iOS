@@ -34,7 +34,8 @@ struct FrequentTownView: View {
                 
                 TownOptionButton(
                     title: nil,
-                    isSelected: false
+                    isSelected: false,
+                    isPlusButton: true
                 ) {
                     print("➕ 추가 버튼 눌림 (FrequentTownView)")
                 }
@@ -53,7 +54,9 @@ struct FrequentTownView: View {
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.bottom, 20.adjustedHeight)
         }
-        .customNavigationBar(.archiveList(title: "자주 가는 동네", backAction: appCoordinator.goBack))
+        .customNavigationBar(
+            .frequentTown(backAction: appCoordinator.goBack)
+        )
         .onAppear {
             store.dispatch(.fetchTown)
         }
@@ -63,5 +66,6 @@ struct FrequentTownView: View {
                 appCoordinator.goToRoot()
             }
         }
+        .background(.gray100)
     }
 }
