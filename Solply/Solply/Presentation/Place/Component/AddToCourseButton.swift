@@ -35,7 +35,7 @@ struct AddToCourseButton: View {
                 .capsuleClipped()
                 .animation(.easeInOut(duration: 0.2), value: isSelected)
         }
-        .shadow(color: .coreBlack.opacity(0.1), radius: 6, x: 0, y: 3.55)
+        .shadow(color: .coreBlack.opacity(0.1), radius: 3, x: 0, y: 5.55)
         .buttonStyle(.plain)
     }
 }
