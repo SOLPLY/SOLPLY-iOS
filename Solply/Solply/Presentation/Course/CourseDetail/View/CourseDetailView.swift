@@ -324,7 +324,20 @@ extension CourseDetailView {
                 }
                 
                 CourseSaveButton(title: "새 코스로 저장") {
-                    // 새 코스 생성 API
+                    store.dispatch(
+                        .submitCreateCourseDetail(
+                            request: CourseCreateRequestDTO(
+                                courseName: store.state.courseTitle.removingTextAfterParenthesis(),
+                                courseDescription: store.state.courseDescription,
+                                places: store.state.places.enumerated().map { index, place in
+                                    PlaceOrderDTO(
+                                        placeId: place.placeId,
+                                        placeOrder: index + 1
+                                    )
+                                }
+                            )
+                        )
+                    )
                     withAnimation(.easeInOut(duration: 0.2)) {
                         store.dispatch(.saveCourseAsNew)
                     }

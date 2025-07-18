@@ -56,4 +56,7 @@ enum CourseDetailAction {
     
     case updateCourseDetail(courseId: Int, request: CourseUpdateRequestDTO)
     case courseDetailUpdated(updatedCourseId: Int)
+    
+    case submitCreateCourseDetail(request: CourseCreateRequestDTO)
+    case createCourseDetailSubmitted(createdCourseId: Int)
 }

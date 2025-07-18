@@ -156,6 +156,12 @@ enum CourseDetailReducer {
         case .courseDetailUpdated(updatedCourseId: let updatedCourseId):
             state.updatedCourseId = updatedCourseId
             break
+            
+        case .submitCreateCourseDetail:
+            break
+            
+        case .createCourseDetailSubmitted(createdCourseId: let createdCourseId):
+            state.updatedCourseId = createdCourseId
         }
     }
 }
