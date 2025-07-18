@@ -32,6 +32,8 @@ final class OnboardingStore: ObservableObject {
                 dispatch(.nicknameChecked(.placeholder))
             } else if nickname.contains(where: { !$0.isLetter && !$0.isNumber }) {
                 dispatch(.nicknameChecked(.invalidCharacter))
+            } else if nickname.count <= 1 {
+                dispatch(.nicknameChecked(.shouldTwoCharacter))
             } else {
                 Task {
                     let result = await effect.checkNickname(nickname)

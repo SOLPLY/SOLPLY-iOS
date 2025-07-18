@@ -108,7 +108,7 @@ extension AddPlaceToCourseView {
                 ZStack(alignment: .bottom) {
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {
-                            ForEach(Array(courses.enumerated()), id: \.element.courseId) { index, course in
+                            ForEach(Array(courses.enumerated()), id: \.offset) { index, course in
                                 ZStack(alignment: .topTrailing) {
                                     CourseCard(
                                         isSaved: course.isBookmarked ?? false,
@@ -121,8 +121,10 @@ extension AddPlaceToCourseView {
                                             cardAction?(selectedIndex == index ? -1 : index)
                                         }
                                     }
-                                    .opacity((course.isActive ?? true) ? 1 : 0.3)
-
+                                    
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .foregroundStyle(.coreWhite)
+                                        .opacity((course.isActive ?? true) ? 0 : 0.7)
                                     
                                     if selectedIndex == index {
                                         Image(.checkIcon)
