@@ -38,7 +38,13 @@ struct CourseRecommendView: View {
                 .padding(.horizontal, 20.adjustedWidth)
                 
                 CourseRecommendGrid(store: store) { courseId in
-                    appCoordinator.navigate(to: .courseDetail(courseId: courseId, fromArchive: false))
+                    appCoordinator.navigate(
+                        to: .courseDetail(
+                            townId: townId,
+                            courseId: courseId,
+                            fromArchive: false
+                        )
+                    )
                 }
             }
             .frame(maxWidth: .infinity)

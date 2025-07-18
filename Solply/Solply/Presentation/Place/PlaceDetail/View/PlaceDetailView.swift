@@ -65,7 +65,13 @@ struct PlaceDetailView: View {
             
             toastManager.showToast(content: toastContent) {
                 if let addPlaceCourseId = store.state.addPlaceCourseId {
-                    appCoordinator.navigate(to: .courseDetail(courseId: addPlaceCourseId, fromArchive: true))
+                    appCoordinator.navigate(
+                        to: .courseDetail(
+                            townId: townId,
+                            courseId: addPlaceCourseId,
+                            fromArchive: true
+                        )
+                    )
                 }
             }
         }
