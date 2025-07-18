@@ -105,7 +105,7 @@ extension PlaceDetailView {
                 }
                 
                 store.dispatch(.toggleSavePlace)
-                if store.state.saveButtonSelected {
+                if store.state.isBookmarked {
                     store.dispatch(
                         .showToastView(
                             ToastContent(
@@ -128,7 +128,36 @@ extension PlaceDetailView {
                     courses: store.state.courses,
                     selectedIndex: store.state.selectedCourseIndex
                 ) { index in
-                    store.dispatch(.selectCourseToAdd(index: index))
+                    if index == -1 { return }
+                    
+                    guard index < store.state.courses.count else { return }
+                    
+                    guard let isDuplicated = store.state.courses[index].isDuplicated,
+                          let isPlaceCountLimited = store.state.courses[index].isPlaceCountLimited else { return }
+                    
+                    if isDuplicated {
+                        store.dispatch(
+                            .showToastView(
+                                ToastContent(
+                                    toastType: .withIconToast,
+                                    message: "해당 장소가 코스에 이미 담겨있어요.",
+                                    buttonTitle: nil
+                                )
+                            )
+                        )
+                    } else if isPlaceCountLimited {
+                        store.dispatch(
+                            .showToastView(
+                                ToastContent(
+                                    toastType: .withIconToast,
+                                    message: "코스에 이미 6개의 장소가 꽉 차 있어요.",
+                                    buttonTitle: nil
+                                )
+                            )
+                        )
+                    } else {
+                        store.dispatch(.selectCourseToAdd(index: index))
+                    }
                 } addAction: { index in
                     store.dispatch(.updateAddPlaceCourseId(courseId: store.state.courses[index].courseId))
                     store.dispatch(.submitAddPlace(courseId: store.state.courses[index].courseId, placeId: placeId))
@@ -143,8 +172,9 @@ extension PlaceDetailView {
                             )
                         )
                     )
-                    store.dispatch(.fetchPlaceDetail(placeId: placeId))
+                    store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
                 } backAction: {
+                    store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(.selectCourseToAdd(index: -1))
                 } addCourseAction: {

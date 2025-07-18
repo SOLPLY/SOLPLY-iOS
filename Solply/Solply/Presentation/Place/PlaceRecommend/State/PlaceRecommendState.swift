@@ -13,6 +13,8 @@ struct PlaceRecommendState {
     var isMainTagBottomSheetPresented: Bool = false
     var isSubTagBottomSheetPresented: Bool = false
     
+    // 바텀 시트 닫힐 때 값이 변한 게 있는지 없는지, 뭘 선택을 했는지 판단하기 위한 state
+    var previousMainTag: MainTagType? = nil
     var selectedMainTag: MainTagType = .all
     var fetchedMainTags: [MainTag] = []
     var fetchedSubTags: [SubTag] = []

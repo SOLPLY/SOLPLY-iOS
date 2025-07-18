@@ -16,6 +16,14 @@ struct TabBarView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var locationManager = LocationManager()
     
+    @State private var townName: String = ""
+    
+    @State private var placeRecommendTitle: String = ""
+    @State private var courseRecommendTitle: String = ""
+    @State private var townId: Int = 0
+    
+    private let userService = UserService()
+    
     // MARK: - Body
     
     var body: some View {
@@ -30,7 +38,7 @@ struct TabBarView: View {
             locationManager.requestPermissionAndStartUpdates()
         }
         .customNavigationBar(.recommend(
-            filterTitle: "연희동",
+            filterTitle: townName,
             filterAction: {
                 appCoordinator.navigate(to: .frequentTown)
             },
@@ -38,6 +46,21 @@ struct TabBarView: View {
                 
             }
         ))
+        .task {
+            await loadUserInfo()
+        }
+    }
+    
+    private func loadUserInfo() async {
+        do {
+            let userInfo = try await fetchUserInformation()
+            townName = userInfo.townName
+            townId = userInfo.townId
+            placeRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 추천"
+            courseRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 코스"
+        } catch {
+            print("사용자 정보 가져오기 실패: \(error)")
+        }
     }
 }
 
@@ -46,10 +69,10 @@ struct TabBarView: View {
 extension TabBarView {
     private var tabContent: some View {
         Group {
-            PlaceRecommendView()
+            PlaceRecommendView(title: placeRecommendTitle, townId: $townId)
                 .visible(appCoordinator.selectedTab == .place)
             
-            CourseRecommendView()
+            CourseRecommendView(title: courseRecommendTitle, townId: $townId)
                 .visible(appCoordinator.selectedTab == .course)
         }
     }
@@ -60,7 +83,7 @@ extension TabBarView {
                 Spacer()
                 
                 ArchiveButton {
-                    appCoordinator.navigate(to: .archive)
+                    appCoordinator.navigate(to: .archive(townId: townId))
                 }
             }
             .padding(.horizontal, 20.adjustedWidth)
@@ -73,6 +96,32 @@ extension TabBarView {
             )
         }
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)
+    }
+}
+
+// MARK: - Network
+
+extension TabBarView {
+    func fetchUserInformation() async throws -> UserInformation {
+        do {
+            let response = try await userService.fetchUserInformation()
+            
+            guard let data = response.data else {
+                throw NetworkError.responseError
+            }
+            
+            return UserInformation(
+                nickname: data.nickname,
+                persona: data.persona,
+                townName: data.selectedTown.townName,
+                townId: data.selectedTown.townId
+            )
+        } catch let error as NetworkError {
+            throw error
+            
+        } catch {
+            throw error
+        }
     }
 }
 

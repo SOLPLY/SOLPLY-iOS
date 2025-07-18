@@ -43,7 +43,7 @@ extension PlaceTargetType: BaseTargetType {
         case .fetchPlaceRecommend:
             return "/recommend/places"
         case .removePlaceList(placeIds: _):
-            return "/places/bookmarks/"
+            return "/places/bookmarks"
         case .fetchPlaceList:
             return "/places"
         }

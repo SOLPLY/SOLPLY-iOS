@@ -16,12 +16,14 @@ struct ArchiveListFullView: View {
    
     private let archiveCategory: SolplyContentType
     private let columns = [GridItem(.fixed(165.adjustedWidth)), GridItem(.fixed(165.adjustedWidth))]
+    private let townId: Int
     
     // MARK: - Initializers
     
-    init(archiveCategory: SolplyContentType, store: ArchiveListStore) {
+    init(archiveCategory: SolplyContentType, store: ArchiveListStore, townId: Int) {
         self.archiveCategory = archiveCategory
         self.store = store
+        self.townId = townId
     }
     
     // MARK: - Body
@@ -48,19 +50,19 @@ struct ArchiveListFullView: View {
 
 extension ArchiveListFullView {
     
-    private func archivePlaceCell(index: Int, item: PlaceArchiveDTO) -> some View {
+    private func archivePlaceCell(index: Int, item: PlaceDTO) -> some View {
         ZStack(alignment: .topTrailing) {
             PlaceCard(
                 isSaved: true,
-                thumbnailUrl: "",
+                thumbnailUrl: item.thumbnailImageUrl,
                 placeName: item.placeName,
-                placeCategory: .book, // TODO: 실제 태그 처리
-                isSelected: store.state.selectedPlaceIds.contains(item.placeId)
+                placeCategory: item.primaryTag,
+                isSelected: store.state.selectedPlaceIds.contains(item.placeId),
             ) {
                 if store.state.activeDelete {
                     store.dispatch(.togglePlaceArchiveList(placeId: item.placeId))
                 } else {
-                    appCoordinator.navigate(to: .placeDetail(townId: 1, placeId: 1))
+                    appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: item.placeId))
                 }
                 
                 if store.state.activeCancel {

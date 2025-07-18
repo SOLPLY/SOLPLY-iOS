@@ -15,6 +15,7 @@ enum PlaceRecommendAction {
     case toggleSubTagBottomSheet
     case dismissSubTagBottomSheet
         
+    case updateMainTag
     case resetSubTags
     case updateSubTags([SelectableSubTag])
     

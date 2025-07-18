@@ -17,3 +17,12 @@ struct UserResponseDTO: ResponseModelType {
     let nickname: String
     let persona: String
 }
+
+extension UserResponseDTO {
+    func toEntity() -> (selectedTown: Town, favoriteTownList: [Town]) {
+        return (
+            selectedTown: selectedTown.toEntity(),
+            favoriteTownList: favoriteTownList.map { $0.toEntity() }
+        )
+    }
+}

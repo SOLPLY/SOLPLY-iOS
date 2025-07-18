@@ -13,6 +13,8 @@ struct FilterPlaceGrid: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store: PlaceRecommendStore
+    
+    private let townId: Int
         
     private let columns = [
         GridItem(.fixed(145.adjustedWidth), spacing: 12.5.adjustedWidth),
@@ -35,6 +37,11 @@ struct FilterPlaceGrid: View {
         store.state.selectedMainTag
     }
     
+    init(store: PlaceRecommendStore, townId: Int) {
+        self.store = store
+        self.townId = townId
+    }
+    
     // MARK: - Body
     
     var body: some View {
@@ -45,6 +52,7 @@ struct FilterPlaceGrid: View {
             VStack(alignment: .leading, spacing: 16.adjustedHeight) {
                 HStack(alignment: .center, spacing: 8.adjustedWidth) {
                     FilterButton(title: mainTag.title) {
+                        store.dispatch(.updateMainTag)
                         store.dispatch(.toggleMainTagBottomSheet)
                     }
                     .sheet(
@@ -52,14 +60,20 @@ struct FilterPlaceGrid: View {
                             get: { store.state.isMainTagBottomSheetPresented },
                             set: { isPresented, selectedTag in
                                 if !isPresented {
-                                    store.dispatch(.resetSubTags)
-                                    store.dispatch(.fetchPlaceList(
-                                        townId: 2,
-                                        isBookmarkSearch: false,
-                                        mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                                        subTagAIdList: [],
-                                        subTagBIdList: []
-                                    ))
+                                    let current = store.state.selectedMainTag
+                                    let previous = store.state.previousMainTag
+                                    
+                                    if current != previous {
+                                        store.dispatch(.resetSubTags)
+                                        store.dispatch(.fetchPlaceList(
+                                            townId: townId,
+                                            isBookmarkSearch: false,
+                                            mainTagId: current.parentId == 0 ? nil : current.parentId,
+                                            subTagAIdList: [],
+                                            subTagBIdList: []
+                                        ))
+                                    }
+                                    
                                     store.dispatch(.dismissMainTagBottomSheet)
                                 }
                             }
@@ -117,7 +131,7 @@ struct FilterPlaceGrid: View {
                                 .map { $0.id }
                             
                             store.dispatch(.fetchPlaceList(
-                                townId: 2,
+                                townId: townId,
                                 isBookmarkSearch: false,
                                 mainTagId: store.state.selectedMainTag.parentId,
                                 subTagAIdList: subTagAIdList,
@@ -138,14 +152,38 @@ struct FilterPlaceGrid: View {
                             isSelected: true,
                             size: 145
                         ) {
-                            // TODO: - townId 바인딩 필요
-                            appCoordinator.navigate(to: .placeDetail(townId: 2, placeId: place.placeId))
+                            appCoordinator.navigate(to: .placeDetail(
+                                townId: townId,
+                                placeId: place.placeId
+                            ))
                         }
                     }
                 }
             }
             .onChange(of: store.state.selectedMainTag) { _, _ in
                 store.dispatch(.resetSubTags)
+            }
+            .onChange(of: townId) { _, _ in
+                
+                store.dispatch(.fetchSubTags(
+                    parentId: store.state.selectedMainTag.parentId
+                ))
+                
+                let subTagAIdList = store.state.fetchedSubTags
+                    .filter { $0.tagType == "OPTION1" }
+                    .map { $0.id }
+                
+                let subTagBIdList = store.state.fetchedSubTags
+                    .filter { $0.tagType == "OPTION2" }
+                    .map { $0.id }
+                
+                store.dispatch(.fetchPlaceList(
+                    townId: townId,
+                    isBookmarkSearch: false,
+                    mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
+                    subTagAIdList: subTagAIdList,
+                    subTagBIdList: subTagBIdList
+                ))
             }
             .padding(.vertical, 20.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)

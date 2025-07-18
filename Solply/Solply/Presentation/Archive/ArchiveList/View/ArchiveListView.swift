@@ -16,12 +16,14 @@ struct ArchiveListView: View {
     
     private let archiveCategory: SolplyContentType
     private let town: String
+    private let townId: Int
     
     // MARK: - Initializer
     
-    init(archiveCategory: SolplyContentType, town: String) {
+    init(archiveCategory: SolplyContentType, town: String, townId: Int) {
         self.archiveCategory = archiveCategory
         self.town = town
+        self.townId = townId
     }
     
     // MARK: - Body
@@ -69,13 +71,14 @@ struct ArchiveListView: View {
                     }
                 }
                 ZStack(alignment: .topTrailing) {
-                    ArchiveListFullView(archiveCategory: archiveCategory, store: store)
+                    ArchiveListFullView(archiveCategory: archiveCategory, store: store, townId: townId)
                 }
             }
         }
         .customNavigationBar(.archiveList(title: town, backAction: appCoordinator.goBack))
         .onAppear {
-            store.dispatch(.fetchCourseList(townId: 2, placeId: nil))
+            store.dispatch(.fetchPlaceList(townId: townId, isBookmarkSearch: true, mainTagId: nil, subTagAIdList: nil, subTagBIdList: nil))
+            store.dispatch(.fetchCourseList(townId: townId, placeId: nil))
         }
         .customAlert(
             alertType: .delete,

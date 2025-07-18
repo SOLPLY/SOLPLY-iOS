@@ -8,7 +8,7 @@
 import Foundation
 
 struct ArchiveListEffect {
-    private let plcaeService = PlaceService()
+    private let placeService = PlaceService()
     private let courseService = CourseService()
     
     func fetchCourseList(townId: Int, placeId: Int?) async -> ArchiveListAction {
@@ -43,9 +43,38 @@ struct ArchiveListEffect {
     
     func removePlaceList(placeIds: [Int]) async -> ArchiveListAction {
         do {
-            let _ = try await plcaeService.removePlaceList(placeIds: placeIds)
+            let _ = try await placeService.removePlaceList(placeIds: placeIds)
             
             return .placeListRemoved
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+    
+    func fetchPlaceList(
+        townId: Int,
+        isBookmarkSearch: Bool,
+        mainTagId: Int?,
+        subTagAIdList: [Int]?,
+        subTagBIdList: [Int]?
+    ) async -> ArchiveListAction {
+        do {
+            let response = try await placeService.fetchPlaceList(
+                townId: townId,
+                isBookmarkSearch: isBookmarkSearch,
+                mainTagId: mainTagId,
+                subTagAIdList: subTagAIdList,
+                subTagBIdList: subTagBIdList
+            )
+            
+            guard let data = response.data else {
+                return .errorOccured(error: .responseError)
+            }
+            
+            return .placeListFetched(data.places)
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)

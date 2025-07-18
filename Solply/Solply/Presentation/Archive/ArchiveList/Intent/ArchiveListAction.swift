@@ -21,6 +21,15 @@ enum ArchiveListAction {
     case fetchCourseList(townId: Int, placeId: Int?)
     case courseListFetched(courseLists: [CourseArchiveDTO])
     
+    case fetchPlaceList(
+        townId: Int,
+        isBookmarkSearch: Bool,
+        mainTagId: Int?,
+        subTagAIdList: [Int]?,
+        subTagBIdList: [Int]?
+    )
+    case placeListFetched([PlaceDTO])
+    
     case removeCourseList(CourseIds: [Int])
     case courseListRemoved
     

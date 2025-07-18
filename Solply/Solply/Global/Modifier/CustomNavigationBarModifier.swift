@@ -239,6 +239,31 @@ extension View {
                     backgroundColor: .coreWhite
                 )
             )
+            
+        case .frequentTown(let backAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        Text("자주 가는 동네")
+                            .applySolplyFont(.head_16_m)
+                    },
+                    leftView: {
+                        Button {
+                            backAction()
+                        } label: {
+                            Image(.backIconIos)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    rightView: {
+                        EmptyView()
+                    },
+                    backgroundColor: .gray100
+                )
+            )
         }
     }
 }
