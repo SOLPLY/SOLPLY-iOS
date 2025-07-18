@@ -105,7 +105,7 @@ extension PlaceDetailView {
                 }
                 
                 store.dispatch(.toggleSavePlace)
-                if store.state.saveButtonSelected {
+                if store.state.isBookmarked {
                     store.dispatch(
                         .showToastView(
                             ToastContent(

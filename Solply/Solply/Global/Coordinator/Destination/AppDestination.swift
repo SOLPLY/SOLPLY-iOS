@@ -8,8 +8,8 @@
 import SwiftUI
 
 enum AppDestination: Hashable {
-    case archive
-    case archiveList(archiveCategory: SolplyContentType, townName: String)
+    case archive(townId: Int)
+    case archiveList(archiveCategory: SolplyContentType, townName: String, townId: Int)
     case placeDetail(townId: Int, placeId: Int)
     case courseDetail(courseId: Int, fromArchive: Bool)
     case frequentTown
@@ -19,10 +19,10 @@ extension AppDestination {
     @ViewBuilder
     func build() -> some View {
         switch self {
-        case .archive:
-            ArchiveView()
-        case .archiveList(let archiveCategory, let town):
-            ArchiveListView(archiveCategory: archiveCategory, town: town)
+        case .archive(let townId):
+            ArchiveView(townId: townId)
+        case .archiveList(let archiveCategory, let town, let townId):
+            ArchiveListView(archiveCategory: archiveCategory, town: town, townId: townId)
         case .placeDetail(let townId, let placeId):
             PlaceDetailView(townId: townId, placeId: placeId)
         case .courseDetail(let courseId, let fromArchive):
