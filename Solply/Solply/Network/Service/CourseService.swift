@@ -68,8 +68,8 @@ extension CourseService {
 extension CourseService {
     func updateCourseDetail(
         courseId: Int,
-        request: CourseReplaceRequestDTO
-    ) async throws -> BaseResponseBody<CourseReplaceResponseDTO> {
+        request: CourseUpdateRequestDTO
+    ) async throws -> BaseResponseBody<CourseUpdateResponseDTO> {
         return try await self.request(with: .updateCourseDetail(courseId: courseId, request: request))
     }
 }

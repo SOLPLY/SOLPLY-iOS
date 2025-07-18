@@ -18,7 +18,7 @@ enum CourseTargetType {
     case removeCourseList(courseIds: [Int])
     case fetchCourseRecommend(townId: Int)
     case submitAddPlace(courseId: Int, placeId: Int)
-    case updateCourseDetail(courseId: Int, request: CourseReplaceRequestDTO)
+    case updateCourseDetail(courseId: Int, request: CourseUpdateRequestDTO)
 }
 
 extension CourseTargetType: BaseTargetType {
