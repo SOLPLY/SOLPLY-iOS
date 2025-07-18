@@ -62,22 +62,16 @@ struct PlaceCard: View {
                 }
             }
             
-            HStack(alignment: .top, spacing: 4.adjustedWidth) {
+            HStack(alignment: .center, spacing: 4.adjustedWidth) {
                 PlaceCategoryTag(placeCategory: placeCategory)
                 Text(placeName)
                     .applySolplyFont(.body_14_m)
                     .foregroundStyle(.coreBlack)
-                    .frame(alignment: .topLeading)
+                    .frame(height: 19.adjustedHeight)
             }
         }
         .onTapGesture {
             action?()
         }
-    }
-}
-
-#Preview {
-    PlaceCard(isSaved: true, thumbnailUrl: "", placeName: "안녕하십니까링가링가링가링가링가리어어아아ㅏ아", placeCategory: .cafe, isSelected: true, size: 165) {
-        print("gd")
     }
 }
