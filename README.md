@@ -9,7 +9,7 @@
 |    김승원   |    이수용   |   서주영   |    선영주    |
 | :-------------: | :----------: | :----------: |:----------: |
 | <img src = "https://github.com/user-attachments/assets/15bbd7a5-bb83-4573-9244-343db687020f" width ="250"> | <img src = "https://github.com/user-attachments/assets/9673cecd-0049-41a1-9526-c51fff959f8b" width ="250">  | <img src = "https://github.com/user-attachments/assets/6e71a47c-9702-4db8-a573-5064c8b76c19" width ="250"> | <img src = "https://github.com/user-attachments/assets/b6ed38a6-b0b1-4a1d-b969-8a34f472e23b" width ="250"> | 
-|   `장소, 코스 상세`   |    `수집함`   |  `장소, 코스 추천`    |    `온보딩 `   |
+|   `장소, 코스 상세`   |    `수집함`   |  `장소, 코스 추천`    |    `온보딩`   |
 
 # 🛠️ Project Design
 <img src = "https://github.com/user-attachments/assets/2ffcc061-2fd2-4888-910a-866f78c72570" width ="800">
