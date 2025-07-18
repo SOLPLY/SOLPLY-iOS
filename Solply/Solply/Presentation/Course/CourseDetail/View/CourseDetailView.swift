@@ -306,7 +306,7 @@ extension CourseDetailView {
                     store.dispatch(
                         .updateCourseDetail(
                             courseId: courseId,
-                            request: CourseCreateRequestDTO(
+                            request: CourseReplaceRequestDTO(
                                 courseName: store.state.courseTitle,
                                 courseDescription: store.state.courseDescription,
                                 places: store.state.places.enumerated().map { index, place in

@@ -54,6 +54,6 @@ enum CourseDetailAction {
     case removePlaceBookmark(placeId: Int)
     case placeBookmarkRemoved
     
-    case updateCourseDetail(courseId: Int, request: CourseCreateRequestDTO)
+    case updateCourseDetail(courseId: Int, request: CourseReplaceRequestDTO)
     case courseDetailUpdated(updatedCourseId: Int)
 }

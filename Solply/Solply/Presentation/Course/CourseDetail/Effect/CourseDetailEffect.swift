@@ -96,7 +96,7 @@ struct CourseDetailEffect {
         }
     }
     
-    func updateCourseDetail(courseId: Int, request: CourseCreateRequestDTO) async -> CourseDetailAction {
+    func updateCourseDetail(courseId: Int, request: CourseReplaceRequestDTO) async -> CourseDetailAction {
         do {
             let response = try await service.updateCourseDetail(courseId: courseId, request: request)
             
