@@ -27,15 +27,17 @@ final class FrequentTownStore: ObservableObject {
             break
         }
     }
-    
-    private func fetchTownList() {
+}
+
+extension FrequentTownStore {
+    func fetchTownList(){
         Task {
             let result = await effect.fetchTownList()
             dispatch(result)
         }
     }
     
-    private func saveSelectedTown() {
+    func saveSelectedTown() {
         guard let selectedTown = state.selectedTown else {
             print("❗️ 선택된 동네가 없습니다.")
             return
