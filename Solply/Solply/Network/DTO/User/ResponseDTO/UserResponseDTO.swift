@@ -10,3 +10,10 @@ import Foundation
 struct CheckNicknameResponseDTO: ResponseModelType {
     let isDuplicated: Bool
 }
+
+struct UserResponseDTO: ResponseModelType {
+    let selectedTown: TownDTO
+    let favoriteTownList: [TownDTO]
+    let nickname: String
+    let persona: String
+}

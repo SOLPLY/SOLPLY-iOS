@@ -48,9 +48,7 @@ struct FrequentTownView: View {
                 title: "완료",
                 isEnabled: store.state.selectedTown != nil
             ) {
-                guard let selected = store.state.selectedTown else { return }
-                confirmAction?(selected)
-                appCoordinator.goToRoot()
+                store.dispatch(.saveTown)
             }
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.bottom, 20.adjustedHeight)
@@ -58,6 +56,12 @@ struct FrequentTownView: View {
         .customNavigationBar(.archiveList(title: "자주 가는 동네", backAction: appCoordinator.goBack))
         .onAppear {
             store.dispatch(.fetchTown)
+        }
+        .onChange(of: store.state.isSaving) { _, newValue in
+            if newValue == false {
+                print("✅ [자주 가는 동네] 저장 완료 - 루트로 이동")
+                appCoordinator.goToRoot()
+            }
         }
     }
 }

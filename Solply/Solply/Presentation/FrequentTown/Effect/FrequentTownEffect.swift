@@ -8,25 +8,37 @@
 import Foundation
 
 struct FrequentTownEffect {
-    private let townService = TownService()
+    private let userService = UserService()
     
-    func fetchTownList() async -> OnboardingAction {
+    func fetchTownList() async -> FrequentTownAction {
         do {
-            let response = try await townService.fetchTownList()
-            
+            let response = try await userService.fetchUserTowns()
             guard let data = response.data else {
-                return .fetchTownFailure("데이터가 없습니다")
+                return .fetchFailure("데이터가 없습니다")
             }
-
+            
             let towns = data.favoriteTownList.map { $0.toEntity() }
-
-            guard let selected = data.selectedTown?.toEntity() else {
-                return .fetchTownFailure("선택된 동네가 없습니다")
-            }
-
-            return .fetchTownSuccess(selectedTown: selected, townList: towns)
+            let selected = data.selectedTown?.toEntity()
+            
+            return .fetchSuccess(selectedTown: selected, townList: towns)
         } catch {
-            return .fetchTownFailure("동네 불러오기 실패")
+            return .fetchFailure("동네 불러오기 실패")
+        }
+    }
+    
+    func saveTown(selectedTown: Town) async -> FrequentTownAction {
+        do {
+            let request = UserRequestDTO(
+                selectedTownId: selectedTown.id,
+                favoriteTownIdList: [selectedTown.id],
+                persona: "",
+                nickname: ""
+            )
+            _ = try await userService.updateUserInfo(request) 
+            
+            return .saveSuccess(selectedTown: selectedTown)
+        } catch {
+            return .saveFailure("저장 실패")
         }
     }
 }

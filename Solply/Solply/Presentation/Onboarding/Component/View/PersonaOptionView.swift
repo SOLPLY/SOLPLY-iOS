@@ -21,7 +21,7 @@ struct PersonaOptionView: View {
                 .padding(.bottom, 28.adjustedHeight)
 
             VStack(spacing: 16.adjustedHeight) {
-                ForEach(store.state.personaList, id: \.self) { persona in
+                ForEach(store.state.personaList.dropFirst().prefix(4), id: \.self) { persona in
                     PersonaOptionButton(
                         title: persona.description,
                         isSelected: store.state.selectedPersona?.type == persona.type

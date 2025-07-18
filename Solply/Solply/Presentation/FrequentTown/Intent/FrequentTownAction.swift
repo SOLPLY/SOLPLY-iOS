@@ -6,9 +6,13 @@
 //
 
 enum FrequentTownAction {
-    case fetchTownList
+    case fetchTown
     case fetchSuccess(selectedTown: Town?, townList: [Town])
-    case fetchFailure(message: String)
-    
+    case fetchFailure(String)
+
     case selectTown(Town)
+
+    case saveTown
+    case saveSuccess(selectedTown: Town)
+    case saveFailure(String)
 }

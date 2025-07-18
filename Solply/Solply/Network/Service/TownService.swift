@@ -11,7 +11,7 @@ import Moya
 
 final class TownService: BaseService<TownTargetType> { }
 
-extension TownService: TownAPI {
+extension TownService {
     func fetchTownList() async throws -> BaseResponseBody<TownResponseDTO> {
         return try await self.request(with: .fetchTownList)
     }
