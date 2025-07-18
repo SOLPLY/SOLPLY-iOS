@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum PersonaType: CaseIterable {
-    case healing
-    case explorer
-    case mooding
-    case natural
+enum PersonaType: String, CaseIterable, ResponseModelType, RequestModelType{
+    case healing = "REST"
+    case explorer = "EXPLORER"
+    case mooding = "MOODING"
+    case natural = "NATURAL"
     
     var personaString: String {
         switch self {
@@ -22,12 +22,12 @@ enum PersonaType: CaseIterable {
         }
     }
     
-    var apiString: String {
+    var description: String {
         switch self {
-        case .healing: return "REST"
-        case .explorer: return "EXPLORER"
-        case .mooding: return "MOODING"
-        case .natural: return "NATURAL"
+        case .healing: return "조용히 사색을 즐기는"
+        case .explorer: return "골목 곳곳을 탐색하는"
+        case .mooding: return "취향을 모으는"
+        case .natural: return "힐링이 필요한"
         }
     }
 }

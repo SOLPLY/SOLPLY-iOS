@@ -14,13 +14,24 @@ struct CourseRecommendView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = CourseRecommendStore()
     
+    @Binding var townId: Int
+    
+    private let title: String
+    
+    // MARK: - Initializer
+    
+    init(title: String, townId: Binding<Int>) {
+        self.title = title
+        self._townId = townId
+    }
+    
     // MARK: - Body
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .center, spacing: 28.adjustedHeight) {
                 HStack(alignment: .center, spacing: 0) {
-                    Text("차분함을 좋아하는\n숭이숭이숭이숭이님을 위한 오늘의 코스")
+                    Text(title)
                         .applySolplyFont(.display_20_sb)
                     Spacer()
                 }
@@ -35,14 +46,8 @@ struct CourseRecommendView: View {
         }
         .background(.gray100)
         .task {
-            // TODO: - TownId 바인딩 필요
-            store.dispatch(.fetchCourseRecommend(townId: 2))
+            store.dispatch(.fetchCourseRecommend(townId: townId))
         }
     }
-}
-
-#Preview {
-    CourseRecommendView()
-        .environmentObject(AppCoordinator())
 }
 
