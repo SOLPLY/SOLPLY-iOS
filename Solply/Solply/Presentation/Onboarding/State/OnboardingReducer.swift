@@ -39,10 +39,10 @@ enum OnboardingReducer {
             state.nicknameType = stateType
             
         case .fetchTown:
-            break
+            state.selectedTown = nil
+            state.errorMessage = nil
             
-        case .fetchTownSuccess(let selectedTown, let townList):
-            state.selectedTown = selectedTown
+        case .fetchTownSuccess(_, let townList):
             state.townList = townList
             
         case .fetchTownFailure(let message):
