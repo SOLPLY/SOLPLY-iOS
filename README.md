@@ -18,7 +18,7 @@
 
 |    자주 가는 동네 설정 <br> & 탭바 스와이핑   |    장소 필터링   |    장소 상세   |
 | :-------------: | :----------: | :----------: |
-| <img src = "https://github.com/user-attachments/assets/8205340c-1164-4f0c-80f3-979561215996" width ="200"> | <img src = "https://github.com/user-attachments/assets/0c061bf5-edfd-4854-9ad9-98b04724f067" width ="200">  | <img src = "https://github.com/user-attachments/assets/8f63672e-9531-49e6-9ea2-5bf7dc93b2eb" width ="200">  | 
+| <img src = "https://github.com/user-attachments/assets/c202851f-1f82-46ad-bb1d-2cffe7e4e440" width ="200"> | <img src = "https://github.com/user-attachments/assets/0c061bf5-edfd-4854-9ad9-98b04724f067" width ="200">  | <img src = "https://github.com/user-attachments/assets/8f63672e-9531-49e6-9ea2-5bf7dc93b2eb" width ="200">  | 
 
 |  수집함   |    수집함 삭제   |    길찾기   |
 | :-------------: | :----------: | :----------: |
