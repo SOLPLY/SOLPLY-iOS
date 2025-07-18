@@ -12,10 +12,3 @@ struct CourseCreateRequestDTO: RequestModelType {
     let courseDescription: String
     let places: [PlaceOrderDTO]
 }
-
-// MARK: - PlaceOrder
-
-struct PlaceOrderDTO: RequestModelType {
-    let placeId: Int
-    let placeOrder: Int
-}

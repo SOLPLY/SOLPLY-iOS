@@ -96,7 +96,7 @@ struct CourseDetailEffect {
         }
     }
     
-    func updateCourseDetail(courseId: Int, request: CourseCreateRequestDTO) async -> CourseDetailAction {
+    func updateCourseDetail(courseId: Int, request: CourseUpdateRequestDTO) async -> CourseDetailAction {
         do {
             let response = try await service.updateCourseDetail(courseId: courseId, request: request)
             
@@ -108,6 +108,23 @@ struct CourseDetailEffect {
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+    
+    func submitCreateCourseDetail(request: CourseCreateRequestDTO) async -> CourseDetailAction {
+        do {
+            let response = try await service.submitCreateCourseDetail(request: request)
+            
+            guard let data = response.data else {
+                return .errorOccured(error: .responseError)
+            }
+            
+            return .createCourseDetailSubmitted(createdCourseId: data.courseId)
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: .unknownError)
         } catch {
             return .errorOccured(error: .unknownError)
         }

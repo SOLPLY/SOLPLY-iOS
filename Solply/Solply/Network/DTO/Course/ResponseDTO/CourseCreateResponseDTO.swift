@@ -8,7 +8,5 @@
 import Foundation
 
 struct CourseCreateResponseDTO: ResponseModelType {
-    let updatedCourseId: Int
-    let updatedCourseName: String
-    let isNewCourse: Bool
+    let courseId: Int
 }

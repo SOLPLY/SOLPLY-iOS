@@ -134,7 +134,7 @@ extension CourseDetailView {
             Group {
                 if fromArchive {
                     HStack(alignment: .center, spacing: 4.adjustedWidth) {
-                        Text(store.state.courseTitle)
+                        Text(store.state.courseName)
                             .applySolplyFont(.title_18_sb)
                             .frame(width: 307.adjustedWidth, alignment: .leading)
                         
@@ -152,7 +152,7 @@ extension CourseDetailView {
                     }
                     
                 } else {
-                    Text(store.state.courseTitle)
+                    Text(store.state.courseName)
                         .applySolplyFont(.title_18_sb)
                         .frame(width: 335.adjustedWidth, alignment: .leading)
                 }
@@ -306,8 +306,8 @@ extension CourseDetailView {
                     store.dispatch(
                         .updateCourseDetail(
                             courseId: courseId,
-                            request: CourseCreateRequestDTO(
-                                courseName: store.state.courseTitle,
+                            request: CourseUpdateRequestDTO(
+                                courseName: store.state.courseName,
                                 courseDescription: store.state.courseDescription,
                                 places: store.state.places.enumerated().map { index, place in
                                     PlaceOrderDTO(
@@ -324,7 +324,20 @@ extension CourseDetailView {
                 }
                 
                 CourseSaveButton(title: "새 코스로 저장") {
-                    // 새 코스 생성 API
+                    store.dispatch(
+                        .submitCreateCourseDetail(
+                            request: CourseCreateRequestDTO(
+                                courseName: store.state.courseName.removingTextAfterParenthesis(),
+                                courseDescription: store.state.courseDescription,
+                                places: store.state.places.enumerated().map { index, place in
+                                    PlaceOrderDTO(
+                                        placeId: place.placeId,
+                                        placeOrder: index + 1
+                                    )
+                                }
+                            )
+                        )
+                    )
                     withAnimation(.easeInOut(duration: 0.2)) {
                         store.dispatch(.saveCourseAsNew)
                     }
