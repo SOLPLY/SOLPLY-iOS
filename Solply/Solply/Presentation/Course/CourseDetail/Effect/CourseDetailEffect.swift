@@ -8,7 +8,7 @@
 import UIKit
 
 struct CourseDetailEffect {
-    private let service = CourseService()
+    private let courseService = CourseService()
     private let placeService = PlaceService()
     
     func findDirection(
@@ -29,7 +29,7 @@ struct CourseDetailEffect {
     
     func fetchCourseDetail(courseId: Int) async -> CourseDetailAction {
         do {
-            let response = try await service.fetchCourseDetail(courseId: courseId)
+            let response = try await courseService.fetchCourseDetail(courseId: courseId)
             
             guard let data = response.data else {
                 return .errorOccured(error: .responseError)
@@ -46,7 +46,7 @@ struct CourseDetailEffect {
     
     func submitCourseBookmark(courseId: Int) async -> CourseDetailAction {
         do {
-            let _ = try await service.submitCourseBookmark(courseId: courseId)
+            let _ = try await courseService.submitCourseBookmark(courseId: courseId)
             
             return .courseBookmarkSubmitted
             
@@ -59,7 +59,7 @@ struct CourseDetailEffect {
     
     func removeCourseBookmark(courseId: Int) async -> CourseDetailAction {
         do {
-            let _ = try await service.removeCourseBookmark(courseId: courseId)
+            let _ = try await courseService.removeCourseBookmark(courseId: courseId)
             
             return .courseBookmarkRemoved
             
@@ -98,7 +98,7 @@ struct CourseDetailEffect {
     
     func updateCourseDetail(courseId: Int, request: CourseUpdateRequestDTO) async -> CourseDetailAction {
         do {
-            let response = try await service.updateCourseDetail(courseId: courseId, request: request)
+            let response = try await courseService.updateCourseDetail(courseId: courseId, request: request)
             
             guard let data = response.data else {
                 return .errorOccured(error: .responseError)
@@ -115,7 +115,7 @@ struct CourseDetailEffect {
     
     func submitCreateCourseDetail(request: CourseCreateRequestDTO) async -> CourseDetailAction {
         do {
-            let response = try await service.submitCreateCourseDetail(request: request)
+            let response = try await courseService.submitCreateCourseDetail(request: request)
             
             guard let data = response.data else {
                 return .errorOccured(error: .responseError)
