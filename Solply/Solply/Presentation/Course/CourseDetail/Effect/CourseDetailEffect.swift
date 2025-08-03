@@ -8,8 +8,13 @@
 import UIKit
 
 struct CourseDetailEffect {
-    private let courseService = CourseService()
-    private let placeService = PlaceService()
+    private let courseService: CourseAPI
+    private let placeService: PlaceAPI
+    
+    init(courseService: CourseAPI, placeService: PlaceAPI) {
+        self.courseService = courseService
+        self.placeService = placeService
+    }
     
     func findDirection(
         startLatitude: Double,
@@ -26,7 +31,11 @@ struct CourseDetailEffect {
             destinationName: destinationName
         )
     }
-    
+}
+
+// MARK: - CourseAPI
+
+extension CourseDetailEffect {
     func fetchCourseDetail(courseId: Int) async -> CourseDetailAction {
         do {
             let response = try await courseService.fetchCourseDetail(courseId: courseId)
@@ -70,32 +79,6 @@ struct CourseDetailEffect {
         }
     }
     
-    func submitPlaceBookmark(placeId: Int) async -> CourseDetailAction {
-        do {
-            let _ = try await placeService.submitPlaceBookmark(placeId: placeId)
-            
-            return .placeBookmarkSubmitted
-            
-        } catch let error as NetworkError {
-            return .errorOccured(error: error)
-        } catch {
-            return .errorOccured(error: .unknownError)
-        }
-    }
-    
-    func removePlaceBookmark(placeId: Int) async -> CourseDetailAction {
-        do {
-            let _ = try await placeService.removePlaceBookmark(placeId: placeId)
-            
-            return .placeBookmarkRemoved
-            
-        } catch let error as NetworkError {
-            return .errorOccured(error: error)
-        } catch {
-            return .errorOccured(error: .unknownError)
-        }
-    }
-    
     func updateCourseDetail(courseId: Int, request: CourseUpdateRequestDTO) async -> CourseDetailAction {
         do {
             let response = try await courseService.updateCourseDetail(courseId: courseId, request: request)
@@ -122,6 +105,36 @@ struct CourseDetailEffect {
             }
             
             return .createCourseDetailSubmitted(createdCourseId: data.courseId)
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+}
+
+// MARK: - PlaceAPI
+
+extension CourseDetailEffect {
+    func submitPlaceBookmark(placeId: Int) async -> CourseDetailAction {
+        do {
+            let _ = try await placeService.submitPlaceBookmark(placeId: placeId)
+            
+            return .placeBookmarkSubmitted
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+    
+    func removePlaceBookmark(placeId: Int) async -> CourseDetailAction {
+        do {
+            let _ = try await placeService.removePlaceBookmark(placeId: placeId)
+            
+            return .placeBookmarkRemoved
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)
