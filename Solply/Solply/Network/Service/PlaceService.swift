@@ -11,51 +11,9 @@ import Moya
 
 final class PlaceService: BaseService<PlaceTargetType> { }
 
-extension PlaceService {
-    func fetchPlaceThumbnail() async throws -> BaseResponseBody<PlaceArchiveThumbnailResponseDTO> {
-        return try await self.request(with: .fetchPlaceThumbnail)
-    }
-}
+// MARK: - PlaceAPI
 
-extension PlaceService {
-    func submitPlaceBookmark(
-        placeId: Int
-    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
-        return try await self.request(with: .submitPlaceBookmark(placeId: placeId))
-    }
-}
-
-extension PlaceService {
-    func removePlaceBookmark(
-        placeId: Int
-    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
-        return try await self.request(with: .removePlaceBookmark(placeId: placeId))
-    }
-}
-
-extension PlaceService {
-    func fetchPlaceDetail(
-        placeId: Int
-    ) async throws -> BaseResponseBody<PlaceDetailResponseDTO> {
-        return try await self.request(with: .fetchPlaceDetail(placeId: placeId))
-    }
-}
-
-extension PlaceService {
-    func fetchPlaceRecommend(
-        townId: Int
-    ) async throws -> BaseResponseBody<PlaceRecommendResponseDTO> {
-        return try await self.request(with: .fetchPlaceRecommend(townId: townId))
-    }
-}
-
-extension PlaceService {
-    func removePlaceList(placeIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO> {
-        return try await self.request(with: .removePlaceList(placeIds: placeIds))
-    }
-}
-
-extension PlaceService {
+extension PlaceService: PlaceAPI {
     func fetchPlaceList(
         townId: Int,
         isBookmarkSearch: Bool = false,
@@ -73,5 +31,40 @@ extension PlaceService {
             )
         )
     }
-        
+    
+    func fetchPlaceDetail(
+        placeId: Int
+    ) async throws -> BaseResponseBody<PlaceDetailResponseDTO> {
+        return try await self.request(with: .fetchPlaceDetail(placeId: placeId))
+    }
+    
+    func fetchPlaceThumbnail() async throws -> BaseResponseBody<PlaceArchiveThumbnailResponseDTO> {
+        return try await self.request(with: .fetchPlaceThumbnail)
+    }
+    
+    func submitPlaceBookmark(
+        placeId: Int
+    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .submitPlaceBookmark(placeId: placeId))
+    }
+    
+    func removePlaceBookmark(
+        placeId: Int
+    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .removePlaceBookmark(placeId: placeId))
+    }
+    
+    func removePlaceList(placeIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .removePlaceList(placeIds: placeIds))
+    }
+}
+
+// TODO: - 주영아 이거 PlaceRecommendService만들어서 분리해줘
+
+extension PlaceService {
+    func fetchPlaceRecommend(
+        townId: Int
+    ) async throws -> BaseResponseBody<PlaceRecommendResponseDTO> {
+        return try await self.request(with: .fetchPlaceRecommend(townId: townId))
+    }
 }
