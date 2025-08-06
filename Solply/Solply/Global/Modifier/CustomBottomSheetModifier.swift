@@ -12,8 +12,8 @@ struct CustomBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
     // MARK: - Properties
     
     private let bottomSheetType: CustomBottomSheetType
-    let topContent: () -> TopContent
-    let sheetContent: () -> SheetContent
+    private let topContent: () -> TopContent
+    private let sheetContent: () -> SheetContent
     
     @State private var dragOffset: CGFloat = 0
     
