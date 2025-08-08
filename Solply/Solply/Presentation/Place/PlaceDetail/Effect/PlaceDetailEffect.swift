@@ -8,8 +8,13 @@
 import UIKit
 
 struct PlaceDetailEffect {
-    private let courseService = CourseService()
-    private let placeService = PlaceService()
+    private let courseService: CourseAPI
+    private let placeService: PlaceAPI
+    
+    init(courseService: CourseAPI, placeService: PlaceAPI) {
+        self.courseService = courseService
+        self.placeService = placeService
+    }
     
     func findDirection(
         startLatitude: Double,
@@ -26,7 +31,11 @@ struct PlaceDetailEffect {
             destinationName: destinationName
         )
     }
+}
 
+// MARK: - CourseAPI
+
+extension PlaceDetailEffect {
     func fetchCourseArchive(townId: Int, placeId: Int?) async -> PlaceDetailAction {
         do {
             let response = try await courseService.fetchCourseArchive(townId: townId, placeId: placeId)
@@ -42,6 +51,24 @@ struct PlaceDetailEffect {
         }
     }
     
+    func submitAddPlace(courseId: Int, placeId: Int) async -> PlaceDetailAction {
+        do {
+            let response = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
+            print(response)
+            
+            return .addPlaceSubmitted
+            
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+}
+
+// MARK: - PlaceAPI
+
+extension PlaceDetailEffect {
     func fetchPlaceDetail(placeId: Int) async -> PlaceDetailAction {
         do {
             let response = try await placeService.fetchPlaceDetail(placeId: placeId)
@@ -74,21 +101,6 @@ struct PlaceDetailEffect {
             let _ = try await placeService.removePlaceBookmark(placeId: placeId)
             
             return . placeBookmarkRemoved
-            
-        } catch let error as NetworkError {
-            return .errorOccured(error: error)
-        } catch {
-            return .errorOccured(error: .unknownError)
-        }
-    }
-    
-    
-    func submitAddPlace(courseId: Int, placeId: Int) async -> PlaceDetailAction {
-        do {
-            let response = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
-            print(response)
-            
-            return .addPlaceSubmitted
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)

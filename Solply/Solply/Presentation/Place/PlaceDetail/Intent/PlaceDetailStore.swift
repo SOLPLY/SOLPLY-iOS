@@ -10,7 +10,10 @@ import Foundation
 @MainActor
 final class PlaceDetailStore: ObservableObject {
     @Published private(set) var state = PlaceDetailState()
-    private let effect = PlaceDetailEffect()
+    private let effect = PlaceDetailEffect(
+        courseService: CourseService(),
+        placeService: PlaceService()
+    )
     
     func dispatch(_ action: PlaceDetailAction) {
         PlaceDetailReducer.reduce(state: &state, action: action)
