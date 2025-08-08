@@ -11,73 +11,69 @@ import Moya
 
 final class CourseService: BaseService<CourseTargetType> { }
 
-extension CourseService: PlaceDetailAPI {
-    func fetchCourseArchive(
-        townId: Int,
-        placeId: Int?
-    ) async throws -> BaseResponseBody<CourseArchiveResponseDTO> {
-        return try await self.request(with: .fetchCourseArchive(townId: townId, placeId: placeId))
-    }
-}
+// MARK: - CourseAPI
 
-extension CourseService {
-    func fetchCourseDetail(courseId: Int) async throws -> BaseResponseBody<CourseDetailResponseDTO> {
-        return try await self.request(with: .fetchCourseDetail(courseId: courseId))
+extension CourseService: CourseAPI {
+    func submitCreateCourseDetail(
+        request: CourseCreateRequestDTO
+    ) async throws -> BaseResponseBody<CourseCreateResponseDTO> {
+        return try await self.request(with: .submitCreateCourseDetail(request: request))
     }
-}
-
-extension CourseService {
-    func submitCourseBookmark(courseId: Int) async throws -> BaseResponseBody<EmptyResponseDTO> {
-        return try await self.request(with: .submitCourseBookmark(courseId: courseId))
-    }
-}
-
-extension CourseService {
-    func removeCourseBookmark(courseId: Int) async throws -> BaseResponseBody<EmptyResponseDTO> {
-        return try await self.request(with: .removeCourseBookmark(courseId: courseId))
-    }
-}
-
-extension CourseService {
-    func fetchCourseThumbnail() async throws -> BaseResponseBody<CourseArchiveThumbnailResponseDTO> {
-        return try await self.request(with: .fetchCourseThumbnail)
-    }
-}
-
-extension CourseService {
-    func fetchCourseRecommend(townId: Int) async throws -> BaseResponseBody<CourseRecommendResponseDTO> {
-        return try await self.request(with: .fetchCourseRecommend(townId: townId))
-    }
-}
-
-extension CourseService {
-    func removeCourseList(courseIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO> {
-        return try await self.request(with: .removeCourseList(courseIds: courseIds))
-    }
-}
-
-extension CourseService {
-    func submitAddPlace(
-        courseId: Int,
-        placeId: Int
-    ) async throws -> BaseResponseBody<CourseAddPlaceResponseDTO> {
-        return try await self.request(with: .submitAddPlace(courseId: courseId, placeId: placeId))
-    }
-}
-
-extension CourseService {
+    
     func updateCourseDetail(
         courseId: Int,
         request: CourseUpdateRequestDTO
     ) async throws -> BaseResponseBody<CourseUpdateResponseDTO> {
         return try await self.request(with: .updateCourseDetail(courseId: courseId, request: request))
     }
+    
+    func submitAddPlace(
+        courseId: Int,
+        placeId: Int
+    ) async throws -> BaseResponseBody<CourseAddPlaceResponseDTO> {
+        return try await self.request(with: .submitAddPlace(courseId: courseId, placeId: placeId))
+    }
+    
+    func fetchCourseArchive(
+        townId: Int,
+        placeId: Int?
+    ) async throws -> BaseResponseBody<CourseArchiveResponseDTO> {
+        return try await self.request(with: .fetchCourseArchive(townId: townId, placeId: placeId))
+    }
+    
+    func fetchCourseDetail(
+        courseId: Int
+    ) async throws -> BaseResponseBody<CourseDetailResponseDTO> {
+        return try await self.request(with: .fetchCourseDetail(courseId: courseId))
+    }
+    
+    func fetchCourseThumbnail() async throws -> BaseResponseBody<CourseArchiveThumbnailResponseDTO> {
+        return try await self.request(with: .fetchCourseThumbnail)
+    }
+    
+    func submitCourseBookmark(
+        courseId: Int
+    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .submitCourseBookmark(courseId: courseId))
+    }
+    
+    func removeCourseBookmark(
+        courseId: Int
+    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .removeCourseBookmark(courseId: courseId))
+    }
+    
+    func removeCourseList(
+        courseIds: [Int]
+    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .removeCourseList(courseIds: courseIds))
+    }
 }
 
+// TODO: - 주영아 이거 CourseRecommendService로 분리해줘
+
 extension CourseService {
-    func submitCreateCourseDetail(
-        request: CourseCreateRequestDTO
-    ) async throws -> BaseResponseBody<CourseCreateResponseDTO> {
-        return try await self.request(with: .submitCreateCourseDetail(request: request))
+    func fetchCourseRecommend(townId: Int) async throws -> BaseResponseBody<CourseRecommendResponseDTO> {
+        return try await self.request(with: .fetchCourseRecommend(townId: townId))
     }
 }
