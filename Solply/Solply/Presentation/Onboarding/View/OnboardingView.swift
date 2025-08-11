@@ -33,7 +33,7 @@ struct OnboardingView: View {
                     }
                 }
                 .animation(.easeOut(duration: 0.2), value: store.state.step)
-                .padding(.horizontal, 20.adjustedHeight)
+                .padding(.horizontal, 20.adjustedWidth)
                 .background(.gray100)
                 .onChange(of: store.state.isOnboardingFinished) { oldValue, newValue in
                     if newValue {
