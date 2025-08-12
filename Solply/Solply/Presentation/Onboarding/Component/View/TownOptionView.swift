@@ -10,9 +10,9 @@ import SwiftUI
 struct TownOptionView: View {
     @ObservedObject var store: OnboardingStore
 
-    private let itemSize: CGFloat = 100
     private let hSpacing: CGFloat = 20.adjustedWidth
     private let vSpacing: CGFloat = 32.adjustedHeight
+    private let desiredSlots = 3
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -24,13 +24,11 @@ struct TownOptionView: View {
 
             GeometryReader { proxy in
                 let avail = proxy.size.width
-                let per = itemSize + hSpacing
-                let capacity = max(1, Int(floor((avail + hSpacing) / per)))
-                let rowWidth = itemSize * CGFloat(capacity) + hSpacing * CGFloat(max(0, capacity - 1))
-                let towns = Array(store.state.townList.prefix(max(0, capacity - 1)))
+                let itemSize = floor((avail - hSpacing * CGFloat(desiredSlots - 1)) / CGFloat(desiredSlots))
+                let towns = Array(store.state.townList.prefix(desiredSlots - 1))
 
                 HStack(spacing: hSpacing) {
-                    ForEach(0..<capacity, id: \.self) { idx in
+                    ForEach(0..<desiredSlots, id: \.self) { idx in
                         if idx < towns.count {
                             let town = towns[idx]
                             TownOptionButton(
@@ -53,12 +51,11 @@ struct TownOptionView: View {
                         }
                     }
                 }
-                .frame(width: rowWidth, alignment: .leading)
                 .padding(.bottom, vSpacing)
                 .animation(nil, value: store.state.townList)
                 .transaction { $0.animation = nil }
             }
-            .frame(height: itemSize)
+            .frame(height: 120.adjustedHeight)
 
             Spacer(minLength: 0)
 
