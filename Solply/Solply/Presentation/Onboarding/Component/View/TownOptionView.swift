@@ -28,9 +28,9 @@ struct TownOptionView: View {
                 let towns = Array(store.state.townList.prefix(desiredSlots - 1))
 
                 HStack(spacing: hSpacing) {
-                    ForEach(0..<desiredSlots, id: \.self) { idx in
-                        if idx < towns.count {
-                            let town = towns[idx]
+                    ForEach(0..<desiredSlots, id: \.self) { index in
+                        if index < towns.count {
+                            let town = towns[index]
                             TownOptionButton(
                                 title: town.name,
                                 isSelected: store.state.selectedTown == town
@@ -41,7 +41,7 @@ struct TownOptionView: View {
                                 }
                             }
                             .frame(width: itemSize, height: itemSize)
-                        } else if idx == towns.count {
+                        } else if index == towns.count {
                             TownOptionButton(title: nil, isSelected: false) {
                                 print("➕ 추가 버튼 눌림")
                             }
