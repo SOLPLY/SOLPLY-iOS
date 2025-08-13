@@ -12,7 +12,7 @@ struct TownOptionView: View {
 
     private let hSpacing: CGFloat = 20.adjustedWidth
     private let vSpacing: CGFloat = 32.adjustedHeight
-    private let desiredSlots = 3
+    private let desiredSlots: Int = 3
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
