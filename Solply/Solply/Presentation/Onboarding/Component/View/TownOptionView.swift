@@ -36,9 +36,7 @@ struct TownOptionView: View {
                                 isSelected: store.state.selectedTown == town
                             ) {
                                 print("✅ 선택한 동네: \(town.name)")
-                                withAnimation(nil) {
-                                    store.dispatch(.selectTown(town))
-                                }
+                                store.dispatch(.selectTown(town))
                             }
                             .frame(width: itemSize, height: itemSize)
                         } else if index == towns.count {
@@ -52,7 +50,6 @@ struct TownOptionView: View {
                     }
                 }
                 .padding(.bottom, vSpacing)
-                .animation(nil, value: store.state.townList)
                 .transaction { $0.animation = nil }
             }
             .frame(height: 120.adjustedHeight)
