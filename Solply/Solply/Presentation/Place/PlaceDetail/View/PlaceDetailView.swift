@@ -55,10 +55,10 @@ struct PlaceDetailView: View {
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
         }
-        .detailBottomSheet(maxState: .placeExpended) {
+        .customBottomSheet(.placeDetail) {
             bottomSheetTopButtons
         } sheetContent: {
-            bottomSheetContent
+             bottomSheetContent
         }
         .onChange(of: store.state.toastContent) { _, toastContent in
             guard let toastContent else { return }
