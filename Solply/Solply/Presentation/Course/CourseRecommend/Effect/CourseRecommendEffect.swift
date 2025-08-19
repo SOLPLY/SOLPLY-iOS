@@ -8,7 +8,11 @@
 import Foundation
 
 struct CourseRecommendEffect {
-    private let courseRecommendService = CourseRecommendService()
+    private let courseRecommendService: CourseRecommendAPI
+    
+    init(courseRecommendService: CourseRecommendAPI) {
+        self.courseRecommendService = courseRecommendService
+    }
     
     func fetchCourseRecommend(townId: Int) async -> CourseRecommendAction {
         do {

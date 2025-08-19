@@ -10,7 +10,9 @@ import Foundation
 @MainActor
 final class CourseRecommendStore: ObservableObject {
     @Published private(set) var state = CourseRecommendState()
-    private let effect = CourseRecommendEffect()
+    private let effect = CourseRecommendEffect(
+        courseRecommendService: CourseRecommendService()
+    )
     
     func dispatch(_ action: CourseRecommendAction) {
         CourseRecommendReducer.reduce(state: &state, action: action)
