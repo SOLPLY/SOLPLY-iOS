@@ -52,8 +52,3 @@ protocol CourseAPI {
         courseIds: [Int]
     ) async throws -> BaseResponseBody<EmptyResponseDTO>
 }
-
-protocol CourseRecommendAPI {
-    /// 추천 코스 조회
-    func fetchCourseRecommend(townId: Int) async throws -> BaseResponseBody<CourseRecommendResponseDTO>
-}

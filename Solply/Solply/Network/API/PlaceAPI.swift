@@ -38,8 +38,3 @@ protocol PlaceAPI {
     /// 선택한 “나만의 장소" 삭제
     func removePlaceList(placeIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO>
 }
-
-protocol PlaceRecommendAPI {
-    /// 추천 장소 조회
-    func fetchPlaceRecommend(townId: Int) async throws -> BaseResponseBody<PlaceRecommendResponseDTO>
-}
