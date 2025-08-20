@@ -9,20 +9,20 @@ import Foundation
 
 struct PlaceRecommendEffect {
     private let placeService: PlaceAPI
-    private let placeRecommendService: PlaceRecommendAPI
+    private let recommendService: RecommendAPI
     private let tagsService = TagsService()
     
     init(
         placeService: PlaceAPI,
-        placeRecommendService: PlaceRecommendAPI
+        recommendService: RecommendAPI
     ) {
         self.placeService = placeService
-        self.placeRecommendService = placeRecommendService
+        self.recommendService = recommendService
     }
     
     func fetchPlaceRecommend(townId: Int) async -> PlaceRecommendAction {
         do {
-            let response = try await placeRecommendService.fetchPlaceRecommend(townId: townId)
+            let response = try await recommendService.fetchPlaceRecommend(townId: townId)
             
             guard let data = response.data else {
                 return .errorOccurred(error: .responseError)

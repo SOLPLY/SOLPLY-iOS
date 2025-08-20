@@ -12,7 +12,7 @@ final class PlaceRecommendStore: ObservableObject {
     @Published private(set) var state = PlaceRecommendState()
     private let effect = PlaceRecommendEffect(
         placeService: PlaceService(),
-        placeRecommendService: PlaceRecommendService()
+        recommendService: RecommendService()
     )
     
     func dispatch(_ action: PlaceRecommendAction, completion: (() -> Void)? = nil) {

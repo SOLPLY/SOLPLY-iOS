@@ -11,7 +11,7 @@ import Foundation
 final class CourseRecommendStore: ObservableObject {
     @Published private(set) var state = CourseRecommendState()
     private let effect = CourseRecommendEffect(
-        courseRecommendService: CourseRecommendService()
+        recommendService: RecommendService()
     )
     
     func dispatch(_ action: CourseRecommendAction) {
