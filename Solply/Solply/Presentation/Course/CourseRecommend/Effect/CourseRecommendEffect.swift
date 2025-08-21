@@ -8,11 +8,15 @@
 import Foundation
 
 struct CourseRecommendEffect {
-    private let courseService = CourseService()
+    private let recommendService: RecommendAPI
+    
+    init(recommendService: RecommendAPI) {
+        self.recommendService = recommendService
+    }
     
     func fetchCourseRecommend(townId: Int) async -> CourseRecommendAction {
         do {
-            let response = try await courseService.fetchCourseRecommend(townId: townId)
+            let response = try await recommendService.fetchCourseRecommend(townId: townId)
             
             guard let data = response.data else {
                 return .errorOccurred(error: .responseError)

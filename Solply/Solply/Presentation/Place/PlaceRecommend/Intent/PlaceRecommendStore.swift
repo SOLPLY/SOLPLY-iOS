@@ -10,7 +10,10 @@ import Foundation
 @MainActor
 final class PlaceRecommendStore: ObservableObject {
     @Published private(set) var state = PlaceRecommendState()
-    private let effect = PlaceRecommendEffect()
+    private let effect = PlaceRecommendEffect(
+        placeService: PlaceService(),
+        recommendService: RecommendService()
+    )
     
     func dispatch(_ action: PlaceRecommendAction, completion: (() -> Void)? = nil) {
         PlaceRecommendReducer.reduce(state: &state, action: action)

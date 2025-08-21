@@ -16,7 +16,6 @@ enum CourseTargetType {
     case removeCourseBookmark(courseId: Int)
     case fetchCourseThumbnail
     case removeCourseList(courseIds: [Int])
-    case fetchCourseRecommend(townId: Int)
     case submitAddPlace(courseId: Int, placeId: Int)
     case updateCourseDetail(courseId: Int, request: CourseUpdateRequestDTO)
     case submitCreateCourseDetail(request: CourseCreateRequestDTO)
@@ -41,8 +40,6 @@ extension CourseTargetType: BaseTargetType {
             return "/courses/bookmarks/folders"
         case .removeCourseList(courseIds: _):
             return "/courses/bookmarks"
-        case .fetchCourseRecommend:
-            return "/recommend/courses"
         case .submitAddPlace(courseId: let courseId, placeId: let placeId):
             return "/courses/\(courseId)/places/\(placeId)"
         case .updateCourseDetail(courseId: let courseId, request: _):
@@ -60,7 +57,6 @@ extension CourseTargetType: BaseTargetType {
         case .removeCourseBookmark: return .delete
         case .fetchCourseThumbnail: return .get
         case .removeCourseList: return .delete
-        case .fetchCourseRecommend: return .get
         case .submitAddPlace: return .post
         case .updateCourseDetail: return .put
         case .submitCreateCourseDetail: return .post
@@ -94,10 +90,6 @@ extension CourseTargetType: BaseTargetType {
         case .removeCourseList(let courseIds):
             let joinedCourseIds = courseIds.map { String($0) }.joined(separator: ",")
             let params: [String: Any] = ["courseIds": joinedCourseIds]
-            return .requestParameters(parameters: params, encoding: URLEncoding.default)
-            
-        case .fetchCourseRecommend(let townId):
-            let params: [String: Any] = ["townId": townId]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
             
         case .submitAddPlace:
