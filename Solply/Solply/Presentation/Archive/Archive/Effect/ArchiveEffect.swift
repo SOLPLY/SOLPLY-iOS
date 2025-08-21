@@ -8,8 +8,13 @@
 import Foundation
 
 struct ArchiveEffect {
-    private let placeService = PlaceService()
-    private let courseService = CourseService()
+    private let placeService: PlaceAPI
+    private let courseService: CourseAPI
+    
+    init(courseService: CourseAPI, placeService: PlaceAPI) {
+        self.courseService = courseService
+        self.placeService = placeService
+    }
     
     
     func fetchPlaceThumbnail() async -> ArchiveAction {
