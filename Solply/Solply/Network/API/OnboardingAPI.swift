@@ -8,12 +8,9 @@
 import Foundation
 
 protocol OnboardingAPI {
-    
-    func fetchPersonaList() async throws -> BaseResponseBody<OnboardingResponseDTO>
-    
-    func fetchOnboardingCompleteInfo() async throws -> BaseResponseBody<OnboardingResponseDTO>
+    func fetchPersonaList() async throws -> BaseResponseBody<OnboardingPersonaListResponseDTO>
     
     func completeOnboarding(
-        request: OnboardingRequestDTO
-    ) async throws -> BaseResponseBody<EmptyResponseDTO>
+        request: OnboardingCompleteRequestDTO
+    ) async throws -> BaseResponseBody<OnboardingCompleteResponseDTO>
 }
