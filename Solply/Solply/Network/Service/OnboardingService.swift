@@ -13,15 +13,11 @@ final class OnboardingService: BaseService<OnboardingTargetType> { }
 
 extension OnboardingService: OnboardingAPI {
     
-    func fetchPersonaList() async throws -> BaseResponseBody<OnboardingResponseDTO> {
+    func fetchPersonaList() async throws -> BaseResponseBody<OnboardingPersonaListResponseDTO> {
         return try await self.request(with: .fetchPersonaList)
     }
     
-    func fetchOnboardingCompleteInfo() async throws -> BaseResponseBody<OnboardingResponseDTO> {
-        return try await self.request(with: .fetchOnboardingCompleteInfo)
-    }
-    
-    func completeOnboarding(request: OnboardingRequestDTO) async throws -> BaseResponseBody<EmptyResponseDTO> {
+    func completeOnboarding(request: OnboardingCompleteRequestDTO) async throws -> BaseResponseBody<OnboardingCompleteResponseDTO> {
         return try await self.request(with: .completeOnboarding(request))
     }
 }
