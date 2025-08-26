@@ -9,9 +9,19 @@ import Foundation
 
 struct OnboardingEffect {
     
-    private let townService = TownService()
-    private let onboardingService = OnboardingService()
-    private let userService = UserService()
+    private let townService: TownAPI
+    private let onboardingService: OnboardingAPI
+    private let userService: UserAPI
+    
+    init(
+        townService: TownAPI,
+        onboardingService: OnboardingAPI,
+        userService: UserAPI
+        ) {
+            self.townService = townService
+            self.onboardingService = onboardingService
+            self.userService = userService
+        }
     
     func fetchTownList() async -> OnboardingAction {
         do {
@@ -21,15 +31,11 @@ struct OnboardingEffect {
                 return .fetchTownFailure("데이터가 없습니다")
             }
 
-            let towns = data.favoriteTownList.map { $0.toEntity() }
+            let towns = data.towns
+                        .flatMap { $0.subTowns ?? [] }
+                        .map { $0.toEntity() }
 
-            let selected = data.selectedTown?.toEntity() ?? towns.first
-
-            guard let selectedTown = selected else {
-                return .fetchTownFailure("동네가 없습니다")
-            }
-
-            return .fetchTownSuccess(selectedTown: selectedTown, townList: towns)
+            return .fetchTownSuccess(selectedTown: nil, townList: towns)
         } catch {
             return .fetchTownFailure("동네 불러오기 실패")
         }
@@ -61,7 +67,7 @@ struct OnboardingEffect {
     }
     
     func completeOnboarding(selectedTownId: Int, favoriteTownIdList: [Int], persona: String, nickname: String) async -> OnboardingAction {
-        let request = OnboardingRequestDTO(
+        let request = OnboardingCompleteRequestDTO(
             selectedTownId: selectedTownId,
             favoriteTownIdList: favoriteTownIdList,
             persona: persona,

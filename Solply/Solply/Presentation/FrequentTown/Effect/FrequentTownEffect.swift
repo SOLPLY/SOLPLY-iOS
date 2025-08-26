@@ -8,7 +8,13 @@
 import Foundation
 
 struct FrequentTownEffect {
-    private let userService = UserService()
+    private let userService: UserAPI
+    
+    init(
+        userService: UserAPI
+    ) {
+        self.userService = userService
+    }
     
     func fetchTownList() async -> FrequentTownAction {
         do {
@@ -18,10 +24,11 @@ struct FrequentTownEffect {
             }
             
             let towns = data.favoriteTownList.map { $0.toEntity() }
-            let selected = data.selectedTown?.toEntity()
+            
+            let selected = data.selectedTown.toEntity()
             
             print("📥 [FetchTownList] 가져온 동네 리스트: \(towns.map { $0.name })")
-            print("🏠 [FetchTownList] 선택된 동네: \(selected?.name ?? "없음")")
+            print("🏠 [FetchTownList] 선택된 동네: \(selected.name)")
             
             return .fetchSuccess(selectedTown: selected, townList: towns)
         } catch {
@@ -31,13 +38,11 @@ struct FrequentTownEffect {
     
     func saveTown(selectedTown: Town, favoriteTownList: [Town]) async -> FrequentTownAction {
         do {
-            let request = UserRequestDTO(
+            let request = UserTownsUpdateRequestDTO(
                 selectedTownId: selectedTown.id,
-                favoriteTownIdList: favoriteTownList.map { $0.id },
-                persona: "",
-                nickname: ""
+                favoriteTownIdList: favoriteTownList.map { $0.id }
             )
-            _ = try await userService.updateUserInfo(request)
+            _ = try await userService.updateUserTowns(request)
             
             print("✅ [SaveTown] 저장 완료 - 선택된 동네: \(selectedTown.name)")
             print("✅ [SaveTown] 저장 완료 - 즐겨찾는 동네 목록: \(favoriteTownList.map { $0.name })")
