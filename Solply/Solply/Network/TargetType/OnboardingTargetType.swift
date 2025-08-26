@@ -11,8 +11,7 @@ import Moya
 
 enum OnboardingTargetType {
     case fetchPersonaList
-    case fetchOnboardingCompleteInfo
-    case completeOnboarding(OnboardingRequestDTO)
+    case completeOnboarding(OnboardingCompleteRequestDTO)
 }
 
 extension OnboardingTargetType: BaseTargetType {
@@ -25,8 +24,6 @@ extension OnboardingTargetType: BaseTargetType {
         switch self {
         case .fetchPersonaList:
             return "/onboarding/questions/persona"
-        case .fetchOnboardingCompleteInfo:
-            return "/onboarding/complete"
         case .completeOnboarding:
             return "/onboarding/users"
         }
@@ -43,8 +40,8 @@ extension OnboardingTargetType: BaseTargetType {
     
     var task: Task {
         switch self {
-        case .fetchPersonaList, .fetchOnboardingCompleteInfo:
-            return .requestPlain
+        case .fetchPersonaList:
+                    return .requestPlain
         case .completeOnboarding(let requestDTO):
             return .requestJSONEncodable(requestDTO)
         }
