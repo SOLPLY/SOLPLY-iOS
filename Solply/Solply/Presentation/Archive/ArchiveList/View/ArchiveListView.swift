@@ -82,7 +82,9 @@ struct ArchiveListView: View {
         }
         .customAlert(
             alertType: .delete,
-            title: "선택한 장소를 삭제할까요?",
+            title: archiveCategory == .place
+                    ? "선택한 장소를 삭제할까요?"
+                    : "선택한 코스를 삭제할까요?",
             isPresented: store.state.isPresented
         ) {
             store.dispatch(.alertCancel)
