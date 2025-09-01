@@ -14,7 +14,6 @@ enum PlaceTargetType {
     case submitPlaceBookmark(placeId: Int)
     case removePlaceBookmark(placeId: Int)
     case fetchPlaceDetail(placeId: Int)
-    case fetchPlaceRecommend(townId: Int)
     case removePlaceList(placeIds: [Int])
     case fetchPlaceList(
         townId: Int,
@@ -40,8 +39,6 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/\(placeId)/bookmarks"
         case .fetchPlaceDetail(placeId: let placeId):
             return "/places/\(placeId)"
-        case .fetchPlaceRecommend:
-            return "/recommend/places"
         case .removePlaceList(placeIds: _):
             return "/places/bookmarks"
         case .fetchPlaceList:
@@ -55,7 +52,6 @@ extension PlaceTargetType: BaseTargetType {
         case .submitPlaceBookmark: return .post
         case .removePlaceBookmark: return .delete
         case .fetchPlaceDetail: return .get
-        case .fetchPlaceRecommend: return .get
         case .removePlaceList: return .delete
         case .fetchPlaceList: return .get
         }
@@ -71,9 +67,6 @@ extension PlaceTargetType: BaseTargetType {
             return .requestPlain
         case .fetchPlaceDetail:
             return .requestPlain
-        case .fetchPlaceRecommend(let townId):
-            let params: [String: Any] = ["townId": townId]
-            return .requestParameters(parameters: params, encoding: URLEncoding.default)
         case .removePlaceList(let placeIds):
             let joinedPlaceIds = placeIds.map { String($0) }.joined(separator: ",")
             let params: [String: Any] = ["placeIds": joinedPlaceIds]

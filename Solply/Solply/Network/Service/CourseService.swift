@@ -69,11 +69,3 @@ extension CourseService: CourseAPI {
         return try await self.request(with: .removeCourseList(courseIds: courseIds))
     }
 }
-
-// TODO: - 주영아 이거 CourseRecommendService로 분리해줘
-
-extension CourseService {
-    func fetchCourseRecommend(townId: Int) async throws -> BaseResponseBody<CourseRecommendResponseDTO> {
-        return try await self.request(with: .fetchCourseRecommend(townId: townId))
-    }
-}

@@ -10,7 +10,10 @@ import Foundation
 @MainActor
 final class ArchiveListStore: ObservableObject {
     @Published private(set) var state = ArchiveListState()
-    private let effect : ArchiveListEffect = ArchiveListEffect()
+    private let effect : ArchiveListEffect = ArchiveListEffect(
+        courseService: CourseService(),
+        placeService: PlaceService()
+    )
     
     func dispatch(_ action: ArchiveListAction) {
         ArchiveListReducer.reduce(state: &state, action: action)

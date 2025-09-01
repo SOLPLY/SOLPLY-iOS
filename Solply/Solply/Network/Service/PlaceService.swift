@@ -58,13 +58,3 @@ extension PlaceService: PlaceAPI {
         return try await self.request(with: .removePlaceList(placeIds: placeIds))
     }
 }
-
-// TODO: - 주영아 이거 PlaceRecommendService만들어서 분리해줘
-
-extension PlaceService {
-    func fetchPlaceRecommend(
-        townId: Int
-    ) async throws -> BaseResponseBody<PlaceRecommendResponseDTO> {
-        return try await self.request(with: .fetchPlaceRecommend(townId: townId))
-    }
-}
