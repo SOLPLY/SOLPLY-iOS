@@ -17,7 +17,7 @@ extension UserService: UserAPI {
         return try await self.request(with: .fetchUserInformation)
     }
     
-    func checkNickname(_ nickname: String) async throws -> BaseResponseBody<UserNicknameCheckResponseDTO> {
+    func fetchUserNicknameCheck(_ nickname: String) async throws -> BaseResponseBody<UserNicknameCheckResponseDTO> {
         return try await self.request(with: .checkNickname(nickname: nickname))
     }
     

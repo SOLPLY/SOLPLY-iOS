@@ -8,15 +8,15 @@
 import Foundation
 
 protocol UserAPI {
-    func fetchUserInformation() async throws
-    -> BaseResponseBody<UserInformationResponseDTO>
+    func fetchUserInformation() async throws -> BaseResponseBody<UserInformationResponseDTO>
 
-    func checkNickname(_ nickname: String) async throws
+    func fetchUserNicknameCheck(
+        _ nickname: String) async throws
     -> BaseResponseBody<UserNicknameCheckResponseDTO>
 
-    func fetchUserTowns() async throws
-    -> BaseResponseBody<UserTownsResponseDTO>
+    func fetchUserTowns() async throws -> BaseResponseBody<UserTownsResponseDTO>
 
-    func updateUserTowns(_ request: UserTownsUpdateRequestDTO) async throws
+    func updateUserTowns(
+        _ request: UserTownsUpdateRequestDTO) async throws
     -> BaseResponseBody<UserTownsUpdateResponseDTO>
 }

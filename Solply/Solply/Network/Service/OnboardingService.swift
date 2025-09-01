@@ -17,7 +17,7 @@ extension OnboardingService: OnboardingAPI {
         return try await self.request(with: .fetchPersonaList)
     }
     
-    func completeOnboarding(request: OnboardingCompleteRequestDTO) async throws -> BaseResponseBody<OnboardingCompleteResponseDTO> {
+    func updateOnboardingUserInfo(request: OnboardingCompleteRequestDTO) async throws -> BaseResponseBody<OnboardingCompleteResponseDTO> {
         return try await self.request(with: .completeOnboarding(request))
     }
 }

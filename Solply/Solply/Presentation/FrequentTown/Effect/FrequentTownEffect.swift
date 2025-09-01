@@ -10,9 +10,7 @@ import Foundation
 struct FrequentTownEffect {
     private let userService: UserAPI
     
-    init(
-        userService: UserAPI
-    ) {
+    init(userService: UserAPI) {
         self.userService = userService
     }
     

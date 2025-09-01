@@ -41,7 +41,7 @@ extension OnboardingTargetType: BaseTargetType {
     var task: Task {
         switch self {
         case .fetchPersonaList:
-                    return .requestPlain
+            return .requestPlain
         case .completeOnboarding(let requestDTO):
             return .requestJSONEncodable(requestDTO)
         }

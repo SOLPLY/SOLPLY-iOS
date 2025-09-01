@@ -17,11 +17,11 @@ struct OnboardingEffect {
         townService: TownAPI,
         onboardingService: OnboardingAPI,
         userService: UserAPI
-        ) {
-            self.townService = townService
-            self.onboardingService = onboardingService
-            self.userService = userService
-        }
+    ) {
+        self.townService = townService
+        self.onboardingService = onboardingService
+        self.userService = userService
+    }
     
     func fetchTownList() async -> OnboardingAction {
         do {
@@ -30,11 +30,11 @@ struct OnboardingEffect {
             guard let data = response.data else {
                 return .fetchTownFailure("데이터가 없습니다")
             }
-
+            
             let towns = data.towns
-                        .flatMap { $0.subTowns ?? [] }
-                        .map { $0.toEntity() }
-
+                .flatMap { $0.subTowns ?? [] }
+                .map { $0.toEntity() }
+            
             return .fetchTownSuccess(selectedTown: nil, townList: towns)
         } catch {
             return .fetchTownFailure("동네 불러오기 실패")
@@ -56,7 +56,7 @@ struct OnboardingEffect {
     
     func checkNickname(_ nickname: String) async -> OnboardingAction {
         do {
-            let response = try await userService.checkNickname(nickname)
+            let response = try await userService.fetchUserNicknameCheck(nickname)
             guard let isDuplicated = response.data?.isDuplicated else {
                 return .nicknameChecked(.invalidCharacter)
             }
@@ -75,7 +75,7 @@ struct OnboardingEffect {
         )
         
         do {
-            _ = try await onboardingService.completeOnboarding(request: request)
+            _ = try await onboardingService.updateOnboardingUserInfo(request: request)
             print("✅ 온보딩 완료 API 성공")
             
             try? await Task.sleep(nanoseconds: 2_000_000_000)

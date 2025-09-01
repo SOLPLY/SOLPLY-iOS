@@ -27,8 +27,7 @@ extension UserTargetType: BaseTargetType {
             return "/users"
         case .checkNickname:
             return "/users/check-nickname"
-        case .fetchUserTowns,
-             .updateUserTowns:
+        case .fetchUserTowns, .updateUserTowns:
             return "/users/towns"
         }
     }
@@ -44,9 +43,8 @@ extension UserTargetType: BaseTargetType {
     
     var task: Moya.Task {
         switch self {
-        case .fetchUserInformation,
-                     .fetchUserTowns:
-                    return .requestPlain
+        case .fetchUserInformation, .fetchUserTowns:
+            return .requestPlain
             
         case .checkNickname(let nickname):
             return .requestParameters(parameters: ["nickname": nickname], encoding: URLEncoding.queryString)
