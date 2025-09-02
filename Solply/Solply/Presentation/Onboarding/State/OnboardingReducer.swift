@@ -42,7 +42,8 @@ enum OnboardingReducer {
             state.selectedTown = nil
             state.errorMessage = nil
             
-        case .fetchTownSuccess(_, let townList):
+        case .fetchTownSuccess(let selectedTown, let townList):
+            state.selectedTown = selectedTown
             state.townList = townList
             
         case .fetchTownFailure(let message):

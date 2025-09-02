@@ -21,7 +21,7 @@ enum OnboardingAction {
     case checkNicknameFailure(String)
 
     case fetchTown
-    case fetchTownSuccess(selectedTown: Town, townList: [Town])
+    case fetchTownSuccess(selectedTown: Town?, townList: [Town])
     case fetchTownFailure(String)
 
     case fetchPersona

@@ -1,20 +1,20 @@
 //
-//  TownResponseDTO.swift
+//  TownListResponseDTO.swift
 //  Solply
 //
-//  Created by 선영주 on 7/17/25.
+//  Created by sun on 8/26/25.
 //
 
 import Foundation
 
-struct TownResponseDTO: ResponseModelType {
-    let selectedTown: TownDTO?
-    let favoriteTownList: [TownDTO]
+struct TownListResponseDTO: ResponseModelType {
+    let towns: [TownDTO]
 }
 
 struct TownDTO: ResponseModelType, Hashable {
     let townId: Int
     let townName: String
+    let subTowns: [TownDTO]?
 }
 
 extension TownDTO {

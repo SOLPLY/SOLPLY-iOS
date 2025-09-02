@@ -13,7 +13,7 @@ enum UserTargetType {
     case fetchUserInformation
     case checkNickname(nickname: String)
     case fetchUserTowns
-    case updateUserInfo(UserRequestDTO)
+    case updateUserTowns(UserTownsUpdateRequestDTO)
 }
 
 extension UserTargetType: BaseTargetType {
@@ -27,7 +27,7 @@ extension UserTargetType: BaseTargetType {
             return "/users"
         case .checkNickname:
             return "/users/check-nickname"
-        case .fetchUserTowns, .updateUserInfo:
+        case .fetchUserTowns, .updateUserTowns:
             return "/users/towns"
         }
     }
@@ -36,22 +36,20 @@ extension UserTargetType: BaseTargetType {
         switch self {
         case .fetchUserInformation, .checkNickname, .fetchUserTowns:
             return .get
-        case .updateUserInfo:
+        case .updateUserTowns:
             return .patch
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .fetchUserInformation:
+        case .fetchUserInformation, .fetchUserTowns:
             return .requestPlain
+            
         case .checkNickname(let nickname):
             return .requestParameters(parameters: ["nickname": nickname], encoding: URLEncoding.queryString)
         
-        case .fetchUserTowns:
-            return .requestPlain
-        
-        case .updateUserInfo(let requestDTO):
+        case .updateUserTowns(let requestDTO):
             return .requestJSONEncodable(requestDTO)
         }
     }
