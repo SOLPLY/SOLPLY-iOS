@@ -32,18 +32,7 @@ struct CourseDetailView: View {
     
     var body: some View {
         ZStack(alignment: .center) {
-            CourseDetailMapView(places: store.state.places)
-                .customNavigationBar(
-                    .courseDetail(backAction: {
-                        if store.state.isEditing {
-                            store.dispatch(.showAlert)
-                        } else {
-                            appCoordinator.goBack()
-                        }
-                    }, homeAction: {
-                        appCoordinator.goToRoot()
-                    })
-                )
+            courseMapView
                 .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
                     if !fromArchive {
                         bottomSheetTopButton
@@ -108,6 +97,21 @@ struct CourseDetailView: View {
 // MARK: - Subview
 
 extension CourseDetailView {
+    private var courseMapView: some View {
+        CourseDetailMapView(places: store.state.places)
+            .customNavigationBar(
+                .courseDetail(backAction: {
+                    if store.state.isEditing {
+                        store.dispatch(.showAlert)
+                    } else {
+                        appCoordinator.goBack()
+                    }
+                }, homeAction: {
+                    appCoordinator.goToRoot()
+                })
+            )
+    }
+    
     private var bottomSheetTopButton: some View {
         SolplySaveButton(
             contentType: .course,

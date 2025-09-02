@@ -11,7 +11,9 @@ import Foundation
 final class FrequentTownStore: ObservableObject {
     
     @Published private(set) var state = FrequentTownState()
-    private let effect = FrequentTownEffect()
+    private let effect = FrequentTownEffect(
+        userService : UserService()
+    )
     
     func dispatch(_ action: FrequentTownAction) {
         FrequentTownReducer.reduce(state: &state, action: action)

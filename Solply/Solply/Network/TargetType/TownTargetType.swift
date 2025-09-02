@@ -23,7 +23,7 @@ extension TownTargetType: BaseTargetType {
     var path: String {
         switch self {
         case .fetchTownList:
-            return "/users/towns"
+            return "/towns"
         }
     }
     

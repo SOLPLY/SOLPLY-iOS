@@ -1,13 +1,13 @@
 //
-//  OnboardingRequestDTO.swift
+//  OnboardingCompleteRequestDTO.swift
 //  Solply
 //
-//  Created by 선영주 on 7/17/25.
+//  Created by sun on 8/26/25.
 //
 
 import Foundation
 
-struct OnboardingRequestDTO: RequestModelType {
+struct OnboardingCompleteRequestDTO: RequestModelType {
     let selectedTownId: Int
     let favoriteTownIdList: [Int]
     let persona: String

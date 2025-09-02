@@ -29,6 +29,53 @@ struct PlaceDetailView: View {
     // MARK: - Body
     
     var body: some View {
+        placeMapView
+            .customNavigationBar(
+                .placeDetail(
+                    title: store.state.placeName,
+                    backAction: {
+                        appCoordinator.goBack()
+                    },
+                    homeAction: {
+                        appCoordinator.goToRoot()
+                    }
+                )
+            )
+            .onAppear {
+                store.dispatch(.fetchPlaceDetail(placeId: placeId))
+                store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+            }
+            .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
+                store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
+            }
+            .customBottomSheet(.placeDetail) {
+                bottomSheetTopButtons
+            } sheetContent: {
+                bottomSheetContent
+            }
+            .onChange(of: store.state.toastContent) { _, toastContent in
+                guard let toastContent else { return }
+                
+                toastManager.showToast(content: toastContent) {
+                    if let addPlaceCourseId = store.state.addPlaceCourseId {
+                        appCoordinator.navigate(
+                            to: .courseDetail(
+                                townId: townId,
+                                courseId: addPlaceCourseId,
+                                fromArchive: true
+                            )
+                        )
+                    }
+                }
+            }
+            .toast(toastManager: toastManager)
+    }
+}
+
+// MARK: - Subviews
+
+extension PlaceDetailView {
+    private var placeMapView: some View {
         PlaceDetailMapView(
             latitude: store.state.latitude,
             longitude: store.state.longtitude,
@@ -37,51 +84,8 @@ struct PlaceDetailView: View {
             saveButtonEnabled: store.state.saveButtonEnabled,
             findDirectionEnabled: store.state.findDirectionEnabled
         )
-        .customNavigationBar(
-            .placeDetail(
-                title: store.state.placeName,
-                backAction: {
-                    appCoordinator.goBack()
-                },
-                homeAction: {
-                    appCoordinator.goToRoot()
-                }
-            )
-        )
-        .onAppear {
-            store.dispatch(.fetchPlaceDetail(placeId: placeId))
-            store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
-        }
-        .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
-            store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
-        }
-        .customBottomSheet(.placeDetail) {
-            bottomSheetTopButtons
-        } sheetContent: {
-             bottomSheetContent
-        }
-        .onChange(of: store.state.toastContent) { _, toastContent in
-            guard let toastContent else { return }
-            
-            toastManager.showToast(content: toastContent) {
-                if let addPlaceCourseId = store.state.addPlaceCourseId {
-                    appCoordinator.navigate(
-                        to: .courseDetail(
-                            townId: townId,
-                            courseId: addPlaceCourseId,
-                            fromArchive: true
-                        )
-                    )
-                }
-            }
-        }
-        .toast(toastManager: toastManager)
     }
-}
-
-// MARK: - Subviews
-
-extension PlaceDetailView {
+    
     private var bottomSheetTopButtons: some View {
         HStack(alignment: .center, spacing: 8.adjustedWidth) {
             FindDirectionButton(isEnabled: store.state.findDirectionEnabled) {

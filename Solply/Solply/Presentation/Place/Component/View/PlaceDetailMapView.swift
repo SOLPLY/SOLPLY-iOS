@@ -20,7 +20,6 @@ struct PlaceDetailMapView: UIViewRepresentable {
     var saveButtonEnabled: Bool
     var findDirectionEnabled: Bool
     
-    
     private let zoomLevel: Double = 16
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
@@ -51,7 +50,6 @@ struct PlaceDetailMapView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> NMFMapView {
         let mapView = configureMapView()
-        configureCamera(mapView)
         return mapView
     }
     
@@ -76,7 +74,6 @@ extension PlaceDetailMapView {
 // MARK: - Helpers
 
 private extension PlaceDetailMapView {
-    
     func configureMapView() -> NMFMapView {
         let mapView = NMFMapView()
         mapView.mapType = .basic

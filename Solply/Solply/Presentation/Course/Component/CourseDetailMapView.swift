@@ -9,7 +9,7 @@ import SwiftUI
 
 import NMapsMap
 
-struct CourseDetailMapView: UIViewRepresentable, Equatable {
+struct CourseDetailMapView: UIViewRepresentable {
     
     // MARK: - Properties
     
@@ -37,18 +37,6 @@ struct CourseDetailMapView: UIViewRepresentable, Equatable {
     }
     
     // MARK: - Functions
-    
-    static func == (lhs: CourseDetailMapView, rhs: CourseDetailMapView) -> Bool {
-        guard lhs.places.count == rhs.places.count else { return false }
-        
-        for (lhsPlace, rhsPlace) in zip(lhs.places, rhs.places) {
-            if lhsPlace.id != rhsPlace.id || lhsPlace.isFocused != rhsPlace.isFocused {
-                return false
-            }
-        }
-        
-        return true
-    }
     
     func makeUIView(context: Context) -> NMFMapView {
         let mapView = configureMapView(context: context)
@@ -260,7 +248,25 @@ extension CourseDetailMapView {
     }
 }
 
+// MARK: - Coordinator
+
 class Coordinator {
     var markers: [NMFMarker] = []
     var polyline: NMFPolylineOverlay?
+}
+
+// MARK: - Equatable
+
+extension CourseDetailMapView: Equatable {
+    static func == (lhs: CourseDetailMapView, rhs: CourseDetailMapView) -> Bool {
+        guard lhs.places.count == rhs.places.count else { return false }
+        
+        for (lhsPlace, rhsPlace) in zip(lhs.places, rhs.places) {
+            if lhsPlace.id != rhsPlace.id || lhsPlace.isFocused != rhsPlace.isFocused {
+                return false
+            }
+        }
+        
+        return true
+    }
 }
