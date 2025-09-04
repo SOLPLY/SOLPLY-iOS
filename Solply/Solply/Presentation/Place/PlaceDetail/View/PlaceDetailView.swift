@@ -29,46 +29,94 @@ struct PlaceDetailView: View {
     // MARK: - Body
     
     var body: some View {
-        placeMapView
-            .customNavigationBar(
-                .placeDetail(
-                    title: store.state.placeName,
-                    backAction: {
-                        appCoordinator.goBack()
-                    },
-                    homeAction: {
-                        appCoordinator.goToRoot()
-                    }
+        ZStack(alignment: .bottom) {
+            placeMapView
+                .customNavigationBar(
+                    .placeDetail(
+                        title: store.state.placeName,
+                        backAction: {
+                            appCoordinator.goBack()
+                        },
+                        homeAction: {
+                            appCoordinator.goToRoot()
+                        }
+                    )
                 )
-            )
-            .onAppear {
-                store.dispatch(.fetchPlaceDetail(placeId: placeId))
-                store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+                .customBottomSheet(.placeDetail) {
+                    bottomSheetTopButtons
+                } sheetContent: {
+                    bottomSheetContent
+                }
+            
+            
+            if store.state.selectedCourseIndex != -1 {
+                addPlaceToCourseButton
             }
-            .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
-                store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
-            }
-            .customBottomSheet(.placeDetail) {
-                bottomSheetTopButtons
-            } sheetContent: {
-                bottomSheetContent
-            }
-            .onChange(of: store.state.toastContent) { _, toastContent in
-                guard let toastContent else { return }
-                
-                toastManager.showToast(content: toastContent) {
-                    if let addPlaceCourseId = store.state.addPlaceCourseId {
-                        appCoordinator.navigate(
-                            to: .courseDetail(
-                                townId: townId,
-                                courseId: addPlaceCourseId,
-                                fromArchive: true
-                            )
+        }
+        .onAppear {
+            store.dispatch(.fetchPlaceDetail(placeId: placeId))
+            store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+        }
+        .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
+            store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
+        }
+        .onChange(of: store.state.toastContent) { _, toastContent in
+            guard let toastContent else { return }
+            
+            toastManager.showToast(content: toastContent) {
+                if let addPlaceCourseId = store.state.addPlaceCourseId {
+                    appCoordinator.navigate(
+                        to: .courseDetail(
+                            townId: townId,
+                            courseId: addPlaceCourseId,
+                            fromArchive: true
                         )
-                    }
+                    )
                 }
             }
-            .toast(toastManager: toastManager)
+        }
+        .toast(toastManager: toastManager)
+        
+//        placeMapView
+//            .customNavigationBar(
+//                .placeDetail(
+//                    title: store.state.placeName,
+//                    backAction: {
+//                        appCoordinator.goBack()
+//                    },
+//                    homeAction: {
+//                        appCoordinator.goToRoot()
+//                    }
+//                )
+//            )
+//            .onAppear {
+//                store.dispatch(.fetchPlaceDetail(placeId: placeId))
+//                store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+//            }
+//            .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
+//                store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
+//            }
+//            .customBottomSheet(.placeDetail) {
+//                bottomSheetTopButtons
+//            } sheetContent: {
+//                bottomSheetContent
+//            }
+//            .onChange(of: store.state.toastContent) { _, toastContent in
+//                guard let toastContent else { return }
+//                
+//                toastManager.showToast(content: toastContent) {
+//                    if let addPlaceCourseId = store.state.addPlaceCourseId {
+//                        appCoordinator.navigate(
+//                            to: .courseDetail(
+//                                townId: townId,
+//                                courseId: addPlaceCourseId,
+//                                fromArchive: true
+//                            )
+//                        )
+//                    }
+//                }
+//            }
+//            .toast(toastManager: toastManager)
     }
 }
 
@@ -168,26 +216,11 @@ extension PlaceDetailView {
                     } else {
                         store.dispatch(.selectCourseToAdd(index: index))
                     }
-                } addAction: { index in
-                    store.dispatch(.updateAddPlaceCourseId(courseId: store.state.courses[index].courseId))
-                    store.dispatch(.submitAddPlace(courseId: store.state.courses[index].courseId, placeId: placeId))
-                    store.dispatch(.addPlaceToCourse(index: index))
-                    store.dispatch(.toggleAddToCourse)
-                    store.dispatch(
-                        .showToastView(
-                            ToastContent(
-                                toastType: .withActionToast,
-                                message: "‘\(store.state.courses[index].courseName.truncated(8))’에 추가되었어요.",
-                                buttonTitle: "자세히 보기"
-                            )
-                        )
-                    )
-                    store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
                 } backAction: {
                     store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(.selectCourseToAdd(index: -1))
-                } addCourseAction: {
+                } goToAddCourseAction: {
                     appCoordinator.goBack()
                     appCoordinator.switchTab(to: .course)
                 }
@@ -219,6 +252,40 @@ extension PlaceDetailView {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: store.state.addButtonSelected)
+    }
+    
+    private var addPlaceToCourseButton: some View {
+        CTAMainButton(title: "이 코스에 추가할래요") {
+            let selectedCourseIndex = store.state.selectedCourseIndex
+            
+            store.dispatch(
+                .showToastView(
+                    ToastContent(
+                        toastType: .withActionToast,
+                        message: "‘\(store.state.courses[selectedCourseIndex].courseName.truncated(8))’에 추가되었어요.",
+                        buttonTitle: "자세히 보기"
+                    )
+                )
+            )
+            store.dispatch(
+                .updateAddPlaceCourseId(
+                    courseId: store.state.courses[selectedCourseIndex].courseId
+                )
+            )
+            store.dispatch(
+                .submitAddPlace(
+                    courseId: store.state.courses[selectedCourseIndex].courseId,
+                    placeId: placeId
+                )
+            )
+            store.dispatch(.addPlaceToCourse(index: selectedCourseIndex))
+            store.dispatch(.toggleAddToCourse)
+            store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+        }
+        .padding(.horizontal, 20.adjustedWidth)
+        .safeAreaInset(edge: .bottom) {
+            Color.clear.frame(height: 16.adjustedHeight)
+        }
     }
 }
 
