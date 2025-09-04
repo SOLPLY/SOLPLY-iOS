@@ -256,22 +256,29 @@ extension PlaceDetailView {
     
     private var addPlaceToCourseButton: some View {
         CTAMainButton(title: "이 코스에 추가할래요") {
+            let selectedCourseIndex = store.state.selectedCourseIndex
+            
             store.dispatch(
                 .showToastView(
                     ToastContent(
                         toastType: .withActionToast,
-                        message: "‘\(store.state.courses[store.state.selectedCourseIndex].courseName.truncated(8))’에 추가되었어요.",
+                        message: "‘\(store.state.courses[selectedCourseIndex].courseName.truncated(8))’에 추가되었어요.",
                         buttonTitle: "자세히 보기"
                     )
                 )
             )
             store.dispatch(
                 .updateAddPlaceCourseId(
-                    courseId: store.state.courses[store.state.selectedCourseIndex].courseId
+                    courseId: store.state.courses[selectedCourseIndex].courseId
                 )
             )
-            store.dispatch(.submitAddPlace(courseId: store.state.courses[store.state.selectedCourseIndex].courseId, placeId: placeId))
-            store.dispatch(.addPlaceToCourse(index: store.state.selectedCourseIndex))
+            store.dispatch(
+                .submitAddPlace(
+                    courseId: store.state.courses[selectedCourseIndex].courseId,
+                    placeId: placeId
+                )
+            )
+            store.dispatch(.addPlaceToCourse(index: selectedCourseIndex))
             store.dispatch(.toggleAddToCourse)
             store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
         }
