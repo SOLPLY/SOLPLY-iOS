@@ -8,5 +8,5 @@
 import Foundation
 
 protocol TownAPI {
-    func fetchTownList() async throws -> BaseResponseBody<TownResponseDTO>
+    func fetchTownList() async throws -> BaseResponseBody<TownListResponseDTO>
 }

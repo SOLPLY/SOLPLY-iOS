@@ -11,7 +11,11 @@ import Foundation
 final class OnboardingStore: ObservableObject {
     
     @Published private(set) var state = OnboardingState()
-    private let effect = OnboardingEffect()
+    private let effect = OnboardingEffect(
+        townService : TownService(),
+        onboardingService : OnboardingService(),
+        userService : UserService()
+    )
     
     func dispatch(_ action: OnboardingAction) {
         OnboardingReducer.reduce(state: &state, action: action)
