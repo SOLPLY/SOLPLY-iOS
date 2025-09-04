@@ -9,9 +9,19 @@ import Foundation
 
 struct OnboardingEffect {
     
-    private let townService = TownService()
-    private let onboardingService = OnboardingService()
-    private let userService = UserService()
+    private let townService: TownAPI
+    private let onboardingService: OnboardingAPI
+    private let userService: UserAPI
+    
+    init(
+        townService: TownAPI,
+        onboardingService: OnboardingAPI,
+        userService: UserAPI
+    ) {
+        self.townService = townService
+        self.onboardingService = onboardingService
+        self.userService = userService
+    }
     
     func fetchTownList() async -> OnboardingAction {
         do {
@@ -20,16 +30,12 @@ struct OnboardingEffect {
             guard let data = response.data else {
                 return .fetchTownFailure("데이터가 없습니다")
             }
-
-            let towns = data.favoriteTownList.map { $0.toEntity() }
-
-            let selected = data.selectedTown?.toEntity() ?? towns.first
-
-            guard let selectedTown = selected else {
-                return .fetchTownFailure("동네가 없습니다")
-            }
-
-            return .fetchTownSuccess(selectedTown: selectedTown, townList: towns)
+            
+            let towns = data.towns
+                .flatMap { $0.subTowns ?? [] }
+                .map { $0.toEntity() }
+            
+            return .fetchTownSuccess(selectedTown: nil, townList: towns)
         } catch {
             return .fetchTownFailure("동네 불러오기 실패")
         }
@@ -50,7 +56,7 @@ struct OnboardingEffect {
     
     func checkNickname(_ nickname: String) async -> OnboardingAction {
         do {
-            let response = try await userService.checkNickname(nickname)
+            let response = try await userService.fetchUserNicknameCheck(nickname)
             guard let isDuplicated = response.data?.isDuplicated else {
                 return .nicknameChecked(.invalidCharacter)
             }
@@ -61,7 +67,7 @@ struct OnboardingEffect {
     }
     
     func completeOnboarding(selectedTownId: Int, favoriteTownIdList: [Int], persona: String, nickname: String) async -> OnboardingAction {
-        let request = OnboardingRequestDTO(
+        let request = OnboardingCompleteRequestDTO(
             selectedTownId: selectedTownId,
             favoriteTownIdList: favoriteTownIdList,
             persona: persona,
@@ -69,7 +75,7 @@ struct OnboardingEffect {
         )
         
         do {
-            _ = try await onboardingService.completeOnboarding(request: request)
+            _ = try await onboardingService.updateOnboardingUserInfo(request: request)
             print("✅ 온보딩 완료 API 성공")
             
             try? await Task.sleep(nanoseconds: 2_000_000_000)
