@@ -131,7 +131,7 @@ extension View {
                         Button {
                             settingAction()
                         } label: {
-                            Image(.settingIcon)
+                            Image(.searchIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)

@@ -153,7 +153,7 @@ extension CourseDetailView {
                                 store.dispatch(.toggleEdting)
                             }
                         } label: {
-                            Image(store.state.isEditing ? .editDoneIcon : .editingIcon)
+                            Image(store.state.isEditing ? .editingIcon : .editingIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
