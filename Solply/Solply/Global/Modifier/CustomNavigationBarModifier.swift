@@ -27,11 +27,17 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
     
     func body(content: Content) -> some View {
         if backgroundColor == Color.clear {
-            ZStack(alignment: .top) {
-                
-                content
-                    .ignoresSafeArea(edges: .vertical)
-                
+            floatingNavigationBar(content)
+        } else {
+            defaultNavigationBar(content)
+        }
+    }
+}
+
+extension CustomNavigationBarModifier {
+    private func defaultNavigationBar(_ content: Content) -> some View {
+        VStack(spacing: 0) {
+            ZStack(alignment: .center) {
                 HStack(spacing: 0) {
                     self.leftView?()
                     
@@ -39,34 +45,37 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
                     
                     self.rightView?()
                 }
-                .padding(.horizontal, 20.adjustedWidth)
-            }
-            .navigationBarHidden(true)
-        } else {
-            VStack(spacing: 0) {
-                ZStack(alignment: .center) {
-                    HStack(spacing: 0) {
-                        self.leftView?()
-                        
-                        Spacer()
-                        
-                        self.rightView?()
-                    }
-                    
-                    self.centerView?()
-                    
-                }
-                .padding(.horizontal, 16.adjustedWidth)
-                .padding(.vertical, 16.adjustedHeight)
-                .background(backgroundColor)
                 
-                content
+                self.centerView?()
+                
+            }
+            .padding(.horizontal, 16.adjustedWidth)
+            .padding(.vertical, 16.adjustedHeight)
+            .background(backgroundColor)
+            
+            content
+            
+            Spacer()
+        }
+        .ignoresSafeArea(edges: .bottom)
+        .navigationBarHidden(true)
+    }
+    
+    private func floatingNavigationBar(_ content: Content) -> some View {
+        ZStack(alignment: .top) {
+            content
+                .ignoresSafeArea(edges: .vertical)
+            
+            HStack(spacing: 0) {
+                self.leftView?()
                 
                 Spacer()
+                
+                self.rightView?()
             }
-            .ignoresSafeArea(edges: .bottom)
-            .navigationBarHidden(true)
+            .padding(.horizontal, 20.adjustedWidth)
         }
+        .navigationBarHidden(true)
     }
 }
 
