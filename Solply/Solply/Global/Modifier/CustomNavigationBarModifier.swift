@@ -26,6 +26,16 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
     }
     
     func body(content: Content) -> some View {
+        if backgroundColor == Color.clear {
+            floatingNavigationBar(content)
+        } else {
+            defaultNavigationBar(content)
+        }
+    }
+}
+
+extension CustomNavigationBarModifier {
+    private func defaultNavigationBar(_ content: Content) -> some View {
         VStack(spacing: 0) {
             ZStack(alignment: .center) {
                 HStack(spacing: 0) {
@@ -48,6 +58,23 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
             Spacer()
         }
         .ignoresSafeArea(edges: .bottom)
+        .navigationBarHidden(true)
+    }
+    
+    private func floatingNavigationBar(_ content: Content) -> some View {
+        ZStack(alignment: .top) {
+            content
+                .ignoresSafeArea(edges: .vertical)
+            
+            HStack(spacing: 0) {
+                self.leftView?()
+                
+                Spacer()
+                
+                self.rightView?()
+            }
+            .padding(.horizontal, 20.adjustedWidth)
+        }
         .navigationBarHidden(true)
     }
 }
@@ -113,7 +140,7 @@ extension View {
                         Button {
                             settingAction()
                         } label: {
-                            Image(.settingIcon)
+                            Image(.searchIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
@@ -124,36 +151,49 @@ extension View {
                 )
             )
             
-        case .placeDetail(let title, let backAction, let homeAction):
+        case .placeDetail(let backAction, let homeAction):
             self.modifier(
                 CustomNavigationBarModifier(
                     centerView: {
-                        Text(title)
-                            .applySolplyFont(.head_16_m)
+                        EmptyView()
                     },
                     leftView: {
                         Button {
                             backAction()
                         } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            ZStack(alignment: .center) {
+                                Circle()
+                                    .foregroundStyle(.coreWhite)
+                                    .frame(width: 40.adjustedWidth, height: 40.adjustedHeight)
+                                
+                                Image(.backIconIos)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            }
                         }
                         .buttonStyle(.plain)
+                        .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
                     },
                     rightView: {
                         Button {
                             homeAction()
                         } label: {
-                            Image(.homeIcon)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            ZStack(alignment: .center) {
+                                Circle()
+                                    .foregroundStyle(.coreWhite)
+                                    .frame(width: 40.adjustedWidth, height: 40.adjustedHeight)
+                                
+                                Image(.homeIcon)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            }
                         }
                         .buttonStyle(.plain)
+                        .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
                     },
-                    backgroundColor: .coreWhite
+                    backgroundColor: .clear
                 )
             )
             
@@ -161,32 +201,45 @@ extension View {
             self.modifier(
                 CustomNavigationBarModifier(
                     centerView: {
-                        Text("코스 상세보기")
-                            .applySolplyFont(.head_16_m)
+                        EmptyView()
                     },
                     leftView: {
                         Button {
                             backAction()
                         } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            ZStack(alignment: .center) {
+                                Circle()
+                                    .foregroundStyle(.coreWhite)
+                                    .frame(width: 40.adjustedWidth, height: 40.adjustedHeight)
+                                
+                                Image(.backIconIos)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            }
                         }
                         .buttonStyle(.plain)
+                        .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
                     },
                     rightView: {
                         Button {
                             homeAction()
                         } label: {
-                            Image(.homeIcon)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            ZStack(alignment: .center) {
+                                Circle()
+                                    .foregroundStyle(.coreWhite)
+                                    .frame(width: 40.adjustedWidth, height: 40.adjustedHeight)
+                                
+                                Image(.homeIcon)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            }
                         }
                         .buttonStyle(.plain)
+                        .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
                     },
-                    backgroundColor: .coreWhite
+                    backgroundColor: .clear
                 )
             )
             
