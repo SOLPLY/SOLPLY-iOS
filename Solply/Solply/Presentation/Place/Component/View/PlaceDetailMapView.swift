@@ -24,7 +24,7 @@ struct PlaceDetailMapView: UIViewRepresentable {
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
         left: 0,
-        bottom: 540.adjustedHeight,
+        bottom: 480.adjustedHeight,
         right: 0
     )
     

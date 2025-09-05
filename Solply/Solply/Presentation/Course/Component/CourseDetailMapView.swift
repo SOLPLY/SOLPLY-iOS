@@ -19,7 +19,7 @@ struct CourseDetailMapView: UIViewRepresentable {
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
         left: 0,
-        bottom: 440.adjustedHeight,
+        bottom: 380.adjustedHeight,
         right: 0
     )
     
