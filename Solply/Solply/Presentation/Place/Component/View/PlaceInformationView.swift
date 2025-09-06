@@ -59,7 +59,10 @@ struct PlaceInformationView: View {
                 mainImage
                 
                 information
+                
+                reportButton
             }
+            .padding(.bottom, 300.adjustedHeight)
         }
     }
 }
@@ -134,7 +137,45 @@ extension PlaceInformationView {
             borderWidth: 1
         )
         .padding(.horizontal, 16.adjustedWidth)
-        .padding(.bottom, 40.adjustedHeight)
+    }
+    
+    private var reportButton: some View {
+        HStack(alignment: .center, spacing: 4.adjustedWidth) {
+            Image(.warningIcon)
+                .resizable()
+                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+            
+            Text("잘못된 정보가 있어요.")
+                .applySolplyFont(.body_14_r)
+                .foregroundStyle(.gray800)
+            
+            Spacer()
+            
+            Button {
+                // TODO: - 제보하기 뷰 연결
+            } label: {
+                HStack(alignment: .center, spacing: 0) {
+                    Text("오류 제보하기")
+                        .applySolplyFont(.button_14_m)
+                        .foregroundStyle(.red600)
+                    
+                    Image(.arrowRightIcon)
+                        .resizable()
+                        .renderingMode(.template)
+                        .foregroundStyle(.red600)
+                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                }
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 20.adjustedWidth)
+        .padding(.vertical, 12.adjustedHeight)
+        .addBorder(
+            .roundedRectangle(cornerRadius: 20),
+            borderColor: .gray200,
+            borderWidth: 1
+        )
+        .padding(.horizontal, 16.adjustedWidth)
     }
 }
 
