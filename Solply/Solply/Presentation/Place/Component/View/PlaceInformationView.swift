@@ -66,7 +66,7 @@ struct PlaceInformationView: View {
 
 extension PlaceInformationView {
     private var title: some View {
-        VStack(alignment: .leading, spacing: 4.adjustedHeight) {
+        VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             HStack(alignment: .center, spacing: 8.adjustedWidth) {
                 PlaceCategoryTag(placeCategory: primaryTag)
                 
