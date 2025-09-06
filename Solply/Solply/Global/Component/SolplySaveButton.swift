@@ -36,26 +36,18 @@ struct SolplySaveButton: View {
         Button {
             action?()
         } label: {
-            HStack(alignment: .center, spacing: 4.adjustedWidth) {
-                Text(isSelected ? "저장된 \(contentType.title)" : "\(contentType.title) 저장")
-                    .applySolplyFont(.button_14_m)
-                    .foregroundStyle(isEnabled ? (isSelected ? .red500: .purple600) : .gray400)
+            ZStack(alignment: .center) {
+                Circle()
+                    .foregroundColor(isEnabled ? (isSelected ? .red100 : .coreWhite) : .coreWhite)
+                    .frame(width: 48.adjustedWidth, height: 48.adjustedHeight)
                 
-                Image(.logoVector)
+                Image(isSelected ? .bookmarkFilledIcon : .bookmarkIcon)
                     .resizable()
                     .renderingMode(.template)
-                    .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
+                    .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
                     .aspectRatio(contentMode: .fit)
                     .foregroundStyle(isEnabled ? (isSelected ? .red500 : .purple600) : .gray400)
             }
-            .frame(
-                height: 47.adjustedHeight,
-                alignment: .trailing
-            )
-            .padding(.trailing, 8.adjustedWidth)
-            .padding(.leading, 16.adjustedWidth)
-            .background(isEnabled ? (isSelected ? .red100 : .coreWhite) : .coreWhite)
-            .capsuleClipped()
             .animation(.easeInOut(duration: 0.2), value: isEnabled)
             .animation(.easeInOut(duration: 0.2), value: isSelected)
         }
