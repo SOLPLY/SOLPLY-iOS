@@ -20,11 +20,11 @@ struct PlaceDetailMapView: UIViewRepresentable {
     var saveButtonEnabled: Bool
     var findDirectionEnabled: Bool
     
-    private let zoomLevel: Double = 16
+    private let zoomLevel: Double = 17
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
         left: 0,
-        bottom: 480.adjustedHeight,
+        bottom: 430.adjustedHeight,
         right: 0
     )
     
@@ -104,7 +104,7 @@ private extension PlaceDetailMapView {
         marker.position = NMGLatLng(lat: latitude, lng: longitude)
         marker.width = 36.adjustedWidth
         marker.height = 36.adjustedHeight
-        marker.anchor = CGPoint(x: 0.5, y: 0.5)
+        marker.anchor = CGPoint(x: 0.5, y: 1.0)
         marker.mapView = mapView
         context.coordinator.marker = marker
     }
