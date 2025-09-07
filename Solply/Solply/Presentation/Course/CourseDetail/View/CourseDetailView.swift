@@ -31,7 +31,7 @@ struct CourseDetailView: View {
     // MARK: - Body
     
     var body: some View {
-        ZStack(alignment: .center) {
+        ZStack(alignment: .bottom) {
             courseMapView
                 .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
                     if !fromArchive {
@@ -41,13 +41,7 @@ struct CourseDetailView: View {
                     VStack(alignment: .center, spacing: 10.adjustedHeight) {
                         title
                         
-                        ZStack(alignment: .bottom) {
-                            placeList
-                            
-                            if store.state.canDelete == .active {
-                                deleteArea
-                            }
-                        }
+                        placeList
                     }
                     .padding(.horizontal, 20.adjustedWidth)
                     .padding(.top, 8.adjustedHeight)
@@ -78,6 +72,10 @@ struct CourseDetailView: View {
                         store.dispatch(.confirmAlert)
                         appCoordinator.goBack()
                     }
+            
+            if store.state.canDelete == .active {
+                deleteArea
+            }
             
             if store.state.isSaveOptionPresented {
                 saveOption
@@ -155,7 +153,7 @@ extension CourseDetailView {
                                 store.dispatch(.toggleEdting)
                             }
                         } label: {
-                            Image(store.state.isEditing ? .editDoneIcon : .editingIcon)
+                            Image(store.state.isEditing ? .editingIcon : .editingIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "save-icon-place.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
