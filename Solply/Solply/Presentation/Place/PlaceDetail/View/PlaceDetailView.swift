@@ -41,10 +41,15 @@ struct PlaceDetailView: View {
                         }
                     )
                 )
-                .customBottomSheet(.placeDetail) {
+                .customBottomSheet(
+                    .placeDetail,
+                    isBookmarked: store.state.isBookmarked
+                ) {
                     bottomSheetTopButtons
                 } sheetContent: {
                     bottomSheetContent
+                } bookmarkAction: {
+                    bookmarkPlace()
                 }
             
             if store.state.selectedCourseIndex != -1 {
@@ -85,8 +90,8 @@ extension PlaceDetailView {
             latitude: store.state.latitude,
             longitude: store.state.longtitude,
             addButtonSelected: store.state.addButtonSelected,
-            saveButtonSelected: store.state.saveButtonSelected,
-            saveButtonEnabled: store.state.saveButtonEnabled,
+            bookmarkButtonSelected: store.state.bookmarkButtonSelected,
+            bookmarkButtonEnabled: store.state.bookmarkButtonEnabled,
             findDirectionEnabled: store.state.findDirectionEnabled
         )
     }
@@ -106,31 +111,13 @@ extension PlaceDetailView {
                     store.dispatch(.selectCourseToAdd(index: -1))
                 }
             }
-            .animation(.easeIn(duration: 0.2), value: store.state.saveButtonSelected)
+            .animation(.easeIn(duration: 0.2), value: store.state.bookmarkButtonSelected)
             
-            SolplySaveButton(
-                contentType: .place,
-                isEnabled: store.state.saveButtonEnabled,
-                isSelected: store.state.isBookmarked
+            SolplyBookmarkButton(
+                isEnabled: store.state.bookmarkButtonEnabled,
+                isBookmarked: store.state.isBookmarked
             ) {
-                if store.state.isBookmarked {
-                    store.dispatch(.removePlaceBookmark(placeId: placeId))
-                } else {
-                    store.dispatch(.submitPlaceBookmark(placeId: placeId))
-                }
-                
-                store.dispatch(.toggleSavePlace)
-                if store.state.isBookmarked {
-                    store.dispatch(
-                        .showToastView(
-                            ToastContent(
-                                toastType: .defaultToast,
-                                message: "장소가 수집함에 저장되었어요.",
-                                buttonTitle: nil
-                            )
-                        )
-                    )
-                }
+                bookmarkPlace()
             }
         }
         .padding(.horizontal, 20.adjustedWidth)
@@ -242,6 +229,32 @@ extension PlaceDetailView {
         .padding(.horizontal, 20.adjustedWidth)
         .safeAreaInset(edge: .bottom) {
             Color.clear.frame(height: 16.adjustedHeight)
+        }
+    }
+}
+
+// MARK: - Functions
+
+extension PlaceDetailView {
+    private func bookmarkPlace() {
+        if store.state.isBookmarked {
+            store.dispatch(.removePlaceBookmark(placeId: placeId))
+        } else {
+            store.dispatch(.submitPlaceBookmark(placeId: placeId))
+        }
+        
+        store.dispatch(.toggleBookmarkPlace)
+        
+        if store.state.isBookmarked {
+            store.dispatch(
+                .showToastView(
+                    ToastContent(
+                        toastType: .defaultToast,
+                        message: "장소가 수집함에 저장되었어요.",
+                        buttonTitle: nil
+                    )
+                )
+            )
         }
     }
 }

@@ -12,8 +12,10 @@ struct CustomBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
     // MARK: - Properties
     
     private let bottomSheetType: CustomBottomSheetType
+    private let isBookmarked: Bool
     private let topContent: () -> TopContent
     private let sheetContent: () -> SheetContent
+    private let bookmarkAction: (() -> Void)?
     
     @State private var dragOffset: CGFloat = 0
     @State private var expandBarOpacity: Double = 0.0
@@ -22,12 +24,16 @@ struct CustomBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
     
     init(
         bottomSheetType: CustomBottomSheetType,
+        isBookmarked: Bool,
         @ViewBuilder topContent: @escaping () -> TopContent,
-        @ViewBuilder sheetContent: @escaping () -> SheetContent
+        @ViewBuilder sheetContent: @escaping () -> SheetContent,
+        bookmarkAction: (() -> Void)?
     ) {
         self.bottomSheetType = bottomSheetType
+        self.isBookmarked = isBookmarked
         self.topContent = topContent
         self.sheetContent = sheetContent
+        self.bookmarkAction = bookmarkAction
     }
     
     // MARK: - Body
@@ -96,14 +102,14 @@ extension CustomBottomSheetModifier {
             Spacer()
             
             Button {
-                // TODO: - 저장 버튼
+                bookmarkAction?()
             } label: {
                 ZStack(alignment: .center) {
                     Circle()
                         .frame(width: 40.adjustedWidth, height: 40.adjustedHeight)
                         .foregroundStyle(.gray200)
                     
-                    Image(.bookmarkIcon)
+                    Image(isBookmarked ? .bookmarkSavedIcon : .bookmarkIcon)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
@@ -170,14 +176,18 @@ extension CustomBottomSheetModifier {
 extension View {
     func customBottomSheet<TopContent: View, SheetContent: View>(
         _ bottomSheetType: CustomBottomSheetType,
+        isBookmarked: Bool,
         @ViewBuilder topContent: @escaping () -> TopContent,
-        @ViewBuilder sheetContent: @escaping () -> SheetContent
+        @ViewBuilder sheetContent: @escaping () -> SheetContent,
+        bookmarkAction: (() -> Void)?
     ) -> some View {
         self.modifier(
             CustomBottomSheetModifier(
                 bottomSheetType: bottomSheetType,
+                isBookmarked: isBookmarked,
                 topContent: topContent,
                 sheetContent: sheetContent,
+                bookmarkAction: bookmarkAction
             )
         )
     }
