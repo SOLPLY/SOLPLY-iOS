@@ -47,7 +47,6 @@ struct PlaceDetailView: View {
                     bottomSheetContent
                 }
             
-            
             if store.state.selectedCourseIndex != -1 {
                 addPlaceToCourseButton
             }
