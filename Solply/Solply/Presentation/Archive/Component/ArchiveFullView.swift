@@ -59,7 +59,7 @@ extension ArchiveFullView {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                 
-                Image(.archiveFrame)
+                Image("group-cover-image")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
@@ -93,7 +93,7 @@ extension ArchiveFullView {
                 )
                 .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                 
-                Image(.archiveFrame)
+                Image("group-cover-image")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)

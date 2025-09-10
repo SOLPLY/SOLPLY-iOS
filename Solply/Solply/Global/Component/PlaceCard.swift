@@ -45,7 +45,7 @@ struct PlaceCard: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-            ZStack(alignment: .bottomTrailing) {
+            ZStack(alignment: .topTrailing) {
                 KFImage(URL(string: thumbnailUrl))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -56,9 +56,8 @@ struct PlaceCard: View {
                     Image(placeCategory.savedBadge ?? "")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        .frame(width: 24.adjustedWidth, height: 32.adjustedHeight)
                         .padding(.horizontal, 12.adjustedWidth)
-                        .padding(.vertical, 12.adjustedHeight)
                 }
             }
             
