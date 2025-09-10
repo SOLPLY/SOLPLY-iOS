@@ -11,6 +11,6 @@ enum AuthAction {
     
     // LoginAPI
     case login(SocialLoginType)
-    case loginSuccess(accessToken: String, refreshToken: String, isNewUser: Bool)
+    case loginSuccess(accessToken: String, refreshToken: String)
     case loginFailed(NetworkError)
 }

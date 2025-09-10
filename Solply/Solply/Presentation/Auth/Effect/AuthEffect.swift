@@ -25,46 +25,24 @@ struct AuthEffect {
 
     // MARK: - Functions
     
-//    @MainActor
-//    func login(provider: String) async -> AuthAction {
-//        do {
-//            let oauthToken = try await fetchKakaoToken()
-//            let request = AuthLoginRequestDTO(oauthAccessToken: oauthToken.accessToken)
-//            let response = try await service.submitLogin(provider: provider, request: request)
-//            if let accessToken = response.data?.accessToken,
-//               let refreshToken = response.data?.refreshToken {
-//                TokenManager.shared.saveTokens(accessToken: accessToken, refreshToken: refreshToken)
-//            }
-//            return .loginSuccess
-//        } catch let error as NetworkError {
-//            return .loginFailed(error)
-//        } catch {
-//            return .loginFailed(.unknownError)
-//        }
-//    }
-    
     @MainActor
     func login(provider: String) async -> AuthAction {
         do {
             let oauthToken = try await fetchKakaoToken()
             let request = AuthLoginRequestDTO(oauthAccessToken: oauthToken.accessToken)
             let response = try await service.submitLogin(provider: provider, request: request)
-
-            guard let data = response.data else {
+            guard
+                let accessToken = response.data?.accessToken,
+                let refreshToken = response.data?.refreshToken
+            else {
                 return .loginFailed(.unknownError)
             }
 
-            // ✅ 토큰 저장
-            TokenManager.shared.saveTokens(
-                accessToken: data.accessToken,
-                refreshToken: data.refreshToken
-            )
-
-            // ✅ isNewUser 분기처리
+            TokenManager.shared.saveTokens(accessToken: accessToken, refreshToken: refreshToken)
+            
             return .loginSuccess(
-                accessToken: data.accessToken,
-                refreshToken: data.refreshToken,
-                isNewUser: data.isNewUser
+                accessToken: accessToken,
+                refreshToken: refreshToken
             )
         } catch let error as NetworkError {
             return .loginFailed(error)
@@ -108,5 +86,11 @@ extension AuthEffect: AuthAPI {
             provider: provider,
             request: request
         )
+    }
+    
+    func refreshToken(
+        refreshToken: String
+    ) async throws -> BaseResponseBody<AuthRefreshResponseDTO> {
+        return try await service.refreshToken(refreshToken: refreshToken)
     }
 }
