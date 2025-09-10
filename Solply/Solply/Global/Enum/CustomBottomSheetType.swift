@@ -23,7 +23,7 @@ enum CustomBottomSheetType {
     var maxOffset: CGFloat {
         switch self {
         case .placeDetail:
-            return 50.adjustedHeight
+            return -60.adjustedHeight
         case .courseDetail(let fromArchive):
             return fromArchive ? 36.adjustedHeight : 50.adjustedHeight
         }
