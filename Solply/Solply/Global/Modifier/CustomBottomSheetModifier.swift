@@ -36,17 +36,10 @@ struct CustomBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
         ZStack(alignment: .top) {
             content
             
-            VStack(alignment: .center, spacing: 12.adjustedHeight) {
-                Spacer()
-                
-                topContent()
-                    .opacity(1.0 - expandBarOpacity * 2)
-                
-                sheet
-            }
-            .offset(y: bottomSheetType.defaultOffset + dragOffset)
-            .shadow(color: .coreBlack.opacity(0.1), radius: 8, x: 0, y: -1)
-            .ignoresSafeArea(edges: .bottom)
+            sheet
+                .offset(y: bottomSheetType.defaultOffset + dragOffset)
+                .shadow(color: .coreBlack.opacity(0.1), radius: 8, x: 0, y: -1)
+                .ignoresSafeArea(edges: .bottom)
             
             expandBar
                 .opacity(expandBarOpacity)
@@ -58,21 +51,24 @@ struct CustomBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
 
 extension CustomBottomSheetModifier {
     private var sheet: some View {
-        VStack(alignment: .center, spacing: 0){
-            dragIndicator
-                .frame(maxWidth: .infinity)
-                .frame(height: 28.adjustedHeight)
-                .background(.coreWhite)
-                .gesture(dragGesture)
+        ZStack(alignment: .top) {
+            topContent()
+                .opacity(1.0 - expandBarOpacity * 2)
+                .offset(y: -60)
             
-            sheetContent()
-            
-            Spacer(minLength: 0)
+            VStack(alignment: .center, spacing: 0){
+                dragIndicator
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 28.adjustedHeight)
+                    .background(.coreWhite)
+                    .gesture(dragGesture)
+                
+                sheetContent()
+            }
+            .frame(maxHeight: .infinity, alignment: .top)
+            .background(.coreWhite)
+            .cornerRadius(20, corners: [.topLeft, .topRight])
         }
-//        .frame(height: UIScreen.main.bounds.height) 
-        .frame(maxHeight: .infinity, alignment: .top)
-        .background(.coreWhite)
-        .cornerRadius(20, corners: [.topLeft, .topRight])
     }
     
     private var dragIndicator: some View {
