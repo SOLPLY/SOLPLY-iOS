@@ -64,10 +64,6 @@ extension CustomBottomSheetModifier {
             
             VStack(alignment: .center, spacing: 0){
                 dragIndicator
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 28.adjustedHeight)
-                    .background(.coreWhite)
-                    .gesture(dragGesture)
                 
                 sheetContent()
             }
@@ -82,6 +78,10 @@ extension CustomBottomSheetModifier {
             .foregroundStyle(.gray300)
             .frame(width: 30.adjustedWidth, height: 5.adjustedHeight)
             .cornerRadius(2, corners: [.allCorners])
+            .frame(maxWidth: .infinity)
+            .frame(height: 28.adjustedHeight)
+            .background(.coreWhite)
+            .gesture(dragGesture)
     }
     
     private var expandBar: some View {
@@ -158,7 +158,11 @@ extension CustomBottomSheetModifier {
                 }
             }
     }
-    
+}
+
+// MARK: - Functions
+
+extension CustomBottomSheetModifier {
     private func updateExpandBarOpacity() {
         let fadeInRange: CGFloat = 100
         let minY = bottomSheetType.maxOffset - bottomSheetType.defaultOffset
