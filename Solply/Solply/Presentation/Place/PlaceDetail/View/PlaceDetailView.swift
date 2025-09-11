@@ -204,8 +204,8 @@ extension PlaceDetailView {
                             )
                         )
                     )
-                } reportAction: {
-                    appCoordinator.navigate(to: .report)
+                } reportsAction: {
+                    appCoordinator.navigate(to: .reports)
                 }
                 .padding(.top, 8.adjustedHeight)
                 .transition(.move(edge: .leading))

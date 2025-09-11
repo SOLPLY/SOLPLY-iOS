@@ -13,7 +13,7 @@ enum AppDestination: Hashable {
     case placeDetail(townId: Int, placeId: Int)
     case courseDetail(townId: Int, courseId: Int, fromArchive: Bool)
     case frequentTown
-    case report
+    case reports
 }
 
 extension AppDestination {
@@ -30,8 +30,8 @@ extension AppDestination {
             CourseDetailView(townId: townId, courseId: courseId, fromArchive: fromArchive)
         case .frequentTown:
             FrequentTownView()
-        case .report:
-            ReportView()
+        case .reports:
+            ReportsView()
         }
     }
 }

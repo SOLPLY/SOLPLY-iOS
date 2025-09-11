@@ -16,5 +16,5 @@ enum NavigationBarType {
     case archive(backAction: () -> Void)
     case archiveList(title: String, backAction: () -> Void)
     case frequentTown(backAction: () -> Void)
-    case report(backAction: () -> Void)
+    case reports(backAction: () -> Void)
 }

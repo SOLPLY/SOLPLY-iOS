@@ -318,7 +318,7 @@ extension View {
                 )
             )
             
-        case .report(let backAction):
+        case .reports(let backAction):
             self.modifier(
                 CustomNavigationBarModifier(
                     centerView: {
