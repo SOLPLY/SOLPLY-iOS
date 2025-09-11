@@ -8,5 +8,5 @@
 import Foundation
 
 enum ReportsAction {
-    
+    case selectReportsType(reportsType: ReportsType)
 }

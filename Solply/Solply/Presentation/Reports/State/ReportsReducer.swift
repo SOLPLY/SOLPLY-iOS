@@ -10,7 +10,8 @@ import Foundation
 enum ReportsReducer {
     static func reduce(state: inout ReportsState, action: ReportsAction) {
         switch action {
-            
+        case .selectReportsType(let reportsType):
+            state.selectedReportsType = reportsType
         }
     }
 }

@@ -8,5 +8,6 @@
 import Foundation
 
 struct ReportsState {
-    
+    var reportsStep: ReportsStep = .ReportsSelect
+    var selectedReportsType: ReportsType?
 }

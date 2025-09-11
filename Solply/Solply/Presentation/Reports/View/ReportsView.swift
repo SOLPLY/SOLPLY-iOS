@@ -17,14 +17,36 @@ struct ReportsView: View {
     // MARK: - Body
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            .customNavigationBar(
-                .reports(
-                    backAction: {
-                        appCoordinator.goBack()
-                    }
-                )
+        Group {
+            switch store.state.reportsStep {
+            case .ReportsSelect:
+                reportsSelectView
+                
+            case .ReportsDetail:
+                Text("ReportsDetail")
+            case .ReportsComplete:
+                Text("ReportsComplete")
+            }
+        }
+        .customNavigationBar(
+            .reports(
+                backAction: {
+                    appCoordinator.goBack()
+                }
             )
+        )
+    }
+}
+
+// MARK: - Subviews
+
+extension ReportsView {
+    private var reportsSelectView: some View {
+        ReportsSelectView(selectedReportsType: store.state.selectedReportsType) { reports in
+            store.dispatch(.selectReportsType(reportsType: reports))
+        } nextAction: {
+            // TODO: - 다음 화면 넘기기
+        }
     }
 }
 
