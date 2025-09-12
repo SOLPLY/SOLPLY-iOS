@@ -33,7 +33,8 @@ struct AuthEffect {
             let response = try await service.submitLogin(provider: provider, request: request)
             guard
                 let accessToken = response.data?.accessToken,
-                let refreshToken = response.data?.refreshToken
+                let refreshToken = response.data?.refreshToken,
+                let isNewUser = response.data?.isNewUser
             else {
                 return .loginFailed(.unknownError)
             }
@@ -42,7 +43,8 @@ struct AuthEffect {
             
             return .loginSuccess(
                 accessToken: accessToken,
-                refreshToken: refreshToken
+                refreshToken: refreshToken,
+                isNewUser: isNewUser
             )
         } catch let error as NetworkError {
             return .loginFailed(error)
