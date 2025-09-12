@@ -12,39 +12,43 @@ struct CustomBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
     // MARK: - Properties
     
     private let bottomSheetType: CustomBottomSheetType
+    private let isBookmarked: Bool
     private let topContent: () -> TopContent
     private let sheetContent: () -> SheetContent
+    private let bookmarkAction: (() -> Void)?
     
     @State private var dragOffset: CGFloat = 0
+    @State private var expandBarOpacity: Double = 0.0
     
     // MARK: - Initializer
     
     init(
         bottomSheetType: CustomBottomSheetType,
+        isBookmarked: Bool,
         @ViewBuilder topContent: @escaping () -> TopContent,
-        @ViewBuilder sheetContent: @escaping () -> SheetContent
+        @ViewBuilder sheetContent: @escaping () -> SheetContent,
+        bookmarkAction: (() -> Void)?
     ) {
         self.bottomSheetType = bottomSheetType
+        self.isBookmarked = isBookmarked
         self.topContent = topContent
         self.sheetContent = sheetContent
+        self.bookmarkAction = bookmarkAction
     }
     
     // MARK: - Body
     
     func body(content: Content) -> some View {
-        ZStack(alignment: .center) {
+        ZStack(alignment: .top) {
             content
             
-            VStack(alignment: .center, spacing: 12.adjustedHeight) {
-                Spacer()
-                
-                topContent()
-                
-                sheet
-            }
-            .offset(y: bottomSheetType.defaultOffset + dragOffset)
-            .shadow(color: .coreBlack.opacity(0.1), radius: 8, x: 0, y: -1)
-            .ignoresSafeArea(edges: .bottom)
+            sheet
+                .offset(y: bottomSheetType.defaultOffset + dragOffset)
+                .shadow(color: .coreBlack.opacity(0.1), radius: 8, x: 0, y: -1)
+                .ignoresSafeArea(edges: .bottom)
+            
+            expandBar
+                .opacity(expandBarOpacity)
         }
     }
 }
@@ -53,20 +57,20 @@ struct CustomBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
 
 extension CustomBottomSheetModifier {
     private var sheet: some View {
-        VStack(alignment: .center, spacing: 0){
-            ZStack(alignment: .center) {
-                dragIndicator
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 28.adjustedHeight)
-            .background(.coreWhite)
-            .gesture(dragGesture)
+        ZStack(alignment: .top) {
+            topContent()
+                .opacity(1.0 - expandBarOpacity * 2)
+                .offset(y: -60)
             
-            sheetContent()
-                .frame(maxHeight: .infinity)
+            VStack(alignment: .center, spacing: 0){
+                dragIndicator
+                
+                sheetContent()
+            }
+            .frame(maxHeight: .infinity, alignment: .top)
+            .background(.coreWhite)
+            .cornerRadius(20, corners: [.topLeft, .topRight])
         }
-        .background(.coreWhite)
-        .cornerRadius(20, corners: [.topLeft, .topRight])
     }
     
     private var dragIndicator: some View {
@@ -74,6 +78,48 @@ extension CustomBottomSheetModifier {
             .foregroundStyle(.gray300)
             .frame(width: 30.adjustedWidth, height: 5.adjustedHeight)
             .cornerRadius(2, corners: [.allCorners])
+            .frame(maxWidth: .infinity)
+            .frame(height: 28.adjustedHeight)
+            .background(.coreWhite)
+            .gesture(dragGesture)
+    }
+    
+    private var expandBar: some View {
+        HStack(alignment: .center, spacing: 0) {
+            Button {
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    dragOffset = 0
+                    expandBarOpacity = 0.0
+                }
+            } label: {
+                Image(.arrowDownIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+            }
+            .buttonStyle(.plain)
+            
+            Spacer()
+            
+            Button {
+                bookmarkAction?()
+            } label: {
+                ZStack(alignment: .center) {
+                    Circle()
+                        .frame(width: 40.adjustedWidth, height: 40.adjustedHeight)
+                        .foregroundStyle(.gray200)
+                    
+                    Image(isBookmarked ? .bookmarkSavedIcon : .bookmarkIcon)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                }
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 20.adjustedWidth)
+        .padding(.bottom, 10.adjustedHeight)
+        .background(.coreWhite)
     }
 }
 
@@ -89,6 +135,8 @@ extension CustomBottomSheetModifier {
                 let maxY = bottomSheetType.minOffset - bottomSheetType.defaultOffset
                 
                 dragOffset = min(max(proposedOffset, minY), maxY)
+                
+                updateExpandBarOpacity()
             }
             .onEnded { value in
                 let finalOffset = dragOffset + value.translation.height
@@ -105,22 +153,45 @@ extension CustomBottomSheetModifier {
                     } else {
                         dragOffset = 0
                     }
+                    
+                    updateExpandBarOpacity()
                 }
             }
+    }
+}
+
+// MARK: - Functions
+
+extension CustomBottomSheetModifier {
+    private func updateExpandBarOpacity() {
+        let fadeInRange: CGFloat = 100
+        let minY = bottomSheetType.maxOffset - bottomSheetType.defaultOffset
+        
+        let distanceFromMax = abs(dragOffset - minY)
+        
+        if distanceFromMax < fadeInRange {
+            expandBarOpacity = max(0.0, min(1.0, (fadeInRange - distanceFromMax) / fadeInRange))
+        } else {
+            expandBarOpacity = 0.0
+        }
     }
 }
 
 extension View {
     func customBottomSheet<TopContent: View, SheetContent: View>(
         _ bottomSheetType: CustomBottomSheetType,
+        isBookmarked: Bool,
         @ViewBuilder topContent: @escaping () -> TopContent,
-        @ViewBuilder sheetContent: @escaping () -> SheetContent
+        @ViewBuilder sheetContent: @escaping () -> SheetContent,
+        bookmarkAction: (() -> Void)?
     ) -> some View {
         self.modifier(
             CustomBottomSheetModifier(
                 bottomSheetType: bottomSheetType,
+                isBookmarked: isBookmarked,
                 topContent: topContent,
                 sheetContent: sheetContent,
+                bookmarkAction: bookmarkAction
             )
         )
     }
