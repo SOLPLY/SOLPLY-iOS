@@ -16,8 +16,8 @@ struct PlaceDetailMapView: UIViewRepresentable {
     private var latitude: Double
     private var longitude: Double
     var addButtonSelected: Bool
-    var saveButtonSelected: Bool
-    var saveButtonEnabled: Bool
+    var bookmarkButtonSelected: Bool
+    var bookmarkButtonEnabled: Bool
     var findDirectionEnabled: Bool
     
     private let zoomLevel: Double = 17
@@ -34,15 +34,15 @@ struct PlaceDetailMapView: UIViewRepresentable {
         latitude: Double,
         longitude: Double,
         addButtonSelected: Bool,
-        saveButtonSelected: Bool,
-        saveButtonEnabled: Bool,
+        bookmarkButtonSelected: Bool,
+        bookmarkButtonEnabled: Bool,
         findDirectionEnabled: Bool
     ) {
         self.latitude = latitude
         self.longitude = longitude
         self.addButtonSelected = addButtonSelected
-        self.saveButtonSelected = saveButtonSelected
-        self.saveButtonEnabled = saveButtonEnabled
+        self.bookmarkButtonSelected = bookmarkButtonSelected
+        self.bookmarkButtonEnabled = bookmarkButtonEnabled
         self.findDirectionEnabled = findDirectionEnabled
     }
     

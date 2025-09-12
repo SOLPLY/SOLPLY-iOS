@@ -9,7 +9,7 @@ import Foundation
 
 enum PlaceDetailAction {
     case toggleAddToCourse
-    case toggleSavePlace
+    case toggleBookmarkPlace
     case requestFindDirection
     
     case selectCourseToAdd(index: Int)

@@ -14,7 +14,7 @@ enum CustomBottomSheetType {
     var defaultOffset: CGFloat {
         switch self {
         case .placeDetail:
-            return 190.adjustedHeight
+            return 260.adjustedHeight
         case .courseDetail(let fromArchive):
             return fromArchive ? 290.adjustedHeight : 240.adjustedHeight
         }
@@ -23,7 +23,7 @@ enum CustomBottomSheetType {
     var maxOffset: CGFloat {
         switch self {
         case .placeDetail:
-            return 50.adjustedHeight
+            return 20.adjustedHeight
         case .courseDetail(let fromArchive):
             return fromArchive ? 36.adjustedHeight : 50.adjustedHeight
         }
@@ -32,7 +32,7 @@ enum CustomBottomSheetType {
     var minOffset: CGFloat {
         switch self {
         case .placeDetail:
-            return 600.adjustedHeight
+            return 700.adjustedHeight
         case .courseDetail(let fromArchive):
             return fromArchive ? 660.adjustedHeight :600.adjustedHeight
         }
