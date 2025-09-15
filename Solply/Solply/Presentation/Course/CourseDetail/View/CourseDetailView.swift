@@ -33,7 +33,10 @@ struct CourseDetailView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             courseMapView
-                .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
+                .customBottomSheet(
+                    .courseDetail(fromArchive: fromArchive),
+                    isBookmarked: store.state.isCourseBookmarked
+                ) {
                     if !fromArchive {
                         bottomSheetTopButton
                     }
@@ -45,6 +48,8 @@ struct CourseDetailView: View {
                     }
                     .padding(.horizontal, 20.adjustedWidth)
                     .padding(.top, 8.adjustedHeight)
+                } bookmarkAction: {
+                    // TODO: - 코스 북마크 action
                 }
                 .onAppear {
                     store.dispatch(.fetchCourseDetail(courseId: courseId))
@@ -111,10 +116,9 @@ extension CourseDetailView {
     }
     
     private var bottomSheetTopButton: some View {
-        SolplySaveButton(
-            contentType: .course,
+        SolplyBookmarkButton(
             isEnabled: true,
-            isSelected: store.state.courseSaveSelected
+            isBookmarked: store.state.courseSaveSelected
         ) {
             if store.state.courseSaveSelected {
                 store.dispatch(.removeCourseBookmark(courseId: courseId))
