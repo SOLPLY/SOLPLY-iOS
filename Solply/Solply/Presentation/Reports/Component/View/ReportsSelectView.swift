@@ -11,19 +11,20 @@ struct ReportsSelectView: View {
     
     // MARK: - Properties
     
-    @State private var selectedReportsType: ReportsType?
-    
+    private let selectedReportsType: ReportsType?
     private let selectReportsAction: ((ReportsType) -> Void)?
     private let nextAction: (() -> Void)?
     
     // MARK: - Initializer
     
     init(
+        selectedReportsType: ReportsType?,
         selectReportsAction: ((ReportsType) -> Void)? = nil,
         nextAction: (() -> Void)? = nil
     ) {
         self.selectReportsAction = selectReportsAction
         self.nextAction = nextAction
+        self.selectedReportsType = selectedReportsType
     }
     
     // MARK: - Body
@@ -50,7 +51,7 @@ extension ReportsSelectView {
                     isSelected: selectedReportsType ?? nil == reports
                 ) {
                     selectReportsAction?(reports)
-                    selectedReportsType = reports
+//                    selectedReportsType = reports
                 }
             }
         }

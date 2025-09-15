@@ -47,10 +47,10 @@ struct ReportsView: View {
 
 extension ReportsView {
     private var reportsSelectView: some View {
-        ReportsSelectView() { reportsType in
+        ReportsSelectView(selectedReportsType: store.state.selectedReportsType) { reportsType in
             store.dispatch(.selectReportsType(reportsType: reportsType))
         } nextAction: {
-            store.dispatch(.changeReportsStep)
+            store.dispatch(.changeReportsStep(reportsStep: .ReportsDetail))
         }
     }
     
