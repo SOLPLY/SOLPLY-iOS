@@ -23,7 +23,7 @@ enum CourseTargetType {
 
 extension CourseTargetType: BaseTargetType {
     var headerType: HTTPHeader {
-        return .accessToken // 고정
+        return .contentTypeJSON
     }
     
     var path: String {

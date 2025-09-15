@@ -16,7 +16,7 @@ enum RecommendTargetType {
 
 extension RecommendTargetType: BaseTargetType {
     var headerType: HTTPHeader {
-        return .accessToken
+        return .contentTypeJSON
     }
     
     var path: String {

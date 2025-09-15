@@ -18,7 +18,7 @@ enum UserTargetType {
 
 extension UserTargetType: BaseTargetType {
     var headerType: HTTPHeader {
-        return .accessToken
+        return .contentTypeJSON
     }
     
     var path: String {

@@ -16,7 +16,7 @@ enum TagsTargetType {
 
 extension TagsTargetType: BaseTargetType {
     var headerType: HTTPHeader {
-        return .accessToken
+        return .contentTypeJSON
     }
     
     var path: String {

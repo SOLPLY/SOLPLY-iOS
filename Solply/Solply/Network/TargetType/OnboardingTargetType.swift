@@ -17,7 +17,7 @@ enum OnboardingTargetType {
 extension OnboardingTargetType: BaseTargetType {
     
     var headerType: HTTPHeader {
-        return .accessToken
+        return .contentTypeJSON
     }
     
     var path: String {
