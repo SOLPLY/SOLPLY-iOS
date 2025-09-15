@@ -17,17 +17,19 @@ struct ReportsView: View {
     // MARK: - Body
     
     var body: some View {
-        Group {
+        ZStack(alignment: .center) {
             switch store.state.reportsStep {
             case .ReportsSelect:
                 reportsSelectView
                 
             case .ReportsDetail:
-                Text("ReportsDetail")
+                reportsDetailView
+                
             case .ReportsComplete:
                 Text("ReportsComplete")
             }
         }
+        .background(.coreWhite)
         .customNavigationBar(
             .reports(
                 backAction: {
@@ -35,6 +37,9 @@ struct ReportsView: View {
                 }
             )
         )
+        .onTapGesture {
+            hideKeyboard()
+        }
     }
 }
 
@@ -42,10 +47,20 @@ struct ReportsView: View {
 
 extension ReportsView {
     private var reportsSelectView: some View {
-        ReportsSelectView(selectedReportsType: store.state.selectedReportsType) { reports in
-            store.dispatch(.selectReportsType(reportsType: reports))
+        ReportsSelectView() { reportsType in
+            store.dispatch(.selectReportsType(reportsType: reportsType))
         } nextAction: {
-            // TODO: - 다음 화면 넘기기
+            store.dispatch(.changeReportsStep)
+        }
+    }
+    
+    private var reportsDetailView: some View {
+        ReportsDetailView() { reportsContent in
+            store.dispatch(.editReportsContent(reportsContent: reportsContent))
+        } onPhotosSelected: { imageKeys in
+            // TODO: - ReportsState 연결
+        } onCompleteAction: {
+            store.dispatch(.changeReportsStep)
         }
     }
 }
