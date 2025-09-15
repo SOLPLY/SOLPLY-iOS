@@ -13,8 +13,10 @@ class BaseService<Target: BaseTargetType> {
     
     private let provider: MoyaProvider<Target>
     
-    // interceptor 필요하면 이렇게 주입 -> Session(interceptor: Interceptor.shared)
-    init(session: Session = .default, plugins: [PluginType] = [MoyaLoggingPlugin()]) {
+    init(
+        session: Session = Session(interceptor: TokenInterceptor.shared),
+        plugins: [PluginType] = [MoyaLoggingPlugin()]
+    ) {
         self.provider = MoyaProvider<Target>(
             session: session,
             plugins: plugins
@@ -46,7 +48,7 @@ class BaseService<Target: BaseTargetType> {
                             continuation.resume(throwing: NetworkError.responseError)
                         }
                         
-                    case 401:
+                    case 401, 403:
                         continuation.resume(throwing: NetworkError.unauthorized)
                     case 404:
                         continuation.resume(throwing: NetworkError.notFound)
