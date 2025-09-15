@@ -26,6 +26,7 @@ struct ReportsView: View {
                 reportsDetailView
                 
             case .ReportsComplete:
+                // TODO: - ReportsCompleteView 연결
                 Text("ReportsComplete")
             }
         }
@@ -33,7 +34,7 @@ struct ReportsView: View {
         .customNavigationBar(
             .reports(
                 backAction: {
-                    appCoordinator.goBack()
+                    backAction()
                 }
             )
         )
@@ -60,7 +61,19 @@ extension ReportsView {
         } onPhotosSelected: { imageKeys in
             // TODO: - ReportsState 연결
         } onCompleteAction: {
-            store.dispatch(.changeReportsStep)
+            store.dispatch(.changeReportsStep(reportsStep: .ReportsComplete))
+        }
+    }
+}
+
+// MARK: - Functions
+
+extension ReportsView {
+    private func backAction() {
+        if store.state.reportsStep == .ReportsDetail {
+            store.dispatch(.changeReportsStep(reportsStep: .ReportsSelect))
+        } else {
+            appCoordinator.goBack()
         }
     }
 }

@@ -13,15 +13,8 @@ enum ReportsReducer {
         case .selectReportsType(let reportsType):
             state.selectedReportsType = reportsType
             
-        case .changeReportsStep:
-            switch state.reportsStep {
-            case .ReportsSelect:
-                state.reportsStep = .ReportsDetail
-            case .ReportsDetail:
-                state.reportsStep = .ReportsComplete
-            default:
-                break
-            }
+        case .changeReportsStep(let reportsStep):
+            state.reportsStep = reportsStep
             
         case .editReportsContent(let reportsContent):
             state.reportsContent = reportsContent

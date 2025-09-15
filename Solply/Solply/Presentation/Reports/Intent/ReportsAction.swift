@@ -9,6 +9,6 @@ import Foundation
 
 enum ReportsAction {
     case selectReportsType(reportsType: ReportsType)
-    case changeReportsStep
+    case changeReportsStep(reportsStep: ReportsStep)
     case editReportsContent(reportsContent: String)
 }
