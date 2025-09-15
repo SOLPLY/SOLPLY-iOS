@@ -90,7 +90,3 @@ extension ReportsDetailView {
         .padding(.bottom, 16.adjustedHeight)
     }
 }
-
-#Preview {
-    ReportsDetailView()
-}

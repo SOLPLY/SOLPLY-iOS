@@ -51,7 +51,6 @@ extension ReportsSelectView {
                     isSelected: selectedReportsType ?? nil == reports
                 ) {
                     selectReportsAction?(reports)
-//                    selectedReportsType = reports
                 }
             }
         }
