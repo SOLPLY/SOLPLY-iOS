@@ -18,7 +18,10 @@ struct SolplyTabBar: View {
     @State private var capsuleOffsetX: CGFloat = 0
     @State private var isDragging: Bool = false
     @State private var dragStartOffset: CGFloat = 0
-    private let tabItemCapsuleWidth: CGFloat = 72.adjustedWidth
+    
+    private let tabIconWidth: CGFloat = 36.adjustedWidth
+    private let tabIconHeight: CGFloat = 36.adjustedHeight
+    private let tabItemCapsuleWidth: CGFloat = 48.adjustedWidth
     private let tabItemCapsuleHeight: CGFloat = 48.adjustedHeight
     
     // MARK: - Initializer
@@ -35,7 +38,8 @@ struct SolplyTabBar: View {
             
             tabButton
         }
-        .padding(.horizontal, 6.adjustedWidth)
+//        .frame(width: 220.adjustedWidth, height: 60.adjustedHeight)
+        .padding(.horizontal, 8.adjustedWidth)
         .padding(.vertical, 6.adjustedHeight)
         .background(.gray900)
         .capsuleClipped()
@@ -50,52 +54,26 @@ struct SolplyTabBar: View {
 extension SolplyTabBar {
     private var tabCapsule: some View {
         Capsule()
-            .fill(.green100)
+            .fill(.green200)
             .frame(width: tabItemCapsuleWidth, height: tabItemCapsuleHeight)
             .offset(x: capsuleOffsetX)
             .animation(.easeInOut(duration: 0.2), value: capsuleOffsetX)
     }
     
     private var tabButton: some View {
-        HStack(alignment: .center, spacing: 0) {
+        HStack(alignment: .center, spacing: 16.adjustedWidth) {
             ForEach(TabBarState.allCases, id: \.self) { tab in
                 TabItem(
                     selectedTab: selectedTab,
                     tab: tab,
-                    width: tabItemCapsuleWidth,
-                    height: tabItemCapsuleHeight
+                    width: tabIconWidth,
+                    height: tabIconHeight
                 ) {
                     selectTab(tab)
                 }
             }
         }
-        .highPriorityGesture(
-            DragGesture(minimumDistance: 5)
-                .onChanged { value in
-                    if !isDragging {
-                        isDragging = true
-                        dragStartOffset = capsuleOffsetX
-                    }
-                    
-                    let newOffset = dragStartOffset + value.translation.width.adjustedWidth
-                    let maxOffset = CGFloat(TabBarState.allCases.count - 1) * tabItemCapsuleWidth
-                    let clampedOffset = max(0, min(maxOffset, newOffset))
-                    
-                    capsuleOffsetX = clampedOffset
-                    
-                    let switchTabOffset = tabItemCapsuleWidth / 2
-                    
-                    if clampedOffset > switchTabOffset && selectedTab == .place {
-                        selectedTab = .course
-                    } else if clampedOffset < switchTabOffset && selectedTab == .course {
-                        selectedTab = .place
-                    }
-                }
-                .onEnded { value in
-                    isDragging = false
-                    capsuleOffsetX = calculateCapsuleOffsetX(for: selectedTab)
-                }
-        )
+        .padding(.horizontal, 6.adjustedWidth)
     }
 }
 
@@ -109,6 +87,6 @@ extension SolplyTabBar {
     
     private func calculateCapsuleOffsetX(for tab: TabBarState) -> CGFloat {
         let index = TabBarState.allCases.firstIndex(of: tab) ?? 0
-        return CGFloat(index) * tabItemCapsuleWidth
+        return CGFloat(index) * (tabItemCapsuleWidth + 4.adjustedWidth)
     }
 }

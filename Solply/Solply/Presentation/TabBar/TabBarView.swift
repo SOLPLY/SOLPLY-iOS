@@ -37,15 +37,6 @@ struct TabBarView: View {
         .onAppear {
             locationManager.requestPermissionAndStartUpdates()
         }
-        .customNavigationBar(.recommend(
-            filterTitle: townName,
-            filterAction: {
-                appCoordinator.navigate(to: .frequentTown)
-            },
-            settingAction: {
-                
-            }
-        ))
         .task {
             await loadUserInfo()
         }
@@ -69,32 +60,36 @@ struct TabBarView: View {
 extension TabBarView {
     private var tabContent: some View {
         Group {
-            PlaceRecommendView(title: placeRecommendTitle, townId: $townId)
-                .visible(appCoordinator.selectedTab == .place)
+            PlaceRecommendView(
+                title: placeRecommendTitle,
+                townName: townName,
+                townId: $townId
+            )
+            .visible(appCoordinator.selectedTab == .place)
             
-            CourseRecommendView(title: courseRecommendTitle, townId: $townId)
+            CourseRecommendView(
+                title: courseRecommendTitle,
+                townName: townName,
+                townId: $townId
+            )
                 .visible(appCoordinator.selectedTab == .course)
+            
+            ArchiveView(townId: townId)
+                .visible(appCoordinator.selectedTab == .bookmark)
+            
+            // TODO: - 마이페이지뷰 연결
+            Text("myPage")
+                .visible(appCoordinator.selectedTab == .myPage)
         }
     }
     
     private var tabBar: some View {
-        ZStack(alignment: .center) {
-            HStack(alignment: .center, spacing: 0) {
-                Spacer()
-                
-                ArchiveButton {
-                    appCoordinator.navigate(to: .archive(townId: townId))
-                }
-            }
-            .padding(.horizontal, 20.adjustedWidth)
-            
-            SolplyTabBar(
-                selectedTab: Binding(
-                    get: { appCoordinator.selectedTab },
-                    set: { appCoordinator.switchTab(to: $0) }
-                )
+        SolplyTabBar(
+            selectedTab: Binding(
+                get: { appCoordinator.selectedTab },
+                set: { appCoordinator.switchTab(to: $0) }
             )
-        }
+        )
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)
     }
 }
