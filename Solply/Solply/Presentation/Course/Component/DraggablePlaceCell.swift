@@ -122,9 +122,12 @@ extension DraggablePlaceCell {
                         Button {
                             saveAction?()
                         } label: {
-                            Image(isSaved ? .saveIconRed : .saveIconPlace)
+                            Image(isSaved ? .bookmarkSavedIcon : .bookmarkIcon)
                                 .resizable()
+                                .renderingMode(.template)
+                                .aspectRatio(contentMode: .fit)
                                 .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .foregroundStyle(isSaved ? .red500 : .gray400)
                         }
                         .buttonStyle(.plain)
                     }
