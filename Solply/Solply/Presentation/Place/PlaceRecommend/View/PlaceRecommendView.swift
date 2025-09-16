@@ -17,11 +17,13 @@ struct PlaceRecommendView: View {
     @Binding var townId: Int
     
     private let title: String
+    private let townName: String
     
     // MARK: - Initializer
     
-    init(title: String, townId: Binding<Int>) {
+    init(title: String, townName: String, townId: Binding<Int>) {
         self.title = title
+        self.townName = townName
         self._townId = townId
     }
     
@@ -48,6 +50,15 @@ struct PlaceRecommendView: View {
             .frame(maxWidth: .infinity)
             .padding(.bottom, 112.adjustedHeight)
         }
+        .customNavigationBar(.recommend(
+            filterTitle: townName,
+            filterAction: {
+                appCoordinator.navigate(to: .frequentTown)
+            },
+            settingAction: {
+                
+            }
+        ))
         .background(.gray100)
         .onAppear {
             store.dispatch(.fetchPlaceRecommend(townId: townId))
