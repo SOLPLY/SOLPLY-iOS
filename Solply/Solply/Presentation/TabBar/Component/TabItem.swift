@@ -40,10 +40,12 @@ struct TabItem: View {
         Button {
             onTap?()
         } label: {
-            Text(tab.title)
-                .applySolplyFont(.button_16_m)
+            Image(tab.icon)
+                .resizable()
+                .renderingMode(.template)
+                .aspectRatio(contentMode: .fit)
                 .frame(width: width, height: height)
-                .foregroundColor(selectedTab == tab ? .coreBlack : .gray100)
+                .foregroundColor(selectedTab == tab ? .gray900 : .gray100)
                 .animation(.easeInOut(duration: 0.2), value: selectedTab)
         }
         .buttonStyle(.plain)
