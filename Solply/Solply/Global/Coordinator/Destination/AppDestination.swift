@@ -8,16 +8,20 @@
 import SwiftUI
 
 enum AppDestination: Hashable {
+    case archive(townId: Int)
     case archiveList(archiveCategory: SolplyContentType, townName: String, townId: Int)
     case placeDetail(townId: Int, placeId: Int)
     case courseDetail(townId: Int, courseId: Int, fromArchive: Bool)
     case frequentTown
+    case myPage
 }
 
 extension AppDestination {
     @ViewBuilder
     func build() -> some View {
         switch self {
+        case .archive(let townId):
+            ArchiveView(townId: townId)
         case .archiveList(let archiveCategory, let town, let townId):
             ArchiveListView(archiveCategory: archiveCategory, town: town, townId: townId)
         case .placeDetail(let townId, let placeId):
@@ -26,6 +30,9 @@ extension AppDestination {
             CourseDetailView(townId: townId, courseId: courseId, fromArchive: fromArchive)
         case .frequentTown:
             FrequentTownView()
+        case .myPage:
+            // TODO: - 마이페이지 뷰 연결
+            Text("MyPageView")
         }
     }
 }

@@ -72,14 +72,7 @@ extension TabBarView {
                 townName: townName,
                 townId: $townId
             )
-                .visible(appCoordinator.selectedTab == .course)
-            
-            ArchiveView(townId: townId)
-                .visible(appCoordinator.selectedTab == .bookmark)
-            
-            // TODO: - 마이페이지뷰 연결
-            Text("myPage")
-                .visible(appCoordinator.selectedTab == .myPage)
+            .visible(appCoordinator.selectedTab == .course)
         }
     }
     
@@ -88,7 +81,13 @@ extension TabBarView {
             selectedTab: Binding(
                 get: { appCoordinator.selectedTab },
                 set: { appCoordinator.switchTab(to: $0) }
-            )
+            ), bookmarkAction: {
+                print("TabBarView - bookmarkAction")
+                appCoordinator.navigate(to: .archive(townId: townId))
+            }, myPageAction: {
+                print("TabBarView - myPageAction")
+                appCoordinator.navigate(to: .myPage)
+            }
         )
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)
     }

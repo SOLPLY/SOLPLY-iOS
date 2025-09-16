@@ -24,10 +24,20 @@ struct SolplyTabBar: View {
     private let tabItemCapsuleWidth: CGFloat = 48.adjustedWidth
     private let tabItemCapsuleHeight: CGFloat = 48.adjustedHeight
     
+    // TODO: - 1차 스프린트 이후 클로저 프로퍼티 삭제
+    private let bookmarkAction: (() -> Void)?
+    private let myPageAction: (() -> Void)?
+    
     // MARK: - Initializer
     
-    init(selectedTab: Binding<TabBarState>) {
+    init(
+        selectedTab: Binding<TabBarState>,
+        bookmarkAction: (() -> Void)? = nil,
+        myPageAction: (() -> Void)? = nil
+    ) {
         self._selectedTab = selectedTab
+        self.bookmarkAction = bookmarkAction
+        self.myPageAction = myPageAction
     }
     
     // MARK: - Body
@@ -38,7 +48,6 @@ struct SolplyTabBar: View {
             
             tabButton
         }
-//        .frame(width: 220.adjustedWidth, height: 60.adjustedHeight)
         .padding(.horizontal, 8.adjustedWidth)
         .padding(.vertical, 6.adjustedHeight)
         .background(.gray900)
@@ -69,7 +78,14 @@ extension SolplyTabBar {
                     width: tabIconWidth,
                     height: tabIconHeight
                 ) {
-                    selectTab(tab)
+                    // TODO: - 1차 스프린트 이후 분기처리 삭제
+                    switch tab {
+                    case .place, .course: selectTab(tab)
+                    case .bookmark: bookmarkAction?()
+                    case .myPage: myPageAction?()
+                    }
+                    
+                    // selectTab(tab)
                 }
             }
         }
