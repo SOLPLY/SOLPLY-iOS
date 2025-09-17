@@ -21,7 +21,11 @@ struct PlaceRecommendView: View {
     
     // MARK: - Initializer
     
-    init(title: String, townName: String, townId: Binding<Int>) {
+    init(
+        title: String,
+        townName: String,
+        townId: Binding<Int>
+    ) {
         self.title = title
         self.townName = townName
         self._townId = townId
