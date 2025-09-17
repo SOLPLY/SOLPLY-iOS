@@ -82,74 +82,75 @@ extension DraggablePlaceCell {
     }
     
     private var placeCell: some View {
-        HStack(alignment: .top, spacing: 8.adjustedWidth) {
-            KFImage(URL(string: mainImageURL))
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(
-                    width: isFocused ? 88.adjustedHeight : 52.adjustedWidth,
-                    height: isFocused ? 88.adjustedHeight : 52.adjustedHeight
-                )
-                .cornerRadius(12, corners: .allCorners)
-            
-            VStack(alignment: .trailing, spacing: 8.adjustedHeight) {
-                HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                    VStack(alignment: .leading, spacing: 6.adjustedHeight) {
-                        HStack(alignment: .center, spacing: 4.adjustedWidth) {
-                            PlaceCategoryTag(placeCategory: placeCategoryType)
-                            
-                            Text(title)
-                                .applySolplyFont(.title_15_m)
-                                .frame(height: 19.adjustedHeight)
-                                .foregroundStyle(.coreBlack)
-                        }
-                        .frame(height: 20.adjustedHeight)
-                        
-                        Text(address)
-                            .applySolplyFont(.caption_12_r)
-                            .frame(height: 18.adjustedHeight)
-                            .foregroundStyle(.gray700)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    if isEditing {
-                        Image(.dragDropIcon)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-                        
-                    } else {
-                        Button {
-                            saveAction?()
-                        } label: {
-                            Image(isSaved ? .bookmarkSavedIcon : .bookmarkIcon)
-                                .resizable()
-                                .renderingMode(.template)
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-                                .foregroundStyle(isSaved ? .red500 : .gray400)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .padding(.top, 4.adjustedHeight)
+        VStack(alignment: .center, spacing: 0) {
+            HStack(alignment: .top, spacing: 8.adjustedWidth) {
+                KFImage(URL(string: mainImageURL))
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(
+                        width: isFocused ? 85.adjustedHeight : 50.adjustedWidth,
+                        height: isFocused ? 85.adjustedHeight : 50.adjustedHeight
+                    )
+                    .background(.gray300)
+                    .cornerRadius(12, corners: .allCorners)
                 
-                if isFocused {
-                    HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                        PlaceCellButton(title: "장소 상세") {
-                            detailAction?()
+                VStack(alignment: .trailing, spacing: 8.adjustedHeight) {
+                    HStack(alignment: .top, spacing: 8.adjustedWidth) {
+                        VStack(alignment: .leading, spacing: 6.adjustedHeight) {
+                            
+                            HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                                PlaceCategoryTag(placeCategory: placeCategoryType)
+                                
+                                Text(title)
+                                    .applySolplyFont(.title_15_m)
+                                    .frame(height: 19.adjustedHeight)
+                                    .foregroundStyle(.coreBlack)
+                            }
+                            .frame(height: 20.adjustedHeight)
+                            
+                            Text(address)
+                                .applySolplyFont(.caption_12_r)
+                                .foregroundStyle(.gray700)
+                                .lineLimit(isFocused ? 2 : 1)
+                                .fixedSize(horizontal: false, vertical: true) // ← 핵심
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        PlaceCellButton(title: "길찾기") {
-                            findDirectionAction?()
+                        Group {
+                            if isEditing {
+                                Image(.dragDropIcon)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                
+                            } else {
+                                Button {
+                                    saveAction?()
+                                } label: {
+                                    Image(isSaved ? .bookmarkSavedIcon : .bookmarkIcon)
+                                        .resizable()
+                                        .renderingMode(.template)
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                        .foregroundStyle(isSaved ? .red500 : .gray400)
+                                }
+                                .buttonStyle(.plain)
+                            }
                         }
+                        .padding(.top, 10.adjustedHeight)
                     }
+                    .padding(.top, 4.adjustedHeight)
                 }
             }
+            .padding(.leading, 8.adjustedWidth)
+            .padding(.vertical, 8.adjustedHeight)
+            .padding(.trailing, 16.adjustedWidth)
+            
+            if isFocused {
+                buttons
+            }
         }
-        .padding(.leading, 8.adjustedWidth)
-        .padding(.trailing, 16.adjustedWidth)
-        .frame(height: isFocused ? 104.adjustedHeight : 68.adjustedHeight)
+        .frame(height: isFocused ? 155.adjustedHeight : 68.adjustedHeight)
         .background(isFocused ? .gray100 : .coreWhite)
         .cornerRadius(20, corners: .allCorners)
         .addBorder(.roundedRectangle(cornerRadius: 20), borderColor: .gray300, borderWidth: 1)
@@ -159,6 +160,44 @@ extension DraggablePlaceCell {
                     tapAction?()
                 }
             }
+        }
+    }
+    
+    private var buttons: some View {
+        VStack(alignment: .center, spacing: 0) {
+            Rectangle()
+                .frame(maxWidth: .infinity)
+                .frame(height: 1.adjustedHeight)
+                .foregroundStyle(.gray300)
+            
+            HStack(alignment: .center, spacing: 0) {
+                Button {
+                    findDirectionAction?()
+                } label: {
+                    Text("길찾기")
+                        .applySolplyFont(.button_14_m)
+                        .foregroundStyle(.gray800)
+                        .frame(width: 145.adjustedWidth, height: 43.adjustedHeight)
+                        .background(.gray100)
+                }
+                .buttonStyle(.plain)
+                
+                Rectangle()
+                    .frame(width: 1.adjustedWidth, height: 43.adjustedHeight)
+                    .foregroundStyle(.gray300)
+                
+                Button {
+                    detailAction?()
+                } label: {
+                    Text("상세보기")
+                        .applySolplyFont(.button_14_m)
+                        .foregroundStyle(.gray800)
+                        .frame(width: 145.adjustedWidth, height: 43.adjustedHeight)
+                        .background(.gray100)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.vertical, 4.adjustedHeight)
         }
     }
 }
