@@ -1,5 +1,5 @@
 //
-//  TokenInterceptor.swift
+//Interceptor.swift
 //  Solply
 //
 //  Created by sun on 9/12/25.
@@ -9,10 +9,10 @@ import Foundation
 
 import Alamofire
 
-final class TokenInterceptor: RequestInterceptor {
+final class Interceptor: RequestInterceptor {
 
     // MARK: - Singleton
-    static let shared = TokenInterceptor()
+    static let shared = Interceptor()
     private init() {}
 
     // MARK: - Config
@@ -29,25 +29,25 @@ final class TokenInterceptor: RequestInterceptor {
         for session: Session,
         completion: @escaping (Result<URLRequest, Error>) -> Void
     ) {
-        var req = urlRequest
-        let path = req.url?.path ?? ""
+        var request = urlRequest
+        let path = request.url?.path ?? ""
 
         // 로그인/리프레시 요청은 건드리지 않음
         guard shouldAttachAuth(for: path) else {
-            return completion(.success(req))
+            return completion(.success(request))
         }
 
         // 이미 Authorization 있으면 덮지 않음
-        if req.value(forHTTPHeaderField: "Authorization") == nil,
+        if request.value(forHTTPHeaderField: "Authorization") == nil,
            let accessToken = TokenManager.shared.fetchAccessToken(),
            !accessToken.isEmpty {
-            req.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
             debug(" Authorization 추가: \(path)")
             
             print("🔐 [FULL] Authorization: Bearer \(accessToken)")
         }
 
-        completion(.success(req))
+        completion(.success(request))
     }
 
     // MARK: - Retry: 401/403 이면, 그 요청에 한해서만 1회 재발급 후 재시도
@@ -91,7 +91,7 @@ final class TokenInterceptor: RequestInterceptor {
 }
 
 // MARK: - Private
-private extension TokenInterceptor {
+private extension Interceptor {
 
     func refreshTokensOnce() async throws {
         guard let refreshToken = TokenManager.shared.fetchRefreshToken(),
@@ -100,9 +100,9 @@ private extension TokenInterceptor {
         }
 
         let service = AuthService()
-        let res = try await service.refreshToken(refreshToken: refreshToken)
+        let response = try await service.refreshToken(refreshToken: refreshToken)
 
-        guard let wrapper = res.data else {
+        guard let wrapper = response.data else {
             throw TokenError.reissueFailed
         }
 

@@ -14,7 +14,7 @@ class BaseService<Target: BaseTargetType> {
     private let provider: MoyaProvider<Target>
     
     init(
-        session: Session = Session(interceptor: TokenInterceptor.shared),
+        session: Session = Session(interceptor: Interceptor.shared),
         plugins: [PluginType] = [MoyaLoggingPlugin()]
     ) {
         self.provider = MoyaProvider<Target>(
