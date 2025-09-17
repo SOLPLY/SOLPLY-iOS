@@ -112,7 +112,7 @@ extension DraggablePlaceCell {
                                 .applySolplyFont(.caption_12_r)
                                 .foregroundStyle(.gray700)
                                 .lineLimit(isFocused ? 2 : 1)
-                                .fixedSize(horizontal: false, vertical: true) // ← 핵심
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
