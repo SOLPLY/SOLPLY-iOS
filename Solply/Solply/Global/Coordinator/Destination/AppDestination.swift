@@ -13,6 +13,7 @@ enum AppDestination: Hashable {
     case placeDetail(townId: Int, placeId: Int)
     case courseDetail(townId: Int, courseId: Int, fromArchive: Bool)
     case frequentTown
+    case reports
     case myPage
 }
 
@@ -30,6 +31,8 @@ extension AppDestination {
             CourseDetailView(townId: townId, courseId: courseId, fromArchive: fromArchive)
         case .frequentTown:
             FrequentTownView()
+        case .reports:
+            ReportsView()
         case .myPage:
             // TODO: - 마이페이지 뷰 연결
             Text("MyPageView")
