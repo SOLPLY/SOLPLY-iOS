@@ -23,10 +23,8 @@ struct CourseDetailMapView: UIViewRepresentable {
         right: 0
     )
     
-    private let defaultMarkerWidth: CGFloat = 36.adjustedWidth
-    private let defaultMarkerHeight: CGFloat = 36.adjustedHeight
-    private let focusedMarkerWidth: CGFloat = 42.adjustedWidth
-    private let focusedMarkerHeight: CGFloat = 42.adjustedHeight
+    private let markerWidth: CGFloat = 36.adjustedWidth
+    private let markerHeight: CGFloat = 36.adjustedHeight
     
     private let defaultZoomLevel: Double = ZoomLevel.extraLarge.zoom
     
@@ -209,8 +207,8 @@ extension CourseDetailMapView {
                 let marker = NMFMarker()
                 marker.position = NMGLatLng(lat: place.latitude, lng: place.longitude)
                 marker.iconImage = self.markerManager.getMarkerImage(for: markerType, isFocused: place.isFocused)
-                marker.width = place.isFocused ? self.focusedMarkerWidth : self.defaultMarkerWidth
-                marker.height = place.isFocused ? self.focusedMarkerHeight : self.defaultMarkerHeight
+                marker.width = markerWidth
+                marker.height = markerHeight
                 marker.anchor = CGPoint(x: 0.5, y: 0.5)
                 marker.zIndex = self.places.count - index
                 markers.append(marker)
@@ -241,7 +239,7 @@ extension CourseDetailMapView {
         
         let polyline = NMFPolylineOverlay(coordinates)
         polyline?.width = 2
-        polyline?.color = .purple900
+        polyline?.color = .purple800
         polyline?.mapView = mapView
         
         coordinator.polyline = polyline

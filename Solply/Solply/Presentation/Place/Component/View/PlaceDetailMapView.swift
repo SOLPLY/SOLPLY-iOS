@@ -28,6 +28,9 @@ struct PlaceDetailMapView: UIViewRepresentable {
         right: 0
     )
     
+    private let markerWidth: CGFloat = 36.adjustedWidth
+    private let markerHeight: CGFloat = 36.adjustedHeight
+    
     // MARK: - Init
     
     init(
@@ -102,8 +105,8 @@ private extension PlaceDetailMapView {
         let marker = NMFMarker()
         marker.iconImage = NMFOverlayImage(name: "map-mark-place")
         marker.position = NMGLatLng(lat: latitude, lng: longitude)
-        marker.width = 36.adjustedWidth
-        marker.height = 36.adjustedHeight
+        marker.width = markerWidth
+        marker.height = markerHeight
         marker.anchor = CGPoint(x: 0.5, y: 1.0)
         marker.mapView = mapView
         context.coordinator.marker = marker
