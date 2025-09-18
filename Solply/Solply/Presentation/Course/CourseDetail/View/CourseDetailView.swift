@@ -46,8 +46,6 @@ struct CourseDetailView: View {
                         
                         placeList
                     }
-                    .padding(.horizontal, 20.adjustedWidth)
-                    .padding(.top, 8.adjustedHeight)
                 } bookmarkAction: {
                     // TODO: - 코스 북마크 action
                 }
@@ -78,8 +76,24 @@ struct CourseDetailView: View {
                         appCoordinator.goBack()
                     }
             
-            if store.state.canDelete == .active {
-                deleteArea
+            if fromArchive && !store.state.isEditing {
+                editButton
+            }
+            
+            if store.state.isEditing {
+                VStack(alignment: .center, spacing: 16.adjustedHeight) {
+                    if fromArchive && store.state.canDelete == .active {
+                        deleteArea
+                    }
+                    
+                    CTAMainButton(
+                        title: "완료",
+                        isEnabled: true
+                    ) {
+                        store.dispatch(.toggleEdting)
+                    }
+                    .padding(.horizontal, 20.adjustedWidth)
+                }
             }
             
             if store.state.isSaveOptionPresented {
@@ -146,18 +160,16 @@ extension CourseDetailView {
     private var title: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             Group {
-                if fromArchive {
+                if fromArchive && store.state.isEditing {
                     HStack(alignment: .center, spacing: 4.adjustedWidth) {
                         Text(store.state.courseName)
                             .applySolplyFont(.title_18_sb)
                             .frame(width: 307.adjustedWidth, alignment: .leading)
                         
                         Button {
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                store.dispatch(.toggleEdting)
-                            }
+                            // TODO: - 제목, 소개 수정 Action
                         } label: {
-                            Image(store.state.isEditing ? .editingIcon : .editingIcon)
+                            Image(.editingIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
@@ -178,6 +190,7 @@ extension CourseDetailView {
                 .frame(maxHeight: 21.adjustedHeight)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 16.adjustedWidth)
     }
     
     private var placeList: some View {
@@ -262,7 +275,33 @@ extension CourseDetailView {
                 }
             }
             .padding(.bottom, 35.adjustedHeight)
+            .padding(.horizontal, 20.adjustedWidth)
+            
+            Color(.clear)
+                .frame(height: store.state.isEditing ? 370.adjustedHeight : 310.adjustedHeight)
         }
+        .frame(maxHeight: .infinity)
+    }
+    
+    private var editButton: some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                store.dispatch(.toggleEdting)
+            }
+        } label: {
+            Circle()
+                .fill(.gray900)
+                .frame(width: 64.adjustedWidth, height: 64.adjustedHeight)
+                .overlay(alignment: .center) {
+                    Image(.editingIcon)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
+                }
+        }
+        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding(.trailing, 16.adjustedWidth)
     }
     
     private var deleteArea: some View {
@@ -270,7 +309,6 @@ extension CourseDetailView {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
-            .padding(.bottom, 26.adjustedHeight)
             .onDrop(
                 of: [.text],
                 delegate: DeleteDropDelegate(
