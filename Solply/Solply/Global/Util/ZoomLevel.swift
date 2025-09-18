@@ -19,7 +19,7 @@ enum ZoomLevel: CaseIterable {
     case extraHuge
     case mega
     case world
-    case galaxy   // 새로 추가
+    case galaxy
 
     var zoom: Double {
         switch self {
@@ -32,7 +32,7 @@ enum ZoomLevel: CaseIterable {
         case .extraHuge: return 14.5
         case .mega: return 14.0
         case .world: return 13.5
-        case .galaxy: return 12.5  // world(13.5)보다 더 멀리
+        case .galaxy: return 12.5
         }
     }
 
@@ -47,7 +47,7 @@ enum ZoomLevel: CaseIterable {
         case .extraHuge: return (latitude: 0.0055, longitude: 0.011)
         case .mega: return (latitude: 0.007, longitude: 0.014)
         case .world: return (latitude: 0.01, longitude: 0.02)
-        case .galaxy: return (latitude: 0.015, longitude: 0.03) // 더 크게
+        case .galaxy: return (latitude: 0.015, longitude: 0.03)
         }
     }
 }
