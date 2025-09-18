@@ -75,5 +75,18 @@ struct ToastContent: Equatable {
     let toastType: ToastType
     let message: String
     let buttonTitle: String?
+    let bottomPadding: CGFloat
     let id: UUID = UUID()
+    
+    init(
+        toastType: ToastType,
+        message: String,
+        buttonTitle: String?,
+        bottomPadding: CGFloat = 28.adjustedHeight
+    ) {
+        self.toastType = toastType
+        self.message = message
+        self.buttonTitle = buttonTitle
+        self.bottomPadding = bottomPadding
+    }
 }
