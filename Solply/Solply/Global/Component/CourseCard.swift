@@ -54,11 +54,12 @@ struct CourseCard: View {
                 .padding(.bottom, 84.adjustedHeight)
             
             VStack(alignment: .leading, spacing: 12.adjustedHeight) {
-                HStack(alignment: .center, spacing: 0) {
+                HStack(alignment: .top, spacing: 0) {
                     Text(courseName)
                         .applySolplyFont(.title_14_m)
                         .foregroundStyle(.coreBlack)
                         .frame(height: 38.adjustedHeight, alignment: .topLeading)
+                        .padding(.top, 10.adjustedHeight)
                     
                     Spacer()
                     
@@ -66,10 +67,9 @@ struct CourseCard: View {
                         Image(isSavedBadge)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            .frame(width: 24.adjustedWidth, height: 32.adjustedHeight)
                     }
                 }
-                .padding(.top, 8.adjustedHeight)
                 .padding(.horizontal, 12.adjustedWidth)
                 
                 HStack(alignment: .center, spacing: 4.adjustedWidth) {

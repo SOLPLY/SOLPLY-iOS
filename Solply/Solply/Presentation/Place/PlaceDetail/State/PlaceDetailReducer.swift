@@ -13,11 +13,11 @@ enum PlaceDetailReducer {
         case .toggleAddToCourse:
             state.addButtonSelected.toggle()
             state.findDirectionEnabled = state.addButtonSelected ? false : true
-            state.saveButtonEnabled = state.addButtonSelected ? false : true
+            state.bookmarkButtonEnabled = state.addButtonSelected ? false : true
             
-        case .toggleSavePlace:
+        case .toggleBookmarkPlace:
             state.isBookmarked.toggle()
-            state.saveButtonSelected.toggle()
+            state.bookmarkButtonSelected.toggle()
             
         case .requestFindDirection:
             break

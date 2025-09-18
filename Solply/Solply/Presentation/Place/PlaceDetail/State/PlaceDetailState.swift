@@ -9,8 +9,8 @@ import Foundation
 
 struct PlaceDetailState {
     var addButtonSelected: Bool = false
-    var saveButtonSelected: Bool = false
-    var saveButtonEnabled: Bool = true
+    var bookmarkButtonSelected: Bool = false
+    var bookmarkButtonEnabled: Bool = true
     var findDirectionEnabled: Bool = true
     var userLatitude: Double = 0.0
     var userLongitude: Double = 0.0
