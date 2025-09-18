@@ -174,12 +174,11 @@ extension CourseDetailMapView {
             
             // 마커들의 범위가 현재 레벨의 coordinateDelta 안에 들어가는지 확인
             if latitudeRange <= coordinateDelta.latitude && longitudeRange <= coordinateDelta.longitude {
-                
                 return level.zoom
             }
         }
         
-        return ZoomLevel.extraLarge.zoom
+        return ZoomLevel.galaxy.zoom
     }
     
     /// 특정 장소로 카메라 이동하는 함수입니다.
