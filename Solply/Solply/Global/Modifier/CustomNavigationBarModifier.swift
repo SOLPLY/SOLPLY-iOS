@@ -297,7 +297,7 @@ extension View {
             self.modifier(
                 CustomNavigationBarModifier(
                     centerView: {
-                        Text("자주 가는 동네")
+                        Text("동네 설정")
                             .applySolplyFont(.head_16_m)
                     },
                     leftView: {
@@ -314,7 +314,7 @@ extension View {
                     rightView: {
                         EmptyView()
                     },
-                    backgroundColor: .gray100
+                    backgroundColor: .coreWhite
                 )
             )
         }
