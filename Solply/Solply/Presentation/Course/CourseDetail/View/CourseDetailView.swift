@@ -90,7 +90,9 @@ struct CourseDetailView: View {
                         title: "완료",
                         isEnabled: true
                     ) {
-                        store.dispatch(.toggleEdting)
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            store.dispatch(.toggleEdting)
+                        }
                     }
                     .padding(.horizontal, 20.adjustedWidth)
                 }
