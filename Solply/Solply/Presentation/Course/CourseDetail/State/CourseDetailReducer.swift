@@ -34,6 +34,7 @@ enum CourseDetailReducer {
                     state.isEditing = false
                 }
             } else {
+                state.oldPlaces.removeAll()
                 state.oldPlaces = state.places
                 state.isEditing = true
             }
