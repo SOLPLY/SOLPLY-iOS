@@ -164,6 +164,7 @@ extension PlaceDetailView {
                     appCoordinator.switchTab(to: .course)
                 }
                 .transition(.move(edge: .trailing))
+                
             } else {
                 PlaceInformationView(
                     primaryTag: store.state.primaryTag,
@@ -199,7 +200,6 @@ extension PlaceDetailView {
                 } reportsAction: {
                     appCoordinator.navigate(to: .reports)
                 }
-                .padding(.top, 8.adjustedHeight)
                 .transition(.move(edge: .leading))
             }
         }

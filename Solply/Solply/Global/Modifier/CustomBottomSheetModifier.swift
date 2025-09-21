@@ -53,8 +53,8 @@ extension CustomBottomSheetModifier {
             
             dragArea
             
-            VStack(alignment: .center, spacing: 0){
-                dragIndicator
+            VStack(alignment: .center, spacing: 8.adjustedHeight){
+                indicator
                 
                 sheetContent()
             }
@@ -62,7 +62,7 @@ extension CustomBottomSheetModifier {
         }
     }
     
-    private var dragIndicator: some View {
+    private var indicator: some View {
         Rectangle()
             .foregroundStyle(.gray300)
             .frame(width: 30.adjustedWidth, height: 5.adjustedHeight)
