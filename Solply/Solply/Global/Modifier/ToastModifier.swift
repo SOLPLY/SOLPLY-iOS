@@ -18,7 +18,7 @@ struct ToastModifier: ViewModifier {
     func body(content: Content) -> some View  {
         content
             .overlay {
-                VStack {
+                Group {
                     if toastManager.isShowing, let toastContent = toastManager.toastContent {
                         ToastView(
                             toastContent: toastContent,
@@ -31,7 +31,7 @@ struct ToastModifier: ViewModifier {
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .bottom)
-                .padding(.bottom, 28.adjustedHeight)
+                .padding(.bottom, toastManager.toastContent?.bottomPadding)
                 .animation(.easeInOut(duration: 0.4), value: toastManager.isShowing)
             }
     }

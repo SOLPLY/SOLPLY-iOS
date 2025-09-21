@@ -14,9 +14,10 @@ struct CourseDetailState {
     var courseName: String = ""
     var courseDescription: String = ""
     var places: [PlaceDetailInCourse] = []
+    var oldPlaces: [PlaceDetailInCourse] = []
     var focusedPlaceIndex: Int = -1
     var courseSaveSelected: Bool = false
-    var isCourseBookmarked = false
+    var isCourseBookmarked: Bool = false
     var isEditing: Bool = false
     var canDelete: DeleteZoneState = .hidden
     var isInDeleteZone: Bool = false

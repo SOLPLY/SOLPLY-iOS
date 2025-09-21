@@ -28,8 +28,13 @@ enum CourseDetailReducer {
             
         case .toggleEdting:
             if state.isEditing {
-                state.isSaveOptionPresented = true
+                if state.oldPlaces != state.places {
+                    state.isSaveOptionPresented = true
+                } else {
+                    state.isEditing = false
+                }
             } else {
+                state.oldPlaces = state.places
                 state.isEditing = true
             }
             
@@ -92,11 +97,13 @@ enum CourseDetailReducer {
             // TODO: 지금 코스에 추가 API (Effect에서)
             state.isSaveOptionPresented = false
             state.isEditing = false
+            state.oldPlaces.removeAll()
             
         case .saveCourseAsNew:
             // TODO: 새코스에 추가 API (Effect에서)
             state.isSaveOptionPresented = false
             state.isEditing = false
+            state.oldPlaces.removeAll()
             
         case .saveCourseCancel:
             state.isSaveOptionPresented = false
