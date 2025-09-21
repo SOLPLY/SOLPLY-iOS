@@ -451,6 +451,6 @@ extension CourseDetailView {
 }
 
 #Preview {
-    CourseDetailView(townId: 1, courseId: 1, fromArchive: true)
+    CourseDetailView(townId: 1, courseId: 1, fromArchive: false)
         .environmentObject(AppCoordinator())
 }

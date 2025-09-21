@@ -19,7 +19,7 @@ struct CourseDetailMapView: UIViewRepresentable {
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
         left: 0,
-        bottom: 420.adjustedHeight,
+        bottom: 450.adjustedHeight,
         right: 0
     )
     
@@ -65,7 +65,7 @@ extension CourseDetailMapView {
         mapView.contentInset = contentInset
         mapView.isZoomGestureEnabled = true
         mapView.positionMode = .disabled
-        mapView.logoAlign = .rightTop
+        mapView.logoAlign = .rightBottom
         mapView.logoInteractionEnabled = true
         
         return mapView
