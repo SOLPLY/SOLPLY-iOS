@@ -60,7 +60,7 @@ struct PlaceRecommendView: View {
                 appCoordinator.navigate(to: .frequentTown)
             },
             settingAction: {
-                
+                appCoordinator.navigate(to: .placeSearch)
             }
         ))
         .background(.gray100)

@@ -37,15 +37,6 @@ struct TabBarView: View {
         .onAppear {
             locationManager.requestPermissionAndStartUpdates()
         }
-        .customNavigationBar(.recommend(
-            filterTitle: townName,
-            filterAction: {
-                appCoordinator.navigate(to: .frequentTown)
-            },
-            settingAction: {
-                appCoordinator.navigate(to: .placeSearch)
-            }
-        ))
         .task {
             await loadUserInfo()
         }
