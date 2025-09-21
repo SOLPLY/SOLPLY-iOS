@@ -14,7 +14,7 @@ enum CustomBottomSheetType {
     var defaultOffset: CGFloat {
         switch self {
         case .placeDetail:
-            return 260.adjustedHeight
+            return 270.adjustedHeight
         case .courseDetail(let fromArchive):
             return fromArchive ? 290.adjustedHeight : 240.adjustedHeight
         }

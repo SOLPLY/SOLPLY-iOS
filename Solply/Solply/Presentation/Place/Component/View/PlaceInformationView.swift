@@ -17,12 +17,16 @@ struct PlaceInformationView: View {
     
     private let primaryTag: MainTagType
     private let placeName: String
+    private let isBookmarked: Bool
     private let introduction: String
     private let imageURLs: [String]
     private let address: String
     private let contactNumber: String
     private let openingHours: String
     private let snsLink: [PlaceDetailSnsLink]
+    private let bookmarkAction: (() -> Void)?
+    private let findDirectionAction: (() -> Void)?
+    private let addPlaceToCourseAction: (() -> Void)?
     private let copyAction: ((String) -> Void)?
     private let reportsAction: (() -> Void)?
     
@@ -31,23 +35,31 @@ struct PlaceInformationView: View {
     init(
         primaryTag: MainTagType,
         placeName: String,
+        isBookmarked: Bool,
         introduction: String,
         imageURLs: [String],
         address: String,
         contactNumber: String,
         openingHours: String,
         snsLink: [PlaceDetailSnsLink],
+        bookmarkAction: (() -> Void)? = nil,
+        findDirectionAction: (() -> Void)? = nil,
+        addPlaceToCourseAction: (() -> Void)? = nil,
         copyAction: ((String) -> Void)? = nil,
         reportsAction: (() -> Void)? = nil
     ) {
         self.primaryTag = primaryTag
         self.placeName = placeName
+        self.isBookmarked = isBookmarked
         self.introduction = introduction
         self.imageURLs = imageURLs
         self.address = address
         self.contactNumber = contactNumber
         self.openingHours = openingHours
         self.snsLink = snsLink
+        self.bookmarkAction = bookmarkAction
+        self.findDirectionAction = findDirectionAction
+        self.addPlaceToCourseAction = addPlaceToCourseAction
         self.copyAction = copyAction
         self.reportsAction = reportsAction
     }
@@ -55,20 +67,31 @@ struct PlaceInformationView: View {
     // MARK: - Body
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .center, spacing: 16.adjustedHeight) {
-                title
-                
-                mainImage
-                
-                information
-                
-                reportsButton
+        VStack(alignment: .leading, spacing: 22.adjustedHeight) {
+            title
+            
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 20.adjustedHeight) {
+                    HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                        findDirectionButton
+                        
+                        addPlaceToCourseButton
+                    }
+                    .padding(.horizontal, 16.adjustedWidth)
+                    
+                    mainImage
+                    
+                    information
+                    
+                    reportsButton
+                }
+                .padding(.bottom, 300.adjustedHeight)
             }
-            .padding(.bottom, 300.adjustedHeight)
         }
     }
 }
+
+// MARK: - Subviews
 
 extension PlaceInformationView {
     private var title: some View {
@@ -80,6 +103,20 @@ extension PlaceInformationView {
                     .applySolplyFont(.title_18_sb)
                     .foregroundStyle(.coreBlack)
                     .frame(height: 23.adjustedHeight)
+                
+                Spacer()
+                
+                Button {
+                    bookmarkAction?()
+                } label: {
+                    Image(isBookmarked ? .bookmarkSavedIcon : .bookmarkIcon)
+                        .resizable()
+                        .renderingMode(.template)
+                        .foregroundStyle(.gray900)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
+                }
+                .buttonStyle(.plain)
             }
             
             Text(introduction)
@@ -98,14 +135,13 @@ extension PlaceInformationView {
                     KFImage(URL(string: imageURL))
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: UIScreen.main.bounds.width - 32.adjustedWidth, height: 228.adjustedHeight)
-                        .cornerRadius(20, corners: .allCorners)
+                        .frame(width: 307.adjustedWidth, height: 204.adjustedHeight)
+                        .background(.gray300)
+                        .cornerRadius(12, corners: .allCorners)
                 }
             }
-            .scrollTargetLayout()
             .padding(.horizontal, 16.adjustedWidth)
         }
-        .scrollTargetBehavior(.viewAligned)
     }
     
     private var information: some View {
@@ -140,6 +176,47 @@ extension PlaceInformationView {
             borderWidth: 1
         )
         .padding(.horizontal, 16.adjustedWidth)
+    }
+    
+    private var findDirectionButton: some View {
+        Button {
+            findDirectionAction?()
+        } label: {
+            HStack(alignment: .center, spacing: 0) {
+                Text("길찾기")
+                    .applySolplyFont(.button_14_m)
+                    .foregroundStyle(.gray800)
+                
+                Image(.tolinkIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20.adjustedWidth, height: 20.adjustedHeight)
+            }
+            .frame(width: 57.adjustedWidth, height: 24.adjustedHeight)
+            .padding(.vertical, 8.adjustedHeight)
+            .padding(.leading, 16.adjustedWidth)
+            .padding(.trailing, 12.adjustedWidth)
+            .background(.gray100)
+            .capsuleClipped()
+            .addBorder(.capsule, borderColor: .gray300, borderWidth: 1)
+        }
+        .buttonStyle(.plain)
+    }
+    
+    private var addPlaceToCourseButton: some View {
+        Button {
+            addPlaceToCourseAction?()
+        } label: {
+            Text("내 코스에 추가")
+                .applySolplyFont(.button_14_m)
+                .foregroundStyle(.coreWhite)
+                .frame(width: 80.adjustedWidth, height: 24.adjustedHeight)
+                .padding(.vertical, 8.adjustedHeight)
+                .padding(.horizontal, 16.adjustedWidth)
+                .background(.gray900)
+                .capsuleClipped()
+        }
+        .buttonStyle(.plain)
     }
     
     private var reportsButton: some View {
@@ -188,6 +265,7 @@ extension PlaceInformationView {
     PlaceInformationView(
         primaryTag: .cafe,
         placeName: "빈티지 카페 마망",
+        isBookmarked: true,
         introduction: "감성 가득한 빈티지 소품과 함께하는 공간",
         imageURLs: [
             "https://example.com/image1.jpg",

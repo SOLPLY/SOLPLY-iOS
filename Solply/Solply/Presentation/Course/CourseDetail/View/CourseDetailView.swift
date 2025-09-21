@@ -34,8 +34,7 @@ struct CourseDetailView: View {
         ZStack(alignment: .bottom) {
             courseMapView
                 .customBottomSheet(
-                    .courseDetail(fromArchive: fromArchive),
-                    isBookmarked: store.state.isCourseBookmarked
+                    .courseDetail(fromArchive: fromArchive)
                 ) {
                     if !fromArchive {
                         bottomSheetTopButton
@@ -46,8 +45,6 @@ struct CourseDetailView: View {
                         
                         placeList
                     }
-                } bookmarkAction: {
-                    // TODO: - 코스 북마크 action
                 }
                 .onAppear {
                     store.dispatch(.fetchCourseDetail(courseId: courseId))
