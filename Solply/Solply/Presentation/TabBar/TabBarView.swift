@@ -43,7 +43,7 @@ struct TabBarView: View {
                 appCoordinator.navigate(to: .frequentTown)
             },
             settingAction: {
-                
+                appCoordinator.navigate(to: .placeSearch)
             }
         ))
         .task {
