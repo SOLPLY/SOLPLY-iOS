@@ -57,7 +57,7 @@ struct PlaceCard: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24.adjustedWidth, height: 32.adjustedHeight)
-                        .padding(.horizontal, 12.adjustedWidth)
+                        .padding(.horizontal, 16.adjustedWidth)
                 }
             }
             
@@ -74,3 +74,4 @@ struct PlaceCard: View {
         }
     }
 }
+
