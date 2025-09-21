@@ -33,14 +33,12 @@ struct CourseDetailView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             courseMapView
-                .customBottomSheet(
-                    .courseDetail(fromArchive: fromArchive)
-                ) {
-                    if !fromArchive {
-                        bottomSheetTopButton
-                    }
+                .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
+//                    if !fromArchive {
+//                        bottomSheetTopButton
+//                    }
                 } sheetContent: {
-                    VStack(alignment: .center, spacing: 10.adjustedHeight) {
+                    VStack(alignment: .center, spacing: 20.adjustedHeight) {
                         title
                         
                         placeList
@@ -162,7 +160,7 @@ extension CourseDetailView {
                 if fromArchive && store.state.isEditing {
                     HStack(alignment: .center, spacing: 4.adjustedWidth) {
                         Text(store.state.courseName)
-                            .applySolplyFont(.title_18_sb)
+                            .applySolplyFont(.display_20_sb)
                             .frame(width: 307.adjustedWidth, alignment: .leading)
                         
                         Button {
@@ -177,16 +175,34 @@ extension CourseDetailView {
                     }
                     
                 } else {
-                    Text(store.state.courseName)
-                        .applySolplyFont(.title_18_sb)
-                        .frame(width: 335.adjustedWidth, alignment: .leading)
+                    HStack(alignment: .center, spacing: 0) {
+                        Text(store.state.courseName)
+                            .applySolplyFont(.display_20_sb)
+                            .foregroundStyle(.coreBlack)
+                            .frame(width: 307.adjustedWidth, alignment: .leading)
+                        
+                        Spacer()
+                        
+                        Button {
+                            bookmarkCourse()
+                        } label: {
+                            Image(store.state.courseSaveSelected ? .bookmarkSavedIcon : .bookmarkIcon)
+                                .resizable()
+                                .renderingMode(.template)
+                                .foregroundStyle(.gray900)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
             }
-            .frame(height: 23.adjustedHeight)
+            .frame(height: 30.adjustedHeight)
             
             Text(store.state.courseDescription)
                 .applySolplyFont(.caption_14_r)
-                .frame(maxHeight: 21.adjustedHeight)
+                .foregroundStyle(.gray900)
+                .frame(height: 21.adjustedHeight)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 16.adjustedWidth)
@@ -406,6 +422,30 @@ extension CourseDetailView {
                 }
             }
             .padding(.bottom, 16.adjustedHeight)
+        }
+    }
+}
+
+// MARK: - Functions {
+
+extension CourseDetailView {
+    private func bookmarkCourse() {
+        if store.state.courseSaveSelected {
+            store.dispatch(.removeCourseBookmark(courseId: courseId))
+            store.dispatch(.toggleSaveCourse)
+        } else {
+            store.dispatch(.submitCourseBookmark(courseId: courseId))
+            store.dispatch(.toggleSaveCourse)
+            
+            store.dispatch(
+                .showToastView(
+                    ToastContent(
+                        toastType: .withActionToast,
+                        message: "코스가 수집함에 저장되었어요.",
+                        buttonTitle: "코스 수정하기"
+                    )
+                )
+            )
         }
     }
 }
