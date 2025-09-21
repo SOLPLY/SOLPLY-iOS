@@ -22,6 +22,10 @@ struct PlaceDetailInCourse: Identifiable, Equatable {
     let contactNumber: String
     let snsLink: String
     
+    static func == (lhs: PlaceDetailInCourse, rhs: PlaceDetailInCourse) -> Bool {
+        return lhs.placeOrder == rhs.placeOrder
+    }
+
     static func mockData() -> PlaceDetailInCourse {
         return  PlaceDetailInCourse(
             placeOrder: 1,
