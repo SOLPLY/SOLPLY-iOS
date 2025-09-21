@@ -24,6 +24,7 @@ struct PlaceInformationView: View {
     private let openingHours: String
     private let snsLink: [PlaceDetailSnsLink]
     private let copyAction: ((String) -> Void)?
+    private let reportsAction: (() -> Void)?
     
     // MARK: - Initializer
     
@@ -36,7 +37,8 @@ struct PlaceInformationView: View {
         contactNumber: String,
         openingHours: String,
         snsLink: [PlaceDetailSnsLink],
-        copyAction: ((String) -> Void)? = nil
+        copyAction: ((String) -> Void)? = nil,
+        reportsAction: (() -> Void)? = nil
     ) {
         self.primaryTag = primaryTag
         self.placeName = placeName
@@ -47,6 +49,7 @@ struct PlaceInformationView: View {
         self.openingHours = openingHours
         self.snsLink = snsLink
         self.copyAction = copyAction
+        self.reportsAction = reportsAction
     }
     
     // MARK: - Body
@@ -60,7 +63,7 @@ struct PlaceInformationView: View {
                 
                 information
                 
-                reportButton
+                reportsButton
             }
             .padding(.bottom, 300.adjustedHeight)
         }
@@ -139,7 +142,7 @@ extension PlaceInformationView {
         .padding(.horizontal, 16.adjustedWidth)
     }
     
-    private var reportButton: some View {
+    private var reportsButton: some View {
         HStack(alignment: .center, spacing: 4.adjustedWidth) {
             Image(.warningIcon)
                 .resizable()
@@ -152,7 +155,7 @@ extension PlaceInformationView {
             Spacer()
             
             Button {
-                // TODO: - 제보하기 뷰 연결
+                reportsAction?()
             } label: {
                 HStack(alignment: .center, spacing: 0) {
                     Text("오류 제보하기")

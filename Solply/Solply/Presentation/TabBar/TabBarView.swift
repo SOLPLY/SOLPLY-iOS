@@ -69,32 +69,35 @@ struct TabBarView: View {
 extension TabBarView {
     private var tabContent: some View {
         Group {
-            PlaceRecommendView(title: placeRecommendTitle, townId: $townId)
-                .visible(appCoordinator.selectedTab == .place)
+            PlaceRecommendView(
+                title: placeRecommendTitle,
+                townName: townName,
+                townId: $townId
+            )
+            .visible(appCoordinator.selectedTab == .place)
             
-            CourseRecommendView(title: courseRecommendTitle, townId: $townId)
-                .visible(appCoordinator.selectedTab == .course)
+            CourseRecommendView(
+                title: courseRecommendTitle,
+                townName: townName,
+                townId: $townId
+            )
+            .visible(appCoordinator.selectedTab == .course)
         }
     }
     
     private var tabBar: some View {
-        ZStack(alignment: .center) {
-            HStack(alignment: .center, spacing: 0) {
-                Spacer()
-                
-                ArchiveButton {
-                    appCoordinator.navigate(to: .archive(townId: townId))
-                }
+        SolplyTabBar(
+            selectedTab: Binding(
+                get: { appCoordinator.selectedTab },
+                set: { appCoordinator.switchTab(to: $0) }
+            ), bookmarkAction: {
+                print("TabBarView - bookmarkAction")
+                appCoordinator.navigate(to: .archive(townId: townId))
+            }, myPageAction: {
+                print("TabBarView - myPageAction")
+                appCoordinator.navigate(to: .myPage)
             }
-            .padding(.horizontal, 20.adjustedWidth)
-            
-            SolplyTabBar(
-                selectedTab: Binding(
-                    get: { appCoordinator.selectedTab },
-                    set: { appCoordinator.switchTab(to: $0) }
-                )
-            )
-        }
+        )
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)
     }
 }

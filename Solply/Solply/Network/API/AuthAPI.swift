@@ -12,4 +12,8 @@ protocol AuthAPI {
         provider: String,
         request: AuthLoginRequestDTO
     ) async throws -> BaseResponseBody<AuthLoginResponseDTO>
+    
+    func refreshToken(
+        refreshToken: String
+    ) async throws -> BaseResponseBody<AuthRefreshResponseDTO>
 }

@@ -144,7 +144,7 @@ extension CourseDetailView {
     }
     
     private var title: some View {
-        VStack(alignment: .leading, spacing: 4.adjustedHeight) {
+        VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             Group {
                 if fromArchive {
                     HStack(alignment: .center, spacing: 4.adjustedWidth) {

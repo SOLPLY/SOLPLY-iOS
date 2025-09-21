@@ -9,7 +9,6 @@ import Foundation
 
 enum AuthAction {
     
-    // LoginAPI
     case login(SocialLoginType)
     case loginSuccess(accessToken: String, refreshToken: String, isNewUser: Bool)
     case loginFailed(NetworkError)
