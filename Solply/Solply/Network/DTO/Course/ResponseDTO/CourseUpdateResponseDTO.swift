@@ -10,5 +10,6 @@ import Foundation
 struct CourseUpdateResponseDTO: ResponseModelType {
     let updatedCourseId: Int
     let updatedCourseName: String
+    let updatedCourseDescription: String
     let isNewCourse: Bool
 }
