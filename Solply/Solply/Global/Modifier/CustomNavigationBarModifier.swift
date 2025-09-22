@@ -342,6 +342,47 @@ extension View {
                     backgroundColor: .coreWhite
                 )
             )
+        case .myPage(let backAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: { EmptyView() },
+                    leftView: {
+                        Button {
+                            backAction()
+                        } label: {
+                            Image(.backIconIos)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    rightView: { EmptyView() },
+                    backgroundColor: .gray100
+                )
+            )
+        case .myPageTitled(let title, let backAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        Text(title)
+                            .applySolplyFont(.head_16_m)
+                    },
+                    leftView: {
+                        Button {
+                            backAction()
+                        } label: {
+                            Image(.backIconIos)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    rightView: { EmptyView() },
+                    backgroundColor: .gray100
+                )
+            )
         }
     }
 }
