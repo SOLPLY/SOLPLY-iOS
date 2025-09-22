@@ -23,6 +23,7 @@ struct CourseInformationEditTextField: View {
     
     var body: some View {
         TextField("", text: $text)
+            .configureDefaultTextField()
             .applySolplyFont(.body_16_m)
             .foregroundStyle(.gray800)
             .frame(height: 28.adjustedHeight)
@@ -35,6 +36,5 @@ struct CourseInformationEditTextField: View {
                 borderColor: .gray300,
                 borderWidth: 1
             )
-            
     }
 }
