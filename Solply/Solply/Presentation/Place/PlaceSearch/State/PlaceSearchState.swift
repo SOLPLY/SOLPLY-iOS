@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct searchState {
+struct placeSearchState {
     var placeName: String?
 }

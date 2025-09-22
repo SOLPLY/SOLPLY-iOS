@@ -8,7 +8,7 @@
 import Foundation
 
 struct PlaceSearchReducer {
-    static func reduce(state: inout searchState, action: OnClickSearchIcon) {
+    static func reduce(state: inout placeSearchState, action: OnClickSearchIcon) {
         switch action {
         case .searchPlace(let placeName):
             state.placeName = placeName

@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 final class PlaceSearchStore: ObservableObject {
-    @Published private(set) var state = searchState()
+    @Published private(set) var state = placeSearchState()
     
     func dispatch(_ action: OnClickSearchIcon) {
         PlaceSearchReducer.reduce(state: &state, action: action)
