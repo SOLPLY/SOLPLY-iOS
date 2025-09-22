@@ -12,10 +12,15 @@ struct CourseDetailState {
     
     var isLoading: Bool = false
     var isSheetPresented: Bool = false
+    
     var courseName: String = ""
     var courseDescription: String = ""
+    var oldCourseName: String = ""
+    var oldCourseDescription: String = ""
+    
     var places: [PlaceDetailInCourse] = []
     var oldPlaces: [PlaceDetailInCourse] = []
+    
     var focusedPlaceIndex: Int = -1
     var courseSaveSelected: Bool = false
     var isCourseBookmarked: Bool = false

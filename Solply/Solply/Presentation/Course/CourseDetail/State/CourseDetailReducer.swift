@@ -29,7 +29,10 @@ enum CourseDetailReducer {
         case .toggleEdting:
             if state.isEditing {
                 // TODO: - courseName, courseDescription도 비교해야함
-                if state.oldPlaces != state.places {
+                if state.oldPlaces != state.places
+                    || state.oldCourseName != state.courseName
+                    || state.oldCourseDescription != state.courseDescription
+                {
                     state.isSaveOptionPresented = true
                 } else {
                     state.isEditing = false
@@ -37,6 +40,8 @@ enum CourseDetailReducer {
             } else {
                 state.oldPlaces.removeAll()
                 state.oldPlaces = state.places
+                state.oldCourseName = state.courseName
+                state.oldCourseDescription = state.courseDescription
                 state.isEditing = true
             }
             
