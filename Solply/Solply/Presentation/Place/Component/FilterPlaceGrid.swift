@@ -90,7 +90,8 @@ struct FilterPlaceGrid: View {
                                 }
                             )
                         )
-                            .presentationDetents([.fraction(0.54)])
+                        .presentationDetents([.fraction(0.54)])
+                        .presentationCornerRadius(20)
                     }
                     
                     FilterButton(title: isSelectedEmpty ? "추가옵션" : (filteredCount > 1 ? "\(filteredFirstTag) 외 \(filteredCount - 1)개" : "\(filteredFirstTag)")) {
@@ -138,7 +139,8 @@ struct FilterPlaceGrid: View {
                                 subTagBIdList: subTagBIdList
                             ))
                         }
-                            .presentationDetents([.fraction(0.6)])
+                        .presentationDetents([.fraction(0.6)])
+                        .presentationCornerRadius(20)
                     }
                 }
                 

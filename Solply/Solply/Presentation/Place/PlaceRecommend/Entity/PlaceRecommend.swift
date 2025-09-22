@@ -19,7 +19,7 @@ extension PlaceRecommend {
     init(dto: PlaceInfoDTO) {
         self.id = dto.placeId
         self.thumbnailUrl = dto.thumbnailImageUrl
-        self.category = dto.primaryTag
+        self.category = dto.mainTag
         self.title = dto.placeName
         self.introduction = dto.introduction
     }
