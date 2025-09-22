@@ -15,7 +15,7 @@ struct CourseInformationEditBottomSheet: View {
     @State private var courseDescription: String
     
     private var dismissAction: (() -> Void)?
-    private var completeAction: ((String, String) -> Void)?
+    private var completeAction: ((CourseInformation) -> Void)?
     
     // MARK: - Initializer
     
@@ -23,7 +23,7 @@ struct CourseInformationEditBottomSheet: View {
         courseName: String,
         courseDescription: String,
         dismissAction: (() -> Void)? = nil,
-        completeAction: ((String, String) -> Void)? = nil
+        completeAction: ((CourseInformation) -> Void)? = nil
     ) {
         self.courseName = courseName
         self.courseDescription = courseDescription
@@ -104,7 +104,12 @@ extension CourseInformationEditBottomSheet {
     
     private var completeButton: some View {
         CTAMainButton(title: "완료") {
-            completeAction?(courseName, courseDescription)
+            completeAction?(
+                CourseInformation(
+                    courseName: courseName,
+                    courseDescription: courseDescription
+                )
+            )
         }
         .frame(width: 335.adjustedWidth, height: 64.adjustedHeight)
     }

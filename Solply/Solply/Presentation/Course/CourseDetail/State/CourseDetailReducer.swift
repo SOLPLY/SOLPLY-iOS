@@ -28,7 +28,7 @@ enum CourseDetailReducer {
             
         case .toggleEdting:
             if state.isEditing {
-                // TODO: - 제목, 소개도 비교
+                // TODO: - courseName, courseDescription도 비교해야함
                 if state.oldPlaces != state.places {
                     state.isSaveOptionPresented = true
                 } else {
@@ -114,6 +114,10 @@ enum CourseDetailReducer {
             
         case .showSheet(let isSheetPresented):
             state.isSheetPresented = isSheetPresented
+            
+        case .completeEditCourseInformation(let courseInformation):
+            state.courseName = courseInformation.courseName
+            state.courseDescription = courseInformation.courseDescription
             
         case .fetchCourseDetail:
             break

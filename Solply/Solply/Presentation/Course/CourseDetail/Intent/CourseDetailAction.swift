@@ -37,7 +37,8 @@ enum CourseDetailAction {
     )
     case updateUserCoordinate(latitude: Double, longitude: Double)
     
-    case showSheet(Bool)
+    case showSheet(isSheetPresented: Bool)
+    case completeEditCourseInformation(courseInformation: CourseInformation)
     
     // api
     case fetchCourseDetail(courseId: Int)

@@ -105,18 +105,17 @@ struct CourseDetailView: View {
         .sheet(
             isPresented: Binding(
                 get: { store.state.isSheetPresented },
-                set: { store.dispatch(.showSheet($0)) }
+                set: { store.dispatch(.showSheet(isSheetPresented: $0)) }
             )
         ) {
             CourseInformationEditBottomSheet(
                 courseName: store.state.courseName,
                 courseDescription: store.state.courseDescription
             ) {
-                store.dispatch(.showSheet(false))
-            } completeAction: { newCourseName, newCourseDescription in
-                store.dispatch(.showSheet(false))
-                
-                // TODO: - 코스 이름, 한 줄 소개 수정 dispatch
+                store.dispatch(.showSheet(isSheetPresented: false))
+            } completeAction: { courseInformation in
+                store.dispatch(.showSheet(isSheetPresented: false))
+                store.dispatch(.completeEditCourseInformation(courseInformation: courseInformation))
             }
             .presentationDetents([.height(640.adjustedHeight)])
             .presentationCornerRadius(20)
@@ -181,7 +180,7 @@ extension CourseDetailView {
                             .frame(width: 307.adjustedWidth, alignment: .leading)
                         
                         Button {
-                            store.dispatch(.showSheet(true))
+                            store.dispatch(.showSheet(isSheetPresented: true))
                             
                         } label: {
                             Image(.editingIcon)
