@@ -7,13 +7,11 @@
 
 import SwiftUI
 
-struct CustomBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModifier {
+struct CustomBottomSheetModifier<SheetContent: View>: ViewModifier {
     
     // MARK: - Properties
     
     private let bottomSheetType: CustomBottomSheetType
-    // TODO: - topContent 삭제하기
-    private let topContent: () -> TopContent
     private let sheetContent: () -> SheetContent
     
     @State private var dragOffset: CGFloat = 0
@@ -22,11 +20,9 @@ struct CustomBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
     
     init(
         bottomSheetType: CustomBottomSheetType,
-        @ViewBuilder topContent: @escaping () -> TopContent,
-        @ViewBuilder sheetContent: @escaping () -> SheetContent,
+        @ViewBuilder sheetContent: @escaping () -> SheetContent
     ) {
         self.bottomSheetType = bottomSheetType
-        self.topContent = topContent
         self.sheetContent = sheetContent
     }
     
@@ -48,9 +44,6 @@ struct CustomBottomSheetModifier<TopContent: View, SheetContent: View>: ViewModi
 extension CustomBottomSheetModifier {
     private var sheet: some View {
         ZStack(alignment: .top) {
-            topContent()
-                .offset(y: -60)
-            
             dragArea
             
             VStack(alignment: .center, spacing: 8.adjustedHeight){
@@ -114,16 +107,14 @@ extension CustomBottomSheetModifier {
 }
 
 extension View {
-    func customBottomSheet<TopContent: View, SheetContent: View>(
+    func customBottomSheet<SheetContent: View>(
         _ bottomSheetType: CustomBottomSheetType,
-        @ViewBuilder topContent: @escaping () -> TopContent,
         @ViewBuilder sheetContent: @escaping () -> SheetContent
     ) -> some View {
         self.modifier(
             CustomBottomSheetModifier(
                 bottomSheetType: bottomSheetType,
-                topContent: topContent,
-                sheetContent: sheetContent,
+                sheetContent: sheetContent
             )
         )
     }

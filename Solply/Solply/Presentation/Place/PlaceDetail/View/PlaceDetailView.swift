@@ -42,8 +42,6 @@ struct PlaceDetailView: View {
                     )
                 )
                 .customBottomSheet(.placeDetail) {
-//                    bottomSheetTopButtons
-                } sheetContent: {
                     bottomSheetContent
                 }
             

@@ -34,8 +34,6 @@ struct CourseDetailView: View {
         ZStack(alignment: .bottom) {
             courseMapView
                 .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
-                    // TODO: -  나중에 지울 거 ㅋㅋ
-                } sheetContent: {
                     VStack(alignment: .center, spacing: 20.adjustedHeight) {
                         title
                         
