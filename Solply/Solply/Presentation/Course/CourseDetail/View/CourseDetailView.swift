@@ -34,9 +34,7 @@ struct CourseDetailView: View {
         ZStack(alignment: .bottom) {
             courseMapView
                 .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
-//                    if !fromArchive {
-//                        bottomSheetTopButton
-//                    }
+                    // TODO: -  나중에 지울 거 ㅋㅋ
                 } sheetContent: {
                     VStack(alignment: .center, spacing: 20.adjustedHeight) {
                         title
@@ -90,6 +88,7 @@ struct CourseDetailView: View {
                         }
                     }
                     .padding(.horizontal, 20.adjustedWidth)
+                    .padding(.bottom, 16.adjustedHeight)
                 }
             }
             
@@ -105,6 +104,26 @@ struct CourseDetailView: View {
         .onChange(of: store.state.updatedCourseId) { _, newValue in
             store.dispatch(.fetchCourseDetail(courseId: newValue))
         }
+        .sheet(
+            isPresented: Binding(
+                get: { store.state.isSheetPresented },
+                set: { store.dispatch(.showSheet($0)) }
+            )
+        ) {
+            CourseInformationEditBottomSheet(
+                courseName: store.state.courseName,
+                courseDescription: store.state.courseDescription
+            ) {
+                store.dispatch(.showSheet(false))
+            } completeAction: { newCourseName, newCourseDescription in
+                store.dispatch(.showSheet(false))
+                
+                // TODO: - 코스 이름, 한 줄 소개 수정 dispatch
+            }
+            .presentationDetents([.height(640.adjustedHeight)])
+            .presentationCornerRadius(20)
+        }
+
     }
 }
 
@@ -164,12 +183,13 @@ extension CourseDetailView {
                             .frame(width: 307.adjustedWidth, alignment: .leading)
                         
                         Button {
-                            // TODO: - 제목, 소개 수정 Action
+                            store.dispatch(.showSheet(true))
+                            
                         } label: {
                             Image(.editingIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
                         }
                         .buttonStyle(.plain)
                     }
@@ -182,18 +202,19 @@ extension CourseDetailView {
                             .frame(width: 307.adjustedWidth, alignment: .leading)
                         
                         Spacer()
-                        
-                        Button {
-                            bookmarkCourse()
-                        } label: {
-                            Image(store.state.courseSaveSelected ? .bookmarkSavedIcon : .bookmarkIcon)
-                                .resizable()
-                                .renderingMode(.template)
-                                .foregroundStyle(.gray900)
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
+                        if !fromArchive {
+                            Button {
+                                bookmarkCourse()
+                            } label: {
+                                Image(store.state.courseSaveSelected ? .bookmarkSavedIcon : .bookmarkIcon)
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .foregroundStyle(.gray900)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -451,6 +472,6 @@ extension CourseDetailView {
 }
 
 #Preview {
-    CourseDetailView(townId: 1, courseId: 1, fromArchive: false)
+    CourseDetailView(townId: 1, courseId: 1, fromArchive: true)
         .environmentObject(AppCoordinator())
 }

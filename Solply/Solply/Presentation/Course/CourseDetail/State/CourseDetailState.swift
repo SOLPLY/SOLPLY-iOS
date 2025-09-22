@@ -11,6 +11,7 @@ struct CourseDetailState {
     var updatedCourseId: Int = -1
     
     var isLoading: Bool = false
+    var isSheetPresented: Bool = false
     var courseName: String = ""
     var courseDescription: String = ""
     var places: [PlaceDetailInCourse] = []

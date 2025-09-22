@@ -113,6 +113,9 @@ enum CourseDetailReducer {
             state.userLatitude = latitude
             state.userLongitude = longitude
             
+        case .showSheet(let isSheetPresented):
+            state.isSheetPresented = isSheetPresented
+            
         case .fetchCourseDetail:
             break
             
