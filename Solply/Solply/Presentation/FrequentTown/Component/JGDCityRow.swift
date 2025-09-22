@@ -27,6 +27,7 @@ struct JGDCityRow: View {
                     .foregroundStyle(.gray200)
                     .frame(height: 1.adjustedHeight)
             }
+            .contentShape(Rectangle())
         }
         .background(selectedCity == city ? .coreWhite : .gray100)
         .buttonStyle(.plain)
