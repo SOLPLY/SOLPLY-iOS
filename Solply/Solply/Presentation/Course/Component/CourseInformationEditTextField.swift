@@ -13,10 +13,22 @@ struct CourseInformationEditTextField: View {
     
     @Binding private var text: String
     
+    private let minLength: Int
+    private let maxLength: Int
+    private let validAction: ((Bool) -> Void)?
+    
     // MARK: - Initializer
     
-    init(text: Binding<String>) {
+    init(
+        text: Binding<String>,
+        minLength: Int,
+        maxLength: Int,
+        validAction: ((Bool) -> Void)? = nil
+    ) {
         self._text = text
+        self.minLength = minLength
+        self.maxLength = maxLength
+        self.validAction = validAction
     }
     
     // MARK: - Body
@@ -36,5 +48,12 @@ struct CourseInformationEditTextField: View {
                 borderColor: .gray300,
                 borderWidth: 1
             )
+            .lengthCheck(
+                text: $text,
+                minLength: minLength,
+                maxLength: maxLength
+            ) { isTextLengthValid in
+                validAction?(isTextLengthValid)
+            }
     }
 }

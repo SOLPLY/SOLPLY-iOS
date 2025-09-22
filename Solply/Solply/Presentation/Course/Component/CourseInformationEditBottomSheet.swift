@@ -13,9 +13,15 @@ struct CourseInformationEditBottomSheet: View {
     
     @State private var courseName: String
     @State private var courseDescription: String
+    @State private var isCourseNameValid: Bool = true
+    @State private var isCourseDescriptionValid: Bool = true
     
     private var dismissAction: (() -> Void)?
     private var completeAction: ((CourseInformation) -> Void)?
+    private let minCourseNameLength: Int = 1
+    private let maxCourseNameLenght: Int = 18
+    private let minCourseDescriptionLength: Int = 0
+    private let maxCourseDescriptionLength: Int = 20
     
     // MARK: - Initializer
     
@@ -85,7 +91,14 @@ extension CourseInformationEditBottomSheet {
                 .foregroundStyle(.gray900)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            CourseInformationEditTextField(text: $courseName)
+            CourseInformationEditTextField(
+                text: $courseName,
+                minLength: minCourseNameLength,
+                maxLength: maxCourseNameLenght
+            ) { isCourseNameValid in
+                self.isCourseNameValid = isCourseNameValid
+                print("isCourseNameValid: \(isCourseNameValid)")
+            }
         }
         .padding(.horizontal, 16.adjustedWidth)
     }
@@ -97,13 +110,23 @@ extension CourseInformationEditBottomSheet {
                 .foregroundStyle(.gray900)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            CourseInformationEditTextField(text: $courseDescription)
+            CourseInformationEditTextField(
+                text: $courseDescription,
+                minLength: minCourseDescriptionLength,
+                maxLength: maxCourseDescriptionLength
+            ) { isCourseDescriptionValid in
+                self.isCourseDescriptionValid = isCourseDescriptionValid
+                print("isCourseDescriptionValid: \(isCourseDescriptionValid)")
+            }
         }
         .padding(.horizontal, 16.adjustedWidth)
     }
     
     private var completeButton: some View {
-        CTAMainButton(title: "완료") {
+        CTAMainButton(
+            title: "완료",
+            isEnabled: isCourseNameValid && isCourseDescriptionValid
+        ) {
             completeAction?(
                 CourseInformation(
                     courseName: courseName,
