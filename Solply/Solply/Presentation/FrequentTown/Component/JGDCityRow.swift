@@ -8,10 +8,27 @@
 import SwiftUI
 
 struct JGDCityRow: View {
-    @Binding var selectedCity: String?
-    @Binding var selectedTown: String?
-    let city: String
+    
+    // MARK: - Properties
+    
+    @Binding private var selectedCity: String?
+    @Binding private var selectedTown: String?
+    private let city: String
 
+    // MARK: - Initializer
+    
+    init(
+        selectedCity: Binding<String?>,
+        selectedTown: Binding<String?>,
+        city: String
+    ) {
+        self._selectedCity = selectedCity
+        self._selectedTown = selectedTown
+        self.city = city
+    }
+    
+    // MARK: - Body
+    
     var body: some View {
         Button {
             self.selectedCity = city

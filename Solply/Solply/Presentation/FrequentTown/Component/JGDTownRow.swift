@@ -8,9 +8,24 @@
 import SwiftUI
 
 struct JGDTownRow: View {
-    @Binding var selectedTown: String?
-    let town: String
+    
+    // MARK: - Properties
+    
+    @Binding private var selectedTown: String?
+    private let town: String
 
+    // MARK: - Initializer
+    
+    init(
+        selectedTown: Binding<String?>,
+        town: String
+    ) {
+        self._selectedTown = selectedTown
+        self.town = town
+    }
+    
+    // MARK: - Body
+    
     var body: some View {
         Button {
             self.selectedTown = town
@@ -18,8 +33,16 @@ struct JGDTownRow: View {
             ZStack(alignment: .bottom) {
                 HStack(alignment: .center, spacing: 0) {
                     Text(town)
-                        .applySolplyFont(selectedTown == nil ? .body_16_r : selectedTown == town ? .body_16_m : .body_16_r)
-                        .foregroundStyle(selectedTown == nil ? .coreBlack : selectedTown == town ? .coreBlack : .gray600)
+                        .applySolplyFont(
+                            selectedTown == nil
+                            ? .body_16_r : selectedTown == town
+                            ? .body_16_m : .body_16_r
+                        )
+                        .foregroundStyle(
+                            selectedTown == nil
+                            ? .coreBlack : selectedTown == town
+                            ? .coreBlack : .gray600
+                        )
                         .frame(height: 46.adjustedHeight)
                     
                     Spacer()
@@ -33,7 +56,7 @@ struct JGDTownRow: View {
                             .padding(.trailing, 2.adjustedWidth)
                     }
                 }
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 16.adjustedWidth)
                 
                 Rectangle()
                     .foregroundStyle(.gray200)
