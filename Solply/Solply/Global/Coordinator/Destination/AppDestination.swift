@@ -30,7 +30,7 @@ extension AppDestination {
         case .courseDetail(let townId, let courseId, let fromArchive):
             CourseDetailView(townId: townId, courseId: courseId, fromArchive: fromArchive)
         case .frequentTown:
-            FrequentTownView()
+            JGDView()
         case .reports:
             ReportsView()
         case .myPage:
