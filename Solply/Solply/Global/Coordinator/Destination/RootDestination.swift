@@ -12,6 +12,7 @@ enum RootDestination: Hashable {
     case auth
     case onboarding
     case tabBar
+    case myPage
 }
 
 extension RootDestination {
@@ -26,6 +27,8 @@ extension RootDestination {
             OnboardingView()
         case .tabBar:
             TabBarView()
+        case .myPage:
+            MyPageView()
         }
     }
 }
