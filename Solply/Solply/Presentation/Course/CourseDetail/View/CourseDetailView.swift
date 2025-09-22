@@ -338,6 +338,7 @@ extension CourseDetailView {
         .buttonStyle(.plain)
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.trailing, 16.adjustedWidth)
+        .padding(.bottom, 16.adjustedHeight)
     }
     
     private var deleteArea: some View {

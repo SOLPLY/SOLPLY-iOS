@@ -100,10 +100,11 @@ extension CustomBottomSheetModifier {
                 let maxThreshold = -bottomSheetType.maxThreshold
                 
                 withAnimation(.easeInOut(duration: 0.25)) {
-                    if fromDefault > minThreshold {
-                        dragOffset = bottomSheetType.minOffset - bottomSheetType.defaultOffset
-                    } else if fromDefault < maxThreshold {
+                    if fromDefault < maxThreshold {
                         dragOffset = bottomSheetType.maxOffset - bottomSheetType.defaultOffset
+                    } else if fromDefault > minThreshold {
+                        // TODO: - 추후 바텀시트를 내릴 수 있기 떄문에 남겨놓음
+                        dragOffset = 0
                     } else {
                         dragOffset = 0
                     }
