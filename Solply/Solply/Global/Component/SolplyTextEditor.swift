@@ -47,7 +47,7 @@ struct SolplyTextEditor: View {
                     .padding(.vertical, 16.adjustedHeight)
             }
         }
-        .frame(width: 335.adjustedWidth, height: 156.adjustedWidth)
+        .frame(width: 335.adjustedWidth, height: 156.adjustedHeight)
         .background(.coreWhite)
         .addBorder(
             .roundedRectangle(cornerRadius: 20),

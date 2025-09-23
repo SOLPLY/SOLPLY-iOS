@@ -26,7 +26,7 @@ enum CourseDetailReducer {
         case .requestFindDirection:
             break
             
-        case .toggleEdting:
+        case .toggleEditing:
             if state.isEditing {
                 if state.oldPlaces != state.places
                     || state.oldCourseName != state.courseName
