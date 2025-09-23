@@ -28,7 +28,6 @@ enum CourseDetailReducer {
             
         case .toggleEdting:
             if state.isEditing {
-                // TODO: - courseName, courseDescription도 비교해야함
                 if state.oldPlaces != state.places
                     || state.oldCourseName != state.courseName
                     || state.oldCourseDescription != state.courseDescription
