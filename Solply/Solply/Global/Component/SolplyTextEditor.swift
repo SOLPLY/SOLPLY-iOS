@@ -30,10 +30,9 @@ struct SolplyTextEditor: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             TextEditor(text: $text)
+                .configureDefaultTextEditor()
                 .applySolplyFont(.body_14_r)
                 .foregroundStyle(.coreBlack)
-                .textInputAutocapitalization(.none)
-                .autocorrectionDisabled()
                 .padding(.horizontal, 10.adjustedWidth)
                 .padding(.vertical, 7.adjustedHeight)
                 .onChange(of: text) { _, newValue in
@@ -47,9 +46,8 @@ struct SolplyTextEditor: View {
                     .padding(.horizontal, 16.adjustedWidth)
                     .padding(.vertical, 16.adjustedHeight)
             }
-            
         }
-        .frame(width: 335.adjustedWidth, height: 156.adjustedWidth)
+        .frame(width: 335.adjustedWidth, height: 156.adjustedHeight)
         .background(.coreWhite)
         .addBorder(
             .roundedRectangle(cornerRadius: 20),
