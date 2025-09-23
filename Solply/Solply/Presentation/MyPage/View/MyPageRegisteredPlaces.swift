@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MyPageRegisteredPlaces: View {
-    
+
     // MARK: - Properties
     
     private let places: [Place]
@@ -16,7 +16,10 @@ struct MyPageRegisteredPlaces: View {
 
     // MARK: - Initializer
     
-    init(places: [Place], emptyText: String) {
+    init(
+        places: [Place],
+        emptyText: String = "등록한 장소가 없어요"
+    ) {
         self.places = places
         self.emptyText = emptyText
     }
@@ -30,16 +33,12 @@ struct MyPageRegisteredPlaces: View {
                 .foregroundColor(.coreBlack)
 
             if places.isEmpty {
-                Text(emptyText.isEmpty ? "등록한 장소가 없어요" : emptyText)
+                Text(emptyText)
                     .applySolplyFont(.body_16_r)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.gray400)
-                    .frame(
-                        maxWidth: .infinity,
-                        minHeight: 40.adjustedHeight,
-                        maxHeight: 40.adjustedHeight,
-                        alignment: .center
-                    )
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .frame(height: 40.adjustedHeight)
             } else {
                 // TODO: 나중에 API 연결하면서 손 볼 예정
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -70,7 +69,6 @@ struct MyPageRegisteredPlaces: View {
 
 #Preview {
     MyPageRegisteredPlaces(
-        places: [],
-        emptyText: "등록한 장소가 없어요"
+        places: []
     )
 }

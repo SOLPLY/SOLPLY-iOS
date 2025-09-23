@@ -10,21 +10,21 @@ import SwiftUI
 struct MyPageSettings: View {
     
     // MARK: - Properties
-    
+
     private let loginProvider: String
     private let appVersion: String
-    private let onTapCustomerCenter: () -> Void
-    private let onTapLogout: () -> Void
-    private let onTapDeleteAccount: () -> Void
-    
+    private let onTapCustomerCenter: (() -> Void)?
+    private let onTapLogout: (() -> Void)?
+    private let onTapDeleteAccount: (() -> Void)?
+
     // MARK: - Initializer
-    
+
     init(
         loginProvider: String,
         appVersion: String,
-        onTapCustomerCenter: @escaping () -> Void,
-        onTapLogout: @escaping () -> Void,
-        onTapDeleteAccount: @escaping () -> Void
+        onTapCustomerCenter: (() -> Void)? = nil,
+        onTapLogout: (() -> Void)? = nil,
+        onTapDeleteAccount: (() -> Void)? = nil
     ) {
         self.loginProvider = loginProvider
         self.appVersion = appVersion
@@ -50,16 +50,14 @@ struct MyPageSettings: View {
                 title: "로그인 정보",
                 trailing: Text(loginProvider)
                     .applySolplyFont(.body_16_r)
-                    .foregroundColor(.gray600),
-                action: {}
+                    .foregroundColor(.gray600)
             )
 
             row(
                 title: "앱 버전",
                 trailing: Text(appVersion)
                     .applySolplyFont(.body_16_r)
-                    .foregroundColor(.gray600),
-                action: {}
+                    .foregroundColor(.gray600)
             )
 
             row(title: "로그아웃", action: onTapLogout)

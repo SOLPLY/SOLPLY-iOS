@@ -10,10 +10,12 @@ import SwiftUI
 struct MyPageView: View {
 
     // MARK: - Properties
+    
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = MyPageStore()
 
     // MARK: - Body
+    
     var body: some View {
         ZStack(alignment: .top) {
             Color(.gray100)
@@ -24,8 +26,7 @@ struct MyPageView: View {
                     header
 
                     MyPageRegisteredPlaces(
-                        places: [], // TODO: API 연결 시 실제 리스트로 교체
-                        emptyText: "등록한 장소가 없어요"
+                        places: [] // TODO: API 연결 시 실제 리스트로 교체
                     )
                     .padding(.top, 44.adjustedHeight)
 
