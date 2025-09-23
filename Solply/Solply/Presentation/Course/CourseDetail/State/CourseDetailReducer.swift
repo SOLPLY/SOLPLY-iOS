@@ -26,21 +26,26 @@ enum CourseDetailReducer {
         case .requestFindDirection:
             break
             
-        case .toggleEdting:
-            if state.isEditing {
-                if state.oldPlaces != state.places {
-                    state.isSaveOptionPresented = true
-                } else {
-                    state.isEditing = false
-                }
-            } else {
-                state.oldPlaces = state.places
-                state.isEditing = true
-            }
-            
+        case .startEditing:
             for index in state.places.indices {
                 state.places[index].isFocused = false
                 state.focusedPlaceIndex = -1
+            }
+            
+            state.oldPlaces.removeAll()
+            state.oldPlaces = state.places
+            state.oldCourseName = state.courseName
+            state.oldCourseDescription = state.courseDescription
+            state.isEditing = true
+            
+        case .endEditing:
+            if state.oldPlaces != state.places
+                || state.oldCourseName != state.courseName
+                || state.oldCourseDescription != state.courseDescription
+            {
+                state.isSaveOptionPresented = true
+            } else {
+                state.isEditing = false
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
@@ -94,13 +99,11 @@ enum CourseDetailReducer {
             state.isAlertPresented = false
             
         case .saveCourseToCurrent:
-            // TODO: 지금 코스에 추가 API (Effect에서)
             state.isSaveOptionPresented = false
             state.isEditing = false
             state.oldPlaces.removeAll()
             
         case .saveCourseAsNew:
-            // TODO: 새코스에 추가 API (Effect에서)
             state.isSaveOptionPresented = false
             state.isEditing = false
             state.oldPlaces.removeAll()
@@ -111,6 +114,13 @@ enum CourseDetailReducer {
         case .updateUserCoordinate(let latitude, let longitude):
             state.userLatitude = latitude
             state.userLongitude = longitude
+            
+        case .showSheet(let isSheetPresented):
+            state.isSheetPresented = isSheetPresented
+            
+        case .completeEditCourseInformation(let courseInformation):
+            state.courseName = courseInformation.courseName
+            state.courseDescription = courseInformation.courseDescription
             
         case .fetchCourseDetail:
             break

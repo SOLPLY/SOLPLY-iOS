@@ -24,7 +24,7 @@ struct PlaceDetailMapView: UIViewRepresentable {
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
         left: 0,
-        bottom: 430.adjustedHeight,
+        bottom: 450.adjustedHeight,
         right: 0
     )
     
@@ -85,7 +85,7 @@ private extension PlaceDetailMapView {
         mapView.contentInset = contentInset
         mapView.isZoomGestureEnabled = true
         mapView.positionMode = .disabled
-        mapView.logoAlign = .rightTop
+        mapView.logoAlign = .rightBottom
         mapView.logoInteractionEnabled = true
         return mapView
     }

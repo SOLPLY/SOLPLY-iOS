@@ -65,7 +65,7 @@ extension CourseDetailMapView {
         mapView.contentInset = contentInset
         mapView.isZoomGestureEnabled = true
         mapView.positionMode = .disabled
-        mapView.logoAlign = .rightTop
+        mapView.logoAlign = .rightBottom
         mapView.logoInteractionEnabled = true
         
         return mapView

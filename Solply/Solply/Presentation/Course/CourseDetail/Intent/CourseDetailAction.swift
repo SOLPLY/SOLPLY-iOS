@@ -11,7 +11,9 @@ enum CourseDetailAction {
     case toggleSaveCourse
     case focusPlace(index: Int)
     case toggleSavePlace(index: Int)
-    case toggleEdting
+
+    case startEditing
+    case endEditing
     
     case startDragging(draggedPlace: PlaceDetailInCourse)
     case whileDragging(from: Int, to: Int)
@@ -36,6 +38,9 @@ enum CourseDetailAction {
         destinationName: String
     )
     case updateUserCoordinate(latitude: Double, longitude: Double)
+    
+    case showSheet(isSheetPresented: Bool)
+    case completeEditCourseInformation(courseInformation: CourseInformation)
     
     // api
     case fetchCourseDetail(courseId: Int)
