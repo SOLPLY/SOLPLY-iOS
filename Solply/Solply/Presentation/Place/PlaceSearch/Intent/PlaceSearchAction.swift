@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum OnClickSearchIcon {
+enum PlaceSearchAction {
     case searchPlace(placeName: String)
 }
