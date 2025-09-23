@@ -58,7 +58,7 @@ struct CourseRecommendView: View {
                 appCoordinator.navigate(to: .frequentTown)
             },
             settingAction: {
-                
+                appCoordinator.navigate(to: .placeSearch)
             }
         ))
         .onChange(of: townId) { _, townId in
