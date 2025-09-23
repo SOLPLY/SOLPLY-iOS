@@ -361,7 +361,7 @@ extension View {
                     backgroundColor: .gray100
                 )
             )
-        case .myPageTitled(let title, let backAction):
+        case .myPageEdit(let title, let backAction):
             self.modifier(
                 CustomNavigationBarModifier(
                     centerView: {

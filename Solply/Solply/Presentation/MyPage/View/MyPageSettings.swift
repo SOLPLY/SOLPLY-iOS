@@ -1,5 +1,5 @@
 //
-//  MyPageSettingsSection.swift
+//  MyPageSettings.swift
 //  Solply
 //
 //  Created by sun on 9/20/25.
@@ -7,21 +7,40 @@
 
 import SwiftUI
 
-struct MyPageSettingsSection: View {
+struct MyPageSettings: View {
     
-    let loginProvider: String
-    let appVersion: String
-    let onTapCustomerCenter: () -> Void
-    let onTapLogout: () -> Void
-    let onTapDeleteAccount: () -> Void
-
+    // MARK: - Properties
+    
+    private let loginProvider: String
+    private let appVersion: String
+    private let onTapCustomerCenter: () -> Void
+    private let onTapLogout: () -> Void
+    private let onTapDeleteAccount: () -> Void
+    
+    // MARK: - Initializer
+    
+    init(
+        loginProvider: String,
+        appVersion: String,
+        onTapCustomerCenter: @escaping () -> Void,
+        onTapLogout: @escaping () -> Void,
+        onTapDeleteAccount: @escaping () -> Void
+    ) {
+        self.loginProvider = loginProvider
+        self.appVersion = appVersion
+        self.onTapCustomerCenter = onTapCustomerCenter
+        self.onTapLogout = onTapLogout
+        self.onTapDeleteAccount = onTapDeleteAccount
+    }
+    
+    // MARK: - Body
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("계정 설정")
                 .applySolplyFont(.body_16_m)
                 .foregroundColor(.coreBlack)
-                .padding(.leading, 16.adjustedWidth)
-                .padding(.trailing, 16.adjustedWidth)
+                .padding(.horizontal, 16.adjustedWidth)
                 .padding(.top, 16.adjustedHeight)
                 .padding(.bottom, 12.adjustedHeight)
 
@@ -51,12 +70,15 @@ struct MyPageSettingsSection: View {
     }
 
     // MARK: - Row
+    
     private func row(
         title: String,
         trailing: some View = EmptyView(),
-        action: @escaping () -> Void
+        action: (() -> Void)? = nil
     ) -> some View {
-        Button(action: action) {
+        Button {
+            action?()
+        } label: {
             HStack(alignment: .center, spacing: 0) {
                 Text(title)
                     .applySolplyFont(.body_16_r)
@@ -66,7 +88,11 @@ struct MyPageSettingsSection: View {
                 trailing
             }
             .padding(.horizontal, 16.adjustedWidth)
-            .frame(maxWidth: .infinity, minHeight: 48.adjustedHeight, alignment: .leading)
+            .frame(
+                maxWidth: .infinity,
+                minHeight: 48.adjustedHeight,
+                alignment: .leading
+            )
         }
         .buttonStyle(.plain)
         .contentShape(Rectangle())
@@ -76,10 +102,11 @@ struct MyPageSettingsSection: View {
             alignment: .bottom
         )
     }
+
 }
 
 #Preview {
-    MyPageSettingsSection(
+    MyPageSettings(
         loginProvider: "카카오 로그인",
         appVersion: "v1.0.0",
         onTapCustomerCenter: {},

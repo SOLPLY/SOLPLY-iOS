@@ -23,13 +23,13 @@ struct MyPageView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     header
 
-                    MyPageRegisteredPlacesSection(
+                    MyPageRegisteredPlaces(
                         places: [], // TODO: API 연결 시 실제 리스트로 교체
                         emptyText: "등록한 장소가 없어요"
                     )
                     .padding(.top, 44.adjustedHeight)
 
-                    MyPageSettingsSection(
+                    MyPageSettings(
 //                        loginProvider: store.state.loginProvider,
                         loginProvider: "카카오 로그인",
                         appVersion: "v" + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"),

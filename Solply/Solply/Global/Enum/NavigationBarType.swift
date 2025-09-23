@@ -18,5 +18,5 @@ enum NavigationBarType {
     case frequentTown(backAction: () -> Void)
     case reports(backAction: () -> Void)
     case myPage(backAction: () -> Void)
-    case myPageTitled(title: String, backAction: () -> Void)
+    case myPageEdit(title: String, backAction: () -> Void)
 }

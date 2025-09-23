@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct MyPageState {
     var nickname: String = ""
     var loginProvider: String = ""

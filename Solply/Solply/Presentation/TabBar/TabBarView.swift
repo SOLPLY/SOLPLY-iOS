@@ -73,6 +73,9 @@ extension TabBarView {
                 townId: $townId
             )
             .visible(appCoordinator.selectedTab == .course)
+            
+            MyPageView()
+                .visible(appCoordinator.selectedTab == .myPage)
         }
     }
     
@@ -86,7 +89,7 @@ extension TabBarView {
                 appCoordinator.navigate(to: .archive(townId: townId))
             }, myPageAction: {
                 print("TabBarView - myPageAction")
-                appCoordinator.navigate(to: .myPage)
+                appCoordinator.switchTab(to: .myPage)
             }
         )
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)

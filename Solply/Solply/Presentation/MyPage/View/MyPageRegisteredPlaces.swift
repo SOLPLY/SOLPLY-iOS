@@ -1,5 +1,5 @@
 //
-//  MyPageRegisteredPlacesSection.swift
+//  MyPageRegisteredPlaces.swift
 //  Solply
 //
 //  Created by sun on 9/20/25.
@@ -7,10 +7,22 @@
 
 import SwiftUI
 
-struct MyPageRegisteredPlacesSection: View {
-    let places: [Place]
-    let emptyText: String
+struct MyPageRegisteredPlaces: View {
+    
+    // MARK: - Properties
+    
+    private let places: [Place]
+    private let emptyText: String
 
+    // MARK: - Initializer
+    
+    init(places: [Place], emptyText: String) {
+        self.places = places
+        self.emptyText = emptyText
+    }
+
+    // MARK: - Body
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16.adjustedHeight) {
             Text("내가 등록한 장소")
@@ -57,7 +69,7 @@ struct MyPageRegisteredPlacesSection: View {
 }
 
 #Preview {
-    MyPageRegisteredPlacesSection(
+    MyPageRegisteredPlaces(
         places: [],
         emptyText: "등록한 장소가 없어요"
     )
