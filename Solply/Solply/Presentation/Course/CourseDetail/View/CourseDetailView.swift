@@ -82,7 +82,7 @@ struct CourseDetailView: View {
                         isEnabled: true
                     ) {
                         withAnimation(.easeInOut(duration: 0.2)) {
-                            store.dispatch(.toggleEditing)
+                            store.dispatch(.endEditing)
                         }
                     }
                     .padding(.horizontal, 20.adjustedWidth)
@@ -319,7 +319,7 @@ extension CourseDetailView {
     private var editButton: some View {
         Button {
             withAnimation(.easeInOut(duration: 0.2)) {
-                store.dispatch(.toggleEditing)
+                store.dispatch(.startEditing)
             }
         } label: {
             Circle()

@@ -26,27 +26,26 @@ enum CourseDetailReducer {
         case .requestFindDirection:
             break
             
-        case .toggleEditing:
-            if state.isEditing {
-                if state.oldPlaces != state.places
-                    || state.oldCourseName != state.courseName
-                    || state.oldCourseDescription != state.courseDescription
-                {
-                    state.isSaveOptionPresented = true
-                } else {
-                    state.isEditing = false
-                }
-            } else {
-                state.oldPlaces.removeAll()
-                state.oldPlaces = state.places
-                state.oldCourseName = state.courseName
-                state.oldCourseDescription = state.courseDescription
-                state.isEditing = true
-            }
-            
+        case .startEditing:
             for index in state.places.indices {
                 state.places[index].isFocused = false
                 state.focusedPlaceIndex = -1
+            }
+            
+            state.oldPlaces.removeAll()
+            state.oldPlaces = state.places
+            state.oldCourseName = state.courseName
+            state.oldCourseDescription = state.courseDescription
+            state.isEditing = true
+            
+        case .endEditing:
+            if state.oldPlaces != state.places
+                || state.oldCourseName != state.courseName
+                || state.oldCourseDescription != state.courseDescription
+            {
+                state.isSaveOptionPresented = true
+            } else {
+                state.isEditing = false
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
