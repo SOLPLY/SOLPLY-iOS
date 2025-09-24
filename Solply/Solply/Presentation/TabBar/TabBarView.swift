@@ -120,4 +120,5 @@ extension TabBarView {
 #Preview {
     TabBarView()
         .environmentObject(AppCoordinator())
+        .environmentObject(ToastManager())
 }
