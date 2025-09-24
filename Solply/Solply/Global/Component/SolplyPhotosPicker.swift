@@ -12,6 +12,7 @@ struct SolplyPhotosPicker: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var alertManager: AlertManager
     @State private var isPickerPresented: Bool = false
     @State private var isAlertPresented: Bool = false
     @State private var selectedItems: [PhotosPickerItem] = []
@@ -39,16 +40,6 @@ struct SolplyPhotosPicker: View {
                     emptyPhotoCell
                 }
             }
-        }
-        .alert("사진 접근 제한 걸림 ㅋㅋㅠㅠ", isPresented: $isAlertPresented) {
-            Button("취소", role: .cancel) {
-                print("확인 눌림")
-            }
-            Button("설정", role: .destructive) {
-                print("설정 눌림")
-            }
-        } message: {
-            Text("접근 제한을 풀ㅇㅋㅋ")
         }
         .photosPicker(
             isPresented: $isPickerPresented,
@@ -130,17 +121,30 @@ extension SolplyPhotosPicker {
 extension SolplyPhotosPicker {
     private func requestPhotoAuthorization() {
         PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-            switch status {
-            case .authorized, .limited:
-                isPickerPresented = true
-                
-            case .notDetermined, .restricted, .denied:
-                isPickerPresented = false
-                isAlertPresented = true
-                
-            @unknown default:
-                isPickerPresented = false
+            DispatchQueue.main.async {
+                switch status {
+                case .authorized, .limited:
+                    isPickerPresented = true
+                    
+                case .notDetermined, .restricted, .denied:
+                    isPickerPresented = false
+                    showAlert()
+                    
+                @unknown default:
+                    isPickerPresented = false
+                    showAlert()
+                }
             }
+        }
+    }
+    
+    private func showAlert() {
+        alertManager.showAlert(alertType: .photoPermissionDenied, onCancel: nil) {
+            guard let url = URL(string: UIApplication.openSettingsURLString),
+                  UIApplication.shared.canOpenURL(url) else { return }
+            
+            
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 }
