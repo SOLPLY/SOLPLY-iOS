@@ -5,8 +5,8 @@
 //  Created by 김승원 on 7/17/25.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
 
 final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
@@ -31,7 +31,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         case .authorizedWhenInUse, .authorizedAlways:
             locationManager.startUpdatingLocation()
         default:
-            break // 권한 거부 등
+            break
         }
     }
 

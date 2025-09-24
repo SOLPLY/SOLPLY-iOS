@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import CoreLocation
-
 struct TabBarView: View {
     
     // MARK: - Properties
