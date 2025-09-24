@@ -59,6 +59,7 @@ struct CustomAlertModifier: ViewModifier {
                                             .frame(width: 114.adjustedWidth, height: 48.adjustedHeight)
                                             .foregroundStyle(.gray900)
                                     }
+                                    .buttonStyle(.plain)
                                     
                                     Button {
                                         onConfirm?()
@@ -70,6 +71,7 @@ struct CustomAlertModifier: ViewModifier {
                                             .background(.gray900)
                                             .capsuleClipped()
                                     }
+                                    .buttonStyle(.plain)
                                 }
                             }
                             .frame(width: 260.adjustedWidth, height: 145.adjustedHeight)

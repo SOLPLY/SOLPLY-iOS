@@ -13,6 +13,7 @@ struct SolplyPhotosPicker: View {
     // MARK: - Properties
     
     @State private var isPickerPresented: Bool = false
+    @State private var isAlertPresented: Bool = false
     @State private var selectedItems: [PhotosPickerItem] = []
     @State private var selectedImages: [UIImage] = []
     
@@ -38,6 +39,16 @@ struct SolplyPhotosPicker: View {
                     emptyPhotoCell
                 }
             }
+        }
+        .alert("사진 접근 제한 걸림 ㅋㅋㅠㅠ", isPresented: $isAlertPresented) {
+            Button("취소", role: .cancel) {
+                print("확인 눌림")
+            }
+            Button("설정", role: .destructive) {
+                print("설정 눌림")
+            }
+        } message: {
+            Text("접근 제한을 풀ㅇㅋㅋ")
         }
         .photosPicker(
             isPresented: $isPickerPresented,
@@ -84,7 +95,7 @@ extension SolplyPhotosPicker {
     
     private var addPhotoCell: some View {
         Button {
-            isPickerPresented = true
+            requestPhotoAuthorization()
         } label: {
             Rectangle()
                 .frame(width: 72.adjustedWidth, height: 72.adjustedHeight)
@@ -102,7 +113,7 @@ extension SolplyPhotosPicker {
     
     private func selectedPhotoCell(_ image: UIImage) -> some View {
         Button {
-            isPickerPresented = true
+            requestPhotoAuthorization()
         } label: {
             Image(uiImage: image)
                 .resizable()
@@ -111,6 +122,26 @@ extension SolplyPhotosPicker {
                 .cornerRadius(12, corners: .allCorners)
         }
         .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Functions
+
+extension SolplyPhotosPicker {
+    private func requestPhotoAuthorization() {
+        PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+            switch status {
+            case .authorized, .limited:
+                isPickerPresented = true
+                
+            case .notDetermined, .restricted, .denied:
+                isPickerPresented = false
+                isAlertPresented = true
+                
+            @unknown default:
+                isPickerPresented = false
+            }
+        }
     }
 }
 
