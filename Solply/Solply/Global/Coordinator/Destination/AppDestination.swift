@@ -37,8 +37,7 @@ extension AppDestination {
         case .reports:
             ReportsView()
         case .myPage:
-            // TODO: - 마이페이지 뷰 연결
-            Text("MyPageView")
+            MyPageView()
         }
     }
 }
