@@ -37,7 +37,5 @@
 		<string>Pretendard-Regular.otf</string>
 		<string>Pretendard-Medium.otf</string>
 	</array>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>사진점 보여줘잉~</string>
 </dict>
 </plist>
