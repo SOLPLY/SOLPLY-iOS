@@ -18,7 +18,7 @@ struct RootView: View {
                 .navigationDestination(for: AppDestination.self) { $0.build() }
         }
         .customAlert(alertManager: alertManager)
-        .toast(toastManager: toastManager)
+        .customToast(toastManager: toastManager)
         .environmentObject(alertManager)
         .environmentObject(toastManager)
         .environmentObject(appCoordinator)
