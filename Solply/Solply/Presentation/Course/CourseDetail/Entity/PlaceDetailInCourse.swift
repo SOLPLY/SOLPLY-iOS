@@ -1,5 +1,5 @@
 //
-//  PlaceDetail.swift
+//  PlaceDetailInCourse.swift
 //  Solply
 //
 //  Created by 김승원 on 7/16/25.

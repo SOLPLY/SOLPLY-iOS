@@ -58,7 +58,7 @@ enum PlaceDetailReducer {
             
         case .placeDetailFetched(let placeDetail):
             state.isBookmarked = placeDetail.isBookmarked
-            state.primaryTag = placeDetail.primaryTag
+            state.primaryTag = placeDetail.mainTag
             state.placeName = placeDetail.placeName
             state.introduction = placeDetail.introduction
             

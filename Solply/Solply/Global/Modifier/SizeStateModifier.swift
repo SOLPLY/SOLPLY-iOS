@@ -21,6 +21,7 @@ import SwiftUI
 /// ```
 struct SizeStateModifier: ViewModifier {
     @Binding var size: CGSize
+    
     func body(content: Content) -> some View {
         return content
             .background(

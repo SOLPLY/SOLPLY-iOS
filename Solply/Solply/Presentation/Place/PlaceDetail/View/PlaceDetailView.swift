@@ -41,15 +41,8 @@ struct PlaceDetailView: View {
                         }
                     )
                 )
-                .customBottomSheet(
-                    .placeDetail,
-                    isBookmarked: store.state.isBookmarked
-                ) {
-                    bottomSheetTopButtons
-                } sheetContent: {
+                .customBottomSheet(.placeDetail) {
                     bottomSheetContent
-                } bookmarkAction: {
-                    bookmarkPlace()
                 }
             
             if store.state.selectedCourseIndex != -1 {
@@ -169,17 +162,29 @@ extension PlaceDetailView {
                     appCoordinator.switchTab(to: .course)
                 }
                 .transition(.move(edge: .trailing))
+                
             } else {
                 PlaceInformationView(
                     primaryTag: store.state.primaryTag,
                     placeName: store.state.placeName,
+                    isBookmarked: store.state.isBookmarked,
                     introduction: store.state.introduction,
                     imageURLs: store.state.imageURLs,
                     address: store.state.address,
                     contactNumber: store.state.contactNumber,
                     openingHours: store.state.openingHours,
                     snsLink: store.state.snsLink
-                ) { text in
+                ) {
+                    bookmarkPlace()
+                } findDirectionAction: {
+                    store.dispatch(.requestFindDirection)
+                } addPlaceToCourseAction: {
+                    store.dispatch(.toggleAddToCourse)
+                    
+                    if store.state.selectedCourseIndex != -1 {
+                        store.dispatch(.selectCourseToAdd(index: -1))
+                    }
+                } copyAction: { text in
                     store.dispatch(.copyToClipboard(text: text))
                     store.dispatch(
                         .showToastView(
@@ -193,7 +198,6 @@ extension PlaceDetailView {
                 } reportsAction: {
                     appCoordinator.navigate(to: .reports)
                 }
-                .padding(.top, 8.adjustedHeight)
                 .transition(.move(edge: .leading))
             }
         }
