@@ -60,7 +60,7 @@ class ToastManager: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: workItem!)
     }
     
-    func hideToast() {
+    private func hideToast() {
         workItem?.cancel()
         
         withAnimation(.easeInOut(duration: 0.3)) {

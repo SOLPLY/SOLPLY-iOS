@@ -37,7 +37,7 @@ class AlertManager: ObservableObject {
         self.isPresented = true
     }
     
-    func dismiss() {
+    private func dismiss() {
         self.isPresented = false
         self.onCancel = nil
         self.onConfirm = nil
