@@ -11,4 +11,7 @@ enum ReportsAction {
     case selectReportsType(reportsType: ReportsType)
     case changeReportsStep(reportsStep: ReportsStep)
     case editReportsContent(reportsContent: String)
+    
+    case startLottie
+    case endLottie
 }

@@ -48,8 +48,14 @@ struct ReportsView: View {
                 }
             )
         )
+        .ignoresSafeArea(.keyboard)
         .onTapGesture {
             hideKeyboard()
+        }
+        .onChange(of: store.state.shouldGoBack) { _, newValue in
+            if newValue {
+                appCoordinator.goBack()
+            }
         }
     }
 }
