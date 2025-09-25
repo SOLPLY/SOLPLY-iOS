@@ -14,21 +14,17 @@ struct ReportsView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject private var store = ReportsStore()
     
+    private let screenWidth: CGFloat = UIScreen.main.bounds.width
+    
     // MARK: - Body
     
     var body: some View {
         ZStack(alignment: .center) {
-            switch store.state.reportsStep {
-            case .ReportsSelect:
-                reportsSelectView
-                
-            case .ReportsDetail:
-                reportsDetailView
-                
-            case .ReportsComplete:
-                // TODO: - ReportsCompleteView 연결
-                Text("ReportsComplete")
-            }
+            reportsSelectView
+                .offset(x: calculateScreenOffset(.reportsSelect))
+
+            reportsDetailView
+                .offset(x: calculateScreenOffset(.reportsDetail))
         }
         .background(.coreWhite)
         .customNavigationBar(
@@ -51,7 +47,9 @@ extension ReportsView {
         ReportsSelectView(selectedReportsType: store.state.selectedReportsType) { reportsType in
             store.dispatch(.selectReportsType(reportsType: reportsType))
         } nextAction: {
-            store.dispatch(.changeReportsStep(reportsStep: .ReportsDetail))
+            withAnimation(.easeInOut(duration: 0.3)) {
+                store.dispatch(.changeReportsStep(reportsStep: .reportsDetail))
+            }
         }
     }
     
@@ -61,7 +59,7 @@ extension ReportsView {
         } onPhotosSelected: { imageKeys in
             // TODO: - ReportsState 연결
         } onCompleteAction: {
-            store.dispatch(.changeReportsStep(reportsStep: .ReportsComplete))
+            // TODO: - 제보 완료 뷰 연결
         }
     }
 }
@@ -70,11 +68,26 @@ extension ReportsView {
 
 extension ReportsView {
     private func backAction() {
-        if store.state.reportsStep == .ReportsDetail {
-            store.dispatch(.changeReportsStep(reportsStep: .ReportsSelect))
+        if store.state.reportsStep == .reportsDetail {
+            withAnimation(.easeIn(duration: 0.2)) {
+                store.dispatch(.changeReportsStep(reportsStep: .reportsSelect))
+            }
         } else {
             appCoordinator.goBack()
         }
+    }
+    
+    private func calculateScreenOffset(_ reportsStep: ReportsStep) -> CGFloat {
+        var offset: CGFloat = 0
+        
+        switch reportsStep {
+        case .reportsSelect:
+            offset = store.state.reportsStep == .reportsSelect ? 0 : -screenWidth
+        case .reportsDetail:
+            offset = store.state.reportsStep == .reportsDetail ? 0 : screenWidth
+        }
+        
+        return offset
     }
 }
 

@@ -8,7 +8,7 @@
 import Foundation
 
 struct ReportsState {
-    var reportsStep: ReportsStep = .ReportsSelect
+    var reportsStep: ReportsStep = .reportsSelect
     var selectedReportsType: ReportsType?
     var reportsContent: String = ""
 }
