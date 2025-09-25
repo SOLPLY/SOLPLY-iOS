@@ -86,7 +86,11 @@ extension ReportsView {
     }
     
     private var reportsCompleteView: some View {
-        ReportsCompleteView()
+        Group {
+            if store.state.reportsStep == .reportsComplete {
+                ReportsCompleteView()
+            }
+        }
     }
 }
 
