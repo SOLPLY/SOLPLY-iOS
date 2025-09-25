@@ -83,6 +83,9 @@ extension View {
     @ViewBuilder
     func customNavigationBar(_ navigationBarType: NavigationBarType) -> some View {
         switch navigationBarType {
+            
+        // MARK: - Onboarding
+            
         case .onboarding(let backAction):
             self.modifier(
                 CustomNavigationBarModifier(
@@ -106,6 +109,8 @@ extension View {
                     backgroundColor: .gray100
                 )
             )
+            
+        // MARK: - Recommend
             
         case .recommend(let filterTitle, let filterAction, let settingAction):
             self.modifier(
@@ -150,6 +155,8 @@ extension View {
                     backgroundColor: .gray100
                 )
             )
+            
+        // MARK: - PlaceDetail
             
         case .placeDetail(let backAction, let homeAction):
             self.modifier(
@@ -197,6 +204,8 @@ extension View {
                 )
             )
             
+        // MARK: - CourseDetail
+            
         case .courseDetail(let backAction, let homeAction):
             self.modifier(
                 CustomNavigationBarModifier(
@@ -243,6 +252,8 @@ extension View {
                 )
             )
             
+        // MARK: - Archive
+            
         case .archive(let backAction):
             self.modifier(
                 CustomNavigationBarModifier(
@@ -267,6 +278,8 @@ extension View {
                     backgroundColor: .coreWhite
                 )
             )
+            
+        // MARK: - ArchiveList
             
         case .archiveList(let title, let backAction):
             self.modifier(
@@ -293,6 +306,8 @@ extension View {
                 )
             )
             
+        // MARK: - FrequentTown
+            
         case .frequentTown(let backAction):
             self.modifier(
                 CustomNavigationBarModifier(
@@ -318,23 +333,38 @@ extension View {
                 )
             )
             
-        case .reports(let backAction):
+        // MARK: - Reports
+            
+        case .reports(let reportsStep, let backAction):
             self.modifier(
                 CustomNavigationBarModifier(
                     centerView: {
-                        Text("제보하기")
-                            .applySolplyFont(.head_16_m)
+                        Group {
+                            if reportsStep == .reportsComplete {
+                                Text(" ")
+                            } else {
+                                Text("제보하기")
+                            }
+                        }
+                        .applySolplyFont(.head_16_m)
                     },
                     leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        Group {
+                            if reportsStep == .reportsComplete {
+                                EmptyView()
+                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            } else {
+                                Button {
+                                    backAction()
+                                } label: {
+                                    Image(.backIconIos)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                }
+                                .buttonStyle(.plain)
+                            }
                         }
-                        .buttonStyle(.plain)
                     },
                     rightView: {
                         EmptyView()
@@ -342,6 +372,8 @@ extension View {
                     backgroundColor: .coreWhite
                 )
             )
+            
+        // MARK: - PlaceSearch
         
         case .placeSearch(let backAction):
             self.modifier(
@@ -368,6 +400,8 @@ extension View {
                 )
             )
             
+        // MARK: - MyPage
+            
         case .myPage(let backAction):
             self.modifier(
                 CustomNavigationBarModifier(
@@ -387,6 +421,9 @@ extension View {
                     backgroundColor: .gray100
                 )
             )
+            
+        // MARK: - MyPageEdit
+            
         case .myPageEdit(let title, let backAction):
             self.modifier(
                 CustomNavigationBarModifier(

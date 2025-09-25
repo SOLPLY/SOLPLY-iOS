@@ -10,4 +10,5 @@ import Foundation
 enum ReportsStep {
     case reportsSelect
     case reportsDetail
+    case reportsComplete
 }

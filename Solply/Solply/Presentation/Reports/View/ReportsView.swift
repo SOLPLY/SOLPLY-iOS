@@ -19,16 +19,30 @@ struct ReportsView: View {
     // MARK: - Body
     
     var body: some View {
-        ZStack(alignment: .center) {
+        ZStack {
             reportsSelectView
-                .offset(x: calculateScreenOffset(.reportsSelect))
-
+                .offset(
+                    x: store.state.reportsStep == .reportsSelect
+                    ? 0 : store.state.reportsStep == .reportsDetail
+                    ? -screenWidth : -screenWidth
+                )
+            
             reportsDetailView
-                .offset(x: calculateScreenOffset(.reportsDetail))
+                .offset(
+                    x: store.state.reportsStep == .reportsSelect
+                    ? screenWidth : store.state.reportsStep == .reportsDetail
+                    ? 0 : -screenWidth
+                )
+            
+            reportsCompleteView
+                .offset(
+                    x: store.state.reportsStep == .reportsComplete ? 0 : screenWidth
+                )
         }
         .background(.coreWhite)
         .customNavigationBar(
             .reports(
+                reportStep: store.state.reportsStep,
                 backAction: {
                     backAction()
                 }
@@ -59,8 +73,14 @@ extension ReportsView {
         } onPhotosSelected: { imageKeys in
             // TODO: - ReportsState 연결
         } onCompleteAction: {
-            // TODO: - 제보 완료 뷰 연결
+            withAnimation(.easeInOut(duration: 0.3)) {
+                store.dispatch(.changeReportsStep(reportsStep: .reportsComplete))
+            }
         }
+    }
+    
+    private var reportsCompleteView: some View {
+        ReportsCompleteView()
     }
 }
 
@@ -75,19 +95,6 @@ extension ReportsView {
         } else {
             appCoordinator.goBack()
         }
-    }
-    
-    private func calculateScreenOffset(_ reportsStep: ReportsStep) -> CGFloat {
-        var offset: CGFloat = 0
-        
-        switch reportsStep {
-        case .reportsSelect:
-            offset = store.state.reportsStep == .reportsSelect ? 0 : -screenWidth
-        case .reportsDetail:
-            offset = store.state.reportsStep == .reportsDetail ? 0 : screenWidth
-        }
-        
-        return offset
     }
 }
 
