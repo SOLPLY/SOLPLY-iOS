@@ -11,9 +11,10 @@ struct CourseDetailView: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
+    @EnvironmentObject private var appCoordinator: AppCoordinator
+    @EnvironmentObject private var toastManager: ToastManager
+    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store = CourseDetailStore()
-    @StateObject private var toastManager = ToastManager()
     @StateObject private var locationManager = LocationManager()
     
     private var townId: Int
@@ -47,6 +48,7 @@ struct CourseDetailView: View {
                     guard let toastContent else { return }
                     
                     toastManager.showToast(content: toastContent) {
+                        print("Toast")
                         appCoordinator.navigate(
                             to: .courseDetail(
                                 townId: townId,
@@ -56,17 +58,6 @@ struct CourseDetailView: View {
                         )
                     }
                 }
-                .toast(toastManager: toastManager)
-                .customAlert(
-                    alertType: .leave,
-                    title: "변경 사항을 저장하지 않고\n나가시겠어요?",
-                    isPresented: store.state.isAlertPresented) {
-                        store.dispatch(.cancelAlert)
-                    } onConfirm: {
-                        store.dispatch(.confirmAlert)
-                        appCoordinator.goBack()
-                    }
-            
             if fromArchive && !store.state.isEditing {
                 editButton
             }
@@ -132,7 +123,7 @@ extension CourseDetailView {
             .customNavigationBar(
                 .courseDetail(backAction: {
                     if store.state.isEditing {
-                        store.dispatch(.showAlert)
+                        showAlert()
                     } else {
                         appCoordinator.goBack()
                     }
@@ -465,6 +456,12 @@ extension CourseDetailView {
                     )
                 )
             )
+        }
+    }
+    
+    private func showAlert() {
+        alertManager.showAlert(alertType: .leaveCourseDetail, onCancel: nil) {
+            appCoordinator.goBack()
         }
     }
 }

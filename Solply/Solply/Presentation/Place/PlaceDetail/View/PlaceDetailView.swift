@@ -11,9 +11,9 @@ struct PlaceDetailView: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
+    @EnvironmentObject private var appCoordinator: AppCoordinator
+    @EnvironmentObject private var toastManager: ToastManager
     @StateObject private var store = PlaceDetailStore()
-    @StateObject private var toastManager = ToastManager()
     @StateObject private var locationManager = LocationManager()
     
     private let townId: Int
@@ -71,7 +71,6 @@ struct PlaceDetailView: View {
                 }
             }
         }
-        .toast(toastManager: toastManager)
     }
 }
 

@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import CoreLocation
-
 struct TabBarView: View {
     
     // MARK: - Properties
@@ -122,4 +120,5 @@ extension TabBarView {
 #Preview {
     TabBarView()
         .environmentObject(AppCoordinator())
+        .environmentObject(ToastManager())
 }
