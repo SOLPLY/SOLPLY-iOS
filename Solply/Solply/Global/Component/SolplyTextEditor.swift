@@ -12,6 +12,7 @@ struct SolplyTextEditor: View {
     // MARK: - Properties
     
     @State private var text: String = ""
+    
     private let placeholder: String
     private let onTextChanged: ((String) -> Void)?
     

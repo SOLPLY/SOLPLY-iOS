@@ -5,7 +5,7 @@
 //  Created by 김승원 on 7/16/25.
 //
 
-import UIKit
+import Foundation
 
 struct PlaceDetailEffect {
     private let courseService: CourseAPI

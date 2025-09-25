@@ -19,7 +19,7 @@ struct CustomAlertModifier: ViewModifier {
         content
             .overlay(
                 Group {
-                    if alertManager.isPresented,let alertType = alertManager.alertType {
+                    if alertManager.isPresented, let alertType = alertManager.alertType {
                         ZStack(alignment: .center) {
                             Color.coreBlackO40
                                 .ignoresSafeArea()

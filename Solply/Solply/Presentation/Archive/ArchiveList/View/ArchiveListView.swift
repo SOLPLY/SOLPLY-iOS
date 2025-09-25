@@ -77,6 +77,7 @@ struct ArchiveListView: View {
             }
         }
         .customNavigationBar(.archiveList(title: town, backAction: appCoordinator.goBack))
+        .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchPlaceList(townId: townId, isBookmarkSearch: true, mainTagId: nil, subTagAIdList: nil, subTagBIdList: nil))
             store.dispatch(.fetchCourseList(townId: townId, placeId: nil))
