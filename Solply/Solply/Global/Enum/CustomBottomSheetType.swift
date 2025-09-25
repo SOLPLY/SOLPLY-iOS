@@ -17,14 +17,14 @@ enum CustomBottomSheetType {
     var defaultHeight: CGFloat {
         switch self {
         case .placeDetail, .courseDetail:
-            return 495.adjustedHeight
+            return 490.adjustedHeight
         }
     }
     
     var maxHeight: CGFloat {
         switch self {
         case .placeDetail, .courseDetail:
-            return 710.adjustedHeight
+            return 705.adjustedHeight
         }
     }
     
