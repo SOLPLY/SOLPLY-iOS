@@ -19,13 +19,13 @@ struct CustomAlertModifier: ViewModifier {
         content
             .overlay(
                 Group {
-                    if alertManager.isPresented {
+                    if alertManager.isPresented,let alertType = alertManager.alertType {
                         ZStack(alignment: .center) {
                             Color.coreBlackO40
                                 .ignoresSafeArea()
                             
                             VStack(spacing: 8.adjustedHeight) {
-                                Text(alertManager.alertType.title)
+                                Text(alertType.title)
                                     .applySolplyFont(.body_14_r)
                                     .frame(width: 236.adjustedWidth, height: 65.adjustedHeight)
                                     .multilineTextAlignment(.center)
@@ -34,7 +34,7 @@ struct CustomAlertModifier: ViewModifier {
                                     Button {
                                         alertManager.onCancel?()
                                     } label: {
-                                        Text(alertManager.alertType.cancelText)
+                                        Text(alertType.cancelText)
                                             .applySolplyFont(.button_14_r)
                                             .frame(width: 114.adjustedWidth, height: 48.adjustedHeight)
                                             .foregroundStyle(.gray900)
@@ -44,7 +44,7 @@ struct CustomAlertModifier: ViewModifier {
                                     Button {
                                         alertManager.onConfirm?()
                                     } label: {
-                                        Text(alertManager.alertType.confirmText)
+                                        Text(alertType.confirmText)
                                             .applySolplyFont(.button_14_r)
                                             .frame(width: 122.adjustedWidth, height: 48.adjustedHeight)
                                             .foregroundStyle(.coreWhite)

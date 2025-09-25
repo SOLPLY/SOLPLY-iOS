@@ -12,7 +12,7 @@ class AlertManager: ObservableObject {
     // MARK: - Properties
     
     @Published var isPresented: Bool = false
-    @Published var alertType: AlertType = .deleteCourse
+    @Published var alertType: AlertType?
     @Published var onCancel: (() -> Void)? = nil
     @Published var onConfirm: (() -> Void)? = nil
     
