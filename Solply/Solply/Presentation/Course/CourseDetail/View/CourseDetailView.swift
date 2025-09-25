@@ -348,7 +348,7 @@ extension CourseDetailView {
                                         toastType: .withIconToast,
                                         message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
                                         buttonTitle: nil,
-                                        bottomPadding: 80.adjustedHeight
+                                        bottomPadding: 96.adjustedHeight
                                     )
                                 )
                             )
