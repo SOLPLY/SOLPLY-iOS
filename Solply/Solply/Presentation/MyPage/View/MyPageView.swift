@@ -44,6 +44,7 @@ struct MyPageView: View {
         }
         .background(Color(.gray100).ignoresSafeArea())
         .customNavigationBar(.myPage(backAction: appCoordinator.goBack))
+        .ignoresSafeArea(edges: .bottom)
     }
 }
 

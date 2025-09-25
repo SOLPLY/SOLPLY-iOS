@@ -72,6 +72,7 @@ extension TabBarView {
             )
             .visible(appCoordinator.selectedTab == .course)
         }
+        .ignoresSafeArea(edges: .bottom)
     }
     
     private var tabBar: some View {

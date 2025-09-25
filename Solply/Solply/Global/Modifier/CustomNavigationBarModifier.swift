@@ -57,7 +57,6 @@ extension CustomNavigationBarModifier {
             
             Spacer()
         }
-        .ignoresSafeArea(edges: .bottom)
         .navigationBarHidden(true)
     }
     

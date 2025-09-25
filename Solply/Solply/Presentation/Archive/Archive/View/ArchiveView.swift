@@ -79,10 +79,10 @@ struct ArchiveView: View {
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .customNavigationBar(.archive(backAction: appCoordinator.goBack))
+        .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchPlaceThumbnail)
             store.dispatch(.fetchCourseThumbnail)
         }
     }
 }
-
