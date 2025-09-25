@@ -8,35 +8,30 @@
 import Foundation
 
 enum CustomBottomSheetType {
+    
+    // TODO: - 나중에 두 시트가 분리될 수 있기 때문에 남겨놓을게요
+    
     case placeDetail
     case courseDetail(fromArchive: Bool)
     
-    var defaultOffset: CGFloat {
+    var defaultHeight: CGFloat {
         switch self {
         case .placeDetail, .courseDetail:
-            return 270.adjustedHeight
+            return 495.adjustedHeight
         }
     }
     
-    var maxOffset: CGFloat {
+    var maxHeight: CGFloat {
         switch self {
         case .placeDetail, .courseDetail:
-            return 50.adjustedHeight
+            return 710.adjustedHeight
         }
     }
     
-    var minOffset: CGFloat {
+    var minHeight: CGFloat {
         switch self {
         case .placeDetail, .courseDetail:
-            return 530.adjustedHeight
+            return 200.adjustedHeight
         }
-    }
-    
-    var maxThreshold: CGFloat {
-        return 50.adjustedHeight
-    }
-    
-    var minThreshold: CGFloat {
-        return 150.adjustedHeight
     }
 }
