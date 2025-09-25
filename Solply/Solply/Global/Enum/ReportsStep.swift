@@ -8,7 +8,6 @@
 import Foundation
 
 enum ReportsStep {
-    case ReportsSelect
-    case ReportsDetail
-    case ReportsComplete
+    case reportsSelect
+    case reportsDetail
 }
