@@ -79,6 +79,8 @@ extension CourseInformationEditBottomSheet {
             }
             
             Text("코스 정보 수정")
+                .applySolplyFont(.head_16_m)
+                .foregroundStyle(.coreBlack)
         }
         .frame(width: 343.adjustedWidth, height: 24.adjustedHeight)
         .padding(.top, 16.adjustedHeight)
