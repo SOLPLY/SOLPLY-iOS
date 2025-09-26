@@ -85,8 +85,9 @@ struct PlaceInformationView: View {
                     
                     reportsButton
                 }
-                .padding(.bottom, 300.adjustedHeight)
+                .padding(.bottom, 85.adjustedHeight)
             }
+            .frame(maxHeight: .infinity)
         }
     }
 }

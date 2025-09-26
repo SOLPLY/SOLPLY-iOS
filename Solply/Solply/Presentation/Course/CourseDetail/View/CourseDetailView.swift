@@ -302,7 +302,7 @@ extension CourseDetailView {
             .padding(.horizontal, 20.adjustedWidth)
             
             Color(.clear)
-                .frame(height: store.state.isEditing ? 370.adjustedHeight : 310.adjustedHeight)
+                .frame(height: store.state.isEditing ? 104.adjustedHeight : 44.adjustedHeight)
         }
         .frame(maxHeight: .infinity)
     }
