@@ -51,7 +51,8 @@ struct CourseInformationEditBottomSheet: View {
             
             completeButton
         }
-        .ignoresSafeArea(.keyboard)
+        .ignoresSafeArea(.keyboard, edges: .bottom, )
+//        .ignoresSafeArea(.keyboard)
         .background(.coreWhite)
         .onTapGesture {
             hideKeyboard()
@@ -135,6 +136,7 @@ extension CourseInformationEditBottomSheet {
             )
         }
         .frame(width: 335.adjustedWidth, height: 64.adjustedHeight)
+        .padding(.bottom, 16.adjustedHeight)
     }
 }
 
