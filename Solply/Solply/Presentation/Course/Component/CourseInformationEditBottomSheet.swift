@@ -51,8 +51,7 @@ struct CourseInformationEditBottomSheet: View {
             
             completeButton
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom, )
-//        .ignoresSafeArea(.keyboard)
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .background(.coreWhite)
         .onTapGesture {
             hideKeyboard()
