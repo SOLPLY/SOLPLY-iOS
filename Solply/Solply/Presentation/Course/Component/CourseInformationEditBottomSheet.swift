@@ -40,10 +40,12 @@ struct CourseInformationEditBottomSheet: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .center, spacing: 36.adjustedWidth) {
+        VStack(alignment: .center, spacing: 0) {
             navigationBar
+                .padding(.bottom, 37.adjustedHeight)
             
             courseNameEdit
+                .padding(.bottom, 24.adjustedHeight)
             
             courseDescriptionEdit
             

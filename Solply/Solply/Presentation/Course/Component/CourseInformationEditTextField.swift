@@ -34,6 +34,18 @@ struct CourseInformationEditTextField: View {
     // MARK: - Body
     
     var body: some View {
+        VStack(alignment: .trailing, spacing: 8.adjustedHeight) {
+            textField
+            
+            textCount
+        }
+    }
+}
+
+// MARK: - Subviews
+
+extension CourseInformationEditTextField {
+    private var textField: some View {
         TextField("", text: $text)
             .configureDefaultTextField()
             .applySolplyFont(.body_16_m)
@@ -48,12 +60,24 @@ struct CourseInformationEditTextField: View {
                 borderColor: .gray300,
                 borderWidth: 1
             )
+            .onChange(of: text) { _, newValue in
+                if newValue.count > maxLength {
+                    text = String(newValue.prefix(maxLength))
+                }
+            }
             .lengthCheck(
                 text: $text,
-                minLength: minLength,
-                maxLength: maxLength
+                minLength: minLength
             ) { isTextLengthValid in
                 validAction?(isTextLengthValid)
             }
+    }
+    
+    private var textCount: some View {
+        Text("\(text.count)/\(maxLength)")
+            .applySolplyFont(.caption_12_m)
+            .foregroundStyle(.gray500)
+            .frame(height: 18.adjustedHeight)
+            .padding(.trailing, 8.adjustedWidth)
     }
 }

@@ -10,15 +10,15 @@ import SwiftUI
 struct LengthCheckModifier: ViewModifier {
     
     @Binding var text: String
-    private let minLength: Int
-    private let maxLength: Int
+    private let minLength: Int?
+    private let maxLength: Int?
     private let onValidChanged: ((Bool) -> Void)?
     
     init(
         text: Binding<String>,
-        minLength: Int,
-        maxLength: Int,
-        onValidChanged: ((Bool) -> Void)? = nil
+        minLength: Int?,
+        maxLength: Int?,
+        onValidChanged: ((Bool) -> Void)?
     ) {
         self._text = text
         self.minLength = minLength
@@ -29,7 +29,20 @@ struct LengthCheckModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onChange(of: text) { _, newText in
-                let isValid = (newText.count >= minLength && newText.count <= maxLength)
+                let count = newText.count
+                let isValid: Bool
+                
+                switch (minLength, maxLength) {
+                case (nil, nil):
+                    isValid = true
+                case let (min?, nil):
+                    isValid = count >= min
+                case let (nil, max?):
+                    isValid = count <= max
+                case let (min?, max?):
+                    isValid = (count >= min && count <= max)
+                }
+                
                 onValidChanged?(isValid)
             }
     }
@@ -45,8 +58,8 @@ extension View {
     ///   - onValidChanged: 텍스트 길이가 최소/최대 범위 내에 있는지 여부를 Bool로 전달하는 클로저입니다.
     func lengthCheck(
         text: Binding<String>,
-        minLength: Int,
-        maxLength: Int,
+        minLength: Int? = nil,
+        maxLength: Int? = nil,
         onValidChanged: ((Bool) -> Void)? = nil
     ) -> some View {
         self.modifier(
