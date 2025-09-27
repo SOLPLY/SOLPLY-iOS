@@ -32,22 +32,17 @@ struct PlaceSearchView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
-            SearchBarView(onChange: onChange, onSubmit: onSubmit)
-            // TODO: - 데이터 유무로 분기처리
+        VStack(alignment: .leading, spacing: 28.adjustedHeight) {
+            SearchBarView(store: store, onChange: onChange, onSubmit: onSubmit)
+            
+            if store.state.isSearchCompleted {
+                if store.state.places.isEmpty {
+                    PlaceEmptyView()
+                } else {
+                    PlaceDataView(store: store)
+                }
+            }
         }
         .customNavigationBar(.placeSearch(backAction: appCoordinator.goBack))
     }
-}
-
-#Preview {
-    PlaceSearchView(
-        onChange: { value in
-            print("onChange: \(value)")
-        },
-        onSubmit: { value in
-            print("onSubmit: \(value)")
-        }
-    )
-    .environmentObject(AppCoordinator())
 }
