@@ -11,27 +11,7 @@ struct CustomAlertModifier: ViewModifier {
     
     // MARK: - Properties
     
-    private let alertType: AlertType
-    private let title: String
-    private let isPresented: Bool
-    private let onCancel: (() -> Void)?
-    private let onConfirm: (() -> Void)?
-    
-    // MARK: - Initializers
-    
-    init(
-        alertType: AlertType,
-        title: String,
-        isPresented: Bool,
-        onCancel: (() -> Void)?,
-        onConfirm: (() -> Void)?
-    ) {
-        self.alertType = alertType
-        self.title = title
-        self.isPresented = isPresented
-        self.onCancel = onCancel
-        self.onConfirm = onConfirm
-    }
+    @ObservedObject var alertManager: AlertManager
     
     // MARK: - Body
     
@@ -39,37 +19,39 @@ struct CustomAlertModifier: ViewModifier {
         content
             .overlay(
                 Group {
-                    if isPresented {
+                    if alertManager.isPresented, let alertType = alertManager.alertType {
                         ZStack(alignment: .center) {
                             Color.coreBlackO40
                                 .ignoresSafeArea()
                             
                             VStack(spacing: 8.adjustedHeight) {
-                                Text(title)
+                                Text(alertType.title)
                                     .applySolplyFont(.body_14_r)
                                     .frame(width: 236.adjustedWidth, height: 65.adjustedHeight)
                                     .multilineTextAlignment(.center)
                                 
                                 HStack(alignment: .center, spacing: 0.adjustedWidth) {
                                     Button {
-                                        onCancel?()
+                                        alertManager.onCancel?()
                                     } label: {
-                                        Text("취소")
+                                        Text(alertType.cancelText)
                                             .applySolplyFont(.button_14_r)
                                             .frame(width: 114.adjustedWidth, height: 48.adjustedHeight)
                                             .foregroundStyle(.gray900)
                                     }
+                                    .buttonStyle(.plain)
                                     
                                     Button {
-                                        onConfirm?()
+                                        alertManager.onConfirm?()
                                     } label: {
-                                        Text(alertType.mainText)
+                                        Text(alertType.confirmText)
                                             .applySolplyFont(.button_14_r)
                                             .frame(width: 122.adjustedWidth, height: 48.adjustedHeight)
                                             .foregroundStyle(.coreWhite)
                                             .background(.gray900)
                                             .capsuleClipped()
                                     }
+                                    .buttonStyle(.plain)
                                 }
                             }
                             .frame(width: 260.adjustedWidth, height: 145.adjustedHeight)
@@ -79,27 +61,13 @@ struct CustomAlertModifier: ViewModifier {
                         .transition(.opacity)
                     }
                 }
-                .animation(.easeInOut(duration: 0.2), value: isPresented)
+                    .animation(.easeInOut(duration: 0.2), value: alertManager.isPresented)
             )
     }
 }
 
 extension View {
-    func customAlert(
-        alertType: AlertType,
-        title: String,
-        isPresented: Bool,
-        onCancel: (() -> Void)?,
-        onConfirm: (() -> Void)?
-    ) -> some View {
-        self.modifier(
-            CustomAlertModifier(
-                alertType: alertType,
-                title: title,
-                isPresented: isPresented,
-                onCancel: onCancel,
-                onConfirm: onConfirm
-            )
-        )
+    func customAlert(alertManager: AlertManager) -> some View {
+        self.modifier(CustomAlertModifier(alertManager: alertManager))
     }
 }

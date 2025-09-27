@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import CoreLocation
-
 struct TabBarView: View {
     
     // MARK: - Properties
@@ -74,6 +72,7 @@ extension TabBarView {
             )
             .visible(appCoordinator.selectedTab == .course)
         }
+        .ignoresSafeArea(edges: .bottom)
     }
     
     private var tabBar: some View {
@@ -122,4 +121,5 @@ extension TabBarView {
 #Preview {
     TabBarView()
         .environmentObject(AppCoordinator())
+        .environmentObject(ToastManager())
 }
