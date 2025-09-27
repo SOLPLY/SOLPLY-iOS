@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SearchBarView: View {
+    
+    @StateObject var store : PlaceSearchStore
+    
     @State private var text: String = ""
     var onChange: ((String) -> Void)?
     var onSubmit: ((String) -> Void)?
@@ -28,17 +31,23 @@ struct SearchBarView: View {
                     .padding(.vertical, 12.adjustedHeight)
                     .onChange(of: text) { _, newValue in
                         onChange?(newValue)
+                        store.state.placeName = newValue
                     }
                     .onSubmit {
-                        onSubmit?(text)
+                        store.dispatch(.searchPlace(placeName: store.state.placeName))
                     }
             }
             
-            Image(.searchIcon)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-                .padding(.trailing, 20.adjustedWidth)
+            Button {
+                store.dispatch(.searchPlace(placeName: text))
+                onSubmit?(text)
+            } label: {
+                Image(.searchIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                    .padding(.trailing, 20.adjustedWidth)
+            }
         }
         .addBorder(
             .roundedRectangle(cornerRadius: 20.adjustedHeight),
