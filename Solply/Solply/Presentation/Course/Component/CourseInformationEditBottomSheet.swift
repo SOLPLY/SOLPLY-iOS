@@ -18,6 +18,8 @@ struct CourseInformationEditBottomSheet: View {
     
     private var dismissAction: (() -> Void)?
     private var completeAction: ((CourseInformation) -> Void)?
+    private let courseNamePlaceholder: String
+    private let courseDescriptionPlaceholder: String
     private let minCourseNameLength: Int = 1
     private let maxCourseNameLength: Int = 18
     private let minCourseDescriptionLength: Int = 0
@@ -33,6 +35,8 @@ struct CourseInformationEditBottomSheet: View {
     ) {
         self.courseName = courseName
         self.courseDescription = courseDescription
+        self.courseNamePlaceholder = courseName
+        self.courseDescriptionPlaceholder = courseDescription
         self.dismissAction = dismissAction
         self.completeAction = completeAction
     }
@@ -98,7 +102,8 @@ extension CourseInformationEditBottomSheet {
             CourseInformationEditTextField(
                 text: $courseName,
                 minLength: minCourseNameLength,
-                maxLength: maxCourseNameLength
+                maxLength: maxCourseNameLength,
+                placeholder: courseNamePlaceholder
             ) { isCourseNameValid in
                 self.isCourseNameValid = isCourseNameValid
             }
@@ -116,7 +121,8 @@ extension CourseInformationEditBottomSheet {
             CourseInformationEditTextField(
                 text: $courseDescription,
                 minLength: minCourseDescriptionLength,
-                maxLength: maxCourseDescriptionLength
+                maxLength: maxCourseDescriptionLength,
+                placeholder: courseDescriptionPlaceholder
             ) { isCourseDescriptionValid in
                 self.isCourseDescriptionValid = isCourseDescriptionValid
             }

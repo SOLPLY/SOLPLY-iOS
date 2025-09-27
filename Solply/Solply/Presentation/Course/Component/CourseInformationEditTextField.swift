@@ -15,6 +15,7 @@ struct CourseInformationEditTextField: View {
     
     private let minLength: Int
     private let maxLength: Int
+    private let placeholder: String
     private let validAction: ((Bool) -> Void)?
     
     // MARK: - Initializer
@@ -23,11 +24,13 @@ struct CourseInformationEditTextField: View {
         text: Binding<String>,
         minLength: Int,
         maxLength: Int,
+        placeholder: String,
         validAction: ((Bool) -> Void)? = nil
     ) {
         self._text = text
         self.minLength = minLength
         self.maxLength = maxLength
+        self.placeholder = placeholder
         self.validAction = validAction
     }
     
@@ -46,31 +49,39 @@ struct CourseInformationEditTextField: View {
 
 extension CourseInformationEditTextField {
     private var textField: some View {
-        TextField("", text: $text)
-            .configureDefaultTextField()
-            .applySolplyFont(.body_16_m)
-            .foregroundStyle(.gray800)
-            .frame(height: 28.adjustedHeight)
-            .padding(.vertical, 12.adjustedHeight)
-            .padding(.horizontal, 20.adjustedWidth)
-            .background(.coreWhite)
-            .cornerRadius(20, corners: .allCorners)
-            .addBorder(
-                .roundedRectangle(cornerRadius: 20),
-                borderColor: .gray300,
-                borderWidth: 1
-            )
-            .onChange(of: text) { _, newValue in
-                if newValue.count > maxLength {
-                    text = String(newValue.prefix(maxLength))
+        ZStack(alignment: .leading) {
+            if text.isEmpty {
+                Text(placeholder)
+                    .applySolplyFont(.body_16_r)
+                    .foregroundStyle(.gray500)
+            }
+            
+            TextField("", text: $text)
+                .configureDefaultTextField()
+                .applySolplyFont(.body_16_m)
+                .foregroundStyle(.gray800)
+                .onChange(of: text) { _, newValue in
+                    if newValue.count > maxLength {
+                        text = String(newValue.prefix(maxLength))
+                    }
                 }
-            }
-            .lengthCheck(
-                text: $text,
-                minLength: minLength
-            ) { isTextLengthValid in
-                validAction?(isTextLengthValid)
-            }
+                .lengthCheck(
+                    text: $text,
+                    minLength: minLength
+                ) { isTextLengthValid in
+                    validAction?(isTextLengthValid)
+                }
+        }
+        .frame(height: 28.adjustedHeight)
+        .padding(.vertical, 12.adjustedHeight)
+        .padding(.horizontal, 20.adjustedWidth)
+        .background(.coreWhite)
+        .cornerRadius(20, corners: .allCorners)
+        .addBorder(
+            .roundedRectangle(cornerRadius: 20),
+            borderColor: .gray300,
+            borderWidth: 1
+        )
     }
     
     private var textCount: some View {
