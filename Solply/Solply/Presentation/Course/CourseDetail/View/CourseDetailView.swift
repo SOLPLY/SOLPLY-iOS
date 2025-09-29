@@ -47,11 +47,27 @@ struct CourseDetailView: View {
                 saveOption
             }
         }
+        .onAppear {
+            store.dispatch(.fetchCourseDetail(courseId: courseId))
+        }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
         }
         .onChange(of: store.state.updatedCourseId) { _, newValue in
             store.dispatch(.fetchCourseDetail(courseId: newValue))
+        }
+        .onChange(of: store.state.toastContent) { _, toastContent in
+            guard let toastContent else { return }
+            
+            toastManager.showToast(content: toastContent) {
+                appCoordinator.navigate(
+                    to: .courseDetail(
+                        townId: townId,
+                        courseId: courseId,
+                        fromArchive: true
+                    )
+                )
+            }
         }
         .sheet(
             isPresented: Binding(
@@ -79,17 +95,13 @@ struct CourseDetailView: View {
 extension CourseDetailView {
     private var courseMapView: some View {
         CourseDetailMapView(places: store.state.places)
-            .customNavigationBar(
-                .courseDetail(backAction: {
-                    if store.state.isEditing {
-                        showAlert()
-                    } else {
-                        appCoordinator.goBack()
-                    }
+            .customNavigationBar(.courseDetail(
+                backAction: {
+                    store.state.isEditing ? showAlert() : appCoordinator.goBack()
                 }, homeAction: {
                     appCoordinator.goToRoot()
-                })
-            )
+                }
+            ))
             .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
                 VStack(alignment: .center, spacing: 20.adjustedHeight) {
                     title
@@ -97,51 +109,6 @@ extension CourseDetailView {
                     placeList
                 }
             }
-            .onAppear {
-                store.dispatch(.fetchCourseDetail(courseId: courseId))
-            }
-            .onChange(of: store.state.toastContent) { _, toastContent in
-                guard let toastContent else { return }
-                
-                toastManager.showToast(content: toastContent) {
-                    print("Toast")
-                    appCoordinator.navigate(
-                        to: .courseDetail(
-                            townId: townId,
-                            courseId: courseId,
-                            fromArchive: true
-                        )
-                    )
-                }
-            }
-    }
-    
-    private var bottomSheetTopButton: some View {
-        SolplyBookmarkButton(
-            isEnabled: true,
-            isBookmarked: store.state.courseSaveSelected
-        ) {
-            if store.state.courseSaveSelected {
-                store.dispatch(.removeCourseBookmark(courseId: courseId))
-                store.dispatch(.toggleSaveCourse)
-                
-            } else {
-                store.dispatch(.submitCourseBookmark(courseId: courseId))
-                store.dispatch(.toggleSaveCourse)
-                
-                store.dispatch(
-                    .showToastView(
-                        ToastContent(
-                            toastType: .withActionToast,
-                            message: "코스가 수집함에 저장되었어요.",
-                            buttonTitle: "코스 수정하기"
-                        )
-                    )
-                )
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .trailing)
-        .padding(.horizontal, 16.adjustedWidth)
     }
     
     private var title: some View {
@@ -203,7 +170,9 @@ extension CourseDetailView {
     private var placeList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(alignment: .center, spacing: 12.adjustedHeight) {
-                ForEach(Array(store.state.places.enumerated()), id: \.element.id) { index, place in
+                ForEach(Array(store.state.places.enumerated()), id: \.element.id) {
+                    index,
+                    place in
                     DraggablePlaceCell(
                         order: index + 1,
                         mainImageURL: place.thumbnailURL,
@@ -225,6 +194,7 @@ extension CourseDetailView {
                         )
                     } saveAction: {
                         store.dispatch(.toggleSavePlace(index: index))
+                        
                         if store.state.places[index].isBookmarked {
                             store.dispatch(.submitPlaceBookmark(placeId: store.state.places[index].placeId))
                             
@@ -254,31 +224,21 @@ extension CourseDetailView {
                     .cornerRadius(20, corners: .allCorners)
                     .frame(maxWidth: .infinity)
                     .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
-                    .onDrag {
-                        guard store.state.isEditing else { return NSItemProvider() }
-                        
-                        let generator = UIImpactFeedbackGenerator(style: .light)
-                        generator.impactOccurred()
-                        
-                        store.dispatch(.startDragging(draggedPlace: place))
-                        return NSItemProvider()
-                    }
-                    .onDrop(
-                        of: [.text],
-                        delegate: DropViewDelegate(
-                            destinationPlace: place,
-                            places: store.state.places,
-                            draggedPlace: store.state.draggedPlace,
-                            isEditing: store.state.isEditing,
-                            onMove: { fromIndex, toIndex in
-                                store.dispatch(.whileDragging(from: fromIndex, to: toIndex))
-                            },
-                            onDragEnd: {
-                                store.dispatch(.endDragging)
-                            }
-                        )
+                    .customDragDrop(
+                        isEditing: store.state.isEditing,
+                        placeDetailInCourse: place,
+                        placesDetailInCourse: store.state.places,
+                        draggedPlace: store.state.draggedPlace,
+                        startDragging: { placeDetailInCourse in
+                            store.dispatch(.startDragging(draggedPlace: placeDetailInCourse))
+                        },
+                        whileDragging: { fromIndex, toIndex in
+                            store.dispatch(.whileDragging(from: fromIndex, to: toIndex))
+                        },
+                        endDragging: {
+                            store.dispatch(.endDragging)
+                        }
                     )
-                    
                 }
             }
             .padding(.bottom, 35.adjustedHeight)
