@@ -16,6 +16,8 @@ struct ReportsCompleteView: View {
             Text("소중한 제보 감사합니다!")
                 .applySolplyFont(.display_20_sb)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .padding(.top, 172.adjustedHeight)
         .background(.coreWhite)
     }
 }

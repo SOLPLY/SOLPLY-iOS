@@ -40,6 +40,7 @@ struct JGDView: View {
             .customNavigationBar(
                 .frequentTown(backAction: appCoordinator.goBack)
             )
+            .ignoresSafeArea(edges: .bottom)
             
             CTAMainButton(title: "완료")
                 .padding(.horizontal, 20.adjustedWidth)
