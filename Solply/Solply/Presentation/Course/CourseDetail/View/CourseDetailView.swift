@@ -34,57 +34,17 @@ struct CourseDetailView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             courseMapView
-                .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
-                    VStack(alignment: .center, spacing: 20.adjustedHeight) {
-                        title
-                        
-                        placeList
-                    }
-                }
-                .onAppear {
-                    store.dispatch(.fetchCourseDetail(courseId: courseId))
-                }
-                .onChange(of: store.state.toastContent) { _, toastContent in
-                    guard let toastContent else { return }
-                    
-                    toastManager.showToast(content: toastContent) {
-                        print("Toast")
-                        appCoordinator.navigate(
-                            to: .courseDetail(
-                                townId: townId,
-                                courseId: courseId,
-                                fromArchive: true
-                            )
-                        )
-                    }
-                }
+                
             if fromArchive && !store.state.isEditing {
                 editButton
             }
             
             if store.state.isEditing {
-                VStack(alignment: .center, spacing: 16.adjustedHeight) {
-                    if fromArchive && store.state.canDelete == .active {
-                        deleteArea
-                    }
-                    
-                    CTAMainButton(
-                        title: "완료",
-                        isEnabled: true
-                    ) {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            store.dispatch(.endEditing)
-                        }
-                    }
-                    .padding(.horizontal, 20.adjustedWidth)
-                    .padding(.bottom, 16.adjustedHeight)
-                }
+                editingArea
             }
             
             if store.state.isSaveOptionPresented {
                 saveOption
-                    .transition(.opacity)
-                    .zIndex(10)
             }
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
@@ -111,7 +71,6 @@ struct CourseDetailView: View {
             .presentationDetents([.height(640.adjustedHeight)])
             .presentationCornerRadius(20)
         }
-
     }
 }
 
@@ -131,6 +90,30 @@ extension CourseDetailView {
                     appCoordinator.goToRoot()
                 })
             )
+            .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
+                VStack(alignment: .center, spacing: 20.adjustedHeight) {
+                    title
+                    
+                    placeList
+                }
+            }
+            .onAppear {
+                store.dispatch(.fetchCourseDetail(courseId: courseId))
+            }
+            .onChange(of: store.state.toastContent) { _, toastContent in
+                guard let toastContent else { return }
+                
+                toastManager.showToast(content: toastContent) {
+                    print("Toast")
+                    appCoordinator.navigate(
+                        to: .courseDetail(
+                            townId: townId,
+                            courseId: courseId,
+                            fromArchive: true
+                        )
+                    )
+                }
+            }
     }
     
     private var bottomSheetTopButton: some View {
@@ -368,6 +351,25 @@ extension CourseDetailView {
             )
     }
     
+    private var editingArea: some View {
+        VStack(alignment: .center, spacing: 16.adjustedHeight) {
+            if fromArchive && store.state.canDelete == .active {
+                deleteArea
+            }
+            
+            CTAMainButton(
+                title: "완료",
+                isEnabled: true
+            ) {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    store.dispatch(.endEditing)
+                }
+            }
+            .padding(.horizontal, 20.adjustedWidth)
+            .padding(.bottom, 16.adjustedHeight)
+        }
+    }
+    
     private var saveOption: some View {
         ZStack(alignment: .bottom) {
             Color(.coreBlackO40)
@@ -433,6 +435,8 @@ extension CourseDetailView {
             }
             .padding(.bottom, 16.adjustedHeight)
         }
+        .transition(.opacity)
+        .zIndex(10)
     }
 }
 
