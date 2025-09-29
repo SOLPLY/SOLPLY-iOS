@@ -17,32 +17,35 @@ struct CustomDragDropModifier: ViewModifier {
     let endDragging: (() -> Void)?
     
     func body(content: Content) -> some View {
-        content
-            .onDrag {
-                guard isEditing else { return NSItemProvider() }
-                
-                let generator = UIImpactFeedbackGenerator(style: .light)
-                generator.impactOccurred()
-                
-                startDragging?(placeDetailInCourse)
-                return NSItemProvider()
-            }
-            .onDrop(
-                of: [.text],
-                delegate: DropViewDelegate(
-                    isEditing: isEditing,
-                    destinationPlace: placeDetailInCourse,
-                    places: placesDetailInCourse,
-                    draggedPlace: draggedPlace,
-                    onMove: { fromIndex, toIndex in
-                        whileDragging?(fromIndex, toIndex)
-                    },
-                    onDragEnd: {
-                        endDragging?()
-                    }
+        if isEditing {
+            content
+                .onDrag {
+                    guard isEditing else { return NSItemProvider() }
+                    
+                    let generator = UIImpactFeedbackGenerator(style: .light)
+                    generator.impactOccurred()
+                    
+                    startDragging?(placeDetailInCourse)
+                    return NSItemProvider()
+                }
+                .onDrop(
+                    of: [.text],
+                    delegate: DropViewDelegate(
+                        isEditing: isEditing,
+                        destinationPlace: placeDetailInCourse,
+                        places: placesDetailInCourse,
+                        draggedPlace: draggedPlace,
+                        onMove: { fromIndex, toIndex in
+                            whileDragging?(fromIndex, toIndex)
+                        },
+                        onDragEnd: {
+                            endDragging?()
+                        }
+                    )
                 )
-            )
-            .disabled(!isEditing)
+        } else {
+            content
+        }
     }
 }
 

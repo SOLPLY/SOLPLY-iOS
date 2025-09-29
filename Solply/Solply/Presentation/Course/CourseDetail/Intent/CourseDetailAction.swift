@@ -8,11 +8,12 @@
 import Foundation
 
 enum CourseDetailAction {
-    case toggleSaveCourse
+    case toggleBookmarkCourse
     case focusPlace(index: Int)
-    case toggleSavePlace(index: Int)
+    case toggleBookmarkPlace(index: Int)
 
     case startEditing
+    case delayEditing
     case endEditing
     
     case startDragging(draggedPlace: PlaceDetailInCourse)

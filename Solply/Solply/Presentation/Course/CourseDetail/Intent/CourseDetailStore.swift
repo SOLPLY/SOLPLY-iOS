@@ -32,6 +32,22 @@ final class CourseDetailStore: ObservableObject {
                 destinationLongitude: destinationLongitude,
                 destinationName: destinationName
             )
+            
+        case .startEditing:
+            if state.focusedPlaceIndex != -1 {
+                for index in state.places.indices {
+                    state.places[index].isFocused = false
+                    state.focusedPlaceIndex = -1
+                }
+                
+                Task {
+                    let result = await effect.delayEditing()
+                    self.dispatch(result)
+                }
+            } else {
+                self.dispatch(.delayEditing)
+            }
+            
         case .fetchCourseDetail(let courseId):
             Task {
                 let result = await effect.fetchCourseDetail(courseId: courseId)

@@ -68,3 +68,16 @@ struct DeleteDropDelegate: DropDelegate {
         onExited()
     }
 }
+
+struct GlobalDropDelegate: DropDelegate {
+    let onDragEnd: () -> Void
+    
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        DropProposal(operation: .move)
+    }
+    
+    func performDrop(info: DropInfo) -> Bool {
+        onDragEnd()
+        return true
+    }
+}

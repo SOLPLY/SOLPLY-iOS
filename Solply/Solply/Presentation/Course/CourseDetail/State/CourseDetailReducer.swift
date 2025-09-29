@@ -10,8 +10,8 @@ import Foundation
 enum CourseDetailReducer {
     static func reduce(state: inout CourseDetailState, action: CourseDetailAction) {
         switch action {
-        case .toggleSaveCourse:
-            state.courseSaveSelected.toggle()
+        case .toggleBookmarkCourse:
+            state.courseBookmarkSelected.toggle()
             
         case .focusPlace(let index):
             state.focusedPlaceIndex = state.focusedPlaceIndex == index ? -1 : index
@@ -20,18 +20,16 @@ enum CourseDetailReducer {
                 state.places[index].isFocused = (index == state.focusedPlaceIndex)
             }
             
-        case .toggleSavePlace(let index):
+        case .toggleBookmarkPlace(let index):
             state.places[index].isBookmarked.toggle()
             
         case .requestFindDirection:
             break
             
         case .startEditing:
-            for index in state.places.indices {
-                state.places[index].isFocused = false
-                state.focusedPlaceIndex = -1
-            }
+            break
             
+        case .delayEditing:
             state.oldPlaces.removeAll()
             state.oldPlaces = state.places
             state.oldCourseName = state.courseName
@@ -124,7 +122,7 @@ enum CourseDetailReducer {
             state.places = placeEntities
 
             state.isCourseBookmarked = courseDetails.isBookmarked
-            state.courseSaveSelected = courseDetails.isBookmarked
+            state.courseBookmarkSelected = courseDetails.isBookmarked
 
         case .errorOccured(let error):
             print(error)

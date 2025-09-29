@@ -47,6 +47,14 @@ struct CourseDetailView: View {
                 saveOption
             }
         }
+        .onDrop(
+            of: [.text],
+            delegate: GlobalDropDelegate(
+                onDragEnd: {
+                    store.dispatch(.endDragging)
+                }
+            )
+        )
         .onAppear {
             store.dispatch(.fetchCourseDetail(courseId: courseId))
         }
@@ -144,7 +152,7 @@ extension CourseDetailView {
                             Button {
                                 bookmarkCourse()
                             } label: {
-                                Image(store.state.courseSaveSelected ? .bookmarkSavedIcon : .bookmarkIcon)
+                                Image(store.state.courseBookmarkSelected ? .bookmarkSavedIcon : .bookmarkIcon)
                                     .resizable()
                                     .renderingMode(.template)
                                     .foregroundStyle(.gray900)
@@ -170,9 +178,7 @@ extension CourseDetailView {
     private var placeList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(alignment: .center, spacing: 12.adjustedHeight) {
-                ForEach(Array(store.state.places.enumerated()), id: \.element.id) {
-                    index,
-                    place in
+                ForEach(Array(store.state.places.enumerated()), id: \.element.id) { index, place in
                     DraggablePlaceCell(
                         order: index + 1,
                         mainImageURL: place.thumbnailURL,
@@ -193,7 +199,7 @@ extension CourseDetailView {
                             destinationName: store.state.places[index].placeName)
                         )
                     } saveAction: {
-                        store.dispatch(.toggleSavePlace(index: index))
+                        store.dispatch(.toggleBookmarkPlace(index: index))
                         
                         if store.state.places[index].isBookmarked {
                             store.dispatch(.submitPlaceBookmark(placeId: store.state.places[index].placeId))
@@ -221,6 +227,7 @@ extension CourseDetailView {
                             )
                         }
                     }
+//                    .animation(.easeInOut(duration: 0.2), value: store.state.isEditing)
                     .cornerRadius(20, corners: .allCorners)
                     .frame(maxWidth: .infinity)
                     .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
@@ -241,6 +248,7 @@ extension CourseDetailView {
                     )
                 }
             }
+            .animation(.easeInOut(duration: 0.1), value: store.state.focusedPlaceIndex)
             .padding(.bottom, 35.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)
             
@@ -252,9 +260,7 @@ extension CourseDetailView {
     
     private var editButton: some View {
         Button {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                store.dispatch(.startEditing)
-            }
+            store.dispatch(.startEditing)
         } label: {
             Circle()
                 .fill(.gray900)
@@ -321,9 +327,7 @@ extension CourseDetailView {
                 title: "완료",
                 isEnabled: true
             ) {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    store.dispatch(.endEditing)
-                }
+                store.dispatch(.endEditing)
             }
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.bottom, 16.adjustedHeight)
@@ -404,12 +408,12 @@ extension CourseDetailView {
 
 extension CourseDetailView {
     private func bookmarkCourse() {
-        if store.state.courseSaveSelected {
+        if store.state.courseBookmarkSelected {
             store.dispatch(.removeCourseBookmark(courseId: courseId))
-            store.dispatch(.toggleSaveCourse)
+            store.dispatch(.toggleBookmarkCourse)
         } else {
             store.dispatch(.submitCourseBookmark(courseId: courseId))
-            store.dispatch(.toggleSaveCourse)
+            store.dispatch(.toggleBookmarkCourse)
             
             store.dispatch(
                 .showToastView(
