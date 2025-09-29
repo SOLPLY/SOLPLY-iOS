@@ -18,6 +18,12 @@ enum ReportsReducer {
             
         case .editReportsContent(let reportsContent):
             state.reportsContent = reportsContent
+            
+        case .startLottie:
+            break
+            
+        case .endLottie:
+            state.shouldGoBack = true
         }
     }
 }

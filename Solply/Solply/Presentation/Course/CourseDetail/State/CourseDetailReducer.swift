@@ -87,16 +87,7 @@ enum CourseDetailReducer {
             state.toastContent = toastContent
             state.draggedPlace = nil
             state.canDelete = .dismissed
-            state.isInDeleteZone = false
-            
-        case .showAlert:
-            state.isAlertPresented = true
-            
-        case .cancelAlert:
-            state.isAlertPresented = false
-            
-        case .confirmAlert:
-            state.isAlertPresented = false
+            state.isInDeleteZone = false        
             
         case .saveCourseToCurrent:
             state.isSaveOptionPresented = false

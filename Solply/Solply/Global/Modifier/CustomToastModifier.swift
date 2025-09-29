@@ -1,5 +1,5 @@
 //
-//  ToastModifier.swift
+//  CustomToastModifier.swift
 //  Solply
 //
 //  Created by 김승원 on 7/12/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ToastModifier: ViewModifier {
+struct CustomToastModifier: ViewModifier {
     
     // MARK: - Properties
     
@@ -38,7 +38,7 @@ struct ToastModifier: ViewModifier {
 }
 
 extension View {
-    func toast(toastManager: ToastManager) -> some View {
-        self.modifier(ToastModifier(toastManager: toastManager))
+    func customToast(toastManager: ToastManager) -> some View {
+        self.modifier(CustomToastModifier(toastManager: toastManager))
     }
 }

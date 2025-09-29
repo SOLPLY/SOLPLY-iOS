@@ -12,6 +12,7 @@ struct ArchiveListView: View {
     // MARK: - Properties
     
     @EnvironmentObject var appCoordinator: AppCoordinator
+    @EnvironmentObject var alertManager: AlertManager
     @StateObject var store = ArchiveListStore()
     
     private let archiveCategory: SolplyContentType
@@ -46,7 +47,7 @@ struct ArchiveListView: View {
                         Spacer()
                         
                         Button {
-                            store.dispatch(.showAlert)
+                            showAlert()
                         } label: {
                             Text("삭제")
                                 .applySolplyFont(.button_14_r)
@@ -76,21 +77,22 @@ struct ArchiveListView: View {
             }
         }
         .customNavigationBar(.archiveList(title: town, backAction: appCoordinator.goBack))
+        .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchPlaceList(townId: townId, isBookmarkSearch: true, mainTagId: nil, subTagAIdList: nil, subTagBIdList: nil))
             store.dispatch(.fetchCourseList(townId: townId, placeId: nil))
         }
-        .customAlert(
-            alertType: .delete,
-            title: archiveCategory == .place
-                    ? "선택한 장소를 삭제할까요?"
-                    : "선택한 코스를 삭제할까요?",
-            isPresented: store.state.isPresented
+    }
+}
+
+// MARK: - Functions
+
+extension ArchiveListView {
+    private func showAlert() {
+        alertManager.showAlert(
+            alertType: archiveCategory == .place ? .deletePlace : .deleteCourse,
+            onCancel: nil
         ) {
-            store.dispatch(.alertCancel)
-        } onConfirm: {
-            store.dispatch(.alertDelete)
-            
             if archiveCategory == .place {
                 store.dispatch(.removePlaceList(PlaceIds: Array(store.state.selectedPlaceIds)))
             } else {

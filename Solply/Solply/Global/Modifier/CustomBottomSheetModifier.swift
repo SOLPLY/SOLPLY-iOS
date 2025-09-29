@@ -11,10 +11,10 @@ struct CustomBottomSheetModifier<SheetContent: View>: ViewModifier {
     
     // MARK: - Properties
     
+    @State private var currentHeight: CGFloat = 0
+    
     private let bottomSheetType: CustomBottomSheetType
     private let sheetContent: () -> SheetContent
-    
-    @State private var dragOffset: CGFloat = 0
     
     // MARK: - Initializer
     
@@ -24,18 +24,19 @@ struct CustomBottomSheetModifier<SheetContent: View>: ViewModifier {
     ) {
         self.bottomSheetType = bottomSheetType
         self.sheetContent = sheetContent
+        self._currentHeight = State(initialValue: bottomSheetType.defaultHeight)
     }
     
     // MARK: - Body
     
     func body(content: Content) -> some View {
-        ZStack(alignment: .top) {
+        ZStack(alignment: .bottom) {
             content
             
             sheet
-                .offset(y: bottomSheetType.defaultOffset + dragOffset)
-                .ignoresSafeArea(edges: .bottom)
+                .frame(height: currentHeight)
         }
+        .ignoresSafeArea(edges: .bottom)
     }
 }
 
@@ -78,28 +79,21 @@ extension CustomBottomSheetModifier {
     private var dragGesture: some Gesture {
         DragGesture()
             .onChanged { value in
-                let proposedOffset = dragOffset + value.translation.height
-                
-                let minY = bottomSheetType.maxOffset - bottomSheetType.defaultOffset
-                let maxY = bottomSheetType.minOffset - bottomSheetType.defaultOffset
-                
-                dragOffset = min(max(proposedOffset, minY), maxY)
+                let newHeight = currentHeight - value.translation.height
+                let clampedHeight = min(max(newHeight, bottomSheetType.minHeight),bottomSheetType.maxHeight)
+                currentHeight = clampedHeight
             }
             .onEnded { value in
-                let finalOffset = dragOffset + value.translation.height
-                
-                let fromDefault = finalOffset
-                let minThreshold = bottomSheetType.minThreshold
-                let maxThreshold = -bottomSheetType.maxThreshold
+                let newHeight = currentHeight - value.translation.height
+                let midPoint = (bottomSheetType.defaultHeight + bottomSheetType.maxHeight) / 2
                 
                 withAnimation(.easeInOut(duration: 0.25)) {
-                    if fromDefault < maxThreshold {
-                        dragOffset = bottomSheetType.maxOffset - bottomSheetType.defaultOffset
-                    } else if fromDefault > minThreshold {
-                        // TODO: - 추후 바텀시트를 내릴 수 있기 떄문에 남겨놓음
-                        dragOffset = 0
+                    if newHeight <= bottomSheetType.defaultHeight {
+                        currentHeight = bottomSheetType.defaultHeight
+                    } else if newHeight > midPoint {
+                        currentHeight = bottomSheetType.maxHeight
                     } else {
-                        dragOffset = 0
+                        currentHeight = bottomSheetType.defaultHeight
                     }
                 }
             }

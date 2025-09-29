@@ -32,18 +32,6 @@ enum ArchiveListReducer {
             state.selectedCourseIds.removeAll()
             state.activeDelete = false
             
-        case .showAlert:
-            state.isPresented = true
-            
-        case .alertCancel:
-            state.isPresented = false
-            
-        case .alertDelete:
-            state.isPresented = false
-            state.activeDelete = false
-            
-        
-            
         case .fetchCourseList:
             break
             
