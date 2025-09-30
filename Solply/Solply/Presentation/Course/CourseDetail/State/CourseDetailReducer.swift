@@ -47,10 +47,12 @@ enum CourseDetailReducer {
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
-            state.draggedPlace = state.canDelete == .dismissed ? nil : draggedPlace
-            state.canDelete = (state.canDelete == .dismissed ? .hidden : .active)
+            print("startDragging")
+            state.draggedPlace = draggedPlace
+            state.canDelete = true
             
         case .whileDragging(from: let fromIndex, to: let toIndex):
+            print("whileDragging")
             guard state.draggedPlace != nil,
                   fromIndex < state.places.count,
                   toIndex < state.places.count,
@@ -59,9 +61,10 @@ enum CourseDetailReducer {
             let movedPlace = state.places.remove(at: fromIndex)
             state.places.insert(movedPlace, at: toIndex)
             
-        case .endDragging:
+        case .endDragging(let isHoldOnly):
+            print("endDragging\(isHoldOnly)")
             state.draggedPlace = nil
-            state.canDelete = .dismissed
+            state.canDelete = false
             state.isInDeleteZone = false
             
         case .deletePlace:
@@ -69,7 +72,7 @@ enum CourseDetailReducer {
             
             if let index = state.places.firstIndex(of: place) {
                 state.places.remove(at: index)
-                state.canDelete = .dismissed
+                state.canDelete = false
                 state.draggedPlace = nil
             }
             
@@ -84,8 +87,8 @@ enum CourseDetailReducer {
         case .showToastView(let toastContent):
             state.toastContent = toastContent
             state.draggedPlace = nil
-            state.canDelete = .dismissed
-            state.isInDeleteZone = false        
+            state.canDelete = false
+            state.isInDeleteZone = false
             
         case .saveCourseToCurrent:
             state.isSaveOptionPresented = false

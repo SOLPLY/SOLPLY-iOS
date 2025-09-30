@@ -52,7 +52,7 @@ struct CourseDetailView: View {
             of: [.text],
             delegate: GlobalDropDelegate(
                 onDragEnd: {
-                    store.dispatch(.endDragging)
+                    store.dispatch(.endDragging(isHoldOnly: false))
                 }
             )
         )
@@ -244,11 +244,21 @@ extension CourseDetailView {
                             store.dispatch(.whileDragging(from: fromIndex, to: toIndex))
                         },
                         endDragging: {
-                            store.dispatch(.endDragging)
+                            store.dispatch(.endDragging(isHoldOnly: false))
                         }
                     )
                 }
             }
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { _ in
+                        
+                    }
+                    .onEnded { _ in
+                        
+                        store.dispatch(.endDragging(isHoldOnly: true))
+                    }
+            )
             .animation(.easeInOut(duration: 0.1), value: store.state.focusedPlaceIndex)
             .padding(.bottom, 35.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)
@@ -320,7 +330,7 @@ extension CourseDetailView {
     
     private var editingArea: some View {
         VStack(alignment: .center, spacing: 16.adjustedHeight) {
-            if fromArchive && store.state.canDelete == .active {
+            if fromArchive && store.state.canDelete {
                 deleteArea
             }
             

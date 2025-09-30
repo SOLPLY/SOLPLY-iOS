@@ -25,7 +25,7 @@ struct CourseDetailState {
     var courseBookmarkSelected: Bool = false
     var isCourseBookmarked: Bool = false
     var isEditing: Bool = false
-    var canDelete: DeleteZoneState = .hidden
+    var canDelete: Bool = false
     var isInDeleteZone: Bool = false
     
     var userLatitude: Double = 0.0
