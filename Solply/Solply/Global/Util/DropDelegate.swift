@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - DropViewDelegate
+
 struct DropViewDelegate: DropDelegate {
     let isEditing: Bool
     let destinationPlace : PlaceDetailInCourse
@@ -42,6 +44,8 @@ struct DropViewDelegate: DropDelegate {
     }
 }
 
+// MARK: - DeleteDropDelegate
+
 struct DeleteDropDelegate: DropDelegate {
     let draggedPlace: PlaceDetailInCourse?
     let onDelete: () -> Void
@@ -68,6 +72,8 @@ struct DeleteDropDelegate: DropDelegate {
         onExited()
     }
 }
+
+// MARK: - GlobalDropDelegate
 
 struct GlobalDropDelegate: DropDelegate {
     let onDragEnd: () -> Void

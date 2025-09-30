@@ -47,6 +47,7 @@ struct CourseDetailView: View {
                 saveOption
             }
         }
+        .animation(.easeInOut(duration: 0.2), value: store.state.isSaveOptionPresented)
         .onDrop(
             of: [.text],
             delegate: GlobalDropDelegate(
@@ -227,7 +228,7 @@ extension CourseDetailView {
                             )
                         }
                     }
-//                    .animation(.easeInOut(duration: 0.2), value: store.state.isEditing)
+                    .animation(.easeInOut(duration: 0.2), value: store.state.isEditing)
                     .cornerRadius(20, corners: .allCorners)
                     .frame(maxWidth: .infinity)
                     .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
@@ -340,9 +341,7 @@ extension CourseDetailView {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        store.dispatch(.saveCourseCancel)
-                    }
+                    store.dispatch(.saveCourseCancel)
                 }
             
             VStack(alignment: .center, spacing: 12.adjustedHeight) {
@@ -362,9 +361,7 @@ extension CourseDetailView {
                             )
                         )
                     )
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        store.dispatch(.saveCourseToCurrent)
-                    }
+                    store.dispatch(.saveCourseToCurrent)
                 }
                 
                 CourseSaveButton(title: "새 코스로 저장") {
@@ -382,9 +379,7 @@ extension CourseDetailView {
                             )
                         )
                     )
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        store.dispatch(.saveCourseAsNew)
-                    }
+                    store.dispatch(.saveCourseAsNew)
                     
                     store.dispatch(
                         .showToastView(
