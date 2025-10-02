@@ -34,64 +34,49 @@ struct CourseDetailView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             courseMapView
-                .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
-                    VStack(alignment: .center, spacing: 20.adjustedHeight) {
-                        title
-                        
-                        placeList
-                    }
-                }
-                .onAppear {
-                    store.dispatch(.fetchCourseDetail(courseId: courseId))
-                }
-                .onChange(of: store.state.toastContent) { _, toastContent in
-                    guard let toastContent else { return }
-                    
-                    toastManager.showToast(content: toastContent) {
-                        print("Toast")
-                        appCoordinator.navigate(
-                            to: .courseDetail(
-                                townId: townId,
-                                courseId: courseId,
-                                fromArchive: true
-                            )
-                        )
-                    }
-                }
+                
             if fromArchive && !store.state.isEditing {
                 editButton
             }
             
             if store.state.isEditing {
-                VStack(alignment: .center, spacing: 16.adjustedHeight) {
-                    if fromArchive && store.state.canDelete == .active {
-                        deleteArea
-                    }
-                    
-                    CTAMainButton(
-                        title: "완료",
-                        isEnabled: true
-                    ) {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            store.dispatch(.endEditing)
-                        }
-                    }
-                    .padding(.horizontal, 20.adjustedWidth)
-                    .padding(.bottom, 16.adjustedHeight)
-                }
+                editingArea
             }
             
             if store.state.isSaveOptionPresented {
                 saveOption
-                    .transition(.opacity)
-                    .zIndex(10)
             }
+        }
+        .animation(.easeInOut(duration: 0.2), value: store.state.isSaveOptionPresented)
+        .onDrop(
+            of: [.text],
+            delegate: GlobalDropDelegate(
+                onDragEnd: {
+                    store.dispatch(.endDragging(isHoldOnly: false))
+                }
+            )
+        )
+        .onAppear {
+            store.dispatch(.fetchCourseDetail(courseId: courseId))
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
         }
         .onChange(of: store.state.updatedCourseId) { _, newValue in
             store.dispatch(.fetchCourseDetail(courseId: newValue))
+        }
+        .onChange(of: store.state.toastContent) { _, toastContent in
+            guard let toastContent else { return }
+            
+            toastManager.showToast(content: toastContent) {
+                appCoordinator.navigate(
+                    to: .courseDetail(
+                        townId: townId,
+                        courseId: courseId,
+                        fromArchive: true
+                    )
+                )
+            }
         }
         .sheet(
             isPresented: Binding(
@@ -111,7 +96,6 @@ struct CourseDetailView: View {
             .presentationDetents([.height(640.adjustedHeight)])
             .presentationCornerRadius(20)
         }
-
     }
 }
 
@@ -120,45 +104,20 @@ struct CourseDetailView: View {
 extension CourseDetailView {
     private var courseMapView: some View {
         CourseDetailMapView(places: store.state.places)
-            .customNavigationBar(
-                .courseDetail(backAction: {
-                    if store.state.isEditing {
-                        showAlert()
-                    } else {
-                        appCoordinator.goBack()
-                    }
+            .customNavigationBar(.courseDetail(
+                backAction: {
+                    store.state.isEditing ? showAlert() : appCoordinator.goBack()
                 }, homeAction: {
                     appCoordinator.goToRoot()
-                })
-            )
-    }
-    
-    private var bottomSheetTopButton: some View {
-        SolplyBookmarkButton(
-            isEnabled: true,
-            isBookmarked: store.state.courseSaveSelected
-        ) {
-            if store.state.courseSaveSelected {
-                store.dispatch(.removeCourseBookmark(courseId: courseId))
-                store.dispatch(.toggleSaveCourse)
-                
-            } else {
-                store.dispatch(.submitCourseBookmark(courseId: courseId))
-                store.dispatch(.toggleSaveCourse)
-                
-                store.dispatch(
-                    .showToastView(
-                        ToastContent(
-                            toastType: .withActionToast,
-                            message: "코스가 수집함에 저장되었어요.",
-                            buttonTitle: "코스 수정하기"
-                        )
-                    )
-                )
+                }
+            ))
+            .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
+                VStack(alignment: .center, spacing: 20.adjustedHeight) {
+                    title
+                    
+                    placeList
+                }
             }
-        }
-        .frame(maxWidth: .infinity, alignment: .trailing)
-        .padding(.horizontal, 16.adjustedWidth)
     }
     
     private var title: some View {
@@ -194,7 +153,7 @@ extension CourseDetailView {
                             Button {
                                 bookmarkCourse()
                             } label: {
-                                Image(store.state.courseSaveSelected ? .bookmarkSavedIcon : .bookmarkIcon)
+                                Image(store.state.courseBookmarkSelected ? .bookmarkSavedIcon : .bookmarkIcon)
                                     .resizable()
                                     .renderingMode(.template)
                                     .foregroundStyle(.gray900)
@@ -241,7 +200,8 @@ extension CourseDetailView {
                             destinationName: store.state.places[index].placeName)
                         )
                     } saveAction: {
-                        store.dispatch(.toggleSavePlace(index: index))
+                        store.dispatch(.toggleBookmarkPlace(index: index))
+                        
                         if store.state.places[index].isBookmarked {
                             store.dispatch(.submitPlaceBookmark(placeId: store.state.places[index].placeId))
                             
@@ -268,36 +228,38 @@ extension CourseDetailView {
                             )
                         }
                     }
+                    .animation(.easeInOut(duration: 0.2), value: store.state.isEditing)
                     .cornerRadius(20, corners: .allCorners)
                     .frame(maxWidth: .infinity)
                     .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
-                    .onDrag {
-                        guard store.state.isEditing else { return NSItemProvider() }
-                        
-                        let generator = UIImpactFeedbackGenerator(style: .light)
-                        generator.impactOccurred()
-                        
-                        store.dispatch(.startDragging(draggedPlace: place))
-                        return NSItemProvider()
-                    }
-                    .onDrop(
-                        of: [.text],
-                        delegate: DropViewDelegate(
-                            destinationPlace: place,
-                            places: store.state.places,
-                            draggedPlace: store.state.draggedPlace,
-                            isEditing: store.state.isEditing,
-                            onMove: { fromIndex, toIndex in
-                                store.dispatch(.whileDragging(from: fromIndex, to: toIndex))
-                            },
-                            onDragEnd: {
-                                store.dispatch(.endDragging)
-                            }
-                        )
+                    .customDragDrop(
+                        isEditing: store.state.isEditing,
+                        placeDetailInCourse: place,
+                        placesDetailInCourse: store.state.places,
+                        draggedPlace: store.state.draggedPlace,
+                        startDragging: { placeDetailInCourse in
+                            store.dispatch(.startDragging(draggedPlace: placeDetailInCourse))
+                        },
+                        whileDragging: { fromIndex, toIndex in
+                            store.dispatch(.whileDragging(from: fromIndex, to: toIndex))
+                        },
+                        endDragging: {
+                            store.dispatch(.endDragging(isHoldOnly: false))
+                        }
                     )
-                    
                 }
             }
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { _ in
+                        
+                    }
+                    .onEnded { _ in
+                        
+                        store.dispatch(.endDragging(isHoldOnly: true))
+                    }
+            )
+            .animation(.easeInOut(duration: 0.1), value: store.state.focusedPlaceIndex)
             .padding(.bottom, 35.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)
             
@@ -309,9 +271,7 @@ extension CourseDetailView {
     
     private var editButton: some View {
         Button {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                store.dispatch(.startEditing)
-            }
+            store.dispatch(.startEditing)
         } label: {
             Circle()
                 .fill(.gray900)
@@ -368,15 +328,30 @@ extension CourseDetailView {
             )
     }
     
+    private var editingArea: some View {
+        VStack(alignment: .center, spacing: 16.adjustedHeight) {
+            if fromArchive && store.state.canDelete {
+                deleteArea
+            }
+            
+            CTAMainButton(
+                title: "완료",
+                isEnabled: true
+            ) {
+                store.dispatch(.endEditing)
+            }
+            .padding(.horizontal, 20.adjustedWidth)
+            .padding(.bottom, 16.adjustedHeight)
+        }
+    }
+    
     private var saveOption: some View {
         ZStack(alignment: .bottom) {
             Color(.coreBlackO40)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        store.dispatch(.saveCourseCancel)
-                    }
+                    store.dispatch(.saveCourseCancel)
                 }
             
             VStack(alignment: .center, spacing: 12.adjustedHeight) {
@@ -396,9 +371,7 @@ extension CourseDetailView {
                             )
                         )
                     )
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        store.dispatch(.saveCourseToCurrent)
-                    }
+                    store.dispatch(.saveCourseToCurrent)
                 }
                 
                 CourseSaveButton(title: "새 코스로 저장") {
@@ -416,9 +389,7 @@ extension CourseDetailView {
                             )
                         )
                     )
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        store.dispatch(.saveCourseAsNew)
-                    }
+                    store.dispatch(.saveCourseAsNew)
                     
                     store.dispatch(
                         .showToastView(
@@ -433,6 +404,8 @@ extension CourseDetailView {
             }
             .padding(.bottom, 16.adjustedHeight)
         }
+        .transition(.opacity)
+        .zIndex(10)
     }
 }
 
@@ -440,12 +413,12 @@ extension CourseDetailView {
 
 extension CourseDetailView {
     private func bookmarkCourse() {
-        if store.state.courseSaveSelected {
+        if store.state.courseBookmarkSelected {
             store.dispatch(.removeCourseBookmark(courseId: courseId))
-            store.dispatch(.toggleSaveCourse)
+            store.dispatch(.toggleBookmarkCourse)
         } else {
             store.dispatch(.submitCourseBookmark(courseId: courseId))
-            store.dispatch(.toggleSaveCourse)
+            store.dispatch(.toggleBookmarkCourse)
             
             store.dispatch(
                 .showToastView(

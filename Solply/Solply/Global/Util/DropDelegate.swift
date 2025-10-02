@@ -7,11 +7,13 @@
 
 import SwiftUI
 
+// MARK: - DropViewDelegate
+
 struct DropViewDelegate: DropDelegate {
+    let isEditing: Bool
     let destinationPlace : PlaceDetailInCourse
     let places: [PlaceDetailInCourse]
     let draggedPlace : PlaceDetailInCourse?
-    let isEditing: Bool
     let onMove: (Int, Int) -> Void
     let onDragEnd: () -> Void
     
@@ -42,6 +44,8 @@ struct DropViewDelegate: DropDelegate {
     }
 }
 
+// MARK: - DeleteDropDelegate
+
 struct DeleteDropDelegate: DropDelegate {
     let draggedPlace: PlaceDetailInCourse?
     let onDelete: () -> Void
@@ -69,4 +73,17 @@ struct DeleteDropDelegate: DropDelegate {
     }
 }
 
+// MARK: - GlobalDropDelegate
 
+struct GlobalDropDelegate: DropDelegate {
+    let onDragEnd: () -> Void
+    
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        DropProposal(operation: .move)
+    }
+    
+    func performDrop(info: DropInfo) -> Bool {
+        onDragEnd()
+        return true
+    }
+}
