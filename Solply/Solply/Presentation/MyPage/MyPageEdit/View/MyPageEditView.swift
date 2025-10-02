@@ -22,8 +22,8 @@ public struct MyPageEditView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24.adjustedHeight) {
                 header
-                nicknameSection
-                styleSection
+                nickname
+                persona
             }
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.top, 15.adjustedHeight)
@@ -81,8 +81,7 @@ private extension MyPageEditView {
         .frame(maxWidth: .infinity)
     }
     
-    // MARK: Nickname Section
-    var nicknameSection: some View {
+    var nickname: some View {
         VStack(alignment: .leading, spacing: 12.adjustedHeight) {
             Text("닉네임")
                 .applySolplyFont(.body_16_m)
@@ -96,9 +95,7 @@ private extension MyPageEditView {
         }
     }
     
-    // MARK: Style Section
-    
-    var styleSection: some View {
+    var persona: some View {
         VStack(alignment: .leading, spacing: 12.adjustedHeight) {
             Text("나의 솔플 스타일")
                 .applySolplyFont(.body_16_m)

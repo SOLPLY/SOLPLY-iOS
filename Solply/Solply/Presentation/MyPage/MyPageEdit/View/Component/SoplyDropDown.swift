@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// MARK: - SoplyDropDown
-
 public struct SoplyDropDown: View {
     
     // MARK: - Properties
@@ -55,7 +53,6 @@ public struct SoplyDropDown: View {
                     .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
-        // 헤더 강조 배경
         .background(alignment: .top) {
             if isExpanded {
                 Rectangle()
@@ -65,20 +62,15 @@ public struct SoplyDropDown: View {
                     .allowsHitTesting(false)
             }
         }
-        // 카드 배경
         .background(
             RoundedRectangle(cornerRadius: 16.adjustedHeight, style: .continuous)
                 .fill(Color(.coreWhite))
         )
-        // 테두리
-        .overlay(
-            RoundedRectangle(cornerRadius: 16.adjustedHeight, style: .continuous)
-                .stroke(Color(.gray300), lineWidth: 1)
+        .addBorder(
+            .roundedRectangle(cornerRadius: 16.adjustedHeight),
+            borderColor: Color(.gray300),
+            borderWidth: 1
         )
-        .animation(.spring(response: 0.28, dampingFraction: 0.9), value: isExpanded)
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(Text(currentHeaderText))
-        .accessibilityHint(Text(isExpanded ? "접기 가능" : "펼치기 가능"))
     }
 }
 
@@ -87,6 +79,7 @@ public struct SoplyDropDown: View {
 private extension SoplyDropDown {
     
     // MARK: Header
+    
     var header: some View {
         Button {
             withAnimation { isExpanded.toggle() }
@@ -116,6 +109,7 @@ private extension SoplyDropDown {
     }
     
     // MARK: Option List
+    
     var optionList: some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(displayOptions.indices, id: \.self) { index in
@@ -142,7 +136,6 @@ private extension SoplyDropDown {
                 
                 if index < displayOptions.count - 1 {
                     Divider()
-                        .padding(.leading, 16.adjustedWidth)
                 }
             }
         }
