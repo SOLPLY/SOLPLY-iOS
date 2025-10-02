@@ -14,8 +14,9 @@ enum AppDestination: Hashable {
     case courseDetail(townId: Int, courseId: Int, fromArchive: Bool)
     case frequentTown
     case reports
-    case myPage
     case placeSearch
+    case myPage
+    case myPageEdit
 }
 
 extension AppDestination {
@@ -38,6 +39,8 @@ extension AppDestination {
             ReportsView()
         case .myPage:
             MyPageView()
+        case .myPageEdit:
+            MyPageEditView()
         }
     }
 }

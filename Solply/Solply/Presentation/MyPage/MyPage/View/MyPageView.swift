@@ -49,18 +49,19 @@ struct MyPageView: View {
 }
 
 // MARK: - Header
+
 private extension MyPageView {
     var header: some View {
         VStack(alignment: .center, spacing: 15.adjustedHeight) {
             ZStack {
                 Circle()
-                    .frame(width: 80.adjustedWidth, height: 80.adjustedWidth)
+                    .frame(width: 80.adjustedWidth, height: 80.adjustedHeight)
                     .foregroundColor(.gray800)
 
                 Image(.myNavIcon)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
                     .foregroundColor(.gray100)
             }
             .padding(.top, 24.adjustedHeight)
@@ -70,7 +71,9 @@ private extension MyPageView {
                 .applySolplyFont(.title_18_sb)
                 .foregroundColor(.coreBlack)
 
-            Button { store.dispatch(.editProfileTapped) } label: {
+            Button {
+                appCoordinator.navigate(to: .myPageEdit)
+            } label: {
                 HStack(alignment: .center, spacing: 4.adjustedWidth) {
                     Text("프로필 수정")
                         .applySolplyFont(.button_14_m)
