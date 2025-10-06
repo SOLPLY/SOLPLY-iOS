@@ -18,6 +18,8 @@ struct CourseInformationEditBottomSheet: View {
     
     private var dismissAction: (() -> Void)?
     private var completeAction: ((CourseInformation) -> Void)?
+    private let courseNamePlaceholder: String
+    private let courseDescriptionPlaceholder: String
     private let minCourseNameLength: Int = 1
     private let maxCourseNameLength: Int = 18
     private let minCourseDescriptionLength: Int = 0
@@ -33,6 +35,8 @@ struct CourseInformationEditBottomSheet: View {
     ) {
         self.courseName = courseName
         self.courseDescription = courseDescription
+        self.courseNamePlaceholder = courseName
+        self.courseDescriptionPlaceholder = courseDescription
         self.dismissAction = dismissAction
         self.completeAction = completeAction
     }
@@ -40,10 +44,12 @@ struct CourseInformationEditBottomSheet: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .center, spacing: 36.adjustedWidth) {
+        VStack(alignment: .center, spacing: 0) {
             navigationBar
+                .padding(.bottom, 37.adjustedHeight)
             
             courseNameEdit
+                .padding(.bottom, 24.adjustedHeight)
             
             courseDescriptionEdit
             
@@ -51,7 +57,7 @@ struct CourseInformationEditBottomSheet: View {
             
             completeButton
         }
-        .ignoresSafeArea(.keyboard)
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .background(.coreWhite)
         .onTapGesture {
             hideKeyboard()
@@ -79,6 +85,8 @@ extension CourseInformationEditBottomSheet {
             }
             
             Text("코스 정보 수정")
+                .applySolplyFont(.head_16_m)
+                .foregroundStyle(.coreBlack)
         }
         .frame(width: 343.adjustedWidth, height: 24.adjustedHeight)
         .padding(.top, 16.adjustedHeight)
@@ -94,7 +102,8 @@ extension CourseInformationEditBottomSheet {
             CourseInformationEditTextField(
                 text: $courseName,
                 minLength: minCourseNameLength,
-                maxLength: maxCourseNameLength
+                maxLength: maxCourseNameLength,
+                placeholder: courseNamePlaceholder
             ) { isCourseNameValid in
                 self.isCourseNameValid = isCourseNameValid
             }
@@ -112,7 +121,8 @@ extension CourseInformationEditBottomSheet {
             CourseInformationEditTextField(
                 text: $courseDescription,
                 minLength: minCourseDescriptionLength,
-                maxLength: maxCourseDescriptionLength
+                maxLength: maxCourseDescriptionLength,
+                placeholder: courseDescriptionPlaceholder
             ) { isCourseDescriptionValid in
                 self.isCourseDescriptionValid = isCourseDescriptionValid
             }
@@ -133,6 +143,7 @@ extension CourseInformationEditBottomSheet {
             )
         }
         .frame(width: 335.adjustedWidth, height: 64.adjustedHeight)
+        .padding(.bottom, 16.adjustedHeight)
     }
 }
 

@@ -39,6 +39,7 @@ struct ReportsView: View {
                     x: store.state.reportsStep == .reportsComplete ? 0 : screenWidth
                 )
         }
+        .disableSwipeBack()
         .background(.coreWhite)
         .customNavigationBar(
             .reports(
