@@ -7,6 +7,8 @@
 
 import Foundation
 
-struct placeSearchState {
-    var placeName: String?
+struct PlaceSearchState {
+    var placeName: String = ""
+    var places: [PlaceSearchDTO] = []
+    var isSearchCompleted: Bool = false
 }

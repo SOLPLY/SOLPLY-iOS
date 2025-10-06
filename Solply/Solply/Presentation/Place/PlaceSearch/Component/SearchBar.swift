@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct SearchBarView: View {
+struct SearchBar: View {
+    
     @State private var text: String = ""
-    var onChange: ((String) -> Void)?
     var onSubmit: ((String) -> Void)?
     
     var body: some View {
@@ -26,19 +26,20 @@ struct SearchBarView: View {
                     .foregroundColor(.coreBlack)
                     .padding(.leading, 20.adjustedWidth)
                     .padding(.vertical, 12.adjustedHeight)
-                    .onChange(of: text) { _, newValue in
-                        onChange?(newValue)
-                    }
                     .onSubmit {
                         onSubmit?(text)
                     }
             }
             
-            Image(.searchIcon)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-                .padding(.trailing, 20.adjustedWidth)
+            Button {
+                onSubmit?(text)
+            } label: {
+                Image(.searchIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                    .padding(.trailing, 20.adjustedWidth)
+            }
         }
         .addBorder(
             .roundedRectangle(cornerRadius: 20.adjustedHeight),

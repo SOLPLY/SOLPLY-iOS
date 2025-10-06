@@ -57,4 +57,10 @@ extension PlaceService: PlaceAPI {
     func removePlaceList(placeIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO> {
         return try await self.request(with: .removePlaceList(placeIds: placeIds))
     }
+    
+    func searchPlace(
+        placeName: String
+    ) async throws -> BaseResponseBody<PlaceSearchResponseDTO> {
+        return try await self.request(with: .searchPlace(placeName: placeName))
+    }
 }
