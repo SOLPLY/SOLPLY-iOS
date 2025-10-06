@@ -33,6 +33,15 @@ struct CourseDetailEffect {
     }
 }
 
+// MARK: - Functions
+
+extension CourseDetailEffect {
+    func delayEditing() async -> CourseDetailAction {
+        try? await Task.sleep(nanoseconds: 150_000_000)
+        return .delayEditing
+    }
+}
+
 // MARK: - CourseAPI
 
 extension CourseDetailEffect {

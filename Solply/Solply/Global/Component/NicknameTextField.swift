@@ -31,12 +31,12 @@ struct NicknameTextField: View {
                 ZStack(alignment: .leading) {
                     if text.isEmpty {
                         Text("여기에 입력하세요.")
-                            .applySolplyFont(.body_16_r)
+                            .applySolplyFont(.body_16_m)
                             .foregroundColor(.gray500)
                     }
                     
                     TextField("", text: $text)
-                        .applySolplyFont(.body_16_r)
+                        .applySolplyFont(.body_16_m)
                         .foregroundColor(.gray800)
                         .submitLabel(.done)
                         .onChange(of: text) { _, newValue in
@@ -62,7 +62,7 @@ struct NicknameTextField: View {
                 }
             }
             .padding(.horizontal, 16.adjustedHeight)
-            .frame(height: 56.adjustedHeight)
+            .frame(height: 52.adjustedHeight)
             .background(.white)
             .cornerRadius(20)
             .addBorder(

@@ -442,7 +442,7 @@ extension View {
                         .buttonStyle(.plain)
                     },
                     rightView: { EmptyView() },
-                    backgroundColor: .gray100
+                    backgroundColor: .coreWhite
                 )
             )
         }

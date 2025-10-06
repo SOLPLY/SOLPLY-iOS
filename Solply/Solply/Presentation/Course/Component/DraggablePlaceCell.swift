@@ -156,9 +156,7 @@ extension DraggablePlaceCell {
         .addBorder(.roundedRectangle(cornerRadius: 20), borderColor: .gray300, borderWidth: 1)
         .onTapGesture {
             if !isEditing {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    tapAction?()
-                }
+                tapAction?()
             }
         }
     }
