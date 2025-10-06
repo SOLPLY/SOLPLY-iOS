@@ -35,6 +35,7 @@ struct SearchPlaceCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12.adjustedHeight) {
             Divider()
+                .overlay(Color.gray200)
             
             HStack(alignment: .center, spacing: 8.adjustedWidth) {
                 KFImage(URL(string: thumnailUrl))
@@ -53,7 +54,7 @@ struct SearchPlaceCard: View {
                         Text(placeName)
                             .applySolplyFont(.title_15_m)
                             .foregroundColor(.black)
-                            .frame(width: 234.adjustedWidth, height: 19.adjustedHeight, alignment: .leading)
+                            .frame(height: 19.adjustedHeight, alignment: .leading)
                             .lineLimit(1)
                     }
                     
@@ -66,6 +67,7 @@ struct SearchPlaceCard: View {
             }
             
             Divider()
+                .overlay(Color.gray200)
         }
     }
 }

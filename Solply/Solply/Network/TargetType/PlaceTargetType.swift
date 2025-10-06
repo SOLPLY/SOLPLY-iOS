@@ -44,7 +44,7 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/bookmarks"
         case .fetchPlaceList:
             return "/places"
-        case .searchPlace(placeName: _):
+        case .searchPlace:
             return "/places/search"
         }
     }

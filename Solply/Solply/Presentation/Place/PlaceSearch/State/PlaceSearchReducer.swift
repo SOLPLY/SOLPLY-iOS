@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PlaceSearchReducer {
+enum PlaceSearchReducer {
     @MainActor static func reduce(state: inout PlaceSearchState, action: PlaceSearchAction) {
         switch action {
         case .searchPlace:

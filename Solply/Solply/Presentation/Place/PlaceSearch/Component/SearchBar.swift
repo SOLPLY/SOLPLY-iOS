@@ -7,12 +7,9 @@
 
 import SwiftUI
 
-struct SearchBarView: View {
-    
-    @StateObject var store : PlaceSearchStore
+struct SearchBar: View {
     
     @State private var text: String = ""
-    var onChange: ((String) -> Void)?
     var onSubmit: ((String) -> Void)?
     
     var body: some View {
@@ -29,17 +26,12 @@ struct SearchBarView: View {
                     .foregroundColor(.coreBlack)
                     .padding(.leading, 20.adjustedWidth)
                     .padding(.vertical, 12.adjustedHeight)
-                    .onChange(of: text) { _, newValue in
-                        onChange?(newValue)
-                        store.state.placeName = newValue
-                    }
                     .onSubmit {
-                        store.dispatch(.searchPlace(placeName: store.state.placeName))
+                        onSubmit?(text)
                     }
             }
             
             Button {
-                store.dispatch(.searchPlace(placeName: text))
                 onSubmit?(text)
             } label: {
                 Image(.searchIcon)

@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 final class PlaceSearchStore: ObservableObject {
-    @Published var state = PlaceSearchState()
+    @Published private(set) var state = PlaceSearchState()
     private let effect : PlaceSearchEffect =
         PlaceSearchEffect(placeService: PlaceService())
     

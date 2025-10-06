@@ -14,8 +14,7 @@ struct PlaceSearchEffect {
         self.placeService = placeService
     }
     
-    func searchPlace(placeName: String) async
-    -> PlaceSearchAction {
+    func searchPlace(placeName: String) async -> PlaceSearchAction {
         do {
             let response = try await placeService.searchPlace(placeName: placeName)
             

@@ -14,18 +14,14 @@ struct PlaceSearchView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject var store = PlaceSearchStore()
     
-    @State private var text: String = ""
-    private let onChange: ((String) -> Void)?
     private let onSubmit: ((String) -> Void)?
     
     // MARK: - Initializer
     
     init(
-        onChange: ((String) -> Void)? = nil,
         onSubmit: ((String) -> Void)? = nil
         
     ) {
-        self.onChange = onChange
         self.onSubmit = onSubmit
     }
     
@@ -33,13 +29,15 @@ struct PlaceSearchView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 28.adjustedHeight) {
-            SearchBarView(store: store, onChange: onChange, onSubmit: onSubmit)
+            SearchBar { text in
+                store.dispatch(.searchPlace(placeName: text))
+            }
             
             if store.state.isSearchCompleted {
                 if store.state.places.isEmpty {
                     PlaceEmptyView()
                 } else {
-                    PlaceDataView(store: store)
+                    PlaceDataView(places: store.state.places)
                 }
             }
         }
