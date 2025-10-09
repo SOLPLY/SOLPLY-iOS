@@ -28,9 +28,9 @@ final class PlaceDetailStore: ObservableObject {
                 destinationName: state.placeName
             )
             
-        case .fetchCourseArchive(let townId, let placeId):
+        case .fetchCourseArchive(let placeId):
             Task {
-                let result = await effect.fetchCourseArchive(townId: townId, placeId: placeId)
+                let result = await effect.fetchCourseArchive(placeId: placeId)
                 self.dispatch(result)
             }
             

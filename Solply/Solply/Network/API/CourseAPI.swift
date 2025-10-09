@@ -27,7 +27,7 @@ protocol CourseAPI {
     
     /// 내 코스 리스트 조회
     func fetchCourseArchive(
-        townId: Int,
+        townId: Int?,
         placeId: Int?
     ) async throws -> BaseResponseBody<CourseArchiveResponseDTO>
     

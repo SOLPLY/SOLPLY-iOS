@@ -10,7 +10,7 @@ import Foundation
 import Moya
 
 enum CourseTargetType {
-    case fetchCourseArchive(townId: Int, placeId: Int?)
+    case fetchCourseArchive(townId: Int?, placeId: Int?)
     case fetchCourseDetail(courseId: Int)
     case submitCourseBookmark(courseId: Int)
     case removeCourseBookmark(courseId: Int)
@@ -66,7 +66,10 @@ extension CourseTargetType: BaseTargetType {
     var task: Moya.Task {
         switch self {
         case .fetchCourseArchive(let townId, let placeId):
-            var params: [String: Any] = ["townId": townId]
+            var params: [String: Any] = [:]
+            if let townId = townId {
+                params["townId"] = townId
+            }
             
             // placeId를 서버에서 nullable하게 받음
             if let placeId = placeId {

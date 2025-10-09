@@ -51,7 +51,7 @@ struct PlaceDetailView: View {
         }
         .onAppear {
             store.dispatch(.fetchPlaceDetail(placeId: placeId))
-            store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+            store.dispatch(.fetchCourseArchive(placeId: placeId))
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
@@ -153,7 +153,7 @@ extension PlaceDetailView {
                         store.dispatch(.selectCourseToAdd(index: index))
                     }
                 } backAction: {
-                    store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+                    store.dispatch(.fetchCourseArchive(placeId: placeId))
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(.selectCourseToAdd(index: -1))
                 } goToAddCourseAction: {
@@ -229,7 +229,7 @@ extension PlaceDetailView {
             )
             store.dispatch(.addPlaceToCourse(index: selectedCourseIndex))
             store.dispatch(.toggleAddToCourse)
-            store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+            store.dispatch(.fetchCourseArchive(placeId: placeId))
         }
         .padding(.horizontal, 20.adjustedWidth)
         .safeAreaInset(edge: .bottom) {
