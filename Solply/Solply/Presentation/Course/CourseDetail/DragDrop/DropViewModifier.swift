@@ -1,5 +1,5 @@
 //
-//  CustomDragDropModifier.swift
+//  DropViewModifier.swift
 //  Solply
 //
 //  Created by 김승원 on 9/29/25.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct CustomDragDropModifier: ViewModifier {
+struct DropViewModifier: ViewModifier {
     
     // MARK: - Properties
     
-    @State private var dragDropState: DragDropState = .prepared
+    @Binding private var dragDropState: DragDropState
     
     private let isEditing: Bool
     private let placeDetailInCourse: PlaceDetailInCourse
@@ -24,6 +24,7 @@ struct CustomDragDropModifier: ViewModifier {
     // MARK: - Initializer
     
     init(
+        dragDropState: Binding<DragDropState>,
         isEditing: Bool,
         placeDetailInCourse: PlaceDetailInCourse,
         placesDetailInCourse: [PlaceDetailInCourse],
@@ -32,6 +33,7 @@ struct CustomDragDropModifier: ViewModifier {
         whileDragging: ((Int, Int) -> Void)?,
         endDragging: (() -> Void)?
     ) {
+        self._dragDropState = dragDropState
         self.isEditing = isEditing
         self.placeDetailInCourse = placeDetailInCourse
         self.placesDetailInCourse = placesDetailInCourse
@@ -40,6 +42,8 @@ struct CustomDragDropModifier: ViewModifier {
         self.whileDragging = whileDragging
         self.endDragging = endDragging
     }
+    
+    // MARK: - Body
     
     func body(content: Content) -> some View {
         if isEditing {
@@ -84,6 +88,7 @@ struct CustomDragDropModifier: ViewModifier {
 
 extension View {
     func customDragDrop(
+        dragDropState: Binding<DragDropState>,
         isEditing: Bool,
         placeDetailInCourse: PlaceDetailInCourse,
         placesDetailInCourse: [PlaceDetailInCourse],
@@ -93,7 +98,8 @@ extension View {
         endDragging: (() -> Void)?
     ) -> some View {
         self.modifier(
-            CustomDragDropModifier(
+            DropViewModifier(
+                dragDropState: dragDropState,
                 isEditing: isEditing,
                 placeDetailInCourse: placeDetailInCourse,
                 placesDetailInCourse: placesDetailInCourse,

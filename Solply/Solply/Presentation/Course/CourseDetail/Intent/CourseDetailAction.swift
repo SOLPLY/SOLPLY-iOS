@@ -8,6 +8,8 @@
 import Foundation
 
 enum CourseDetailAction {
+    case setDragDropState(dragDropState: DragDropState)
+    
     case toggleBookmarkCourse
     case focusPlace(index: Int)
     case toggleBookmarkPlace(index: Int)

@@ -48,13 +48,14 @@ struct CourseDetailView: View {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: store.state.isSaveOptionPresented)
-        .onDrop(
-            of: [.text],
-            delegate: GlobalDropDelegate(
-                onDragEnd: {
-                    store.dispatch(.endDragging(isHoldOnly: false))
-                }
-            )
+        .globalDrop(
+            dragDropState: Binding(
+                get: { store.state.dragDropState },
+                set: { store.dispatch(.setDragDropState(dragDropState: $0)) }
+            ),
+            endDragging: {
+                store.dispatch(.endDragging(isHoldOnly: false))
+            }
         )
         .onAppear {
             store.dispatch(.fetchCourseDetail(courseId: courseId))
@@ -233,6 +234,10 @@ extension CourseDetailView {
                     .frame(maxWidth: .infinity)
                     .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
                     .customDragDrop(
+                        dragDropState: Binding(
+                            get: { store.state.dragDropState },
+                            set: { store.dispatch(.setDragDropState(dragDropState: $0)) }
+                        ),
                         isEditing: store.state.isEditing,
                         placeDetailInCourse: place,
                         placesDetailInCourse: store.state.places,

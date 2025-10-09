@@ -10,6 +10,9 @@ import Foundation
 enum CourseDetailReducer {
     static func reduce(state: inout CourseDetailState, action: CourseDetailAction) {
         switch action {
+        case .setDragDropState(let dragDropState):
+            state.dragDropState = dragDropState
+            
         case .toggleBookmarkCourse:
             state.courseBookmarkSelected.toggle()
             
@@ -47,6 +50,7 @@ enum CourseDetailReducer {
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
+            print(state.dragDropState)
             print("startDragging")
             state.draggedPlace = draggedPlace
             state.canDelete = true
