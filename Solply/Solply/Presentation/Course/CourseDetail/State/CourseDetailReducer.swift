@@ -50,13 +50,10 @@ enum CourseDetailReducer {
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
-            print(state.dragDropState)
-            print("startDragging")
             state.draggedPlace = draggedPlace
             state.canDelete = true
             
         case .whileDragging(from: let fromIndex, to: let toIndex):
-            print("whileDragging")
             guard state.draggedPlace != nil,
                   fromIndex < state.places.count,
                   toIndex < state.places.count,
@@ -66,7 +63,6 @@ enum CourseDetailReducer {
             state.places.insert(movedPlace, at: toIndex)
             
         case .endDragging(let isHoldOnly):
-            print("endDragging\(isHoldOnly)")
             state.draggedPlace = nil
             state.canDelete = false
             state.isInDeleteZone = false

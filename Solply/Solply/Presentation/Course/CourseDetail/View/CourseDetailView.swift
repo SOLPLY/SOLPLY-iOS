@@ -299,37 +299,35 @@ extension CourseDetailView {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
-            .onDrop(
-                of: [.text],
-                delegate: DeleteDropDelegate(
-                    draggedPlace: store.state.draggedPlace,
-                    onDelete: {
-                        if store.state.places.count > 2 {
-                            store.dispatch(.deletePlace)
-                        } else {
-                            store.dispatch(
-                                .showToastView(
-                                    ToastContent(
-                                        toastType: .withIconToast,
-                                        message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
-                                        buttonTitle: nil,
-                                        bottomPadding: 96.adjustedHeight
-                                    )
+            .deleteDrop(
+                dragDropState: Binding(
+                    get: { store.state.dragDropState },
+                    set: { store.dispatch(.setDragDropState(dragDropState: $0)) }
+                ),
+                places: store.state.places,
+                draggedPlace: store.state.draggedPlace,
+                onDelete: { canDelete in
+                    if canDelete {
+                        store.dispatch(.deletePlace)
+                    } else {
+                        store.dispatch(
+                            .showToastView(
+                                ToastContent(
+                                    toastType: .withIconToast,
+                                    message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
+                                    buttonTitle: nil,
+                                    bottomPadding: 96.adjustedHeight
                                 )
                             )
-                        }
-                    },
-                    onEntered: {
-                        store.dispatch(.draggedInDeleteZone)
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
-                    },
-                    onExited: {
-                        store.dispatch(.draggedOutDeleteZone)
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
+                        )
                     }
-                )
+                },
+                onEntered: {
+                    store.dispatch(.draggedInDeleteZone)
+                },
+                onExited: {
+                    store.dispatch(.draggedOutDeleteZone)
+                }
             )
     }
     

@@ -19,7 +19,7 @@ struct GlobalDropModifier: ViewModifier {
     
     init(
         dragDropState: Binding<DragDropState>,
-        endDragging: (() -> Void)? = nil
+        endDragging: (() -> Void)?
     ) {
         self._dragDropState = dragDropState
         self.endDragging = endDragging
@@ -33,7 +33,6 @@ struct GlobalDropModifier: ViewModifier {
                 of: [.text],
                 delegate: GlobalDropDelegate(
                     onDragEnd: {
-                        print("GlobalDropDelegate: \(dragDropState)")
                         dragDropState = .completed
                         endDragging?()
                     }
@@ -45,7 +44,7 @@ struct GlobalDropModifier: ViewModifier {
 extension View {
     func globalDrop(
         dragDropState: Binding<DragDropState>,
-        endDragging: (() -> Void)?
+        endDragging: (() -> Void)? = nil
     ) -> some View {
         self.modifier(
             GlobalDropModifier(
