@@ -51,11 +51,7 @@ struct TodayPlaceRecommendCarousel: View {
                     category: store.state.placeRecommendItems[index].category,
                     title: store.state.placeRecommendItems[index].title,
                     introduction: store.state.placeRecommendItems[index].introduction
-                )
-                .frame(width: cardWidth, height: cardWidth)
-                .scaleEffect(scale)
-                .offset(x: totalOffset)
-                .onTapGesture {
+                ) {
                     appCoordinator.navigate(
                         to: .placeDetail(
                             townId: townId,
@@ -63,6 +59,9 @@ struct TodayPlaceRecommendCarousel: View {
                         )
                     )
                 }
+                .frame(width: cardWidth, height: cardWidth)
+                .scaleEffect(scale)
+                .offset(x: totalOffset)
             }
         }
         .frame(height: 240.adjustedHeight)

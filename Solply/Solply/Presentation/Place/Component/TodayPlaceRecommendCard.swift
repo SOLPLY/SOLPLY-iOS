@@ -17,6 +17,7 @@ struct TodayPlaceRecommendCard: View {
     private let category: MainTagType
     private let title: String
     private let introduction: String
+    private let onTap: (() -> Void)?
     
     // MARK: - Initializer
     
@@ -24,12 +25,14 @@ struct TodayPlaceRecommendCard: View {
         thumbnailImageUrl: String,
         category: MainTagType,
         title: String,
-        introduction: String
+        introduction: String,
+        onTap: (() -> Void)? = nil
     ) {
         self.thumbnailImageUrl = thumbnailImageUrl
         self.category = category
         self.title = title
         self.introduction = introduction
+        self.onTap = onTap
     }
     
     // MARK: - Body
@@ -65,6 +68,10 @@ struct TodayPlaceRecommendCard: View {
             }
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.bottom, 16.adjustedHeight)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            onTap?()
         }
     }
 }

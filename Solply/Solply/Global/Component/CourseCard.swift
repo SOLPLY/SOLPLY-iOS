@@ -46,7 +46,6 @@ struct CourseCard: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
-                .cornerRadius(20, corners: .allCorners)
             
             Rectangle()
                 .frame(width: 165.adjustedWidth, height: 11.adjustedHeight)
@@ -86,6 +85,9 @@ struct CourseCard: View {
             .cornerRadius(4, corners: [.topLeft, .topRight])
             .cornerRadius(20, corners: [.bottomLeft, .bottomRight])
         }
+        .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+        .cornerRadius(20, corners: .allCorners)
+        .contentShape(Rectangle())
         .onTapGesture {
             action?()
         }
