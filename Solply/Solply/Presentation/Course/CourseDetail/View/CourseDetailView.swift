@@ -227,16 +227,15 @@ extension CourseDetailView {
                     .cornerRadius(20, corners: .allCorners)
                     .frame(maxWidth: .infinity)
                     .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
-                    .customDragDrop(
+                    .dragDrop(
                         isEditing: store.state.isEditing,
-                        placeDetailInCourse: place,
-                        placesDetailInCourse: store.state.places,
-                        draggedPlace: store.state.draggedPlace,
-                        startDragging: { placeDetailInCourse in
-                            store.dispatch(.startDragging(draggedPlace: placeDetailInCourse))
+                        startDragging: {
+                            store.dispatch(.startDragging(draggedPlace: place))
                         },
-                        whileDragging: { fromIndex, toIndex in
-                            store.dispatch(.whileDragging(from: fromIndex, to: toIndex))
+                        whileDragging: {
+                            withAnimation(.interactiveSpring) {
+                                store.dispatch(.whileDragging(destination: place))
+                            }
                         },
                         endDragging: {
                             store.dispatch(.endDragging)

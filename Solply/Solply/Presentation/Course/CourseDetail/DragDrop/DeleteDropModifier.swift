@@ -52,6 +52,31 @@ struct DeleteDropModifier: ViewModifier {
     }
 }
 
+// MARK: - DeleDropDelegate
+
+struct DeleteDropDelegate: DropDelegate {
+    let onDelete: () -> Void
+    let onEntered: () -> Void
+    let onExited: () -> Void
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        return DropProposal(operation: .move)
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        onDelete()
+        return true
+    }
+
+    func dropEntered(info: DropInfo) {
+        onEntered()
+    }
+
+    func dropExited(info: DropInfo) {
+        onExited()
+    }
+}
+
 extension View {
     func deleteDrop(
         onDelete: (() -> Void)? = nil,

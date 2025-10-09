@@ -36,6 +36,21 @@ struct GlobalDropModifier: ViewModifier {
     }
 }
 
+// MARK: - GlobalDropDelegate
+
+struct GlobalDropDelegate: DropDelegate {
+    let onDragEnd: () -> Void
+    
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        DropProposal(operation: .move)
+    }
+    
+    func performDrop(info: DropInfo) -> Bool {
+        onDragEnd()
+        return true
+    }
+}
+
 extension View {
     func globalDrop(endDragging: (() -> Void)? = nil) -> some View {
         self.modifier(

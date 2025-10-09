@@ -59,14 +59,19 @@ enum CourseDetailReducer {
                 state.dragDropState = .prepared
             }
             
-        case .whileDragging(from: let fromIndex, to: let toIndex):
-            guard state.draggedPlace != nil,
-                  fromIndex < state.places.count,
-                  toIndex < state.places.count,
-                  fromIndex != toIndex else { return }
-            
-            let movedPlace = state.places.remove(at: fromIndex)
-            state.places.insert(movedPlace, at: toIndex)
+        case .whileDragging(let destination):
+            if let draggedPlace = state.draggedPlace,
+               let fromIndex = state.places.firstIndex(of: draggedPlace),
+               let toIndex = state.places.firstIndex(of: destination) {
+                
+                guard state.draggedPlace != nil,
+                      fromIndex < state.places.count,
+                      toIndex < state.places.count,
+                      fromIndex != toIndex else { return }
+                
+                let movedPlace = state.places.remove(at: fromIndex)
+                state.places.insert(movedPlace, at: toIndex)
+            }
             
         case .endDragging:
             state.dragDropState = .completed
