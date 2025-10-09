@@ -11,27 +11,17 @@ struct DeleteDropModifier: ViewModifier {
     
     // MARK: - Properties
     
-    @Binding private var dragDropState: DragDropState
-    
-    private let places: [PlaceDetailInCourse]
-    private let draggedPlace: PlaceDetailInCourse?
-    private let onDelete: ((Bool) -> Void)?
+    private let onDelete: (() -> Void)?
     private let onEntered: (() -> Void)?
     private let onExited: (() -> Void)?
     
     // MARK: - Initializer
     
     init(
-        dragDropState: Binding<DragDropState>,
-        places: [PlaceDetailInCourse],
-        draggedPlace: PlaceDetailInCourse?,
-        onDelete: ((Bool) -> Void)?,
+        onDelete: (() -> Void)?,
         onEntered: (() -> Void)?,
         onExited: (() -> Void)?
     ) {
-        self._dragDropState = dragDropState
-        self.places = places
-        self.draggedPlace = draggedPlace
         self.onDelete = onDelete
         self.onEntered = onEntered
         self.onExited = onExited
@@ -44,15 +34,8 @@ struct DeleteDropModifier: ViewModifier {
             .onDrop(
                 of: [.text],
                 delegate: DeleteDropDelegate(
-                    draggedPlace: draggedPlace,
                     onDelete: {
-                        dragDropState = .completed
-                        
-                        if places.count > 2 {
-                            onDelete?(true)
-                        } else {
-                            onDelete?(false)
-                        }
+                        onDelete?()
                     },
                     onEntered: {
                         onEntered?()
@@ -71,18 +54,12 @@ struct DeleteDropModifier: ViewModifier {
 
 extension View {
     func deleteDrop(
-        dragDropState: Binding<DragDropState>,
-        places: [PlaceDetailInCourse],
-        draggedPlace: PlaceDetailInCourse?,
-        onDelete: ((Bool) -> Void)? = nil,
+        onDelete: (() -> Void)? = nil,
         onEntered: (() -> Void)? = nil,
         onExited: (() -> Void)? = nil
     ) -> some View {
         self.modifier(
             DeleteDropModifier(
-                dragDropState: dragDropState,
-                places: places,
-                draggedPlace: draggedPlace,
                 onDelete: onDelete,
                 onEntered: onEntered,
                 onExited: onExited

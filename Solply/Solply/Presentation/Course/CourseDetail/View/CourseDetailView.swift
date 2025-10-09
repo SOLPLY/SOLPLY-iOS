@@ -48,15 +48,9 @@ struct CourseDetailView: View {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: store.state.isSaveOptionPresented)
-        .globalDrop(
-            dragDropState: Binding(
-                get: { store.state.dragDropState },
-                set: { store.dispatch(.setDragDropState(dragDropState: $0)) }
-            ),
-            endDragging: {
-                store.dispatch(.endDragging(isHoldOnly: false))
-            }
-        )
+        .globalDrop() {
+            store.dispatch(.endDragging)
+        }
         .onAppear {
             store.dispatch(.fetchCourseDetail(courseId: courseId))
         }
@@ -234,10 +228,6 @@ extension CourseDetailView {
                     .frame(maxWidth: .infinity)
                     .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
                     .customDragDrop(
-                        dragDropState: Binding(
-                            get: { store.state.dragDropState },
-                            set: { store.dispatch(.setDragDropState(dragDropState: $0)) }
-                        ),
                         isEditing: store.state.isEditing,
                         placeDetailInCourse: place,
                         placesDetailInCourse: store.state.places,
@@ -249,7 +239,7 @@ extension CourseDetailView {
                             store.dispatch(.whileDragging(from: fromIndex, to: toIndex))
                         },
                         endDragging: {
-                            store.dispatch(.endDragging(isHoldOnly: false))
+                            store.dispatch(.endDragging)
                         }
                     )
                 }
@@ -261,7 +251,7 @@ extension CourseDetailView {
                     }
                     .onEnded { _ in
                         
-                        store.dispatch(.endDragging(isHoldOnly: true))
+                        store.dispatch(.endDragging)
                     }
             )
             .animation(.easeInOut(duration: 0.1), value: store.state.focusedPlaceIndex)
@@ -300,27 +290,8 @@ extension CourseDetailView {
             .aspectRatio(contentMode: .fit)
             .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
             .deleteDrop(
-                dragDropState: Binding(
-                    get: { store.state.dragDropState },
-                    set: { store.dispatch(.setDragDropState(dragDropState: $0)) }
-                ),
-                places: store.state.places,
-                draggedPlace: store.state.draggedPlace,
-                onDelete: { canDelete in
-                    if canDelete {
-                        store.dispatch(.deletePlace)
-                    } else {
-                        store.dispatch(
-                            .showToastView(
-                                ToastContent(
-                                    toastType: .withIconToast,
-                                    message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
-                                    buttonTitle: nil,
-                                    bottomPadding: 96.adjustedHeight
-                                )
-                            )
-                        )
-                    }
+                onDelete: {
+                    store.dispatch(.droppedInDeleteZone)
                 },
                 onEntered: {
                     store.dispatch(.draggedInDeleteZone)

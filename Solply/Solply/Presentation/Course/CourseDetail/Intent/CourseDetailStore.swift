@@ -33,6 +33,22 @@ final class CourseDetailStore: ObservableObject {
                 destinationName: destinationName
             )
             
+        case .droppedInDeleteZone:
+            if state.places.count > 2 {
+                self.dispatch(.deletePlace)
+            } else {
+                self.dispatch(
+                    .showToastView(
+                        ToastContent(
+                            toastType: .withIconToast,
+                            message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
+                            buttonTitle: nil,
+                            bottomPadding: 96.adjustedHeight
+                        )
+                    )
+                )
+            }
+            
         case .startEditing:
             if state.focusedPlaceIndex != -1 {
                 for index in state.places.indices {
