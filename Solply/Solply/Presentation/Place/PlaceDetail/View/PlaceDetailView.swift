@@ -51,7 +51,7 @@ struct PlaceDetailView: View {
         }
         .onAppear {
             store.dispatch(.fetchPlaceDetail(placeId: placeId))
-            store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+            store.dispatch(.fetchCourseArchive(placeId: placeId))
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
@@ -117,7 +117,44 @@ extension PlaceDetailView {
     
     private var bottomSheetContent: some View {
         ZStack {
-            if store.state.addButtonSelected {
+            if !store.state.addButtonSelected {
+                PlaceInformationView(
+                    primaryTag: store.state.primaryTag,
+                    placeName: store.state.placeName,
+                    isBookmarked: store.state.isBookmarked,
+                    introduction: store.state.introduction,
+                    imageURLs: store.state.imageURLs,
+                    address: store.state.address,
+                    contactNumber: store.state.contactNumber,
+                    openingHours: store.state.openingHours,
+                    snsLink: store.state.snsLink
+                ) {
+                    bookmarkPlace()
+                } findDirectionAction: {
+                    store.dispatch(.requestFindDirection)
+                } addPlaceToCourseAction: {
+                    store.dispatch(.fetchCourseArchive(placeId: placeId))
+                    store.dispatch(.toggleAddToCourse)
+                    
+                    if store.state.selectedCourseIndex != -1 {
+                        store.dispatch(.selectCourseToAdd(index: -1))
+                    }
+                } copyAction: { text in
+                    store.dispatch(.copyToClipboard(text: text))
+                    store.dispatch(
+                        .showToastView(
+                            ToastContent(
+                                toastType: .defaultToast,
+                                message: "클립보드에 복사되었습니다",
+                                buttonTitle: nil
+                            )
+                        )
+                    )
+                } reportsAction: {
+                    appCoordinator.navigate(to: .reports)
+                }
+                .transition(.move(edge: .leading))
+            } else {
                 AddPlaceToCourseView(
                     courses: store.state.courses,
                     selectedIndex: store.state.selectedCourseIndex
@@ -153,7 +190,7 @@ extension PlaceDetailView {
                         store.dispatch(.selectCourseToAdd(index: index))
                     }
                 } backAction: {
-                    store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
+                    store.dispatch(.fetchCourseArchive(placeId: placeId))
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(.selectCourseToAdd(index: -1))
                 } goToAddCourseAction: {
@@ -161,43 +198,6 @@ extension PlaceDetailView {
                     appCoordinator.switchTab(to: .course)
                 }
                 .transition(.move(edge: .trailing))
-                
-            } else {
-                PlaceInformationView(
-                    primaryTag: store.state.primaryTag,
-                    placeName: store.state.placeName,
-                    isBookmarked: store.state.isBookmarked,
-                    introduction: store.state.introduction,
-                    imageURLs: store.state.imageURLs,
-                    address: store.state.address,
-                    contactNumber: store.state.contactNumber,
-                    openingHours: store.state.openingHours,
-                    snsLink: store.state.snsLink
-                ) {
-                    bookmarkPlace()
-                } findDirectionAction: {
-                    store.dispatch(.requestFindDirection)
-                } addPlaceToCourseAction: {
-                    store.dispatch(.toggleAddToCourse)
-                    
-                    if store.state.selectedCourseIndex != -1 {
-                        store.dispatch(.selectCourseToAdd(index: -1))
-                    }
-                } copyAction: { text in
-                    store.dispatch(.copyToClipboard(text: text))
-                    store.dispatch(
-                        .showToastView(
-                            ToastContent(
-                                toastType: .defaultToast,
-                                message: "클립보드에 복사되었습니다",
-                                buttonTitle: nil
-                            )
-                        )
-                    )
-                } reportsAction: {
-                    appCoordinator.navigate(to: .reports)
-                }
-                .transition(.move(edge: .leading))
             }
         }
         .animation(.easeInOut(duration: 0.2), value: store.state.addButtonSelected)
@@ -229,7 +229,6 @@ extension PlaceDetailView {
             )
             store.dispatch(.addPlaceToCourse(index: selectedCourseIndex))
             store.dispatch(.toggleAddToCourse)
-            store.dispatch(.fetchCourseArchive(townId: townId, placeId: placeId))
         }
         .padding(.horizontal, 20.adjustedWidth)
         .safeAreaInset(edge: .bottom) {

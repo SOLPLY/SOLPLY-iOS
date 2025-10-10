@@ -24,7 +24,7 @@ enum PlaceDetailAction {
     
     // api
     
-    case fetchCourseArchive(townId: Int, placeId: Int)
+    case fetchCourseArchive(placeId: Int)
     case courseArchiveFetched([CourseArchiveDTO])
     case errorOccured(error: NetworkError)
     

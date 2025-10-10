@@ -35,7 +35,7 @@ extension CourseService: CourseAPI {
     }
     
     func fetchCourseArchive(
-        townId: Int,
+        townId: Int?,
         placeId: Int?
     ) async throws -> BaseResponseBody<CourseArchiveResponseDTO> {
         return try await self.request(with: .fetchCourseArchive(townId: townId, placeId: placeId))

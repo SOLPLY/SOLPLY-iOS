@@ -7,11 +7,18 @@
 
 import Foundation
 
-struct PlaceSearchReducer {
-    static func reduce(state: inout placeSearchState, action: PlaceSearchAction) {
+enum PlaceSearchReducer {
+    @MainActor static func reduce(state: inout PlaceSearchState, action: PlaceSearchAction) {
         switch action {
-        case .searchPlace(let placeName):
-            state.placeName = placeName
+        case .searchPlace:
+            state.isSearchCompleted = false
+        case .placeSearched(let places):
+            state.places = places
+            state.isSearchCompleted = true
+        case .errorOccured(let error):
+            state.isSearchCompleted = true
+            print(error)
+            break
         }
     }
 }

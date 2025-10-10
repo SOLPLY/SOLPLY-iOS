@@ -8,6 +8,8 @@
 import Foundation
 
 struct CourseDetailState {
+    var dragDropState: DragDropState = .prepared
+    
     var updatedCourseId: Int = -1
     
     var isLoading: Bool = false
