@@ -60,14 +60,10 @@ enum CourseDetailReducer {
             }
             
         case .whileDragging(let destination):
-            guard
-                let draggedPlace = state.draggedPlace,
-                let fromIndex = state.places.firstIndex(of: draggedPlace),
-                let toIndex = state.places.firstIndex(of: destination),
-                fromIndex != toIndex
-            else {
-                return
-            }
+            guard let draggedPlace = state.draggedPlace,
+                  let fromIndex = state.places.firstIndex(of: draggedPlace),
+                  let toIndex = state.places.firstIndex(of: destination),
+                  fromIndex != toIndex else { return }
             
             let movedPlace = state.places.remove(at: fromIndex)
             state.places.insert(movedPlace, at: toIndex)
