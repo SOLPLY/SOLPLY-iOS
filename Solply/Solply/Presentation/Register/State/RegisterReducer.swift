@@ -12,6 +12,12 @@ enum RegisterReducer {
         switch action {
         case .updateSearchBarText(let text):
             state.placeName = text
+            
+        case .selectPlaceToRegister(let placeName, let placeAddress):
+            state.placeName = placeName
+            state.placeAddress = placeAddress
+            state.registerStep = .selectMainTagType
+            break
              
         case .errorOccured(let error):
             print(error)

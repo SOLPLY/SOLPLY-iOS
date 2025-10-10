@@ -42,6 +42,7 @@ struct RegisterSearchBar: View {
                 
                 registerButton
             }
+            .frame(height: 28.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)
         }
     }
@@ -71,6 +72,7 @@ extension RegisterSearchBar {
     
     private var textField: some View {
         TextField("", text: $text)
+            .configureDefaultTextField()
             .applySolplyFont(.body_16_r)
             .foregroundColor(.coreBlack)
             .submitLabel(.done)

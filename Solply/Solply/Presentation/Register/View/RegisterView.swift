@@ -18,7 +18,11 @@ struct RegisterView: View {
     
     var body: some View {
         ScrollView(.vertical) {
-            searchBar
+            VStack(alignment: .center, spacing: 40.adjustedHeight) {
+                searchBar
+                
+                placeType
+            }
         }
         .customNavigationBar(
             .register(backAction: {
@@ -52,25 +56,67 @@ extension RegisterView {
                                 store.dispatch(.tempAction)
                             },
                             registerAction: {
-                                // TODO: - 직접 등록 연결
+                                store.dispatch(
+                                    .selectPlaceToRegister(
+                                        placeName: store.state.placeName,
+                                        placeAddress: nil
+                                    )
+                                )
                             }
                         )
                         .padding(.horizontal, 16.adjustedWidth)
                         
                         if !store.state.searchResult.isEmpty {
                             RegisterSearchList(searchResult: store.state.searchResult) { result in
-                                
+                                store.dispatch(
+                                    .selectPlaceToRegister(
+                                        placeName: result.placeName,
+                                        placeAddress: result.placeAddress
+                                    )
+                                )
                             }
                         }
                     }
-                case .selectMainTagType:
-                    Text("")
-                case .selectExtraFeatures:
-                    Text("")
+                    
+                case .selectMainTagType, .selectExtraFeatures:
+                    VStack(alignment: .leading, spacing: 4.adjustedHeight) {
+                        Text(store.state.placeName)
+                            .applySolplyFont(.body_16_r)
+                            .foregroundStyle(.coreBlack)
+                            .frame(height: store.state.placeAddress == nil ? 28.adjustedHeight : 24.adjustedHeight)
+                            .lineLimit(1)
+                        
+                        if let placeAddress = store.state.placeAddress {
+                            Text(placeAddress)
+                                .applySolplyFont(.caption_12_r)
+                                .foregroundStyle(.gray700)
+                                .lineLimit(1)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 20.adjustedWidth)
+                    .padding(.vertical, 12.adjustedHeight)
+                    .background(.coreWhite)
+                    .cornerRadius(20, corners: .allCorners)
+                    .addBorder(.roundedRectangle(cornerRadius: 20), borderColor: .gray300, borderWidth: 1)
+                    .padding(.horizontal, 16.adjustedWidth)
                 }
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 16.adjustedHeight)
+    }
+    
+    private var placeType: some View {
+        VStack(alignment: .center, spacing: 12.adjustedHeight) {
+            Text("장소 이름")
+                .applySolplyFont(.body_16_m)
+                .foregroundStyle(.coreBlack)
+            
+            // TODO: - 드롭다운 연결
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 16.adjustedWidth)
     }
 }
 

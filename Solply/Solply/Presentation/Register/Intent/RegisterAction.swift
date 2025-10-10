@@ -9,6 +9,7 @@ import Foundation
 
 enum RegisterAction {
     case updateSearchBarText(text: String)
+    case selectPlaceToRegister(placeName: String, placeAddress: String?)
     
     case tempAction // 임시로 검색하는 action
     
