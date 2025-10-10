@@ -1,5 +1,5 @@
 //
-//  SoplyDropDown.swift
+//  SolplyDropDown.swift
 //  Solply
 //
 //  Created by sun on 9/26/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SoplyDropDown: View {
+struct SolplyDropDown: View {
     
     // MARK: - Properties
     
@@ -109,7 +109,7 @@ struct SoplyDropDown: View {
 
 // MARK: - Subviews
 
-private extension SoplyDropDown {
+private extension SolplyDropDown {
     
     // MARK: Header
     
@@ -197,7 +197,7 @@ private extension SoplyDropDown {
 
 // MARK: - Option Enum
 
-private extension SoplyDropDown {
+private extension SolplyDropDown {
     enum Option {
         case text(String)
         case tag(MainTagType)
@@ -215,7 +215,7 @@ private extension SoplyDropDown {
 
 #Preview {
     VStack(alignment: .leading, spacing: 24.adjustedHeight) {
-        SoplyDropDown(
+        SolplyDropDown(
             title: "솔플 스타일을 선택하라우",
             options: [
                 "이곳저곳 둘러보고 싶어요",
@@ -224,7 +224,7 @@ private extension SoplyDropDown {
             ]
         )
         
-        SoplyDropDown(
+        SolplyDropDown(
             title: "장소 유형을 선택해주세요",
             tagOptions: Array(MainTagType.allCases.dropFirst())
         )

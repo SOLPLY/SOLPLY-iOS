@@ -114,6 +114,7 @@ extension RegisterView {
                 .foregroundStyle(.coreBlack)
             
             // TODO: - 드롭다운 연결
+            
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 16.adjustedWidth)
