@@ -15,7 +15,11 @@ struct PlaceDetailEffect {
         self.courseService = courseService
         self.placeService = placeService
     }
-    
+}
+
+// MARK: - Functions
+
+extension PlaceDetailEffect {
     func findDirection(
         startLatitude: Double,
         startLongitude: Double,
