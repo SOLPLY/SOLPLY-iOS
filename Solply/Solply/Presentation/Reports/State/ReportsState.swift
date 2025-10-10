@@ -10,6 +10,7 @@ import Foundation
 struct ReportsState {
     var shouldGoBack: Bool = false
     var reportsStep: ReportsStep = .reportsSelect
+    
     var selectedReportsType: ReportsType?
     var reportsContent: String = ""
 }
