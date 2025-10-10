@@ -8,9 +8,9 @@
 import Foundation
 
 struct PresignedUrlRequestDTO: RequestModelType {
-    let files: [file]
+    let files: [File]
 }
 
-struct file: RequestModelType {
+struct File: RequestModelType {
     let fileName: String
 }

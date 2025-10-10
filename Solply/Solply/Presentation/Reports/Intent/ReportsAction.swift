@@ -15,4 +15,10 @@ enum ReportsAction {
     
     case startLottie
     case endLottie
+    
+    // api
+    case errorOccured(error: NetworkError)
+    
+    case submitPresignedUrlRequest(request: PresignedUrlRequestDTO)
+    case presignedUrlReqeustSubmitted
 }

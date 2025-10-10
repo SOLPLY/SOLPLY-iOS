@@ -27,6 +27,17 @@ enum ReportsReducer {
             
         case .endLottie:
             state.shouldGoBack = true
+            
+            
+        case .errorOccured(let error):
+            print(error)
+            break
+            
+        case .submitPresignedUrlRequest:
+            break
+            
+        case .presignedUrlReqeustSubmitted:
+            break
         }
     }
 }
