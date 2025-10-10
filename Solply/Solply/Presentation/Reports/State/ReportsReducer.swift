@@ -19,6 +19,9 @@ enum ReportsReducer {
         case .editReportsContent(let reportsContent):
             state.reportsContent = reportsContent
             
+        case .attachReportsPhoto(let imageData):
+            state.attachedImageData = imageData
+            
         case .startLottie:
             break
             

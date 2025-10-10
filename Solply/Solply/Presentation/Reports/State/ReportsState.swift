@@ -13,4 +13,5 @@ struct ReportsState {
     
     var selectedReportsType: ReportsType?
     var reportsContent: String = ""
+    var attachedImageData: [(String, Data)] = []
 }

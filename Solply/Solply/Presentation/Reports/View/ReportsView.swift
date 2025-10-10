@@ -77,8 +77,8 @@ extension ReportsView {
     private var reportsDetailView: some View {
         ReportsDetailView() { reportsContent in
             store.dispatch(.editReportsContent(reportsContent: reportsContent))
-        } onPhotosSelected: { imageKeys in
-            // TODO: - ReportsState 연결
+        } onPhotosSelected: { imageData in
+            store.dispatch(.attachReportsPhoto(imageData: imageData))
         } onCompleteAction: {
             withAnimation(.easeInOut(duration: 0.3)) {
                 store.dispatch(.changeReportsStep(reportsStep: .reportsComplete))

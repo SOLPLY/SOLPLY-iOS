@@ -11,6 +11,7 @@ enum ReportsAction {
     case selectReportsType(reportsType: ReportsType)
     case changeReportsStep(reportsStep: ReportsStep)
     case editReportsContent(reportsContent: String)
+    case attachReportsPhoto(imageData: [(String, Data)])
     
     case startLottie
     case endLottie
