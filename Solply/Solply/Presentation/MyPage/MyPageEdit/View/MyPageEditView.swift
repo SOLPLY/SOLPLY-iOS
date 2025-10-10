@@ -40,7 +40,6 @@ public struct MyPageEditView: View {
             }
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.vertical, 16.adjustedHeight)
-            .background(Color(.systemBackground).opacity(0.001))
             .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .customNavigationBar(
