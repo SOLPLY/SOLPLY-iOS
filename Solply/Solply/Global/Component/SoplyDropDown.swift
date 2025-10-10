@@ -34,11 +34,11 @@ struct SoplyDropDown: View {
             if let selectedText,
                case .text(let textValue) = option,
                textValue == selectedText { return false }
-
+            
             if let selectedTag,
                case .tag(let mainTagType) = option,
                mainTagType == selectedTag { return false }
-
+            
             return option.title != currentHeaderText
         }
     }
@@ -50,17 +50,17 @@ struct SoplyDropDown: View {
         options: [String],
         selectedText: String? = nil,
         onSelect: ((String) -> Void)? = nil
-       ) {
-           self.title = title
-           self.selectedText = selectedText
-           self.onSelectText = onSelect
-           self.selectedTag = nil
-           self.onSelectTag = nil
-           
-           var seen = Set<String>()
-           let merged = ([title] + options).filter { seen.insert($0).inserted }
-           self.options = merged.map { .text($0) }
-       }
+    ) {
+        self.title = title
+        self.selectedText = selectedText
+        self.onSelectText = onSelect
+        self.selectedTag = nil
+        self.onSelectTag = nil
+        
+        var seen = Set<String>()
+        let merged = ([title] + options).filter { seen.insert($0).inserted }
+        self.options = merged.map { .text($0) }
+    }
     
     init(
         title: String,
@@ -91,7 +91,7 @@ struct SoplyDropDown: View {
                 Rectangle()
                     .fill(Color(.gray200))
                     .frame(height: 52.adjustedHeight)
-                    .cornerRadius(16.adjustedHeight, corners: [.topLeft, .topRight])
+                    .cornerRadius(16, corners: [.topLeft, .topRight])
                     .allowsHitTesting(false)
             }
         }
