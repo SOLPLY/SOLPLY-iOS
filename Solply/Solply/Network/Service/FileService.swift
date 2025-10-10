@@ -13,7 +13,7 @@ final class FileService: BaseService<FileTargetType> { }
 
 extension FileService: FileAPI {
     func submitPresignedUrlRequest(
-        request: PresignedUrlRequsetDTO
+        request: PresignedUrlRequestDTO
     ) async throws -> BaseResponseBody<PresignedUrlResponseDTO> {
         return try await self.request(with: .submitPresignedUrlRequest(request: request))
     }

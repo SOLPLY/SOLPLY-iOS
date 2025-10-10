@@ -10,7 +10,7 @@ import Foundation
 import Moya
 
 enum FileTargetType {
-    case submitPresignedUrlRequest(request: PresignedUrlRequsetDTO)
+    case submitPresignedUrlRequest(request: PresignedUrlRequestDTO)
 }
 
 extension FileTargetType: BaseTargetType {

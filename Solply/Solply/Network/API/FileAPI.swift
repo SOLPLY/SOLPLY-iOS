@@ -10,6 +10,6 @@ import Foundation
 protocol FileAPI {
     /// 임시 업로드용 presigned url 발급
     func submitPresignedUrlRequest(
-        request: PresignedUrlRequsetDTO
+        request: PresignedUrlRequestDTO
     ) async throws -> BaseResponseBody<PresignedUrlResponseDTO>
 }

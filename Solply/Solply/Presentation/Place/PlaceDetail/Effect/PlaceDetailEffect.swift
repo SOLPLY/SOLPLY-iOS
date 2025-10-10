@@ -58,7 +58,6 @@ extension PlaceDetailEffect {
     func submitAddPlace(courseId: Int, placeId: Int) async -> PlaceDetailAction {
         do {
             let response = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
-            print(response)
             
             return .addPlaceSubmitted
             
