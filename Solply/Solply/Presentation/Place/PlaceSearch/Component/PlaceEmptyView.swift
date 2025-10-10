@@ -27,12 +27,11 @@ struct PlaceEmptyView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjustedWidth, height: 10.adjustedHeight)
             }
+            // TODO: - 장소 등록 페이지로 연결
+   //        .onTapGesture {
+   //            appCoordinator.navigate(to: .)
+   //        }
         }
         .padding(.leading, 20.adjustedWidth)
-        
-         // TODO: - 장소 등록 페이지로 연결
-//        .onTapGesture {
-//            appCoordinator.navigate(to: .)
-//        }
     }
 }
