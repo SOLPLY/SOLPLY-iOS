@@ -1,5 +1,5 @@
 //
-//  JGDTownRow.swift
+//  JGDSubTownRow.swift
 //  Solply
 //
 //  Created by seozero on 9/22/25.
@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct JGDTownRow: View {
+struct JGDSubTownRow: View {
     
     // MARK: - Properties
     
     @Binding private var selectedTown: String?
+    
     private let town: String
 
     // MARK: - Initializer
