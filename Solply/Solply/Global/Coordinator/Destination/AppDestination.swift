@@ -12,7 +12,7 @@ enum AppDestination: Hashable {
     case archiveList(archiveCategory: SolplyContentType, townName: String, townId: Int)
     case placeDetail(townId: Int, placeId: Int)
     case courseDetail(townId: Int, courseId: Int, fromArchive: Bool)
-    case frequentTown
+    case JGD
     case reports
     case placeSearch
     case myPage
@@ -31,7 +31,7 @@ extension AppDestination {
             PlaceDetailView(townId: townId, placeId: placeId)
         case .courseDetail(let townId, let courseId, let fromArchive):
             CourseDetailView(townId: townId, courseId: courseId, fromArchive: fromArchive)
-        case .frequentTown:
+        case .JGD:
             JGDView()
         case .placeSearch:
             PlaceSearchView()
