@@ -36,32 +36,34 @@ struct TodayPlaceRecommendCarousel: View {
 
     var body: some View {
         ZStack {
-            ForEach(-2...2, id: \.self) { offsetIndex in
-                let index =
+            if !store.state.placeRecommendItems.isEmpty {
+                ForEach(-2...2, id: \.self) { offsetIndex in
+                    let index =
                     (currentIndex + offsetIndex + store.state.placeRecommendItems.count)
                     % store.state.placeRecommendItems.count
-                let baseX = CGFloat(offsetIndex) * cardOffset
-                let totalOffset = baseX + dragOffset
-
-                let distanceFromCenter = abs(totalOffset)
-                let scale = max(0.75, 1.0 - (distanceFromCenter / (cardOffset * 2)))
-
-                TodayPlaceRecommendCard(
-                    thumbnailImageUrl: store.state.placeRecommendItems[index].thumbnailUrl,
-                    category: store.state.placeRecommendItems[index].category,
-                    title: store.state.placeRecommendItems[index].title,
-                    introduction: store.state.placeRecommendItems[index].introduction
-                ) {
-                    appCoordinator.navigate(
-                        to: .placeDetail(
-                            townId: townId,
-                            placeId: store.state.placeRecommendItems[index].id
+                    let baseX = CGFloat(offsetIndex) * cardOffset
+                    let totalOffset = baseX + dragOffset
+                    
+                    let distanceFromCenter = abs(totalOffset)
+                    let scale = max(0.75, 1.0 - (distanceFromCenter / (cardOffset * 2)))
+                    
+                    TodayPlaceRecommendCard(
+                        thumbnailImageUrl: store.state.placeRecommendItems[index].thumbnailUrl,
+                        category: store.state.placeRecommendItems[index].category,
+                        title: store.state.placeRecommendItems[index].title,
+                        introduction: store.state.placeRecommendItems[index].introduction
+                    ) {
+                        appCoordinator.navigate(
+                            to: .placeDetail(
+                                townId: townId,
+                                placeId: store.state.placeRecommendItems[index].id
+                            )
                         )
-                    )
+                    }
+                    .frame(width: cardWidth, height: cardWidth)
+                    .scaleEffect(scale)
+                    .offset(x: totalOffset)
                 }
-                .frame(width: cardWidth, height: cardWidth)
-                .scaleEffect(scale)
-                .offset(x: totalOffset)
             }
         }
         .frame(height: 240.adjustedHeight)
