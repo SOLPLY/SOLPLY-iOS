@@ -9,7 +9,17 @@ import SwiftUI
 
 struct PlaceEmptyView: View {
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
+    // MARK: - Properties
+    
+    private let registerAction: (() -> Void)?
+    
+    // MARK: - Initializer
+    
+    init(registerAction: (() -> Void)? = nil) {
+        self.registerAction = registerAction
+    }
+    
+    // MARK: - Body
     
     var body: some View {
         VStack(alignment: .leading, spacing: 17.5.adjustedHeight) {
@@ -27,10 +37,9 @@ struct PlaceEmptyView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjustedWidth, height: 10.adjustedHeight)
             }
-            // TODO: - 장소 등록 페이지로 연결
-   //        .onTapGesture {
-   //            appCoordinator.navigate(to: .)
-   //        }
+            .onTapGesture {
+                registerAction?()
+            }
         }
         .padding(.leading, 20.adjustedWidth)
     }

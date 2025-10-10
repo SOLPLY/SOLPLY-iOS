@@ -9,16 +9,26 @@ import SwiftUI
 
 struct PlaceDataView: View {
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
+    // MARK: - Properties
     
     private let places: [PlaceSearchDTO]
+    private let placeDetailAction: ((Int, Int) -> Void)?
+    private let registerAction: (() -> Void)?
+    
+    // MARK: - Initializer
     
     init(
-        places: [PlaceSearchDTO] = []
+        places: [PlaceSearchDTO] = [],
+        placeDetailAction: ((Int, Int) -> Void)? = nil,
+        registerAction: (() -> Void)? = nil
     ) {
         self.places = places
+        self.placeDetailAction = placeDetailAction
+        self.registerAction = registerAction
     }
-
+    
+    // MARK: - Body
+    
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
@@ -38,7 +48,7 @@ struct PlaceDataView: View {
                         mainTag: place.primaryTag,
                     )
                     .onTapGesture {
-                        appCoordinator.navigate(to: .placeDetail(townId: place.townId, placeId: place.placeId))
+                        placeDetailAction?(place.townId, place.placeId)
                     }
                 }
 
@@ -54,12 +64,9 @@ struct PlaceDataView: View {
                         .frame(width: 24.adjustedWidth, height: 10.adjustedHeight)
                 }
                 .padding(.top, 16.adjustedHeight)
-                
-                // TODO: - 장소 등록 페이지로 연결
-//                .onTapGesture {
-//                    appCoordinator.navigate(to: .)
-//                }
-                
+                .onTapGesture {
+                    registerAction?()
+                }
             }
         }
     }

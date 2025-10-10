@@ -35,12 +35,19 @@ struct PlaceSearchView: View {
             
             if store.state.isSearchCompleted {
                 if store.state.places.isEmpty {
-                    PlaceEmptyView()
+                    PlaceEmptyView() {
+                        appCoordinator.navigate(to: .register)
+                    }
                 } else {
-                    PlaceDataView(places: store.state.places)
+                    PlaceDataView(places: store.state.places) { townId, placeId in
+                        appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: placeId))
+                    } registerAction: {
+                        appCoordinator.navigate(to: .register)
+                    }
                 }
             }
         }
         .customNavigationBar(.placeSearch(backAction: appCoordinator.goBack))
+        .ignoresSafeArea(edges: .bottom)
     }
 }
