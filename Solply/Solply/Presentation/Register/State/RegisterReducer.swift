@@ -20,10 +20,26 @@ enum RegisterReducer {
             
         case .selectMainTag(let mainTag):
             state.selectedMainTag = mainTag
+            
+        case .selectSubTagA(let selectableSubTags):
+            state.selectableSubTagsA = selectableSubTags
+            
+        case .selectSubTagB(let selectableSubTags):
+            state.selectableSubTagsB = selectableSubTags
              
         case .errorOccured(let error):
             print(error)
             break
+            
+        case .fetchSubTags:
+            break
+            
+        case .subTagsFetched(let selectableSubTags):
+            state.selectableSubTagsA.removeAll()
+            state.selectableSubTagsB.removeAll()
+            state.selectableSubTagsA = selectableSubTags.filter { $0.tagType == "OPTION1" }
+            state.selectableSubTagsB = selectableSubTags.filter { $0.tagType == "OPTION2" }
+            
             
             
             

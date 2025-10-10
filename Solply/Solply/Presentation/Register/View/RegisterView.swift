@@ -19,9 +19,11 @@ struct RegisterView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack(alignment: .center, spacing: 40.adjustedHeight) {
-                searchBar
+                searchPlace
                 
-                selectPlaceType
+                selectMainTagType
+                
+                selectExtraFeatures
             }
         }
         .customNavigationBar(
@@ -36,12 +38,12 @@ struct RegisterView: View {
 // MARK: - Subviews
 
 extension RegisterView {
-    private var searchBar: some View {
+    private var searchPlace: some View {
         VStack(alignment: .leading, spacing: 12.adjustedHeight) {
             Text("장소 이름")
                 .applySolplyFont(.body_16_m)
                 .foregroundStyle(.coreBlack)
-                .padding(.horizontal, 16.adjustedWidth)
+                .padding(.horizontal, 20.adjustedWidth)
             
             Group {
                 switch store.state.registerStep {
@@ -107,7 +109,7 @@ extension RegisterView {
         .padding(.top, 16.adjustedHeight)
     }
     
-    private var selectPlaceType: some View {
+    private var selectMainTagType: some View {
         Group {
             switch store.state.registerStep {
             case .searchPlace:
@@ -117,6 +119,7 @@ extension RegisterView {
                     Text("장소 이름")
                         .applySolplyFont(.body_16_m)
                         .foregroundStyle(.coreBlack)
+                        .padding(.horizontal, 20.adjustedWidth)
                     
                     SolplyDropDown(
                         title: "장소 유형을 선택해주세요",
@@ -124,13 +127,63 @@ extension RegisterView {
                         selected: store.state.selectedMainTag
                     ) { mainTag in
                         store.dispatch(.selectMainTag(mainTag: mainTag))
+                        store.dispatch(.fetchSubTags(parentId: mainTag.parentId))
                     }
+                    .padding(.horizontal, 16.adjustedWidth)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16.adjustedWidth)
             }
         }
     }
+    
+    private var selectExtraFeatures: some View {
+        Group {
+            switch store.state.registerStep {
+            case .searchPlace, .selectMainTagType:
+                EmptyView()
+            case .selectExtraFeatures:
+                VStack(alignment: .leading, spacing: 40.adjustedHeight) {
+                    if !store.state.selectableSubTagsA.isEmpty {
+                        selectableSubTagSection(
+                            title: "장소와 어울리는 키워드를 골라주세요",
+                            tags: Binding(
+                                get: { store.state.selectableSubTagsA },
+                                set: { store.dispatch(.selectSubTagA(selectableSubTags: $0)) }
+                            )
+                        )
+                    }
+                    
+                    if !store.state.selectableSubTagsB.isEmpty {
+                        selectableSubTagSection(
+                            title: "장소의 특징을 선택해주세요",
+                            tags: Binding(
+                                get: { store.state.selectableSubTagsB },
+                                set: { store.dispatch(.selectSubTagB(selectableSubTags: $0)) }
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+    
+    private func selectableSubTagSection(
+        title: String,
+        tags: Binding<[SelectableSubTag]>
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 12.adjustedHeight) {
+            Text(title)
+                .applySolplyFont(.body_16_m)
+                .foregroundStyle(.coreBlack)
+                .lineLimit(1)
+                .padding(.horizontal, 20.adjustedWidth)
+        
+            ChipButtonsContainerView(tags: tags)
+                .padding(.horizontal, 16.adjustedWidth)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
 }
 
 #Preview {
