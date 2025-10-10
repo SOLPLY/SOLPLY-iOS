@@ -120,11 +120,20 @@ private extension SolplyDropDown {
             }
         } label: {
             HStack(alignment: .center, spacing: 12.adjustedWidth) {
-                Text(currentHeaderText)
-                    .applySolplyFont(.body_16_m)
-                    .foregroundColor(.gray900)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
+                HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                    if let selectedTag {
+                        Image(selectedTag.icon)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                    }
+                    
+                    Text(currentHeaderText)
+                        .applySolplyFont(.body_16_m)
+                        .foregroundColor(.gray900)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                }
                 
                 Spacer(minLength: 0)
                 

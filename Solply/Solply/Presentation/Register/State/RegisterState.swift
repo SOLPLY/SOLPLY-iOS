@@ -8,10 +8,11 @@
 import Foundation
 
 struct RegisterState {
-    var registerStep: RegisterStep = .selectMainTagType
+    var registerStep: RegisterStep = .searchPlace
     
     var placeName: String = ""
     var placeAddress: String? = nil
+    var selectedMainTag: MainTagType?
     
     var searchResult: [RegisterSearch] = []
 }

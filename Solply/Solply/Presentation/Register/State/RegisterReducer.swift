@@ -17,7 +17,9 @@ enum RegisterReducer {
             state.placeName = placeName
             state.placeAddress = placeAddress
             state.registerStep = .selectMainTagType
-            break
+            
+        case .selectMainTag(let mainTag):
+            state.selectedMainTag = mainTag
              
         case .errorOccured(let error):
             print(error)

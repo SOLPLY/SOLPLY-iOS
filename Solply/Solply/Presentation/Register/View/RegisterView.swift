@@ -21,7 +21,7 @@ struct RegisterView: View {
             VStack(alignment: .center, spacing: 40.adjustedHeight) {
                 searchBar
                 
-                placeType
+                selectPlaceType
             }
         }
         .customNavigationBar(
@@ -107,17 +107,29 @@ extension RegisterView {
         .padding(.top, 16.adjustedHeight)
     }
     
-    private var placeType: some View {
-        VStack(alignment: .center, spacing: 12.adjustedHeight) {
-            Text("장소 이름")
-                .applySolplyFont(.body_16_m)
-                .foregroundStyle(.coreBlack)
-            
-            // TODO: - 드롭다운 연결
-            
+    private var selectPlaceType: some View {
+        Group {
+            switch store.state.registerStep {
+            case .searchPlace:
+                EmptyView()
+            case .selectMainTagType, .selectExtraFeatures:
+                VStack(alignment: .leading, spacing: 12.adjustedHeight) {
+                    Text("장소 이름")
+                        .applySolplyFont(.body_16_m)
+                        .foregroundStyle(.coreBlack)
+                    
+                    SolplyDropDown(
+                        title: "장소 유형을 선택해주세요",
+                        tagOptions: Array(MainTagType.allCases.dropFirst()),
+                        selected: store.state.selectedMainTag
+                    ) { mainTag in
+                        store.dispatch(.selectMainTag(mainTag: mainTag))
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 16.adjustedWidth)
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 16.adjustedWidth)
     }
 }
 
