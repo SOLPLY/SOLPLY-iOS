@@ -7,18 +7,21 @@
 
 import Foundation
 
-struct TownListResponseDTO: ResponseModelType {
+struct TownListResponseDTO: ResponseModelType, Decodable {
     let towns: [TownDTO]
 }
 
-struct TownDTO: ResponseModelType, Hashable {
+struct TownDTO: ResponseModelType, Decodable, Hashable {
     let townId: Int
     let townName: String
-    let subTowns: [TownDTO]?
+    let subTowns: [SubTownDTO]?
 }
 
-extension TownDTO {
-    func toEntity() -> Town {
-        Town(id: townId, name: townName)
-    }
+struct SubTownDTO: ResponseModelType, Decodable, Hashable {
+    let townId: Int
+    let townName: String?
+    let name: String?
+    
+    var displayName: String { name ?? townName ?? "" }
 }
+
