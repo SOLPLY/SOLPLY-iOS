@@ -9,10 +9,12 @@ import SwiftUI
 
 struct PlaceDataView: View {
     
+    @EnvironmentObject var appCoordinator: AppCoordinator
+    
     private let places: [PlaceSearchDTO]
     
     init(
-        places: [PlaceSearchDTO] = [],
+        places: [PlaceSearchDTO] = []
     ) {
         self.places = places
     }
@@ -33,8 +35,11 @@ struct PlaceDataView: View {
                         thumbnailUrl: place.thumbnailImageUrl,
                         placeName: place.placeName,
                         address: place.address,
-                        mainTag: place.primaryTag
+                        mainTag: place.primaryTag,
                     )
+                    .onTapGesture {
+                        appCoordinator.navigate(to: .placeDetail(townId: place.townId, placeId: place.placeId))
+                    }
                 }
 
                 HStack(alignment: .center, spacing: 0) {
@@ -49,6 +54,12 @@ struct PlaceDataView: View {
                         .frame(width: 24.adjustedWidth, height: 10.adjustedHeight)
                 }
                 .padding(.top, 16.adjustedHeight)
+                
+                // TODO: - 장소 등록 페이지로 연결
+//                .onTapGesture {
+//                    appCoordinator.navigate(to: .)
+//                }
+                
             }
         }
     }

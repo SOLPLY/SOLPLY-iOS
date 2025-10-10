@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct PlaceEmptyView: View {
+    
+    @EnvironmentObject var appCoordinator: AppCoordinator
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 17.5.adjustedHeight) {
             Text("검색 결과가 없어요.\n직접 장소 등록을 솔플리에 요청해보세요.")
@@ -26,5 +29,10 @@ struct PlaceEmptyView: View {
             }
         }
         .padding(.leading, 20.adjustedWidth)
+        
+         // TODO: - 장소 등록 페이지로 연결
+//        .onTapGesture {
+//            appCoordinator.navigate(to: .)
+//        }
     }
 }
