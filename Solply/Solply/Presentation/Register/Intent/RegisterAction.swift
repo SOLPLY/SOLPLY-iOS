@@ -8,5 +8,10 @@
 import Foundation
 
 enum RegisterAction {
+    case updateSearchBarText(text: String)
+    
+    case tempAction // 임시로 검색하는 action
+    
+    // api
     case errorOccured(error: NetworkError)
 }

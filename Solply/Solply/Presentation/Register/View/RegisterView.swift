@@ -17,14 +17,61 @@ struct RegisterView: View {
     // MARK: - Body
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView(.vertical) {
+            searchBar
+        }
+        .customNavigationBar(
+            .register(backAction: {
+                appCoordinator.goBack()
+            })
+        )
+        .ignoresSafeArea(edges: .bottom)
     }
 }
 
 // MARK: - Subviews
 
 extension RegisterView {
-    
+    private var searchBar: some View {
+        VStack(alignment: .leading, spacing: 12.adjustedHeight) {
+            Text("장소 이름")
+                .applySolplyFont(.body_16_m)
+                .foregroundStyle(.coreBlack)
+                .padding(.horizontal, 16.adjustedWidth)
+            
+            Group {
+                switch store.state.registerStep {
+                case .searchPlace:
+                    VStack(alignment: .center, spacing: 28.adjustedHeight) {
+                        RegisterSearchBar(
+                            onChange: { text in
+                                store.dispatch(.updateSearchBarText(text: text))
+                            },
+                            onSubmit: { text in
+                                // TODO: - 네이버 검색 API 연동
+                                store.dispatch(.tempAction)
+                            },
+                            registerAction: {
+                                // TODO: - 직접 등록 연결
+                            }
+                        )
+                        .padding(.horizontal, 16.adjustedWidth)
+                        
+                        if !store.state.searchResult.isEmpty {
+                            RegisterSearchList(searchResult: store.state.searchResult) { result in
+                                
+                            }
+                        }
+                    }
+                case .selectMainTagType:
+                    Text("")
+                case .selectExtraFeatures:
+                    Text("")
+                }
+            }
+        }
+        .padding(.top, 16.adjustedHeight)
+    }
 }
 
 #Preview {

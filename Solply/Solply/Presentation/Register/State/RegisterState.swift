@@ -9,10 +9,9 @@ import Foundation
 
 struct RegisterState {
     var registerStep: RegisterStep = .searchPlace
-}
-
-enum RegisterStep {
-    case searchPlace
-    case selectMainTagType
-    case selectExtraFeatures
+    
+    var placeName: String = ""
+    var placeAddress: String? = nil
+    
+    var searchResult: [RegisterSearch] = []
 }
