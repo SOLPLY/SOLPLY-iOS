@@ -17,19 +17,7 @@ struct RegisterState {
     var selectableSubTagsB: [SelectableSubTag] = []
     var registerContent: String = ""
     
-    var isCompleteButtonEnabled: Bool {
-        guard selectedMainTag != nil else { return false }
-
-        let isSubTagsAEmpty = selectableSubTagsA.isEmpty
-        let isSubTagsBEmpty = selectableSubTagsB.isEmpty
-
-        if isSubTagsAEmpty && isSubTagsBEmpty { return true }
-
-        let isAnySubTagsASelected = isSubTagsAEmpty || selectableSubTagsA.contains { $0.isSelected }
-        let isAnySubTagsBSelected = isSubTagsBEmpty || selectableSubTagsB.contains { $0.isSelected }
-
-        return isAnySubTagsASelected && isAnySubTagsBSelected
-    }
+    var isCompleteButtonEnabled: Bool = false
     
     var searchResult: [RegisterSearch] = []
 }

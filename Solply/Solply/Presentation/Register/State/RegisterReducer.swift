@@ -24,9 +24,11 @@ enum RegisterReducer {
             
         case .selectSubTagA(let selectableSubTags):
             state.selectableSubTagsA = selectableSubTags
+            state.isCompleteButtonEnabled = shouldEnableCompleteButton(state)
             
         case .selectSubTagB(let selectableSubTags):
             state.selectableSubTagsB = selectableSubTags
+            state.isCompleteButtonEnabled = shouldEnableCompleteButton(state)
             
         case .editReigsterContent(let registerContent):
             state.registerContent = registerContent
@@ -43,7 +45,7 @@ enum RegisterReducer {
             state.selectableSubTagsB.removeAll()
             state.selectableSubTagsA = selectableSubTags.filter { $0.tagType == "OPTION1" }
             state.selectableSubTagsB = selectableSubTags.filter { $0.tagType == "OPTION2" }
-            
+            state.isCompleteButtonEnabled = shouldEnableCompleteButton(state)
             
             
             
@@ -64,4 +66,22 @@ enum RegisterReducer {
             ]
         }
     }
+}
+
+// MARK: - Functions
+
+extension RegisterReducer {
+    private static func shouldEnableCompleteButton(_ state: RegisterState) -> Bool {
+           guard state.selectedMainTag != nil else { return false }
+
+           let isSubTagsAEmpty = state.selectableSubTagsA.isEmpty
+           let isSubTagsBEmpty = state.selectableSubTagsB.isEmpty
+
+           if isSubTagsAEmpty && isSubTagsBEmpty { return true }
+
+           let isAnySubTagsASelected = isSubTagsAEmpty || state.selectableSubTagsA.contains { $0.isSelected }
+           let isAnySubTagsBSelected = isSubTagsBEmpty || state.selectableSubTagsB.contains { $0.isSelected }
+
+           return isAnySubTagsASelected && isAnySubTagsBSelected
+       }
 }
