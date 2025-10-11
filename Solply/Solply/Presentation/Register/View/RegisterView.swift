@@ -212,9 +212,11 @@ extension RegisterView {
     }
     
     private var completeButton: some View {
-        CTAMainButton(title: "완료")
-            .padding(.horizontal, 20.adjustedWidth)
-            .padding(.vertical, 40.adjustedHeight)
+        CTAMainButton(title: "완료") {
+            appCoordinator.navigate(to: .registerComplete)
+        }
+        .padding(.horizontal, 20.adjustedWidth)
+        .padding(.vertical, 40.adjustedHeight)
     }
     
     private func sectionTitle(_ title: String, showsSelectionHint: Bool = false) -> some View {
