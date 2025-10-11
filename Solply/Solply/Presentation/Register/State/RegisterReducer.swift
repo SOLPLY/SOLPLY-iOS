@@ -26,6 +26,9 @@ enum RegisterReducer {
             
         case .selectSubTagB(let selectableSubTags):
             state.selectableSubTagsB = selectableSubTags
+            
+        case .editReigsterContent(let registerContent):
+            state.registerContent = registerContent
              
         case .errorOccured(let error):
             print(error)

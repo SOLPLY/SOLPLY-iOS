@@ -13,6 +13,7 @@ enum RegisterAction {
     case selectMainTag(mainTag: MainTagType)
     case selectSubTagA(selectableSubTags: [SelectableSubTag])
     case selectSubTagB(selectableSubTags: [SelectableSubTag])
+    case editReigsterContent(registerContent: String)
     
     case tempAction // 임시로 검색하는 action
     

@@ -20,56 +20,58 @@ struct CustomFlowLayout: Layout {
         guard !subviews.isEmpty else { return .zero }
 
         let containerWidth = proposal.width ?? 0
+        let lineHeight: CGFloat = 40.adjustedHeight
         var currentX: CGFloat = 0
-        var currentY: CGFloat = 0
-        var lineHeight: CGFloat = 0
-        var totalHeight: CGFloat = 0
+        var lineCount: Int = 0
 
         for subview in subviews {
             let idealSize = subview.sizeThatFits(.unspecified)
 
             if currentX + idealSize.width > containerWidth && currentX != 0 {
                 currentX = 0
-                currentY += lineHeight + verticalSpacing
-                totalHeight += lineHeight + verticalSpacing
-                lineHeight = 0
+                lineCount += 1
             }
 
             currentX += idealSize.width
-            lineHeight = max(lineHeight, idealSize.height)
 
             if subview != subviews.last {
                 currentX += horizontalSpacing
             }
         }
-        totalHeight += lineHeight
+        
+        let totalLines = lineCount + 1
+        
+        let totalHeight = CGFloat(totalLines) * lineHeight + CGFloat(max(0, totalLines - 1)) * verticalSpacing
 
         return CGSize(width: containerWidth, height: totalHeight)
     }
 
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) {
         let containerWidth = bounds.width
+        let lineHeight: CGFloat = 40.adjustedHeight
         var currentX: CGFloat = bounds.minX
         var currentY: CGFloat = bounds.minY
-        var lineHeight: CGFloat = 0
 
         for subview in subviews {
             let idealSize = subview.sizeThatFits(.unspecified)
 
-            if currentX + idealSize.width > containerWidth && currentX != bounds.minX {
+            if currentX + idealSize.width > containerWidth + horizontalSpacing && currentX != bounds.minX {
                 currentX = bounds.minX
                 currentY += lineHeight + verticalSpacing
-                lineHeight = 0
             }
 
             subview.place(
                 at: CGPoint(x: currentX, y: currentY),
                 anchor: .topLeading,
-                proposal: ProposedViewSize(idealSize)
+                proposal: ProposedViewSize(width: idealSize.width, height: lineHeight)
             )
-            
+
             currentX += idealSize.width
-            lineHeight = max(lineHeight, idealSize.height)
 
             if subview != subviews.last {
                 currentX += horizontalSpacing

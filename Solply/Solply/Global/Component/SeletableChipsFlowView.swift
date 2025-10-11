@@ -40,6 +40,5 @@ struct SeletableChipsFlowView: View {
                 }
             }
         }
-        .padding(.horizontal, 16.adjustedWidth)
     }
 }
