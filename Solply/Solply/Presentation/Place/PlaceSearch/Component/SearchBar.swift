@@ -41,12 +41,12 @@ struct SearchBar: View {
                     .padding(.trailing, 20.adjustedWidth)
             }
         }
+        .frame(height: 52.adjustedHeight)
         .addBorder(
             .roundedRectangle(cornerRadius: 20.adjustedHeight),
             borderColor: .gray300,
             borderWidth: 1
         )
         .padding(.horizontal, 16.adjustedWidth)
-        .padding(.top, 16.adjustedHeight)
     }
 }

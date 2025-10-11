@@ -20,6 +20,7 @@ enum RegisterReducer {
             
         case .selectMainTag(let mainTag):
             state.selectedMainTag = mainTag
+            state.registerStep = .selectExtraFeatures
             
         case .selectSubTagA(let selectableSubTags):
             state.selectableSubTagsA = selectableSubTags

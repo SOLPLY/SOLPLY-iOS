@@ -26,8 +26,13 @@ struct RegisterView: View {
                 selectExtraFeatures
                 
                 Rectangle()
-                    .frame(height: 116.adjustedHeight)
+                    .frame(height: 125.adjustedHeight)
                     .foregroundStyle(.clear)
+            }
+        }
+        .overlay(alignment: .bottom) {
+            if store.state.isCompleteButtonEnabled {
+                completeButton
             }
         }
         .customNavigationBar(
@@ -35,11 +40,11 @@ struct RegisterView: View {
                 appCoordinator.goBack()
             })
         )
+        .ignoresSafeArea(edges: .bottom)
         .background(.coreWhite)
         .onTapGesture {
             hideKeyboard()
         }
-        .ignoresSafeArea(edges: .bottom)
     }
 }
 
@@ -100,10 +105,10 @@ extension RegisterView {
                                 .applySolplyFont(.caption_12_r)
                                 .foregroundStyle(.gray700)
                                 .lineLimit(1)
+                                .padding(.horizontal, 20.adjustedWidth)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20.adjustedWidth)
                     .padding(.vertical, 12.adjustedHeight)
                     .background(.coreWhite)
                     .cornerRadius(20, corners: .allCorners)
@@ -189,9 +194,27 @@ extension RegisterView {
                         .padding(.horizontal, 20.adjustedWidth)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    // 사진 선택
+                    
+                    VStack(alignment: .leading, spacing: 12.adjustedHeight) {
+                        sectionTitle("장소의 사진이 있다면 추가해주세요", showsSelectionHint: true)
+                        
+                        SolplyPhotosPicker { imageKeys in
+                            // TODO: - 사진 등록 연결
+                        }
+                        .padding(.horizontal, 20.adjustedWidth)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
+    }
+    
+    private var completeButton: some View {
+        CTAMainButton(title: "완료")
+            .padding(.horizontal, 20.adjustedWidth)
+            .padding(.vertical, 40.adjustedHeight)
     }
     
     private func sectionTitle(_ title: String, showsSelectionHint: Bool = false) -> some View {
