@@ -38,6 +38,7 @@ struct RegisterView: View {
 // MARK: - Subviews
 
 extension RegisterView {
+    /// 장소 이름 검색
     private var searchPlace: some View {
         VStack(alignment: .leading, spacing: 12.adjustedHeight) {
             Text("장소 이름")
@@ -49,6 +50,8 @@ extension RegisterView {
                 switch store.state.registerStep {
                 case .searchPlace:
                     VStack(alignment: .center, spacing: 28.adjustedHeight) {
+                        
+                        // 장소 검색바
                         RegisterSearchBar(
                             onChange: { text in
                                 store.dispatch(.updateSearchBarText(text: text))
@@ -68,6 +71,7 @@ extension RegisterView {
                         )
                         .padding(.horizontal, 16.adjustedWidth)
                         
+                        // 검색 결과 List
                         if !store.state.searchResult.isEmpty {
                             RegisterSearchList(searchResult: store.state.searchResult) { result in
                                 store.dispatch(
@@ -81,6 +85,7 @@ extension RegisterView {
                     }
                     
                 case .selectMainTagType, .selectExtraFeatures:
+                    // 장소 이름 & 주소 컨테이너 (검색 후)
                     VStack(alignment: .leading, spacing: 4.adjustedHeight) {
                         Text(store.state.placeName)
                             .applySolplyFont(.body_16_r)
@@ -109,6 +114,7 @@ extension RegisterView {
         .padding(.top, 16.adjustedHeight)
     }
     
+    /// MainTagType 선택
     private var selectMainTagType: some View {
         Group {
             switch store.state.registerStep {
@@ -136,6 +142,7 @@ extension RegisterView {
         }
     }
     
+    /// SubTagType 선택 & 추천 이유 작성 & 사진 첨부
     private var selectExtraFeatures: some View {
         Group {
             switch store.state.registerStep {
@@ -143,6 +150,7 @@ extension RegisterView {
                 EmptyView()
             case .selectExtraFeatures:
                 VStack(alignment: .leading, spacing: 40.adjustedHeight) {
+                    // SubTagTypeA 선택
                     if !store.state.selectableSubTagsA.isEmpty {
                         selectableSubTagSection(
                             title: "장소와 어울리는 키워드를 골라주세요",
@@ -153,6 +161,7 @@ extension RegisterView {
                         )
                     }
                     
+                    // SubTagTypeB 선택
                     if !store.state.selectableSubTagsB.isEmpty {
                         selectableSubTagSection(
                             title: "장소의 특징을 선택해주세요",
@@ -162,6 +171,8 @@ extension RegisterView {
                             )
                         )
                     }
+                    
+                    
                 }
             }
         }
@@ -177,13 +188,11 @@ extension RegisterView {
                 .foregroundStyle(.coreBlack)
                 .lineLimit(1)
                 .padding(.horizontal, 20.adjustedWidth)
-        
-            ChipButtonsContainerView(tags: tags)
-                .padding(.horizontal, 16.adjustedWidth)
+
+            SeletableChipsFlowView(tags: tags)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-
 }
 
 #Preview {
