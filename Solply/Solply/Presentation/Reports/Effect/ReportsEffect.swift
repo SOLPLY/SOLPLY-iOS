@@ -8,10 +8,18 @@
 import Foundation
 
 struct ReportsEffect {
-    private let fileService: FileService
+    private let fileService: FileAPI
+    private let uploadPhotosService: UploadPhotosAPI
+    private let placeService: PlaceAPI
     
-    init(fileService: FileService) {
+    init(
+        fileService: FileAPI,
+        uploadPhotosService: UploadPhotosAPI,
+        placeService: PlaceAPI
+    ) {
         self.fileService = fileService
+        self.uploadPhotosService = uploadPhotosService
+        self.placeService = placeService
     }
 }
 
@@ -34,10 +42,45 @@ extension ReportsEffect {
             guard let data = response.data else {
                 return .errorOccured(error: .responseError)
             }
+
+            return .presignedUrlReqeustSubmitted(response: data)
             
-            print(data)
+        } catch let error as NetworkError {
+            return .errorOccured(error: error)
+        } catch {
+            return .errorOccured(error: .unknownError)
+        }
+    }
+}
+
+// MARK: - UploadPhotoAPI
+
+extension ReportsEffect {
+    func uploadImages(dictionary: [URL: Data]) async -> ReportsAction {
+        do {
+            let response = try await uploadPhotosService.uploadImages(dictionary)
             
-            return .presignedUrlReqeustSubmitted
+            print("-------------사진 S3 업로드 성공---------------")
+            return .photoUploadSuccess(imageKeys: response)
+        } catch {
+            print("-------------사진 S3 업로드 실패---------------")
+            return .photoUploadFailed
+        }
+    }
+}
+
+// MARK: - PlaceAPI
+
+extension ReportsEffect {
+    func submitReports(placeId: Int, request: ReportsRequestDTO) async -> ReportsAction {
+        do {
+            let response = try await placeService.submitReports(placeId: placeId, request: request)
+            
+            guard let _ = response.data else {
+                return .errorOccured(error: .responseDecodingError)
+            }
+            
+            return .reportsSubmitted
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)

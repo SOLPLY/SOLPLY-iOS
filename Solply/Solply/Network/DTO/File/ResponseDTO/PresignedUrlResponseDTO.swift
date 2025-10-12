@@ -8,12 +8,12 @@
 import Foundation
 
 struct PresignedUrlResponseDTO: ResponseModelType {
-    let presignedUrlInfos: [PresignedUrlInformation]
+    let presignedGetUrlInfos: [PresignedUrlInformation]
 }
 
 struct PresignedUrlInformation: ResponseModelType {
     let originalFileName: String
-    let presignedUrl: String
     let tempFileKey: String
+    let presignedUrl: String
     let expirationSeconds: Int
 }

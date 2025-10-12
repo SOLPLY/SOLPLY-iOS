@@ -63,4 +63,11 @@ extension PlaceService: PlaceAPI {
     ) async throws -> BaseResponseBody<PlaceSearchResponseDTO> {
         return try await self.request(with: .searchPlace(placeName: placeName))
     }
+    
+    func submitReports(
+        placeId: Int,
+        request: ReportsRequestDTO
+    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .submitReports(placeId: placeId, request: request))
+    }
 }

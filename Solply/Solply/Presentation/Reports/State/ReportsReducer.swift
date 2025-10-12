@@ -10,6 +10,9 @@ import Foundation
 enum ReportsReducer {
     static func reduce(state: inout ReportsState, action: ReportsAction) {
         switch action {
+        case .setPlaceId(let placeId):
+            state.placeId = placeId
+            
         case .selectReportsType(let reportsType):
             state.selectedReportsType = reportsType
             
@@ -37,6 +40,20 @@ enum ReportsReducer {
             break
             
         case .presignedUrlReqeustSubmitted:
+            break
+            
+        case .submitReports:
+            break
+            
+        case .reportsSubmitted:
+            break
+            
+        case .photoUploadSuccess:
+            print("사진 업로드 성공")
+            break
+            
+        case .photoUploadFailed:
+            print("사진 업로드 실패")
             break
         }
     }

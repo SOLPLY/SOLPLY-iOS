@@ -8,6 +8,8 @@
 import Foundation
 
 struct ReportsState {
+    var placeId: Int = -1
+    
     var shouldGoBack: Bool = false
     var reportsStep: ReportsStep = .reportsSelect
     

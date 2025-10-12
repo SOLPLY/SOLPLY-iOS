@@ -151,7 +151,7 @@ extension PlaceDetailView {
                         )
                     )
                 } reportsAction: {
-                    appCoordinator.navigate(to: .reports)
+                    appCoordinator.navigate(to: .reports(placeId: self.placeId))
                 }
                 .transition(.move(edge: .leading))
             } else {

@@ -15,6 +15,11 @@ struct ReportsView: View {
     @StateObject private var store = ReportsStore()
     
     private let screenWidth: CGFloat = UIScreen.main.bounds.width
+    private let placeId: Int
+    
+    init(placeId: Int) {
+        self.placeId = placeId
+    }
     
     // MARK: - Body
     
@@ -52,6 +57,9 @@ struct ReportsView: View {
         .ignoresSafeArea(.keyboard)
         .onTapGesture {
             hideKeyboard()
+        }
+        .onAppear {
+            store.dispatch(.setPlaceId(placeId: self.placeId))
         }
         .onChange(of: store.state.shouldGoBack) { _, newValue in
             if newValue {
@@ -110,6 +118,6 @@ extension ReportsView {
 }
 
 #Preview {
-    ReportsView()
+    ReportsView(placeId: 1)
         .environmentObject(AppCoordinator())
 }

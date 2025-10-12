@@ -12,7 +12,9 @@ final class ReportsStore: ObservableObject {
     
     @Published private(set) var state = ReportsState()
     private let effect = ReportsEffect(
-        fileService: FileService()
+        fileService: FileService(),
+        uploadPhotosService: UploadPhotosService(),
+        placeService: PlaceService()
     )
     
     func dispatch(_ action: ReportsAction) {
@@ -38,6 +40,47 @@ final class ReportsStore: ObservableObject {
         case .submitPresignedUrlRequest(let request):
             Task {
                 let result = await effect.submitPresignedUrlRequest(request: request)
+                self.dispatch(result)
+            }
+            
+        case .presignedUrlReqeustSubmitted(let response):
+            let presignedInformation = response.presignedGetUrlInfos
+            let imageDatas = state.attachedImageData
+
+            var presignedDictionary: [URL: Data] = [:]
+
+            for (info, data) in zip(presignedInformation, imageDatas) {
+                if let url = URL(string: info.presignedUrl) {
+                    presignedDictionary[url] = data.1
+                }
+            }
+            
+            Task {
+                await effect.uploadImages(dictionary: presignedDictionary)
+            }
+            
+        case .photoUploadSuccess(let imageKeys):
+            print("photoUploadSuccess gㅗ출")
+            guard let reportsType = state.selectedReportsType, state.placeId > 0 else {
+                return
+            }
+            
+            var imageKeyStrings: [String] = []
+            imageKeyStrings = imageKeys.map { $0.absoluteString }
+            
+            let request = ReportsRequestDTO(
+                reportsType: reportsType.rawValue,
+                content: state.reportsContent,
+                imageKeys: imageKeyStrings
+            )
+            
+            print("사진 S3 저장 성공")
+            self.dispatch(.submitReports(placeId: state.placeId, request: request))
+            
+        case .submitReports(let placeId, let request):
+            print("제보제보제보제보제보")
+            Task {
+                let result = await effect.submitReports(placeId: placeId, request: request)
                 self.dispatch(result)
             }
         
