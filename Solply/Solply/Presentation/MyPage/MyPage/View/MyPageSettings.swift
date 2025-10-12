@@ -10,6 +10,8 @@ import SwiftUI
 struct MyPageSettings: View {
     
     // MARK: - Properties
+    
+    @EnvironmentObject var appCoordinator: AppCoordinator
 
     private let loginProvider: String
     private let appVersion: String

@@ -69,6 +69,7 @@ struct PlaceCard: View {
                     .frame(height: 19.adjustedHeight)
             }
         }
+        .contentShape(Rectangle())
         .onTapGesture {
             action?()
         }

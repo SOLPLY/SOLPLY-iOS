@@ -36,9 +36,9 @@ struct PlaceDetailEffect {
 // MARK: - CourseAPI
 
 extension PlaceDetailEffect {
-    func fetchCourseArchive(townId: Int, placeId: Int?) async -> PlaceDetailAction {
+    func fetchCourseArchive(placeId: Int?) async -> PlaceDetailAction {
         do {
-            let response = try await courseService.fetchCourseArchive(townId: townId, placeId: placeId)
+            let response = try await courseService.fetchCourseArchive(townId: nil, placeId: placeId)
             
             guard let courses = response.data?.courses else { return .errorOccured(error: .responseError) }
             
