@@ -114,7 +114,7 @@ private extension MyPageEditView {
 
 // MARK: - Preview
 
-#Preview {
-    MyPageEditView()
-        .environmentObject(AppCoordinator())
-}
+//#Preview {
+//    MyPageEditView()
+//        .environmentObject(AppCoordinator())
+//}
