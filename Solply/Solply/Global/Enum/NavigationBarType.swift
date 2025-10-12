@@ -21,4 +21,5 @@ enum NavigationBarType {
     case myPage(backAction: () -> Void)
     case myPageEdit(title: String, backAction: () -> Void)
     case register(backAction: () -> Void)
+    case withdraw(backAction: () -> Void)
 }
