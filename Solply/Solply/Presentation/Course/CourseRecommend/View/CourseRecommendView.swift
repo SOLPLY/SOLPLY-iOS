@@ -55,7 +55,7 @@ struct CourseRecommendView: View {
         .customNavigationBar(.recommend(
             filterTitle: townName,
             filterAction: {
-                appCoordinator.navigate(to: .frequentTown)
+                appCoordinator.navigate(to: .JGD)
             },
             settingAction: {
                 appCoordinator.navigate(to: .placeSearch)
