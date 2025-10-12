@@ -100,7 +100,7 @@ private extension MyPageEditView {
                 .applySolplyFont(.body_16_m)
                 .foregroundStyle(.gray900)
             
-            SoplyDropDown(
+            SolplyDropDown(
                 title: "조용한 공간에 오래 머물고 싶어요",
                 options: store.state.personaOptions,
                 selectedText: store.state.selectedPersona

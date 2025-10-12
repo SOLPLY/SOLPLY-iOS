@@ -1,5 +1,5 @@
 //
-//  SoplyDropDown.swift
+//  SolplyDropDown.swift
 //  Solply
 //
 //  Created by sun on 9/26/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SoplyDropDown: View {
+struct SolplyDropDown: View {
     
     // MARK: - Properties
     
@@ -109,7 +109,7 @@ struct SoplyDropDown: View {
 
 // MARK: - Subviews
 
-private extension SoplyDropDown {
+private extension SolplyDropDown {
     
     // MARK: Header
     
@@ -120,11 +120,20 @@ private extension SoplyDropDown {
             }
         } label: {
             HStack(alignment: .center, spacing: 12.adjustedWidth) {
-                Text(currentHeaderText)
-                    .applySolplyFont(.body_16_m)
-                    .foregroundColor(.gray900)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
+                HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                    if let selectedTag {
+                        Image(selectedTag.icon)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                    }
+                    
+                    Text(currentHeaderText)
+                        .applySolplyFont(.body_16_m)
+                        .foregroundColor(.gray900)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                }
                 
                 Spacer(minLength: 0)
                 
@@ -197,7 +206,7 @@ private extension SoplyDropDown {
 
 // MARK: - Option Enum
 
-private extension SoplyDropDown {
+private extension SolplyDropDown {
     enum Option {
         case text(String)
         case tag(MainTagType)
@@ -215,7 +224,7 @@ private extension SoplyDropDown {
 
 #Preview {
     VStack(alignment: .leading, spacing: 24.adjustedHeight) {
-        SoplyDropDown(
+        SolplyDropDown(
             title: "솔플 스타일을 선택하라우",
             options: [
                 "이곳저곳 둘러보고 싶어요",
@@ -224,7 +233,7 @@ private extension SoplyDropDown {
             ]
         )
         
-        SoplyDropDown(
+        SolplyDropDown(
             title: "장소 유형을 선택해주세요",
             tagOptions: Array(MainTagType.allCases.dropFirst())
         )
