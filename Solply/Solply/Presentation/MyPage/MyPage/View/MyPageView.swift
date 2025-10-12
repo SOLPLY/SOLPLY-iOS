@@ -36,7 +36,9 @@ struct MyPageView: View {
                         appVersion: "v" + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"),
                         onTapCustomerCenter: { store.dispatch(.customerCenterTapped) },
                         onTapLogout: { store.dispatch(.logoutTapped) },
-                        onTapDeleteAccount: { store.dispatch(.deleteAccountTapped) }
+                        onTapDeleteAccount: { store.dispatch(.deleteAccountTapped)
+                            appCoordinator.navigate(to: .withdraw)
+                        }
                     )
                     .padding(.top, 16.adjustedHeight)
                 }
