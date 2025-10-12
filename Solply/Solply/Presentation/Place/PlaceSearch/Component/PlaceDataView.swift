@@ -9,14 +9,26 @@ import SwiftUI
 
 struct PlaceDataView: View {
     
+    // MARK: - Properties
+    
     private let places: [PlaceSearchDTO]
+    private let placeDetailAction: ((Int, Int) -> Void)?
+    private let registerAction: (() -> Void)?
+    
+    // MARK: - Initializer
     
     init(
         places: [PlaceSearchDTO] = [],
+        placeDetailAction: ((Int, Int) -> Void)? = nil,
+        registerAction: (() -> Void)? = nil
     ) {
         self.places = places
+        self.placeDetailAction = placeDetailAction
+        self.registerAction = registerAction
     }
-
+    
+    // MARK: - Body
+    
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
@@ -33,8 +45,11 @@ struct PlaceDataView: View {
                         thumbnailUrl: place.thumbnailImageUrl,
                         placeName: place.placeName,
                         address: place.address,
-                        mainTag: place.primaryTag
+                        mainTag: place.primaryTag,
                     )
+                    .onTapGesture {
+                        placeDetailAction?(place.townId, place.placeId)
+                    }
                 }
 
                 HStack(alignment: .center, spacing: 0) {
@@ -49,6 +64,9 @@ struct PlaceDataView: View {
                         .frame(width: 24.adjustedWidth, height: 10.adjustedHeight)
                 }
                 .padding(.top, 16.adjustedHeight)
+                .onTapGesture {
+                    registerAction?()
+                }
             }
         }
     }

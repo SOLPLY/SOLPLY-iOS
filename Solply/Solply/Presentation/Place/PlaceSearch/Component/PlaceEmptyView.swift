@@ -8,6 +8,19 @@
 import SwiftUI
 
 struct PlaceEmptyView: View {
+    
+    // MARK: - Properties
+    
+    private let registerAction: (() -> Void)?
+    
+    // MARK: - Initializer
+    
+    init(registerAction: (() -> Void)? = nil) {
+        self.registerAction = registerAction
+    }
+    
+    // MARK: - Body
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 17.5.adjustedHeight) {
             Text("검색 결과가 없어요.\n직접 장소 등록을 솔플리에 요청해보세요.")
@@ -23,6 +36,9 @@ struct PlaceEmptyView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjustedWidth, height: 10.adjustedHeight)
+            }
+            .onTapGesture {
+                registerAction?()
             }
         }
         .padding(.leading, 20.adjustedWidth)

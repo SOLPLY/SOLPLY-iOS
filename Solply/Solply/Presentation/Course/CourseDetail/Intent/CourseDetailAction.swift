@@ -8,6 +8,8 @@
 import Foundation
 
 enum CourseDetailAction {
+    case setDragDropState(dragDropState: DragDropState)
+    
     case toggleBookmarkCourse
     case focusPlace(index: Int)
     case toggleBookmarkPlace(index: Int)
@@ -17,9 +19,10 @@ enum CourseDetailAction {
     case endEditing
     
     case startDragging(draggedPlace: PlaceDetailInCourse)
-    case whileDragging(from: Int, to: Int)
-    case endDragging(isHoldOnly: Bool)
+    case whileDragging(destination: PlaceDetailInCourse)
+    case endDragging
     case deletePlace
+    case droppedInDeleteZone
     case draggedInDeleteZone
     case draggedOutDeleteZone
     

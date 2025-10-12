@@ -13,6 +13,7 @@ struct PlaceSearchResponseDTO: ResponseModelType {
 
 struct PlaceSearchDTO: ResponseModelType {
     let placeId: Int
+    let townId: Int
     let placeName: String
     let thumbnailImageUrl: String
     let primaryTag: MainTagType

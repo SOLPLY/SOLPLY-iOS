@@ -48,14 +48,9 @@ struct CourseDetailView: View {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: store.state.isSaveOptionPresented)
-        .onDrop(
-            of: [.text],
-            delegate: GlobalDropDelegate(
-                onDragEnd: {
-                    store.dispatch(.endDragging(isHoldOnly: false))
-                }
-            )
-        )
+        .globalDrop() {
+            store.dispatch(.endDragging)
+        }
         .onAppear {
             store.dispatch(.fetchCourseDetail(courseId: courseId))
         }
@@ -232,19 +227,18 @@ extension CourseDetailView {
                     .cornerRadius(20, corners: .allCorners)
                     .frame(maxWidth: .infinity)
                     .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
-                    .customDragDrop(
+                    .dragDrop(
                         isEditing: store.state.isEditing,
-                        placeDetailInCourse: place,
-                        placesDetailInCourse: store.state.places,
-                        draggedPlace: store.state.draggedPlace,
-                        startDragging: { placeDetailInCourse in
-                            store.dispatch(.startDragging(draggedPlace: placeDetailInCourse))
+                        startDragging: {
+                            store.dispatch(.startDragging(draggedPlace: place))
                         },
-                        whileDragging: { fromIndex, toIndex in
-                            store.dispatch(.whileDragging(from: fromIndex, to: toIndex))
+                        whileDragging: {
+                            withAnimation(.interactiveSpring) {
+                                store.dispatch(.whileDragging(destination: place))
+                            }
                         },
                         endDragging: {
-                            store.dispatch(.endDragging(isHoldOnly: false))
+                            store.dispatch(.endDragging)
                         }
                     )
                 }
@@ -256,7 +250,7 @@ extension CourseDetailView {
                     }
                     .onEnded { _ in
                         
-                        store.dispatch(.endDragging(isHoldOnly: true))
+                        store.dispatch(.endDragging)
                     }
             )
             .animation(.easeInOut(duration: 0.1), value: store.state.focusedPlaceIndex)
@@ -294,37 +288,16 @@ extension CourseDetailView {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
-            .onDrop(
-                of: [.text],
-                delegate: DeleteDropDelegate(
-                    draggedPlace: store.state.draggedPlace,
-                    onDelete: {
-                        if store.state.places.count > 2 {
-                            store.dispatch(.deletePlace)
-                        } else {
-                            store.dispatch(
-                                .showToastView(
-                                    ToastContent(
-                                        toastType: .withIconToast,
-                                        message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
-                                        buttonTitle: nil,
-                                        bottomPadding: 96.adjustedHeight
-                                    )
-                                )
-                            )
-                        }
-                    },
-                    onEntered: {
-                        store.dispatch(.draggedInDeleteZone)
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
-                    },
-                    onExited: {
-                        store.dispatch(.draggedOutDeleteZone)
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
-                    }
-                )
+            .deleteDrop(
+                onDelete: {
+                    store.dispatch(.droppedInDeleteZone)
+                },
+                onEntered: {
+                    store.dispatch(.draggedInDeleteZone)
+                },
+                onExited: {
+                    store.dispatch(.draggedOutDeleteZone)
+                }
             )
     }
     
