@@ -12,7 +12,7 @@ enum OnboardingReducer {
             state.step = OnboardingStep(rawValue: state.step.rawValue + 1) ?? .onboardingComplete
             
         case .goBack:
-            state.step = OnboardingStep(rawValue: state.step.rawValue - 1) ?? .townOption
+            state.step = OnboardingStep(rawValue: state.step.rawValue - 1) ?? .onboardingJGD
             
         case .skip:
             state.step = .onboardingComplete

@@ -30,7 +30,9 @@ struct JGDButton: View {
     // MARK: - Body
     
     var body: some View {
-        Button { action?() } label: {
+        Button {
+            action?()
+        } label: {
             HStack(alignment: .center, spacing: 10.adjustedWidth) {
                 if let title {
                     Text(title)

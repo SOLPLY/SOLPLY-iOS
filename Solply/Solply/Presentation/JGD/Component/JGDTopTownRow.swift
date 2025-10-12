@@ -29,7 +29,6 @@ struct JGDTopTownRow: View {
                     .foregroundStyle(.gray200)
                     .frame(height: 1.adjustedHeight)
             }
-            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .background(isSelected ? .coreWhite : .gray100)

@@ -23,9 +23,9 @@ extension OnboardingTargetType: BaseTargetType {
     var path: String {
         switch self {
         case .fetchPersonaList:
-            return "/onboarding/questions/persona"
+            return "/users/persona"
         case .completeOnboarding:
-            return "/onboarding/users"
+            return "/users/onboarding"
         }
     }
     
