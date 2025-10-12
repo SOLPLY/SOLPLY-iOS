@@ -18,6 +18,8 @@ enum AppDestination: Hashable {
     case myPage
     case myPageEdit
     case withdraw
+    case register
+    case registerComplete
 }
 
 extension AppDestination {
@@ -44,6 +46,10 @@ extension AppDestination {
             MyPageEditView()
         case .withdraw:
             WithdrawView()
+        case .register:
+            RegisterView()
+        case .registerComplete:
+            RegisterCompleteView()
         }
     }
 }

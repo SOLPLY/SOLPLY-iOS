@@ -17,7 +17,7 @@ struct ReportsCompleteView: View {
                 .applySolplyFont(.display_20_sb)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding(.top, 172.adjustedHeight)
+        .padding(.top, 130.adjustedHeight)
         .background(.coreWhite)
     }
 }

@@ -11,7 +11,7 @@ import Moya
 
 final class TagsService: BaseService<TagsTargetType> { }
 
-extension TagsService {
+extension TagsService: TagsAPI {
     func fetchMainTags() async throws -> BaseResponseBody<MainTagsResponseDTO> {
         return try await self.request(with: .fetchMainTags)
     }

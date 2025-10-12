@@ -36,5 +36,6 @@ struct SubTagChip: View {
                 borderColor: isSelected ? .clear : .gray300,
                 borderWidth: 0.75
             )
+            .contentShape(Capsule())
     }
 }
