@@ -6,7 +6,7 @@
 //
 
 struct OnboardingState {
-    var step: OnboardingStep = .townOption
+    var step: OnboardingStep = .onboardingJGD
 
     var townList: [Town] = []
     var selectedTown: Town? = nil

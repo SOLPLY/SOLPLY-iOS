@@ -44,12 +44,6 @@ final class OnboardingStore: ObservableObject {
                     dispatch(result)
                 }
             }
-        
-        case .fetchTown:
-            Task {
-                let result = await effect.fetchTownList()
-                dispatch(result)
-            }
             
         case .fetchPersona:
             Task {
