@@ -8,13 +8,9 @@
 import SwiftUI
 
 struct OnboardingJGDView: View {
+    
     @ObservedObject var store: OnboardingStore
-
     @State private var isTownSheetPresented: Bool = false
-
-    private let hSpacing: CGFloat = 20.adjustedWidth
-    private let vSpacing: CGFloat = 32.adjustedHeight
-    private let desiredSlots: Int = 3
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -59,8 +55,11 @@ struct OnboardingJGDView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.bottom, 20.adjustedHeight)
-        .onAppear { store.dispatch(.fetchTown) }
+        .padding(.bottom, 16.adjustedHeight)
+//        .onAppear { store.dispatch(.fetchTown) }
+        .onAppear {
+            store.dispatch(.selectTown(Town(id: 2, name: "망원동")))
+        }
         .sheet(isPresented: $isTownSheetPresented) {
             JGDBottomSheet { _, subTown in
                 if let subTown {
@@ -68,9 +67,10 @@ struct OnboardingJGDView: View {
                 }
                 isTownSheetPresented = false
             }
-            .presentationDetents([.fraction(0.85)])
+            .presentationDetents([.height(615.adjustedHeight)])
             .presentationDragIndicator(.hidden)
             .interactiveDismissDisabled(false)
         }
+        .ignoresSafeArea(edges: .bottom)
     }
 }

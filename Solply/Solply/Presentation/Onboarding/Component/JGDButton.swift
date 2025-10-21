@@ -48,7 +48,8 @@ struct JGDButton: View {
                         .foregroundColor(.gray400)
                 }
             }
-            .frame(width: 343.adjustedWidth, height: 52.adjustedHeight, alignment: .center)
+            .frame(height: 52.adjustedHeight, alignment: .center)
+            .padding(.horizontal, 16.adjustedWidth)
             .background(backgroundColor)
             .cornerRadius(20, corners: .allCorners)
             .overlay(borderOverlay)

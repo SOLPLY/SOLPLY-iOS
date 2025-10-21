@@ -50,14 +50,13 @@ struct JGDBottomSheet: View {
                     if onClose == nil { dismiss() } else { onClose?() }
                 }
                 .padding(.horizontal, 20.adjustedWidth)
-                .padding(.bottom, 36.adjustedHeight)
+                .padding(.bottom, 16.adjustedHeight)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 20.adjustedHeight))
+            .cornerRadius(20)
         }
         .onAppear {
             store.dispatch(.fetchTopTowns)
         }
-        .ignoresSafeArea(edges: .bottom)
     }
 }
 
@@ -79,13 +78,12 @@ private extension JGDBottomSheet {
                     .resizable()
                     .frame(width: 24.adjustedWidth, height: 24.adjustedWidth)
                     .foregroundStyle(.gray800)
-                    .padding(8)
             }
             .buttonStyle(.plain)
         }
         .padding(.horizontal, 24.adjustedWidth)
-        .padding(.top, 16.adjustedHeight)
-        .padding(.bottom, 16.adjustedHeight)
+        .padding(.top, 24.adjustedHeight)
+        .padding(.bottom, 20.adjustedHeight)
     }
 }
 
