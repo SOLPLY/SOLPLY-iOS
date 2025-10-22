@@ -15,43 +15,38 @@ struct JGDEffect {
         self.userService = userService
         self.townService = townService
     }
-
-    func fetchTopTowns() async -> JGDAction {
+    
+    func fetchTowns() async -> JGDAction {
         do {
             let response = try await townService.fetchTownList()
+            
             guard let data = response.data else {
-                return .fetchTopTownsFailure("데이터가 없습니다.")
+                return .fetchTownsFailure("데이터가 없습니다.")
             }
-
-            let topTowns: [TopTown] = data.towns.map { top in
-                TopTown(
-                    id: top.townId,
-                    name: top.townName,
-                    subTowns: (top.subTowns ?? []).map { sub in
-                        Town(id: sub.townId, name: sub.displayName)
-                    }
-                )
-            }
-
-            return .fetchTopTownsSuccess(topTownList: topTowns)
+            
+            let towns = data.toEntity()
+            
+            return .fetchTownsSuccess(townList: towns)
         } catch {
-            return .fetchTopTownsFailure("동네 불러오기 실패")
+            return .fetchTownsFailure("동네 불러오기 실패")
         }
     }
 
-    func saveSelection(selectedTopTown: TopTown, selectedSubTown: Town) async -> JGDAction {
+    func saveSelection(selectedTown: Town, selectedSubTown: SubTown) async -> JGDAction {
         do {
             let request = UserTownsUpdateRequestDTO(
-                selectedTownId: selectedSubTown.id,
-                favoriteTownIdList: []
+                selectedTownId: selectedTown.id,
+                favoriteTownIdList: [selectedSubTown.id]
             )
+            
             _ = try await userService.updateUserTowns(request)
+            
             return .saveSelectionSuccess(
-                selectedTopTown: selectedTopTown,
+                selectedTown: selectedTown,
                 selectedSubTown: selectedSubTown
             )
         } catch {
-            return .saveSelectionFailure("동네 저장 실패")
+            return .saveSelectionFailure("동네 저장 실패: \(error.localizedDescription)")
         }
     }
 }
