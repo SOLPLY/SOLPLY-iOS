@@ -9,7 +9,7 @@ import SwiftUI
 
 struct JGDBottomSheet: View {
     
-    private let onDone: (_ topTown: TopTown?, _ subTown: Town?) -> Void
+    private let onDone: (_ town: Town?, _ subTown: SubTown?) -> Void
     private let onClose: (() -> Void)?
     
     @Environment(\.dismiss) private var dismiss
@@ -19,7 +19,7 @@ struct JGDBottomSheet: View {
     // MARK: - Initializer
     
     init(
-        onDone: @escaping (_ topTown: TopTown?, _ subTown: Town?) -> Void,
+        onDone: @escaping (_ town: Town?, _ subTown: SubTown?) -> Void,
         onClose: (() -> Void)? = nil
     ) {
         self.onDone = onDone
@@ -39,14 +39,14 @@ struct JGDBottomSheet: View {
             ZStack(alignment: .bottom) {
                 VStack(spacing: 0) {
                     HStack(alignment: .top, spacing: 0) {
-                        topTownListView
+                        townListView
                         Divider()
                         subTownListView
                     }
                 }
                 
                 CTAMainButton(title: "완료", isEnabled: store.state.selectedSubTown != nil) {
-                    onDone(store.state.selectedTopTown, store.state.selectedSubTown)
+                    onDone(store.state.selectedTown, store.state.selectedSubTown)
                     if onClose == nil { dismiss() } else { onClose?() }
                 }
                 .padding(.horizontal, 20.adjustedWidth)
@@ -55,7 +55,7 @@ struct JGDBottomSheet: View {
             .cornerRadius(20)
         }
         .onAppear {
-            store.dispatch(.fetchTopTowns)
+            store.dispatch(.fetchTowns)
         }
     }
 }
@@ -90,14 +90,14 @@ private extension JGDBottomSheet {
 // MARK: - Subviews
 
 private extension JGDBottomSheet {
-    var topTownListView: some View {
+    var townListView: some View {
         VStack(alignment: .center, spacing: 0) {
-            ForEach(store.state.topTownList, id: \.id) { topTown in
+            ForEach(store.state.townList, id: \.id) { town in
                 JGDTopTownRow(
-                    title: topTown.name,
-                    isSelected: store.state.selectedTopTown?.id == topTown.id
+                    title: town.townName,
+                    isSelected: store.state.selectedTown?.id == town.id
                 ) {
-                    store.dispatch(.selectTopTown(topTown))
+                    store.dispatch(.selectTown(town))
                 }
             }
             Spacer()
@@ -107,16 +107,16 @@ private extension JGDBottomSheet {
     }
 
     var subTownListView: some View {
-        let subTowns = store.state.selectedTopTown?.subTowns ?? []
+        let subTowns = store.state.selectedTown?.subTowns ?? []
 
         return VStack(spacing: 0) {
-            ForEach(subTowns, id: \.id) { town in
+            ForEach(subTowns, id: \.id) { subTown in
                 JGDSubTownRow(
-                    title: town.name,
-                    isSelected: store.state.selectedSubTown?.id == town.id,
+                    title: subTown.townName,
+                    isSelected: store.state.selectedSubTown?.id == subTown.id,
                     onTap: {
-                        store.dispatch(.selectSubTown(town))
-                        print("🏡 town → id:\(town.id), name:\(town.name)")
+                        store.dispatch(.selectSubTown(subTown))
+                        print("🏡 SubTown → id: \(subTown.id), name: \(subTown.townName)")
                     }
                 )
             }
@@ -125,3 +125,4 @@ private extension JGDBottomSheet {
         .frame(width: 247.adjustedWidth)
     }
 }
+
