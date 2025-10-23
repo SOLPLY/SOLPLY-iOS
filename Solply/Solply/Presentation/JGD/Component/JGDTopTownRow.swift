@@ -17,20 +17,16 @@ struct JGDTopTownRow: View {
     
     var body: some View {
         Button(action: onTap) {
-            ZStack(alignment: .bottom) {
-                Text(title)
-                    .applySolplyFont(.body_16_m)
-                    .foregroundStyle(isSelected ? .coreBlack : .gray600)
-                    .frame(height: 46.adjustedHeight)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 16.adjustedWidth)
-
-                Rectangle()
-                    .foregroundStyle(.gray200)
-                    .frame(height: 1.adjustedHeight)
-            }
+            Text(title)
+                .applySolplyFont(.body_16_m)
+                .foregroundStyle(isSelected ? .coreBlack : .gray600)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .frame(height: 46.adjustedHeight)
+                .padding(.horizontal, 16.adjustedWidth)
+                .background(isSelected ? .coreWhite : .gray100)
+                .overlay(Rectangle().frame(height: 1.adjustedHeight)
+                    .foregroundStyle(.gray200), alignment: .bottom)
         }
         .buttonStyle(.plain)
-        .background(isSelected ? .coreWhite : .gray100)
     }
 }
