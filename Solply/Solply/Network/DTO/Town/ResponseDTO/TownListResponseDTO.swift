@@ -7,21 +7,47 @@
 
 import Foundation
 
-struct TownListResponseDTO: ResponseModelType, Decodable {
-    let towns: [TownDTO]
-}
-
-struct TownDTO: ResponseModelType, Decodable, Hashable {
+struct TownDTO: Decodable {
     let townId: Int
     let townName: String
-    let subTowns: [SubTownDTO]?
+    let parentTownId: Int?
+    
+    var id: Int { townId }
 }
 
-struct SubTownDTO: ResponseModelType, Decodable, Hashable {
-    let townId: Int
-    let townName: String?
-    let name: String?
+struct TownListResponseDTO: ResponseModelType {
+    let towns: [TownDTO]
     
-    var displayName: String { name ?? townName ?? "" }
+    func toEntity() -> [Town] {
+        let parentTowns = towns.filter { town in
+            return town.parentTownId == nil
+        }
+
+        var structuredTownList: [Town] = []
+
+        for parent in parentTowns {
+            var subTownList: [SubTown] = []
+
+            for child in towns {
+                if child.parentTownId == parent.townId {
+                    let subTown = SubTown(
+                        id: child.townId,
+                        townName: child.townName
+                    )
+                    subTownList.append(subTown)
+                }
+            }
+
+            let town = Town(
+                id: parent.townId,
+                townName: parent.townName,
+                subTowns: subTownList
+            )
+            
+            structuredTownList.append(town)
+        }
+
+        return structuredTownList
+    }
 }
 
