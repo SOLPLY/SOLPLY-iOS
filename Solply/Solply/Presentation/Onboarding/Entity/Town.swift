@@ -5,13 +5,13 @@
 //  Created by 선영주 on 7/17/25.
 //
 
-struct Town: Hashable, Identifiable {
+struct SubTown: Hashable, Identifiable {
     let id: Int
-    let name: String
+    let townName: String
 }
 
-struct TopTown: Hashable, Identifiable {
+struct Town: Hashable, Identifiable {
     let id: Int
-    let name: String
-    let subTowns: [Town]
+    let townName: String
+    let subTowns: [SubTown]
 }
