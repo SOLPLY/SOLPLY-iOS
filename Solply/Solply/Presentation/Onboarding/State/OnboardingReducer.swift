@@ -8,6 +8,7 @@
 enum OnboardingReducer {
     static func reduce(state: inout OnboardingState, action: OnboardingAction) {
         switch action {
+            
         case .next:
             state.step = OnboardingStep(rawValue: state.step.rawValue + 1) ?? .onboardingComplete
             
@@ -19,6 +20,10 @@ enum OnboardingReducer {
             
         case .selectTown(let town):
             state.selectedTown = town
+            state.selectedSubTown = town.subTowns.first
+        
+        case .selectSubTown(let subTown):
+            state.selectedSubTown = subTown
             
         case .selectPersona(let persona):
             state.selectedPersona = persona
@@ -38,16 +43,17 @@ enum OnboardingReducer {
         case .nicknameChecked(let stateType):
             state.nicknameType = stateType
             
-        case .fetchTown:
-            state.selectedTown = nil
+        case .fetchTowns:
             state.errorMessage = nil
             
-        case .fetchTownSuccess(let selectedTown, let townList):
-            state.selectedTown = selectedTown
+        case .fetchTownsSuccess(let townList):
             state.townList = townList
-            
-        case .fetchTownFailure(let message):
-            print("❌ 동네 조회 실패: \(message)")
+
+            state.selectedTown = nil
+            state.selectedSubTown = nil
+
+        case .fetchTownsFailure(let message):
+            state.errorMessage = message
             
         case .fetchPersona:
             state.errorMessage = nil

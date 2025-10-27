@@ -23,26 +23,19 @@ struct OnboardingEffect {
         self.userService = userService
     }
     
-    func fetchTopTowns() async -> JGDAction {
+    func fetchTowns() async -> OnboardingAction {
         do {
             let response = try await townService.fetchTownList()
+            
             guard let data = response.data else {
-                return .fetchTopTownsFailure("데이터가 없습니다.")
+                return .fetchTownsFailure("데이터가 없습니다.")
             }
-
-            let topTowns: [TopTown] = data.towns.map { top in
-                TopTown(
-                    id: top.townId,
-                    name: top.townName,
-                    subTowns: (top.subTowns ?? []).map { sub in
-                        Town(id: sub.townId, name: sub.displayName)
-                    }
-                )
-            }
-
-            return .fetchTopTownsSuccess(topTownList: topTowns)
+            
+            let towns = data.toEntity()
+            
+            return .fetchTownsSuccess(townList: towns)
         } catch {
-            return .fetchTopTownsFailure("동네 불러오기 실패")
+            return .fetchTownsFailure("동네 불러오기 실패")
         }
     }
     

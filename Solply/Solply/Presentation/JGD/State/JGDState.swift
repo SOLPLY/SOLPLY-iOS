@@ -6,8 +6,8 @@
 //
 
 struct JGDState {
-    var topTownList: [TopTown] = []
-    var selectedTopTown: TopTown? = nil
-    var selectedSubTown: Town? = nil
+    var townList: [Town] = []
+    var selectedTown: Town? = nil
+    var selectedSubTown: SubTown? = nil
     var errorMessage: String? = nil
 }

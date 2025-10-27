@@ -20,15 +20,17 @@ enum OnboardingAction {
     case checkNicknameSuccess(Bool)
     case checkNicknameFailure(String)
 
-    case fetchTown
-    case fetchTownSuccess(selectedTown: Town?, townList: [Town])
-    case fetchTownFailure(String)
+    case fetchTowns
+    case fetchTownsSuccess(townList: [Town])
+    case fetchTownsFailure(String)
+    
+    case selectTown(Town)
+    case selectSubTown(SubTown)
 
     case fetchPersona
     case fetchPersonaSuccess([Persona])
     case fetchPersonaFailure(String)
     
-    case selectTown(Town)
     case selectPersona(Persona)
 
     case nicknameChecked(NicknameTextFieldState)

@@ -6,15 +6,14 @@
 //
 
 enum JGDAction {
-    case fetchTopTowns
-    case fetchTopTownsSuccess(topTownList: [TopTown])
-    case fetchTopTownsFailure(String)
-
-    case selectTopTown(TopTown)
-    case selectSubTown(Town)
-
-    case saveSelection(selectedTopTown: TopTown, selectedSubTown: Town)
-    case saveSelectionSuccess(selectedTopTown: TopTown, selectedSubTown: Town)
+    case fetchTowns
+    case fetchTownsSuccess(townList: [Town])
+    case fetchTownsFailure(String)
+    
+    case selectTown(Town)
+    case selectSubTown(SubTown)
+    
+    case saveSelection(selectedTown: Town, selectedSubTown: SubTown)
+    case saveSelectionSuccess(selectedTown: Town, selectedSubTown: SubTown)
     case saveSelectionFailure(String)
 }
-
