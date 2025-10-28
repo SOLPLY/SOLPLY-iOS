@@ -8,7 +8,7 @@
 import Foundation
 
 struct ReportsRequestDTO: RequestModelType {
-    let reportsType: String
+    let reportType: String
     let content: String
     let imageKeys: [String]
 }
