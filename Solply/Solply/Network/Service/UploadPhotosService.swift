@@ -32,7 +32,7 @@ extension UploadPhotosService: UploadPhotosAPI {
     private func uploadToS3(url: URL, data: Data) async throws {
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
-        request.setValue("image/jpg", forHTTPHeaderField: "Content-Type")
+        request.setValue("image/jpeg", forHTTPHeaderField: "Content-Type")
         _ = try await URLSession.shared.upload(for: request, from: data)
     }
 }
