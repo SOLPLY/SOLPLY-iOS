@@ -26,11 +26,8 @@ final class ReportsStore: ObservableObject {
             // 1. 제보스탭 3단계 돌입(complete)
             // 사용자가 제보 정보들을 입력하고 호출하는 단계
             // -> reducer - submitPresignedUrlRequest 호출
-            if let selectedReportsType = state.selectedReportsType,
-               reportsStep == .reportsComplete {
-                
+            if let selectedReportsType = state.selectedReportsType, reportsStep == .reportsComplete {
                 if state.attachedImageData.isEmpty {
-                    // 사진 안 골랐을 때
                     dispatch(
                         .submitReports(
                             placeId: state.placeId,
@@ -42,7 +39,6 @@ final class ReportsStore: ObservableObject {
                         )
                     )
                 } else {
-                    // 사진 골랐을 때
                     dispatch(
                         .submitPresignedUrlRequest(
                             request: PresignedUrlRequestDTO(
@@ -90,14 +86,15 @@ final class ReportsStore: ObservableObject {
         case .photoUploadSuccess(let imageKeys):
             // 4. S3 업로드 response를 가지고 DTO 생성
             // effect - submitReports호출
-            print("photoUploadSuccess 호출")
             guard let reportsType = state.selectedReportsType, state.placeId > 0 else {
                 return
             }
             
             var imageKeyStrings: [String]
             
-            imageKeyStrings = imageKeys.map { $0.absoluteString.truncated(includeStartRange: "dev", excludeEndRange: "?") }
+            imageKeyStrings = imageKeys.map { imageKey in
+                imageKey.absoluteString.truncated(includeStartRange: "dev", excludeEndRange: "?")
+            }
             
             let request = ReportsRequestDTO(
                 reportType: reportsType.rawValue,
@@ -105,13 +102,9 @@ final class ReportsStore: ObservableObject {
                 imageKeys: imageKeyStrings
             )
             
-            dump(request)
-            
-            print("사진 S3 저장 성공")
             self.dispatch(.submitReports(placeId: state.placeId, request: request))
             
         case .submitReports(let placeId, let request):
-            print("제보제보제보제보제보")
             // 5. 제보하기하기 API 호출하는 단계
             Task {
                 let result = await effect.submitReports(placeId: placeId, request: request)

@@ -11,7 +11,7 @@ struct ReportsView: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
+    @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = ReportsStore()
     
     private let screenWidth: CGFloat = UIScreen.main.bounds.width

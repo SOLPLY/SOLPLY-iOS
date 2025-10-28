@@ -23,6 +23,7 @@ enum ReportsAction {
     
     case submitReports(placeId: Int, request: ReportsRequestDTO)
     case reportsSubmitted
+    case reportsFailed(error: NetworkError)
     
     // 사진 업로드
     case photoUploadSuccess(imageKeys: [URL])

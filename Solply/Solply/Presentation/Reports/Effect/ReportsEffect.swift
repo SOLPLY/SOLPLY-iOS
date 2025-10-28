@@ -51,10 +51,8 @@ extension ReportsEffect {
         do {
             let response = try await uploadPhotosService.uploadImages(dictionary)
             
-            print("-------------사진 S3 업로드 성공---------------")
             return .photoUploadSuccess(imageKeys: response)
         } catch {
-            print("-------------사진 S3 업로드 실패---------------")
             return .photoUploadFailed
         }
     }
@@ -75,9 +73,9 @@ extension ReportsEffect {
             return .reportsSubmitted
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .reportsFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .reportsFailed(error: .unknownError)
         }
     }
 }
