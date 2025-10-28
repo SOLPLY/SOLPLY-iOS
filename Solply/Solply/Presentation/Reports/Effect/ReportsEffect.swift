@@ -23,15 +23,6 @@ struct ReportsEffect {
     }
 }
 
-// MARK: - Functions
-
-extension ReportsEffect {
-    func waitForLottie() async -> ReportsAction {
-        try? await Task.sleep(nanoseconds: 2_000_000_000)
-        return .endLottie
-    }
-}
-
 // MARK: - FileAPI
 
 extension ReportsEffect {
@@ -75,6 +66,7 @@ extension ReportsEffect {
     func submitReports(placeId: Int, request: ReportsRequestDTO) async -> ReportsAction {
         do {
             let response = try await placeService.submitReports(placeId: placeId, request: request)
+            _ = try await Task.sleep(nanoseconds: 2_000_000_000)
             
             guard let _ = response.data else {
                 return .errorOccured(error: .responseDecodingError)

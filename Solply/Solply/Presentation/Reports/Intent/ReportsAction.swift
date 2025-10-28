@@ -15,9 +15,6 @@ enum ReportsAction {
     case editReportsContent(reportsContent: String)
     case attachReportsPhoto(imageData: [(String, Data)])
     
-    case startLottie
-    case endLottie
-    
     // api
     case errorOccured(error: NetworkError)
     

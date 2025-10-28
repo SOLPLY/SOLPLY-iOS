@@ -10,5 +10,5 @@ import Foundation
 struct ReportsRequestDTO: RequestModelType {
     let reportType: String
     let content: String
-    let imageKeys: [String]
+    let imageKeys: [String]?
 }

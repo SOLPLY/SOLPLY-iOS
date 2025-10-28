@@ -25,12 +25,6 @@ enum ReportsReducer {
         case .attachReportsPhoto(let imageData):
             state.attachedImageData = imageData
             
-        case .startLottie:
-            break
-            
-        case .endLottie:
-            state.shouldGoBack = true
-            
             
         case .errorOccured(let error):
             print(error)
@@ -46,7 +40,7 @@ enum ReportsReducer {
             break
             
         case .reportsSubmitted:
-            break
+            state.shouldGoBack = true
             
         case .photoUploadSuccess:
             print("사진 업로드 성공")
