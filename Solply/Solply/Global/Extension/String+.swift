@@ -24,6 +24,7 @@ extension String {
     /// - Returns: 기준 문자열 직전까지의 부분 문자열.
     func truncated(excludeEndRange: String) -> String {
         guard let endRange = self.range(of: excludeEndRange) else { return self }
+        
         return String(self[..<endRange.lowerBound])
     }
     
