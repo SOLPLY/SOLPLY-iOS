@@ -28,6 +28,7 @@ enum ReportsReducer {
             
         case .errorOccured(let error):
             print(error)
+            state.shouldGoBack = true
             break
             
         case .submitPresignedUrlRequest:
