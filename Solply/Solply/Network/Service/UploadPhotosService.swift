@@ -12,7 +12,7 @@ final class UploadPhotosService { }
 extension UploadPhotosService: UploadPhotosAPI {
     func uploadImages(_ dictionary: [URL: Data]) async throws -> [URL] {
         var uploadedUrls: [URL] = []
-        print("S3 사진 업로드 시작")
+        print("📷 [UploadPhotosService] S3 사진 업로드 시작")
         try await withThrowingTaskGroup(of: URL.self) { group in
             for (presignedUrl, data) in dictionary {
                 group.addTask {
@@ -25,7 +25,7 @@ extension UploadPhotosService: UploadPhotosAPI {
                 uploadedUrls.append(url)
             }
         }
-        print("S3 사진 업로드 완료")
+        print("📸 [UploadPhotosService] S3 사진 업로드 완료")
         return uploadedUrls
     }
     
