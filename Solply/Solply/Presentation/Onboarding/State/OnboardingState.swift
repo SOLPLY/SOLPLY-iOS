@@ -10,6 +10,7 @@ struct OnboardingState {
 
     var townList: [Town] = []
     var selectedTown: Town? = nil
+    var selectedSubTown: SubTown? = nil
     
     var personaList: [Persona] = []
     var selectedPersona: Persona? = nil

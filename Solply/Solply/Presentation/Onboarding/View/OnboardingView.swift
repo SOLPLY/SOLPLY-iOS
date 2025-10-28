@@ -63,6 +63,7 @@ struct OnboardingView: View {
                     store.dispatch(.checkNickname(store.state.nickname))
                 }
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 

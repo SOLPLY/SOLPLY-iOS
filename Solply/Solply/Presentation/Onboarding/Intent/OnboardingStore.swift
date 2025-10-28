@@ -45,6 +45,12 @@ final class OnboardingStore: ObservableObject {
                 }
             }
             
+        case .fetchTowns:
+           Task {
+               let result = await effect.fetchTowns()
+               dispatch(result)
+           }
+            
         case .fetchPersona:
             Task {
                 let result = await effect.fetchPersonaList()
@@ -52,7 +58,7 @@ final class OnboardingStore: ObservableObject {
             }
             
         case .onboardingCompleteOnAppear:
-            guard let selectedTown = state.selectedTown,
+            guard let selectedSubTown = state.selectedSubTown,
                   let selectedPersona = state.selectedPersona else {
                 print("❗️ 선택된 동네나 페르소나가 없습니다.")
                 return
@@ -60,8 +66,8 @@ final class OnboardingStore: ObservableObject {
 
             Task {
                 let result = await effect.completeOnboarding(
-                    selectedTownId: selectedTown.id,
-                    favoriteTownIdList: state.townList.map { $0.id },
+                    selectedTownId: selectedSubTown.id,
+                    favoriteTownIdList: state.townList.flatMap { $0.subTowns.map { $0.id } },
                     persona: selectedPersona.type,
                     nickname: state.nickname
                 )
