@@ -351,7 +351,7 @@ extension CourseDetailView {
                     store.dispatch(
                         .submitCreateCourseDetail(
                             request: CourseCreateRequestDTO(
-                                courseName: store.state.courseName.removingTextAfterParenthesis(),
+                                courseName: store.state.courseName.truncatedTextAfterParenthesis(),
                                 courseDescription: store.state.courseDescription,
                                 places: store.state.places.enumerated().map { index, place in
                                     PlaceOrderDTO(

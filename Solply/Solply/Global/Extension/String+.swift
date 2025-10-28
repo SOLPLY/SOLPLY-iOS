@@ -18,8 +18,20 @@ extension String {
 }
 
 extension String {
-    func removingTextAfterParenthesis() -> String {
+    func truncatedTextAfterParenthesis() -> String {
         guard let range = self.range(of: " (") else { return self }
         return String(self[..<range.lowerBound])
+    }
+}
+
+extension String {
+    func truncatedImageKeyString() -> String {
+        guard let devRange = self.range(of: "/dev"),
+              let pngRange = self.range(of: ".png", options: .caseInsensitive) else {
+            return self
+        }
+        let startIndex = self.index(after: devRange.lowerBound)
+        let endIndex = pngRange.upperBound
+        return String(self[startIndex..<endIndex])
     }
 }
