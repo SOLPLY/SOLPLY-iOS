@@ -52,8 +52,10 @@ extension ReportsEffect {
             let response = try await uploadPhotosService.uploadImages(dictionary)
             
             return .photoUploadSuccess(imageKeys: response)
+        } catch let error as NetworkError {
+            return .photoUploadFailed(error: error)
         } catch {
-            return .photoUploadFailed
+            return .photoUploadFailed(error: .unknownError)
         }
     }
 }

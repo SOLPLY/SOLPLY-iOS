@@ -27,5 +27,5 @@ enum ReportsAction {
     
     // 사진 업로드
     case photoUploadSuccess(imageKeys: [URL])
-    case photoUploadFailed
+    case photoUploadFailed(error: NetworkError)
 }

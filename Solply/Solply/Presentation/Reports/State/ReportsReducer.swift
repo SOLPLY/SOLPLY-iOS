@@ -48,11 +48,11 @@ enum ReportsReducer {
             break
             
         case .photoUploadSuccess:
-            print("사진 업로드 성공")
+            print("S3 사진 업로드 성공")
             break
             
-        case .photoUploadFailed:
-            print("사진 업로드 실패")
+        case .photoUploadFailed(let error):
+            print("S3 사진 업로드 실패 error: \(error)")
             break
         }
     }
