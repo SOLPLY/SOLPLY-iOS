@@ -97,7 +97,7 @@ final class ReportsStore: ObservableObject {
             
             var imageKeyStrings: [String]
             
-            imageKeyStrings = imageKeys.map { $0.absoluteString.truncatedImageKeyString() }
+            imageKeyStrings = imageKeys.map { $0.absoluteString.truncated(includeStartRange: "dev", excludeEndRange: "?") }
             
             let request = ReportsRequestDTO(
                 reportType: reportsType.rawValue,

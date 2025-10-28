@@ -211,7 +211,7 @@ extension PlaceDetailView {
                 .showToastView(
                     ToastContent(
                         toastType: .withActionToast,
-                        message: "‘\(store.state.courses[selectedCourseIndex].courseName.truncated(8))’에 추가되었어요.",
+                        message: "‘\(store.state.courses[selectedCourseIndex].courseName.truncated(length: 8))’에 추가되었어요.",
                         buttonTitle: "자세히 보기"
                     )
                 )
