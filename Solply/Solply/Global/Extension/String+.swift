@@ -27,11 +27,11 @@ extension String {
 extension String {
     func truncatedImageKeyString() -> String {
         guard let devRange = self.range(of: "/dev"),
-              let pngRange = self.range(of: ".png", options: .caseInsensitive) else {
+              let jpgRange = self.range(of: ".jpg", options: .caseInsensitive) else {
             return self
         }
         let startIndex = self.index(after: devRange.lowerBound)
-        let endIndex = pngRange.upperBound
+        let endIndex = jpgRange.upperBound
         return String(self[startIndex..<endIndex])
     }
 }

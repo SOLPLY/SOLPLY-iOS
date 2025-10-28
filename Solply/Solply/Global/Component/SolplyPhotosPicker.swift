@@ -57,7 +57,7 @@ struct SolplyPhotosPicker: View {
                         
                         selectedImages.append(image)
                         
-                        if let data = image.convertToPNGFile() {
+                        if let data = image.convertToJPGFile() {
                             imageData.append(data)
                         }
                     }
