@@ -37,6 +37,6 @@ extension String {
         guard let startRange = self.range(of: includeStartRange),
               let endRange = self.range(of: excludeEndRange) else { return self }
         
-        return String(self[startRange.upperBound..<endRange.lowerBound])
+        return String(self[startRange.lowerBound..<endRange.lowerBound])
     }
 }

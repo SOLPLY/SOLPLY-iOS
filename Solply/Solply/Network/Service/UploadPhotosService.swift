@@ -33,6 +33,15 @@ extension UploadPhotosService: UploadPhotosAPI {
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("image/jpeg", forHTTPHeaderField: "Content-Type")
-        _ = try await URLSession.shared.upload(for: request, from: data)
+
+        let (_, response) = try await URLSession.shared.upload(for: request, from: data)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.responseError
+        }
+
+        guard 200..<300 ~= httpResponse.statusCode else {
+            throw NetworkError.apiError(message: "S3 업로드에 실패했습니다.")
+        }
     }
 }
