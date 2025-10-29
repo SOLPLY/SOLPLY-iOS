@@ -79,7 +79,7 @@ extension TabBarView {
                 set: { appCoordinator.switchTab(to: $0) }
             ), bookmarkAction: {
                 print("TabBarView - bookmarkAction")
-                appCoordinator.navigate(to: .archive(townId: appState.townId))
+                appCoordinator.navigate(to: .archive)
             }, myPageAction: {
                 print("TabBarView - myPageAction")
                 appCoordinator.navigate(to: .myPage)
