@@ -12,22 +12,34 @@ struct RegisterView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @FocusState private var isFocused: Bool
     @StateObject private var store = RegisterStore()
     
     // MARK: - Body
     
     var body: some View {
-        ScrollView(.vertical) {
-            VStack(alignment: .center, spacing: 40.adjustedHeight) {
-                searchPlace
-                
-                selectMainTagType
-                
-                selectExtraFeatures
-                
-                Rectangle()
-                    .frame(height: 125.adjustedHeight)
-                    .foregroundStyle(.clear)
+        ScrollViewReader { proxy in
+            ScrollView(.vertical) {
+                VStack(alignment: .center, spacing: 40.adjustedHeight) {
+                    searchPlace
+                    
+                    selectMainTagType
+                    
+                    selectExtraFeatures
+                        .focused($isFocused)
+                    
+                    Rectangle()
+                        .frame(height: 156.adjustedHeight)
+                        .foregroundStyle(.clear)
+                        .id("textEditor")
+                }
+            }
+            .onChange(of: isFocused) { _, focused in
+                if focused {
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        proxy.scrollTo("textEditor", anchor: .bottom)
+                    }
+                }
             }
         }
         .overlay(alignment: .bottom) {
@@ -196,7 +208,6 @@ extension RegisterView {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     
                     // 사진 선택
-                    
                     VStack(alignment: .leading, spacing: 12.adjustedHeight) {
                         sectionTitle("장소의 사진이 있다면 추가해주세요", showsSelectionHint: true)
                         
