@@ -8,14 +8,14 @@
 enum JGDAction {
     case fetchTowns
     case fetchTownsSuccess(townList: [Town])
-    case fetchTownsFailure(String)
+    case fetchTownsFailure(error: NetworkError)
     
     case setInitialTownId(townId: Int)
     
     case selectTown(Town)
     case selectSubTown(SubTown)
     
-    case saveSelection(selectedTown: Town, selectedSubTown: SubTown)
-    case saveSelectionSuccess(selectedTown: Town, selectedSubTown: SubTown)
-    case saveSelectionFailure(String)
+    case saveSelection
+    case saveSelectionSuccess
+    case saveSelectionFailure(error: NetworkError)
 }

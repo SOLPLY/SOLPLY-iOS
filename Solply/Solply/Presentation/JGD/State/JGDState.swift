@@ -12,5 +12,6 @@ struct JGDState {
     var townList: [Town] = []
     var selectedTown: Town? = nil
     var selectedSubTown: SubTown? = nil
-    var errorMessage: String? = nil
+    
+    var shouldGoBack: Bool = false
 }

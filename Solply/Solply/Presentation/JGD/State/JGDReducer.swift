@@ -12,7 +12,7 @@ struct JGDReducer {
         switch action {
         
         case .fetchTowns:
-            state.errorMessage = nil
+            break
             
         case .fetchTownsSuccess(let townList):
             state.townList = townList
@@ -27,8 +27,8 @@ struct JGDReducer {
                 state.selectedTown = townList.first{ $0.subTowns.contains(selectedSubTown) }
             }
 
-        case .fetchTownsFailure(let message):
-            state.errorMessage = message
+        case .fetchTownsFailure(let error):
+            print(error)
             
         case .setInitialTownId(let townId):
             state.initialTownId = townId
@@ -36,27 +36,23 @@ struct JGDReducer {
         case .selectTown(let town):
             state.selectedTown = town
             
-            // 타운을 선택하면 최근에 선택했던 subTown과 비교해서
-            // 뷰에 표시할지 안 할지 판단
-            // 최근 선택한 subTown이 이 Town에 해당하지 않으면 nil로 표시
-            // 내가 망원을 선택했었다면, 서울을 택해야 망원이 보이게, 경기를 택하면 nil
             let subTowns = town.subTowns
             state.selectedSubTown = subTowns.first { $0 == state.currentSelectedSubTown }
 
         case .selectSubTown(let subTown):
-            // 서브 타운을 선택하면
-            // 바로 업데이트
             state.selectedSubTown = subTown
             state.currentSelectedSubTown = subTown
 
         case .saveSelection:
-            state.errorMessage = nil
-            
-        case .saveSelectionSuccess:
             break
             
-        case .saveSelectionFailure(let message):
-            state.errorMessage = message
+        case .saveSelectionSuccess:
+            state.shouldGoBack = true
+            
+        case .saveSelectionFailure(let error):
+            // TODO: - 선택 실패시 에러 처리 필요(일단 goBack)
+            state.shouldGoBack = true
+            print(error)
         }
     }
 }

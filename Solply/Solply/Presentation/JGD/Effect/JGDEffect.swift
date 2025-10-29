@@ -21,32 +21,33 @@ struct JGDEffect {
             let response = try await townService.fetchTownList()
             
             guard let data = response.data else {
-                return .fetchTownsFailure("데이터가 없습니다.")
+                return .fetchTownsFailure(error: .responseError)
             }
             
             let towns = data.toEntity()
             
             return .fetchTownsSuccess(townList: towns)
+        } catch let error as NetworkError {
+            return .fetchTownsFailure(error: error)
         } catch {
-            return .fetchTownsFailure("동네 불러오기 실패")
+            return .fetchTownsFailure(error: .unknownError)
         }
     }
 
-    func saveSelection(selectedTown: Town, selectedSubTown: SubTown) async -> JGDAction {
+    func saveSelection(selectedTownId: Int) async -> JGDAction {
         do {
+            
             let request = UserTownsUpdateRequestDTO(
-                selectedTownId: selectedTown.id,
-                favoriteTownIdList: [selectedSubTown.id]
+                selectedTownId: selectedTownId
             )
             
             _ = try await userService.updateUserTowns(request)
             
-            return .saveSelectionSuccess(
-                selectedTown: selectedTown,
-                selectedSubTown: selectedSubTown
-            )
+            return .saveSelectionSuccess
+        } catch let error as NetworkError {
+            return .saveSelectionFailure(error: error)
         } catch {
-            return .saveSelectionFailure("동네 저장 실패: \(error.localizedDescription)")
+            return .saveSelectionFailure(error: .unknownError)
         }
     }
 }
