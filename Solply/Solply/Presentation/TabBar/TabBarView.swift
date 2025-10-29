@@ -59,15 +59,13 @@ extension TabBarView {
         Group {
             PlaceRecommendView(
                 title: placeRecommendTitle,
-                townName: townName,
-                townId: $townId
+                townName: townName
             )
             .visible(appCoordinator.selectedTab == .place)
             
             CourseRecommendView(
                 title: courseRecommendTitle,
-                townName: townName,
-                townId: $townId
+                townName: townName
             )
             .visible(appCoordinator.selectedTab == .course)
         }
@@ -81,7 +79,7 @@ extension TabBarView {
                 set: { appCoordinator.switchTab(to: $0) }
             ), bookmarkAction: {
                 print("TabBarView - bookmarkAction")
-                appCoordinator.navigate(to: .archive(townId: townId))
+                appCoordinator.navigate(to: .archive(townId: appState.townId))
             }, myPageAction: {
                 print("TabBarView - myPageAction")
                 appCoordinator.navigate(to: .myPage)
