@@ -34,6 +34,7 @@ struct RegisterView: View {
                         .id("textEditor")
                 }
             }
+            .scrollDismissesKeyboard(.interactively)
             .onChange(of: isFocused) { _, focused in
                 if focused {
                     withAnimation(.easeOut(duration: 0.3)) {
