@@ -10,7 +10,7 @@ enum JGDAction {
     case fetchTownsSuccess(townList: [Town])
     case fetchTownsFailure(String)
     
-    case setCurrentTownId(townId: Int)
+    case setInitialTownId(townId: Int)
     
     case selectTown(Town)
     case selectSubTown(SubTown)

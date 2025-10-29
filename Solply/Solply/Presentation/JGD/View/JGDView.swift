@@ -50,7 +50,7 @@ struct JGDView: View {
         }
         .onAppear {
             store.dispatch(.fetchTowns)
-            store.dispatch(.setCurrentTownId(townId: appState.townId))
+            store.dispatch(.setInitialTownId(townId: appState.townId))
         }
     }
 }
