@@ -17,13 +17,20 @@ struct JGDReducer {
         case .fetchTownsSuccess(let townList):
             state.townList = townList
 
-            if let firstTown = townList.first {
-                state.selectedTown = firstTown
-                state.selectedSubTown = firstTown.subTowns.first
+            // selectedSubTown 설정
+            let subTowns = townList.flatMap { $0.subTowns }
+            state.selectedSubTown = subTowns.first { $0.id == state.currentTownId }
+            
+            // selectedTown 설정
+            if let selectedSubTown = state.selectedSubTown {
+                state.selectedTown = townList.first{ $0.subTowns.contains(selectedSubTown) }
             }
 
         case .fetchTownsFailure(let message):
             state.errorMessage = message
+            
+        case .setCurrentTownId(let townId):
+            state.currentTownId = townId
             
         case .selectTown(let town):
             state.selectedTown = town

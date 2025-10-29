@@ -11,6 +11,7 @@ struct JGDView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject var store = JGDStore()
     
@@ -49,6 +50,7 @@ struct JGDView: View {
         }
         .onAppear {
             store.dispatch(.fetchTowns)
+            store.dispatch(.setCurrentTownId(townId: appState.townId))
         }
     }
 }
