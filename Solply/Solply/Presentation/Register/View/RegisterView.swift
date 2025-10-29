@@ -35,8 +35,8 @@ struct RegisterView: View {
                 }
             }
             .scrollDismissesKeyboard(.interactively)
-            .onChange(of: isFocused) { _, focused in
-                if focused {
+            .onChange(of: isFocused) { _, isFocused in
+                if isFocused {
                     withAnimation(.easeOut(duration: 0.3)) {
                         proxy.scrollTo("textEditor", anchor: .bottom)
                     }
