@@ -11,8 +11,9 @@ struct JGDView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @StateObject var store = JGDStore()
+    @StateObject private var store = JGDStore()
     
     // MARK: - Body
     
@@ -38,17 +39,19 @@ struct JGDView: View {
                 title: "완료",
                 isEnabled: store.state.selectedSubTown != nil
             ) {
-                if let town = store.state.selectedTown,
-                   let subTown = store.state.selectedSubTown {
-                    store.dispatch(.saveSelection(selectedTown: town, selectedSubTown: subTown))
-                }
-                appCoordinator.goBack()
+                store.dispatch(.saveSelection)
             }
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.bottom, 16.adjustedHeight)
         }
         .onAppear {
             store.dispatch(.fetchTowns)
+            store.dispatch(.setInitialTownId(townId: appState.townId))
+        }
+        .onChange(of: store.state.shouldGoBack) { _, shouldGoBack in
+            if shouldGoBack {
+                appCoordinator.goBack()
+            }
         }
     }
 }

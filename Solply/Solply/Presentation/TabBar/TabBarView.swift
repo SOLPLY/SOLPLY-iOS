@@ -11,14 +11,13 @@ struct TabBarView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var locationManager = LocationManager()
     
     @State private var townName: String = ""
-    
     @State private var placeRecommendTitle: String = ""
     @State private var courseRecommendTitle: String = ""
-    @State private var townId: Int = 0
     
     private let userService = UserService()
     
@@ -44,7 +43,7 @@ struct TabBarView: View {
         do {
             let userInfo = try await fetchUserInformation()
             townName = userInfo.townName
-            townId = userInfo.townId
+            appState.townId = userInfo.townId
             placeRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 추천"
             courseRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 코스"
         } catch {
@@ -60,15 +59,13 @@ extension TabBarView {
         Group {
             PlaceRecommendView(
                 title: placeRecommendTitle,
-                townName: townName,
-                townId: $townId
+                townName: townName
             )
             .visible(appCoordinator.selectedTab == .place)
             
             CourseRecommendView(
                 title: courseRecommendTitle,
-                townName: townName,
-                townId: $townId
+                townName: townName
             )
             .visible(appCoordinator.selectedTab == .course)
         }
@@ -82,7 +79,7 @@ extension TabBarView {
                 set: { appCoordinator.switchTab(to: $0) }
             ), bookmarkAction: {
                 print("TabBarView - bookmarkAction")
-                appCoordinator.navigate(to: .archive(townId: townId))
+                appCoordinator.navigate(to: .archive)
             }, myPageAction: {
                 print("TabBarView - myPageAction")
                 appCoordinator.navigate(to: .myPage)
@@ -120,6 +117,7 @@ extension TabBarView {
 
 #Preview {
     TabBarView()
+        .environmentObject(AppState())
         .environmentObject(AppCoordinator())
         .environmentObject(ToastManager())
 }

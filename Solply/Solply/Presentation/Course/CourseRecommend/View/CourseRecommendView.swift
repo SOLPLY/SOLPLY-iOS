@@ -11,20 +11,18 @@ struct CourseRecommendView: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = CourseRecommendStore()
-    
-    @Binding var townId: Int
     
     private let title: String
     private let townName: String
     
     // MARK: - Initializer
     
-    init(title: String, townName: String, townId: Binding<Int>) {
+    init(title: String, townName: String) {
         self.title = title
         self.townName = townName
-        self._townId = townId
     }
     
     // MARK: - Body
@@ -42,7 +40,7 @@ struct CourseRecommendView: View {
                 CourseRecommendGrid(store: store) { courseId in
                     appCoordinator.navigate(
                         to: .courseDetail(
-                            townId: townId,
+                            townId: appState.townId,
                             courseId: courseId,
                             fromArchive: false
                         )
@@ -61,12 +59,12 @@ struct CourseRecommendView: View {
                 appCoordinator.navigate(to: .placeSearch)
             }
         ))
-        .onChange(of: townId) { _, townId in
+        .onChange(of: appState.townId) { _, townId in
             store.dispatch(.fetchCourseRecommend(townId: townId))
         }
         .background(.gray100)
         .task {
-            store.dispatch(.fetchCourseRecommend(townId: townId))
+            store.dispatch(.fetchCourseRecommend(townId: appState.townId))
         }
     }
 }
