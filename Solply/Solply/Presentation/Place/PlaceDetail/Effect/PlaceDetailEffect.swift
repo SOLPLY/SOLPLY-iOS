@@ -15,7 +15,11 @@ struct PlaceDetailEffect {
         self.courseService = courseService
         self.placeService = placeService
     }
-    
+}
+
+// MARK: - Functions
+
+extension PlaceDetailEffect {
     func findDirection(
         startLatitude: Double,
         startLongitude: Double,
@@ -53,7 +57,7 @@ extension PlaceDetailEffect {
     
     func submitAddPlace(courseId: Int, placeId: Int) async -> PlaceDetailAction {
         do {
-            let response = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
+            _ = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
             
             return .addPlaceSubmitted
             

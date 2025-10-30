@@ -204,7 +204,7 @@ extension CourseDetailView {
                                 .showToastView(
                                     ToastContent(
                                         toastType: .defaultToast,
-                                        message: "'\(place.placeName.truncated(9))'가 수집함에 저장되었어요.",
+                                        message: "'\(place.placeName.truncated(length: 9))'가 수집함에 저장되었어요.",
                                         buttonTitle: nil
                                     )
                                 )
@@ -216,7 +216,7 @@ extension CourseDetailView {
                                 .showToastView(
                                     ToastContent(
                                         toastType: .defaultToast,
-                                        message: "'\(place.placeName.truncated(9))'가 수집함에서 삭제되었어요.",
+                                        message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요.",
                                         buttonTitle: nil
                                     )
                                 )
@@ -351,7 +351,7 @@ extension CourseDetailView {
                     store.dispatch(
                         .submitCreateCourseDetail(
                             request: CourseCreateRequestDTO(
-                                courseName: store.state.courseName.removingTextAfterParenthesis(),
+                                courseName: store.state.courseName.truncated(excludeEndRange: " ("),
                                 courseDescription: store.state.courseDescription,
                                 places: store.state.places.enumerated().map { index, place in
                                     PlaceOrderDTO(

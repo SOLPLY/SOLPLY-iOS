@@ -11,10 +11,15 @@ struct ReportsView: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
+    @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = ReportsStore()
     
     private let screenWidth: CGFloat = UIScreen.main.bounds.width
+    private let placeId: Int
+    
+    init(placeId: Int) {
+        self.placeId = placeId
+    }
     
     // MARK: - Body
     
@@ -53,6 +58,9 @@ struct ReportsView: View {
         .onTapGesture {
             hideKeyboard()
         }
+        .onAppear {
+            store.dispatch(.setPlaceId(placeId: self.placeId))
+        }
         .onChange(of: store.state.shouldGoBack) { _, newValue in
             if newValue {
                 appCoordinator.goBack()
@@ -77,8 +85,8 @@ extension ReportsView {
     private var reportsDetailView: some View {
         ReportsDetailView() { reportsContent in
             store.dispatch(.editReportsContent(reportsContent: reportsContent))
-        } onPhotosSelected: { imageKeys in
-            // TODO: - ReportsState 연결
+        } onPhotosSelected: { imageData in
+            store.dispatch(.attachReportsPhoto(imageData: imageData))
         } onCompleteAction: {
             withAnimation(.easeInOut(duration: 0.3)) {
                 store.dispatch(.changeReportsStep(reportsStep: .reportsComplete))
@@ -110,6 +118,6 @@ extension ReportsView {
 }
 
 #Preview {
-    ReportsView()
+    ReportsView(placeId: 1)
         .environmentObject(AppCoordinator())
 }
