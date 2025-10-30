@@ -54,7 +54,7 @@ final class ReportsStore: ObservableObject {
                 self.dispatch(result)
             }
             
-        case .presignedUrlReqeustSubmitted(let response):
+        case .presignedUrlRequestSubmitted(let response):
             let presignedInformation = response.presignedGetUrlInfos
             let imageDatas = state.attachedImageData
 

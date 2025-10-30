@@ -19,7 +19,7 @@ enum ReportsAction {
     case errorOccured(error: NetworkError)
     
     case submitPresignedUrlRequest(request: PresignedUrlRequestDTO)
-    case presignedUrlReqeustSubmitted(response: PresignedUrlResponseDTO)
+    case presignedUrlRequestSubmitted(response: PresignedUrlResponseDTO)
     
     case submitReports(placeId: Int, request: ReportsRequestDTO)
     case reportsSubmitted

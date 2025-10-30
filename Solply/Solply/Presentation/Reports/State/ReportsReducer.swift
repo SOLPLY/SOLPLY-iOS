@@ -34,7 +34,7 @@ enum ReportsReducer {
         case .submitPresignedUrlRequest:
             break
             
-        case .presignedUrlReqeustSubmitted:
+        case .presignedUrlRequestSubmitted:
             break
             
         case .submitReports:

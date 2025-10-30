@@ -34,7 +34,7 @@ extension ReportsEffect {
                 return .errorOccured(error: .responseError)
             }
 
-            return .presignedUrlReqeustSubmitted(response: data)
+            return .presignedUrlRequestSubmitted(response: data)
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)
