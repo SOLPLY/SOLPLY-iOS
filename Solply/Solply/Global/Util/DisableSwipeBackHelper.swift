@@ -7,21 +7,49 @@
 
 import SwiftUI
 
-struct DisableSwipeBackHelper: UIViewControllerRepresentable {
+private struct DisableSwipeBackHelper: UIViewControllerRepresentable {
+    
     func makeUIViewController(context: Context) -> UIViewController {
-        let controller = UIViewController()
-        DispatchQueue.main.async {
-            controller.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        }
+        let controller = SwipeBackDisablingController()
         return controller
     }
-
+    
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
 
+// MARK: - SwipeBackDisablingController
+
+private class SwipeBackDisablingController: UIViewController {
+    private var originalGestureState: Bool?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let controller = navigationController {
+            originalGestureState = controller.interactivePopGestureRecognizer?.isEnabled
+            controller.interactivePopGestureRecognizer?.isEnabled = false
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if let controller = navigationController,
+           let original = originalGestureState {
+            controller.interactivePopGestureRecognizer?.isEnabled = original
+        }
+    }
+}
+
+struct DisableSwipeBack: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .background(DisableSwipeBackHelper())
+    }
+}
+
 extension View {
-    /// 뒤로가기 제스처를 막습니다.
     func disableSwipeBack() -> some View {
-        self.background(DisableSwipeBackHelper())
+        self.modifier(DisableSwipeBack())
     }
 }
