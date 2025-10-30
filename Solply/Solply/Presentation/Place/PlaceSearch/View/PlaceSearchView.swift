@@ -48,7 +48,6 @@ struct PlaceSearchView: View {
             }
         }
         .customNavigationBar(.placeSearch(backAction: appCoordinator.goBack))
-        .ignoresSafeArea(edges: .bottom)
         .background(.coreWhite)
         .onTapGesture {
             hideKeyboard()
