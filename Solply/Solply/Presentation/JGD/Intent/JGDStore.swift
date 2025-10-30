@@ -31,12 +31,12 @@ final class JGDStore: ObservableObject {
                 dispatch(result)
             }
             
-        case .saveSelection(let selectedTown, let selectedSubTown):
+        case .saveSelection:
+            guard let currentSelectedSubTown = state.currentSelectedSubTown else { return }
+            
+            let selectedTownId = currentSelectedSubTown.id
             Task {
-                let result = await effect.saveSelection(
-                    selectedTown: selectedTown,
-                    selectedSubTown: selectedSubTown
-                )
+                let result = await effect.saveSelection(selectedTownId: selectedTownId)
                 dispatch(result)
             }
             
