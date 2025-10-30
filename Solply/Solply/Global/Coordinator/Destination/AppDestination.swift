@@ -13,7 +13,7 @@ enum AppDestination: Hashable {
     case placeDetail(townId: Int, placeId: Int)
     case courseDetail(townId: Int, courseId: Int, fromArchive: Bool)
     case JGD
-    case reports
+    case reports(placeId: Int)
     case placeSearch
     case myPage
     case myPageEdit
@@ -38,8 +38,8 @@ extension AppDestination {
             JGDView()
         case .placeSearch:
             PlaceSearchView()
-        case .reports:
-            ReportsView()
+        case .reports(let placeId):
+            ReportsView(placeId: placeId)
         case .myPage:
             MyPageView()
         case .myPageEdit:
