@@ -8,7 +8,7 @@
 import Foundation
 
 struct ReportsState {
-    var placeId: Int = -1
+    var placeId: Int?
     
     var shouldGoBack: Bool = false
     var reportsStep: ReportsStep = .reportsSelect

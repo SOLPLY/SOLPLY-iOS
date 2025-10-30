@@ -23,11 +23,13 @@ final class ReportsStore: ObservableObject {
         switch action {
             
         case .changeReportsStep(let reportsStep):
+            guard let placeId = state.placeId else { return }
+            
             if let selectedReportsType = state.selectedReportsType, reportsStep == .reportsComplete {
                 if state.attachedImageData.isEmpty {
                     dispatch(
                         .submitReports(
-                            placeId: state.placeId,
+                            placeId: placeId,
                             request: ReportsRequestDTO(
                                 reportType: selectedReportsType.rawValue,
                                 content: state.reportsContent,
@@ -72,9 +74,8 @@ final class ReportsStore: ObservableObject {
             }
             
         case .photoUploadSuccess(let imageKeys):
-            guard let reportsType = state.selectedReportsType, state.placeId > 0 else {
-                return
-            }
+            guard let reportsType = state.selectedReportsType,
+                  let placeId = state.placeId else { return }
             
             var imageKeyStrings: [String]
             
@@ -88,7 +89,7 @@ final class ReportsStore: ObservableObject {
                 imageKeys: imageKeyStrings
             )
             
-            self.dispatch(.submitReports(placeId: state.placeId, request: request))
+            self.dispatch(.submitReports(placeId: placeId, request: request))
             
         case .submitReports(let placeId, let request):
             Task {
