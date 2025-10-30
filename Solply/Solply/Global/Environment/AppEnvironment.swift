@@ -9,6 +9,7 @@ import Foundation
 
 
 enum AppEnvironment {
+    /// Naver 지도 ClientId
     static let naverMapClientId: String = {
         guard let clientId = Bundle.main.object(forInfoDictionaryKey: "NMFClientId") as? String else {
             fatalError("Info.plist에 NMFClientId가 없습니다.")
@@ -17,11 +18,30 @@ enum AppEnvironment {
         return clientId
     }()
     
+    /// BaseURL
     static let baseURL: String = {
         guard let baseURL = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String else {
             fatalError("Info.plist에 Base_URL이 없습니다.")
         }
         
         return baseURL
+    }()
+    
+    /// Naver 검색 ClientId
+    static let naverSearchClientId: String = {
+        guard let clientId = Bundle.main.object(forInfoDictionaryKey: "NAVER_SEARCH_CLIENT_ID") as? String else {
+            fatalError("Info.plist에 NAVER_SEARCH_CLIENT_ID가 없습니다.")
+        }
+        
+        return clientId
+    }()
+    
+    /// Naver 검색 SecretKey
+    static let naverSearchClientSecret: String = {
+        guard let secret = Bundle.main.object(forInfoDictionaryKey: "NAVER_SEARCH_CLIENT_SECRET") as? String else {
+            fatalError("Info.plist에 NAVER_SEARCH_CLIENT_SECRET가 없습니다.")
+        }
+        
+        return secret
     }()
 }
