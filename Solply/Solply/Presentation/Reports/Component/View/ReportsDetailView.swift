@@ -14,14 +14,14 @@ struct ReportsDetailView: View {
     @State private var editedReportsContent: String = ""
     
     private let onTextChanged: ((String) -> Void)?
-    private let onPhotosSelected: (([String]) -> Void)?
+    private let onPhotosSelected: (([(String, Data)]) -> Void)?
     private let onCompleteAction: (() -> Void)?
     
     // MARK: - Initializer
     
     init(
         onTextChanged: ((String) -> Void)? = nil,
-        onPhotosSelected: (([String]) -> Void)? = nil,
+        onPhotosSelected: (([(String, Data)]) -> Void)? = nil,
         onCompleteAction: (() -> Void)? = nil
     ) {
         self.onTextChanged = onTextChanged
@@ -75,8 +75,8 @@ extension ReportsDetailView {
                     .foregroundStyle(.gray500)
             }
             
-            SolplyPhotosPicker() { imageKeys in
-                onPhotosSelected?(imageKeys)
+            SolplyPhotosPicker() { imageData in
+                onPhotosSelected?(imageData)
             }
         }
         .padding(.horizontal, 20.adjustedWidth)

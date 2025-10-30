@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RootView: View {
+    @StateObject private var appState = AppState()
     @StateObject private var appCoordinator = AppCoordinator()
     @StateObject private var toastManager = ToastManager()
     @StateObject private var alertManager = AlertManager()
@@ -19,6 +20,7 @@ struct RootView: View {
         }
         .customAlert(alertManager: alertManager)
         .customToast(toastManager: toastManager)
+        .environmentObject(appState)
         .environmentObject(alertManager)
         .environmentObject(toastManager)
         .environmentObject(appCoordinator)

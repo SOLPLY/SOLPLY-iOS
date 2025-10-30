@@ -18,14 +18,12 @@ struct ArchiveFullView: View {
     
     private let archiveCategory: SolplyContentType
     private let columns = [GridItem(.fixed(165.adjustedWidth)), GridItem(.fixed(165.adjustedWidth))]
-    private let townId: Int
     
     // MARK: - Initializers
     
-    init(archiveCategory: SolplyContentType, store: ArchiveStore, townId: Int) {
+    init(archiveCategory: SolplyContentType, store: ArchiveStore) {
         self.archiveCategory = archiveCategory
         self.store = store
-        self.townId = townId
     }
     
     // MARK: - Body
@@ -72,7 +70,11 @@ extension ArchiveFullView {
         }
         .onTapGesture {
             appCoordinator.navigate(
-                to: .archiveList(archiveCategory: .place, townName: placeItem.townName ?? "", townId: placeItem.townId ?? 2)
+                to: .archiveList(
+                    archiveCategory: .place,
+                    townName: placeItem.townName ?? "",
+                    townId: placeItem.townId ?? 2
+                )
             )
         }
         .transition(.move(edge: .trailing))
@@ -106,7 +108,11 @@ extension ArchiveFullView {
         }
         .onTapGesture {
             appCoordinator.navigate(
-                to: .archiveList(archiveCategory: .course, townName: courseItem.townName ?? "", townId: courseItem.townId ?? 3)
+                to: .archiveList(
+                    archiveCategory: .course,
+                    townName: courseItem.townName ?? "",
+                    townId: courseItem.townId ?? 3
+                )
             )
         }
         .transition(.move(edge: .leading))

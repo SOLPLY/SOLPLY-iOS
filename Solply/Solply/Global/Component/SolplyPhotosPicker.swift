@@ -18,11 +18,11 @@ struct SolplyPhotosPicker: View {
     @State private var selectedImages: [UIImage] = []
     
     private let maxSelectionCount: Int = 3
-    private let onComplete: (([String]) -> Void)?
+    private let onComplete: (([(String, Data)]) -> Void)?
     
     // MARK: - Initializer
     
-    init(onComplete: (([String]) -> Void)? = nil) {
+    init(onComplete: (([(String, Data)]) -> Void)? = nil) {
         self.onComplete = onComplete
     }
     
@@ -49,7 +49,7 @@ struct SolplyPhotosPicker: View {
         .onChange(of: selectedItems) { _, newItems in
             Task {
                 selectedImages.removeAll()
-//                var imageKeys: [String] = []
+                var imageData: [(String, Data)] = []
                 
                 for item in newItems {
                     if let data = try? await item.loadTransferable(type: Data.self),
@@ -57,13 +57,13 @@ struct SolplyPhotosPicker: View {
                         
                         selectedImages.append(image)
                         
-                        // TODO: - presigned url 발급 API 연동, imageKeys에 append
+                        if let data = image.convertToJPGFile() {
+                            imageData.append(data)
+                        }
                     }
                 }
                 
-                // TODO: - 상위 뷰로 imageKeys 전달
-//                onComplete?(imageKeys)
-                onComplete?([""])
+                onComplete?(imageData)
             }
         }
         

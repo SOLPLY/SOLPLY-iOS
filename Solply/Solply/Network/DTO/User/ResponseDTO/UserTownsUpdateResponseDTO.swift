@@ -8,6 +8,10 @@
 import Foundation
 
 struct UserTownsUpdateResponseDTO: ResponseModelType {
-    let selectedTown: TownDTO
-    let favoriteTownList: [TownDTO]
+    let selectedTown: SelectedTown
+}
+
+struct SelectedTown: ResponseModelType {
+    let townId: Int
+    let townName: String
 }

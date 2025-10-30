@@ -11,16 +11,8 @@ struct ArchiveView: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
-    @StateObject var store = ArchiveStore()
-    
-    private let townId: Int
-    
-    // MARK: - Initializer
-    
-    init(townId: Int) {
-        self.townId = townId
-    }
+    @EnvironmentObject private var appCoordinator: AppCoordinator
+    @StateObject private var store = ArchiveStore()
     
     // MARK: - Body
     
@@ -34,8 +26,6 @@ struct ArchiveView: View {
                 }
             )
             
-            // TODO: - 데이터 연결 후 데이터 여부에 따라서 분기 처리 필요
-            
             Group {
                 switch store.state.selectedCategory {
                 case .place:
@@ -43,7 +33,7 @@ struct ArchiveView: View {
                         ArchiveEmptyView(archiveCategory: .place)
                             .transition(.move(edge: .leading))
                     } else {
-                        ArchiveFullView(archiveCategory: .place, store: store, townId: townId)
+                        ArchiveFullView(archiveCategory: .place, store: store)
                             .transition(.move(edge: .leading))
                     }
 
@@ -52,7 +42,7 @@ struct ArchiveView: View {
                         ArchiveEmptyView(archiveCategory: .course)
                             .transition(.move(edge: .trailing))
                     } else {
-                        ArchiveFullView(archiveCategory: .course, store: store, townId: townId)
+                        ArchiveFullView(archiveCategory: .course, store: store)
                             .transition(.move(edge: .trailing))
                     }
                 }
