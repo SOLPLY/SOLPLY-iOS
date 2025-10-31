@@ -15,6 +15,8 @@ struct RegisterView: View {
     @FocusState private var isFocused: Bool
     @StateObject private var store = RegisterStore()
     
+    private let textEditorId: String = "textEditor"
+    
     // MARK: - Body
     
     var body: some View {
@@ -28,18 +30,18 @@ struct RegisterView: View {
                     selectExtraFeatures
                         .focused($isFocused)
                     
-                    // TODO: - searchPlace때는 안 보이게 수정
                     Rectangle()
                         .frame(height: 156.adjustedHeight)
                         .foregroundStyle(.clear)
-                        .id("textEditor")
+                        .id(textEditorId)
                 }
             }
+            .scrollDisabled(store.state.registerStep != .selectExtraFeatures)
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: isFocused) { _, isFocused in
                 if isFocused {
                     withAnimation(.easeOut(duration: 0.3)) {
-                        proxy.scrollTo("textEditor", anchor: .bottom)
+                        proxy.scrollTo(textEditorId, anchor: .bottom)
                     }
                 }
             }
@@ -96,6 +98,7 @@ extension RegisterView {
                         
                         // 검색 결과 List
                         if !store.state.searchResult.isEmpty {
+                            // TODO: - 검색 결과 개수 0개여도 무조건 보이게 수정 필요
                             RegisterSearchList(searchResult: store.state.searchResult) { result in
                                 store.dispatch(
                                     .selectPlaceToRegister(
