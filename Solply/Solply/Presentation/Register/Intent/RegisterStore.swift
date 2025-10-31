@@ -11,7 +11,8 @@ import Foundation
 final class RegisterStore: ObservableObject {
     @Published private(set) var state = RegisterState()
     private let effect = RegisterEffect(
-        tagsService: TagsService()
+        tagsService: TagsService(),
+        naverPlaceSearchService: NaverPlaceSearchService()
     )
     
     func dispatch(_ action: RegisterAction) {
@@ -21,6 +22,12 @@ final class RegisterStore: ObservableObject {
         case .fetchSubTags(let parentId):
             Task {
                 let result = await effect.fetchSubTags(parentId: parentId)
+                self.dispatch(result)
+            }
+            
+        case .fetchSearchPlaces:
+            Task {
+                let result = await effect.fetchPlaces(for: state.placeName)
                 self.dispatch(result)
             }
             

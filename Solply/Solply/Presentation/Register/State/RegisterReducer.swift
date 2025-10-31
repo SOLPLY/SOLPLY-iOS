@@ -47,6 +47,17 @@ enum RegisterReducer {
             state.selectableSubTagsB = selectableSubTags.filter { $0.tagType == "OPTION2" }
             state.isCompleteButtonEnabled = shouldEnableCompleteButton(state)
             
+        case .fetchSearchPlaces:
+            break
+            
+        case .searchPlacesFetched(let places):
+            state.searchResult = places
+            break
+            
+        case .fetchSearchPlacesFailed(let error):
+            print(error)
+            break
+            
             
             
         case .tempAction: // 검색했다고 치고~

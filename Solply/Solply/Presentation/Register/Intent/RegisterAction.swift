@@ -21,4 +21,8 @@ enum RegisterAction {
     case errorOccured(error: NetworkError)
     case fetchSubTags(parentId: Int)
     case subTagsFetched(selectableSubTags: [SelectableSubTag])
+    
+    case fetchSearchPlaces
+    case searchPlacesFetched(places: [RegisterSearch])
+    case fetchSearchPlacesFailed(error: NetworkError)
 }

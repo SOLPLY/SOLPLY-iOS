@@ -28,6 +28,7 @@ struct RegisterView: View {
                     selectExtraFeatures
                         .focused($isFocused)
                     
+                    // TODO: - searchPlace때는 안 보이게 수정
                     Rectangle()
                         .frame(height: 156.adjustedHeight)
                         .foregroundStyle(.clear)
@@ -80,8 +81,7 @@ extension RegisterView {
                                 store.dispatch(.updateSearchBarText(text: text))
                             },
                             onSubmit: { text in
-                                // TODO: - 네이버 검색 API 연동
-                                store.dispatch(.tempAction)
+                                store.dispatch(.fetchSearchPlaces)
                             },
                             registerAction: {
                                 store.dispatch(
