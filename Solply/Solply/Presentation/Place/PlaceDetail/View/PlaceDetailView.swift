@@ -57,11 +57,15 @@ struct PlaceDetailView: View {
             if appState.townId != self.townId {
                 store.dispatch(
                     .showToastView(
-                        // TODO: - 동네 수정 필요, action 연결 필요
                         ToastContent(
                             toastType: .withActionToast,
-                            message: "이 장소는 으아아에 위치해있어요.",
-                            buttonTitle: "동네변경",
+                            message: "이 장소는 ???에 위치해있어요",
+                            toastAction: ToastAction(
+                                buttonTitle: "동네 변경",
+                                action: {
+                                    // 선택한 동네로 변경
+                                }
+                            )
                         )
                     )
                 )
@@ -73,17 +77,7 @@ struct PlaceDetailView: View {
         .onChange(of: store.state.toastContent) { _, toastContent in
             guard let toastContent else { return }
             
-            toastManager.showToast(content: toastContent) {
-                if let addPlaceCourseId = store.state.addPlaceCourseId {
-                    appCoordinator.navigate(
-                        to: .courseDetail(
-                            townId: townId,
-                            courseId: addPlaceCourseId,
-                            fromArchive: true
-                        )
-                    )
-                }
-            }
+            toastManager.showToast(content: toastContent)
         }
     }
 }
@@ -159,8 +153,7 @@ extension PlaceDetailView {
                         .showToastView(
                             ToastContent(
                                 toastType: .defaultToast,
-                                message: "클립보드에 복사되었습니다",
-                                buttonTitle: nil
+                                message: "클립보드에 복사되었습니다."
                             )
                         )
                     )
@@ -185,8 +178,7 @@ extension PlaceDetailView {
                             .showToastView(
                                 ToastContent(
                                     toastType: .withIconToast,
-                                    message: "해당 장소가 코스에 이미 담겨있어요.",
-                                    buttonTitle: nil
+                                    message: "해당 장소가 코스에 이미 담겨있어요."
                                 )
                             )
                         )
@@ -195,8 +187,7 @@ extension PlaceDetailView {
                             .showToastView(
                                 ToastContent(
                                     toastType: .withIconToast,
-                                    message: "코스에 이미 6개의 장소가 꽉 차 있어요.",
-                                    buttonTitle: nil
+                                    message: "코스에 이미 6개의 장소가 꽉 차 있어요."
                                 )
                             )
                         )
@@ -226,7 +217,20 @@ extension PlaceDetailView {
                     ToastContent(
                         toastType: .withActionToast,
                         message: "‘\(store.state.courses[selectedCourseIndex].courseName.truncated(length: 8))’에 추가되었어요.",
-                        buttonTitle: "자세히 보기"
+                        toastAction: ToastAction(
+                            buttonTitle: "자세히 보기",
+                            action: {
+                                if let addPlaceCourseId = store.state.addPlaceCourseId {
+                                    appCoordinator.navigate(
+                                        to: .courseDetail(
+                                            townId: townId,
+                                            courseId: addPlaceCourseId,
+                                            fromArchive: true
+                                        )
+                                    )
+                                }
+                            }
+                        )
                     )
                 )
             )
@@ -268,8 +272,7 @@ extension PlaceDetailView {
                 .showToastView(
                     ToastContent(
                         toastType: .defaultToast,
-                        message: "장소가 수집함에 저장되었어요.",
-                        buttonTitle: nil
+                        message: "장소가 수집함에 저장되었어요."
                     )
                 )
             )
