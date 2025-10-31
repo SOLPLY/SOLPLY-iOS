@@ -9,9 +9,11 @@ import Foundation
 
 struct RegisterEffect {
     private let tagsService: TagsAPI
+    private let naverPlaceSearchService: NaverPlaceSearchAPI
     
-    init(tagsService: TagsAPI) {
+    init(tagsService: TagsAPI, naverPlaceSearchService: NaverPlaceSearchAPI) {
         self.tagsService = tagsService
+        self.naverPlaceSearchService = naverPlaceSearchService
     }
 }
 
@@ -39,6 +41,28 @@ extension RegisterEffect {
             return .errorOccured(error: error)
         } catch {
             return .errorOccured(error: .unknownError)
+        }
+    }
+}
+
+// MARK: - NaverPlaceSearchAPI
+
+extension RegisterEffect {
+    func fetchPlaces(for query: String) async -> RegisterAction {
+        do {
+            let response = try await naverPlaceSearchService.fetchSearchPlaces(for: query)
+            
+            let places = response.items.map { item in
+                RegisterSearch(
+                    placeName: HTMLCleaner.clean(item.title),
+                    placeAddress: item.roadAddress
+                )
+            }
+            return .searchPlacesFetched(places: places)
+        } catch let error as NetworkError {
+            return .fetchSearchPlacesFailed(error: error)
+        } catch {
+            return .fetchSearchPlacesFailed(error: NetworkError.unknownError)
         }
     }
 }
