@@ -97,8 +97,7 @@ extension RegisterView {
                         .padding(.horizontal, 16.adjustedWidth)
                         
                         // 검색 결과 List
-                        if !store.state.searchResult.isEmpty {
-                            // TODO: - 검색 결과 개수 0개여도 무조건 보이게 수정 필요
+                        if store.state.hasSearched {
                             RegisterSearchList(searchResult: store.state.searchResult) { result in
                                 store.dispatch(
                                     .selectPlaceToRegister(

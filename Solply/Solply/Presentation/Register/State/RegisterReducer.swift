@@ -47,13 +47,16 @@ enum RegisterReducer {
             state.isCompleteButtonEnabled = shouldEnableCompleteButton(state)
             
         case .fetchSearchPlaces:
+            // TODO: - 검색 중 로딩 표시
             break
             
         case .searchPlacesFetched(let places):
             state.searchResult = places
+            state.hasSearched = true
             
         case .fetchSearchPlacesFailed(let error):
             state.searchResult = []
+            state.hasSearched = true
             print(error)
         }
     }
