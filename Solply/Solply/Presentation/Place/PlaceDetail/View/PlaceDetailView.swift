@@ -11,6 +11,7 @@ struct PlaceDetailView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager
     @StateObject private var store = PlaceDetailStore()
@@ -52,6 +53,19 @@ struct PlaceDetailView: View {
         .onAppear {
             store.dispatch(.fetchPlaceDetail(placeId: placeId))
             store.dispatch(.fetchCourseArchive(placeId: placeId))
+            
+            if appState.townId != self.townId {
+                store.dispatch(
+                    .showToastView(
+                        // TODO: - 동네 수정 필요, action 연결 필요
+                        ToastContent(
+                            toastType: .withActionToast,
+                            message: "이 장소는 으아아에 위치해있어요.",
+                            buttonTitle: "동네변경",
+                        )
+                    )
+                )
+            }
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
@@ -265,5 +279,6 @@ extension PlaceDetailView {
 
 #Preview {
     PlaceDetailView(townId: 1, placeId: 1)
+        .environmentObject(AppState())
         .environmentObject(AppCoordinator())
 }
