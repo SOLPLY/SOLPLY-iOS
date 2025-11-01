@@ -63,7 +63,7 @@ struct PlaceDetailView: View {
                             toastAction: ToastAction(
                                 buttonTitle: "동네 변경",
                                 action: {
-                                    // 선택한 동네로 변경
+                                    store.dispatch(.updateUserTowns(newTownId: self.townId))
                                 }
                             )
                         )

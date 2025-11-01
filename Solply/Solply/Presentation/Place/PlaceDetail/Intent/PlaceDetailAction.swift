@@ -39,4 +39,8 @@ enum PlaceDetailAction {
     
     case submitAddPlace(courseId: Int, placeId: Int)
     case addPlaceSubmitted
+    
+    case updateUserTowns(newTownId: Int)
+    case userTownsUpdated
+    case updateUserTownsFailed(error: NetworkError)
 }
