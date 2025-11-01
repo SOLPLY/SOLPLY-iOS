@@ -19,12 +19,14 @@ struct PlaceDetailView: View {
     
     private let townId: Int
     private let placeId: Int
+    private let fromSearch: Bool
     
     // MARK: - Initializer
     
-    init(townId: Int, placeId: Int) {
+    init(townId: Int, placeId: Int, fromSearch: Bool) {
         self.townId = townId
         self.placeId = placeId
+        self.fromSearch = fromSearch
     }
     
     // MARK: - Body
@@ -54,7 +56,7 @@ struct PlaceDetailView: View {
             store.dispatch(.fetchPlaceDetail(placeId: placeId))
             store.dispatch(.fetchCourseArchive(placeId: placeId))
             
-            if appState.townId != self.townId {
+            if fromSearch && appState.townId != self.townId {
                 store.dispatch(
                     .showToastView(
                         ToastContent(
@@ -281,7 +283,7 @@ extension PlaceDetailView {
 }
 
 #Preview {
-    PlaceDetailView(townId: 1, placeId: 1)
+    PlaceDetailView(townId: 1, placeId: 1, fromSearch: false)
         .environmentObject(AppState())
         .environmentObject(AppCoordinator())
 }

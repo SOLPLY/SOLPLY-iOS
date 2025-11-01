@@ -40,7 +40,7 @@ struct PlaceSearchView: View {
                     }
                 } else {
                     PlaceDataView(places: store.state.places) { townId, placeId in
-                        appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: placeId))
+                        appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: placeId, fromSearch: true))
                     } registerAction: {
                         appCoordinator.navigate(to: .register)
                     }
