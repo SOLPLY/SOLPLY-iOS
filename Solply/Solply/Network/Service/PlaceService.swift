@@ -70,4 +70,10 @@ extension PlaceService: PlaceAPI {
     ) async throws -> BaseResponseBody<EmptyResponseDTO> {
         return try await self.request(with: .submitReports(placeId: placeId, request: request))
     }
+    
+    func submitRegister(
+        request: RegisterRequestDTO
+    ) async throws -> BaseResponseBody<RegisterResponseDTO> {
+        return try await self.request(with: .submitRegister(request: request))
+    }
 }
