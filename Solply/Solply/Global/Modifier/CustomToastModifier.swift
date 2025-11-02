@@ -23,7 +23,7 @@ struct CustomToastModifier: ViewModifier {
                         ToastView(
                             toastContent: toastContent,
                             action: {
-                                toastManager.action?()
+                                toastManager.toastContent?.toastAction?.action()
                                 toastManager.isShowing = false
                             }
                         )
@@ -52,3 +52,4 @@ extension View {
         self.modifier(CustomToastModifier(toastManager: toastManager))
     }
 }
+

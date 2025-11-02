@@ -10,10 +10,12 @@ import Foundation
 struct PlaceDetailEffect {
     private let courseService: CourseAPI
     private let placeService: PlaceAPI
+    private let userService: UserAPI
     
-    init(courseService: CourseAPI, placeService: PlaceAPI) {
+    init(courseService: CourseAPI, placeService: PlaceAPI, userService: UserAPI) {
         self.courseService = courseService
         self.placeService = placeService
+        self.userService = userService
     }
 }
 
@@ -109,6 +111,27 @@ extension PlaceDetailEffect {
             return .errorOccured(error: error)
         } catch {
             return .errorOccured(error: .unknownError)
+        }
+    }
+}
+
+// MARK: - UserAPI
+
+extension PlaceDetailEffect {
+    func updateUserTowns(selectedTownId: Int) async -> PlaceDetailAction {
+        do {
+            
+            let request = UserTownsUpdateRequestDTO(
+                selectedTownId: selectedTownId
+            )
+            
+            _ = try await userService.updateUserTowns(request)
+            
+            return .userTownsUpdated
+        } catch let error as NetworkError {
+            return .updateUserTownsFailed(error: error)
+        } catch {
+            return .updateUserTownsFailed(error: .unknownError)
         }
     }
 }

@@ -40,7 +40,7 @@ struct ToastView: View {
                     .foregroundStyle(.coreWhite)
                     .frame(height: 21.adjustedHeight)
                 
-                if let buttonTitle = toastContent.buttonTitle, toastContent.toastType == .withActionToast {
+                if let buttonTitle = toastContent.toastAction?.buttonTitle, toastContent.toastType == .withActionToast {
                     Spacer()
                     
                     Button {
