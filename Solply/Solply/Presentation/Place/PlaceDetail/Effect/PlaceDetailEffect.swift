@@ -80,7 +80,25 @@ extension PlaceDetailEffect {
             
             guard let data = response.data else { return .errorOccured(error: .responseError)}
             
-            return .placeDetailFetched(data)
+            let placeDetailInformation = PlaceDetailInformation(
+                isBookmarked: data.isBookmarked,
+                primaryTag: data.mainTag,
+                placeName: data.placeName,
+                introduction: data.introduction,
+                imageUrls: data.imageInfos.map { $0.url },
+                address: data.address,
+                contactNumber: data.contactNumber ?? "",
+                openingHours: data.openingHours.replacingOccurrences(of: "\\n", with: "\n"),
+                snsLink: data.snsLinks.map { PlaceDetailSnsLink(snsPlatform: $0.snsPlatform, url: $0.url) },
+                latitude: Double(data.latitude) ?? 0.0,
+                longitude: Double(data.longitude) ?? 0.0,
+                placeDefaultId: data.placeDefaultId,
+                placeType: data.placeType,
+                townId: data.townId,
+                townName: data.townName
+            )
+            
+            return .placeDetailFetched(placeDetailInformation: placeDetailInformation)
         } catch let error as NetworkError {
             return .errorOccured(error: error)
         } catch {

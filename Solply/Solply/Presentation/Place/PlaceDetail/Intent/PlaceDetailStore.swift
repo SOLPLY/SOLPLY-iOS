@@ -41,6 +41,9 @@ final class PlaceDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .placeDetailFetched(let placeDetailInformation):
+            print(placeDetailInformation.townName)
+            
         case .submitPlaceBookmark(let placeId):
             Task {
                 let result = await effect.submitPlaceBookmark(placeId: placeId)

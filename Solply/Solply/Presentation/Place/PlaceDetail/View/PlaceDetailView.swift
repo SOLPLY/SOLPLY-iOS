@@ -207,7 +207,7 @@ extension PlaceDetailView {
                 .transition(.move(edge: .trailing))
             }
         }
-        .animation(.easeInOut(duration: 0.2), value: store.state.addButtonSelected)
+        .animation(.easeInOut(duration: 0.3), value: store.state.addButtonSelected)
     }
     
     private var addPlaceToCourseButton: some View {

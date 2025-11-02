@@ -29,7 +29,7 @@ enum PlaceDetailAction {
     case errorOccured(error: NetworkError)
     
     case fetchPlaceDetail(placeId: Int)
-    case placeDetailFetched(PlaceDetailResponseDTO)
+    case placeDetailFetched(placeDetailInformation: PlaceDetailInformation)
     
     case submitPlaceBookmark(placeId: Int)
     case placeBookmarkSubmitted
