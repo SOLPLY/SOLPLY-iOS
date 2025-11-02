@@ -32,6 +32,37 @@ final class CourseDetailStore: ObservableObject {
                 destinationLongitude: destinationLongitude,
                 destinationName: destinationName
             )
+            
+        case .droppedInDeleteZone:
+            if state.places.count > 2 {
+                self.dispatch(.deletePlace)
+            } else {
+                self.dispatch(
+                    .showToastView(
+                        ToastContent(
+                            toastType: .withIconToast,
+                            message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
+                            bottomPadding: 96.adjustedHeight
+                        )
+                    )
+                )
+            }
+            
+        case .startEditing:
+            if state.focusedPlaceIndex != -1 {
+                for index in state.places.indices {
+                    state.places[index].isFocused = false
+                    state.focusedPlaceIndex = -1
+                }
+                
+                Task {
+                    let result = await effect.delayEditing()
+                    self.dispatch(result)
+                }
+            } else {
+                self.dispatch(.delayEditing)
+            }
+            
         case .fetchCourseDetail(let courseId):
             Task {
                 let result = await effect.fetchCourseDetail(courseId: courseId)

@@ -24,7 +24,7 @@ enum PlaceDetailAction {
     
     // api
     
-    case fetchCourseArchive(townId: Int, placeId: Int)
+    case fetchCourseArchive(placeId: Int)
     case courseArchiveFetched([CourseArchiveDTO])
     case errorOccured(error: NetworkError)
     
@@ -39,4 +39,8 @@ enum PlaceDetailAction {
     
     case submitAddPlace(courseId: Int, placeId: Int)
     case addPlaceSubmitted
+    
+    case updateUserTowns(newTownId: Int)
+    case userTownsUpdated
+    case updateUserTownsFailed(error: NetworkError)
 }

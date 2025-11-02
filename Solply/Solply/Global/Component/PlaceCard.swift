@@ -50,7 +50,6 @@ struct PlaceCard: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: size.adjustedWidth, height: size.adjustedHeight)
-                    .cornerRadius(20, corners: .allCorners)
                 
                 if isSaved {
                     Image(placeCategory.savedBadge ?? "")
@@ -60,6 +59,7 @@ struct PlaceCard: View {
                         .padding(.horizontal, 16.adjustedWidth)
                 }
             }
+            .cornerRadius(20, corners: .allCorners)
             
             HStack(alignment: .center, spacing: 4.adjustedWidth) {
                 PlaceCategoryTag(placeCategory: placeCategory)
@@ -69,6 +69,7 @@ struct PlaceCard: View {
                     .frame(height: 19.adjustedHeight)
             }
         }
+        .contentShape(Rectangle())
         .onTapGesture {
             action?()
         }

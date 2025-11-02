@@ -37,4 +37,13 @@ protocol PlaceAPI {
     
     /// 선택한 “나만의 장소" 삭제
     func removePlaceList(placeIds: [Int]) async throws -> BaseResponseBody<EmptyResponseDTO>
+    
+    /// 장소 검색
+    func searchPlace(placeName: String) async throws -> BaseResponseBody<PlaceSearchResponseDTO>
+    
+    /// 잘못된 정보 제보
+    func submitReports(
+        placeId: Int,
+        request: ReportsRequestDTO
+    ) async throws -> BaseResponseBody<EmptyResponseDTO>
 }

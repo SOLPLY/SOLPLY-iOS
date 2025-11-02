@@ -22,8 +22,8 @@ struct OnboardingView: View {
                             .animation(.easeInOut(duration: 0.3), value: store.state.step)
                     }
                     switch store.state.step {
-                    case .townOption:
-                        TownOptionView(store: store)
+                    case .onboardingJGD:
+                        OnboardingJGDView(store: store)
                     case .personaOption:
                         PersonaOptionView(store: store)
                     case .nickName:
@@ -34,7 +34,6 @@ struct OnboardingView: View {
                 }
                 .animation(.easeOut(duration: 0.2), value: store.state.step)
                 .padding(.horizontal, 20.adjustedWidth)
-                .background(.gray100)
                 .onChange(of: store.state.isOnboardingFinished) { oldValue, newValue in
                     if newValue {
                         appCoordinator.changeRoot(to: .tabBar)
@@ -42,7 +41,7 @@ struct OnboardingView: View {
                 }
                 .customNavigationBar(.onboarding(backAction: {
                     switch store.state.step {
-                    case .townOption:
+                    case .onboardingJGD:
                         appCoordinator.changeRoot(to: .auth)
                     case .personaOption, .nickName:
                         store.dispatch(.goBack)
@@ -50,6 +49,7 @@ struct OnboardingView: View {
                         break
                     }
                 }))
+                .background(.gray100)
             } else {
                 VStack(alignment: .leading, spacing: 0) {
                     OnboardingCompleteView(store: store)
@@ -63,6 +63,7 @@ struct OnboardingView: View {
                     store.dispatch(.checkNickname(store.state.nickname))
                 }
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 

@@ -10,8 +10,11 @@ import Foundation
 enum CourseDetailReducer {
     static func reduce(state: inout CourseDetailState, action: CourseDetailAction) {
         switch action {
-        case .toggleSaveCourse:
-            state.courseSaveSelected.toggle()
+        case .setDragDropState(let dragDropState):
+            state.dragDropState = dragDropState
+            
+        case .toggleBookmarkCourse:
+            state.courseBookmarkSelected.toggle()
             
         case .focusPlace(let index):
             state.focusedPlaceIndex = state.focusedPlaceIndex == index ? -1 : index
@@ -20,18 +23,16 @@ enum CourseDetailReducer {
                 state.places[index].isFocused = (index == state.focusedPlaceIndex)
             }
             
-        case .toggleSavePlace(let index):
+        case .toggleBookmarkPlace(let index):
             state.places[index].isBookmarked.toggle()
             
         case .requestFindDirection:
             break
             
         case .startEditing:
-            for index in state.places.indices {
-                state.places[index].isFocused = false
-                state.focusedPlaceIndex = -1
-            }
+            break
             
+        case .delayEditing:
             state.oldPlaces.removeAll()
             state.oldPlaces = state.places
             state.oldCourseName = state.courseName
@@ -49,33 +50,44 @@ enum CourseDetailReducer {
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
-            state.draggedPlace = state.canDelete == .dismissed ? nil : draggedPlace
-            state.canDelete = (state.canDelete == .dismissed ? .hidden : .active)
+            switch state.dragDropState {
+            case .prepared:
+                state.draggedPlace = draggedPlace
+                state.canDelete = true
+                state.dragDropState = .dragging
+            case .dragging, .completed:
+                state.dragDropState = .prepared
+            }
             
-        case .whileDragging(from: let fromIndex, to: let toIndex):
-            guard state.draggedPlace != nil,
-                  fromIndex < state.places.count,
-                  toIndex < state.places.count,
+        case .whileDragging(let destination):
+            guard let draggedPlace = state.draggedPlace,
+                  let fromIndex = state.places.firstIndex(of: draggedPlace),
+                  let toIndex = state.places.firstIndex(of: destination),
                   fromIndex != toIndex else { return }
             
             let movedPlace = state.places.remove(at: fromIndex)
             state.places.insert(movedPlace, at: toIndex)
             
         case .endDragging:
+            state.dragDropState = .completed
             state.draggedPlace = nil
-            state.canDelete = .dismissed
+            state.canDelete = false
             state.isInDeleteZone = false
             
         case .deletePlace:
-            guard let place = state.draggedPlace else { return }
+            guard let draggedPlace = state.draggedPlace else { return }
+            state.dragDropState = .completed
             
-            if let index = state.places.firstIndex(of: place) {
+            if let index = state.places.firstIndex(of: draggedPlace) {
                 state.places.remove(at: index)
-                state.canDelete = .dismissed
+                state.canDelete = false
                 state.draggedPlace = nil
             }
             
             state.isInDeleteZone = false
+            
+        case .droppedInDeleteZone:
+            break
             
         case .draggedInDeleteZone:
             state.isInDeleteZone = true
@@ -86,8 +98,8 @@ enum CourseDetailReducer {
         case .showToastView(let toastContent):
             state.toastContent = toastContent
             state.draggedPlace = nil
-            state.canDelete = .dismissed
-            state.isInDeleteZone = false        
+            state.canDelete = false
+            state.isInDeleteZone = false
             
         case .saveCourseToCurrent:
             state.isSaveOptionPresented = false
@@ -124,7 +136,7 @@ enum CourseDetailReducer {
             state.places = placeEntities
 
             state.isCourseBookmarked = courseDetails.isBookmarked
-            state.courseSaveSelected = courseDetails.isBookmarked
+            state.courseBookmarkSelected = courseDetails.isBookmarked
 
         case .errorOccured(let error):
             print(error)

@@ -8,6 +8,8 @@
 import Foundation
 
 struct CourseDetailState {
+    var dragDropState: DragDropState = .prepared
+    
     var updatedCourseId: Int = -1
     
     var isLoading: Bool = false
@@ -22,10 +24,10 @@ struct CourseDetailState {
     var oldPlaces: [PlaceDetailInCourse] = []
     
     var focusedPlaceIndex: Int = -1
-    var courseSaveSelected: Bool = false
+    var courseBookmarkSelected: Bool = false
     var isCourseBookmarked: Bool = false
     var isEditing: Bool = false
-    var canDelete: DeleteZoneState = .hidden
+    var canDelete: Bool = false
     var isInDeleteZone: Bool = false
     
     var userLatitude: Double = 0.0

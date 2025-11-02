@@ -22,6 +22,8 @@ enum PlaceTargetType {
         subTagAIdList: [Int]?,
         subTagBIdList: [Int]?
     )
+    case searchPlace(placeName: String)
+    case submitReports(placeId: Int, request: ReportsRequestDTO)
 }
 
 extension PlaceTargetType: BaseTargetType {
@@ -43,6 +45,10 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/bookmarks"
         case .fetchPlaceList:
             return "/places"
+        case .searchPlace:
+            return "/places/search"
+        case .submitReports(let placeId, _):
+            return "/places/\(placeId)/reports"
         }
     }
     
@@ -54,6 +60,8 @@ extension PlaceTargetType: BaseTargetType {
         case .fetchPlaceDetail: return .get
         case .removePlaceList: return .delete
         case .fetchPlaceList: return .get
+        case .searchPlace: return .get
+        case .submitReports: return .post
         }
     }
     
@@ -99,6 +107,12 @@ extension PlaceTargetType: BaseTargetType {
             }
             
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
+            
+        case .searchPlace(let placeName):
+            let params: [String: Any] = ["keyword": placeName]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
+        case .submitReports(_, let request):
+            return .requestJSONEncodable(request)
         }
     }
 }

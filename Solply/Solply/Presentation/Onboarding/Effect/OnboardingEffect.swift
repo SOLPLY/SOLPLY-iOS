@@ -23,21 +23,19 @@ struct OnboardingEffect {
         self.userService = userService
     }
     
-    func fetchTownList() async -> OnboardingAction {
+    func fetchTowns() async -> OnboardingAction {
         do {
             let response = try await townService.fetchTownList()
             
             guard let data = response.data else {
-                return .fetchTownFailure("데이터가 없습니다")
+                return .fetchTownsFailure("데이터가 없습니다.")
             }
             
-            let towns = data.towns
-                .flatMap { $0.subTowns ?? [] }
-                .map { $0.toEntity() }
+            let towns = data.toEntity()
             
-            return .fetchTownSuccess(selectedTown: nil, townList: towns)
+            return .fetchTownsSuccess(townList: towns)
         } catch {
-            return .fetchTownFailure("동네 불러오기 실패")
+            return .fetchTownsFailure("동네 불러오기 실패")
         }
     }
     

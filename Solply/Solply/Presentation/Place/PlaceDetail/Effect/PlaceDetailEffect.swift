@@ -10,12 +10,18 @@ import Foundation
 struct PlaceDetailEffect {
     private let courseService: CourseAPI
     private let placeService: PlaceAPI
+    private let userService: UserAPI
     
-    init(courseService: CourseAPI, placeService: PlaceAPI) {
+    init(courseService: CourseAPI, placeService: PlaceAPI, userService: UserAPI) {
         self.courseService = courseService
         self.placeService = placeService
+        self.userService = userService
     }
-    
+}
+
+// MARK: - Functions
+
+extension PlaceDetailEffect {
     func findDirection(
         startLatitude: Double,
         startLongitude: Double,
@@ -36,9 +42,9 @@ struct PlaceDetailEffect {
 // MARK: - CourseAPI
 
 extension PlaceDetailEffect {
-    func fetchCourseArchive(townId: Int, placeId: Int?) async -> PlaceDetailAction {
+    func fetchCourseArchive(placeId: Int?) async -> PlaceDetailAction {
         do {
-            let response = try await courseService.fetchCourseArchive(townId: townId, placeId: placeId)
+            let response = try await courseService.fetchCourseArchive(townId: nil, placeId: placeId)
             
             guard let courses = response.data?.courses else { return .errorOccured(error: .responseError) }
             
@@ -53,8 +59,7 @@ extension PlaceDetailEffect {
     
     func submitAddPlace(courseId: Int, placeId: Int) async -> PlaceDetailAction {
         do {
-            let response = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
-            print(response)
+            _ = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
             
             return .addPlaceSubmitted
             
@@ -106,6 +111,27 @@ extension PlaceDetailEffect {
             return .errorOccured(error: error)
         } catch {
             return .errorOccured(error: .unknownError)
+        }
+    }
+}
+
+// MARK: - UserAPI
+
+extension PlaceDetailEffect {
+    func updateUserTowns(selectedTownId: Int) async -> PlaceDetailAction {
+        do {
+            
+            let request = UserTownsUpdateRequestDTO(
+                selectedTownId: selectedTownId
+            )
+            
+            _ = try await userService.updateUserTowns(request)
+            
+            return .userTownsUpdated
+        } catch let error as NetworkError {
+            return .updateUserTownsFailed(error: error)
+        } catch {
+            return .updateUserTownsFailed(error: .unknownError)
         }
     }
 }

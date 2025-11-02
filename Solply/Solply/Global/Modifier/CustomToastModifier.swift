@@ -22,11 +22,21 @@ struct CustomToastModifier: ViewModifier {
                     if toastManager.isShowing, let toastContent = toastManager.toastContent {
                         ToastView(
                             toastContent: toastContent,
-                            action: toastManager.action
+                            action: {
+                                toastManager.toastContent?.toastAction?.action()
+                                toastManager.isShowing = false
+                            }
                         )
                         .transition(.asymmetric(
                             insertion: .move(edge: .bottom).combined(with: .opacity),
                             removal: .move(edge: .bottom).combined(with: .opacity))
+                        )
+                        .highPriorityGesture(
+                            DragGesture(minimumDistance: 10, coordinateSpace: .local)
+                                .onChanged { _ in
+                                    guard toastManager.isShowing else { return }
+                                    toastManager.isShowing = false
+                                }
                         )
                     }
                 }
@@ -42,3 +52,4 @@ extension View {
         self.modifier(CustomToastModifier(toastManager: toastManager))
     }
 }
+

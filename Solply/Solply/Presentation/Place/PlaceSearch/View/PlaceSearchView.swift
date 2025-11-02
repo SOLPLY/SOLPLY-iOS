@@ -14,40 +14,44 @@ struct PlaceSearchView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject var store = PlaceSearchStore()
     
-    @State private var text: String = ""
-    private let onChange: ((String) -> Void)?
     private let onSubmit: ((String) -> Void)?
     
     // MARK: - Initializer
     
     init(
-        onChange: ((String) -> Void)? = nil,
         onSubmit: ((String) -> Void)? = nil
         
     ) {
-        self.onChange = onChange
         self.onSubmit = onSubmit
     }
     
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
-            SearchBarView(onChange: onChange, onSubmit: onSubmit)
-            // TODO: - 데이터 유무로 분기처리
+        VStack(alignment: .leading, spacing: 28.adjustedHeight) {
+            SearchBar { text in
+                store.dispatch(.searchPlace(placeName: text))
+            }
+            
+            if store.state.isSearchCompleted {
+                if store.state.places.isEmpty {
+                    PlaceEmptyView() {
+                        appCoordinator.navigate(to: .register)
+                    }
+                } else {
+                    PlaceDataView(places: store.state.places) { townId, placeId in
+                        appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: placeId, fromSearch: true))
+                    } registerAction: {
+                        appCoordinator.navigate(to: .register)
+                    }
+                }
+            }
         }
         .customNavigationBar(.placeSearch(backAction: appCoordinator.goBack))
-    }
-}
-
-#Preview {
-    PlaceSearchView(
-        onChange: { value in
-            print("onChange: \(value)")
-        },
-        onSubmit: { value in
-            print("onSubmit: \(value)")
+        .ignoresSafeArea(edges: .bottom)
+        .background(.coreWhite)
+        .onTapGesture {
+            hideKeyboard()
         }
-    )
-    .environmentObject(AppCoordinator())
+    }
 }

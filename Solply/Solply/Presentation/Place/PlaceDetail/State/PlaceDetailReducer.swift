@@ -97,6 +97,19 @@ enum PlaceDetailReducer {
             
         case .updateAddPlaceCourseId(let courseId):
             state.addPlaceCourseId = courseId
+            
+        case .updateUserTowns:
+            break
+            
+        case .userTownsUpdated:
+            state.toastContent = ToastContent(
+                toastType: .defaultToast,
+                message: "동네가 ???으로 변경되었어요."
+            )
+            
+        case .updateUserTownsFailed(let error):
+            print(error)
+            break
         }
     }
 }

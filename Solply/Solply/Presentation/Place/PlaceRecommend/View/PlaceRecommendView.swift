@@ -11,24 +11,18 @@ struct PlaceRecommendView: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject var appCoordinator: AppCoordinator
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceRecommendStore()
-    
-    @Binding var townId: Int
     
     private let title: String
     private let townName: String
     
     // MARK: - Initializer
     
-    init(
-        title: String,
-        townName: String,
-        townId: Binding<Int>
-    ) {
+    init(title: String, townName: String) {
         self.title = title
         self.townName = townName
-        self._townId = townId
     }
     
     // MARK: - Body
@@ -44,10 +38,10 @@ struct PlaceRecommendView: View {
                 .padding(.horizontal, 20.adjustedWidth)
                 
                 if !store.state.placeRecommendItems.isEmpty {
-                    TodayPlaceRecommendCarousel(store: store, townId: townId)
+                    TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
                 }
                 
-                FilterPlaceGrid(store: store, townId: townId)
+                FilterPlaceGrid(store: store, townId: appState.townId)
                     .padding(.horizontal, 16.adjustedWidth)
                 
             }
@@ -57,7 +51,7 @@ struct PlaceRecommendView: View {
         .customNavigationBar(.recommend(
             filterTitle: townName,
             filterAction: {
-                appCoordinator.navigate(to: .frequentTown)
+                appCoordinator.navigate(to: .JGD)
             },
             settingAction: {
                 appCoordinator.navigate(to: .placeSearch)
@@ -65,16 +59,16 @@ struct PlaceRecommendView: View {
         ))
         .background(.gray100)
         .onAppear {
-            store.dispatch(.fetchPlaceRecommend(townId: townId))
+            store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
             store.dispatch(.fetchPlaceList(
-                townId: townId,
+                townId: appState.townId,
                 isBookmarkSearch: false,
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
                 subTagAIdList: [],
                 subTagBIdList: []
             ))
         }
-        .onChange(of: townId) { _, newTownId in
+        .onChange(of: appState.townId) { _, newTownId in
             store.dispatch(.fetchPlaceRecommend(townId: newTownId))
             
             let subTagAIdList = store.state.selectedSubTags

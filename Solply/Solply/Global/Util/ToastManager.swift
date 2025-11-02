@@ -13,7 +13,6 @@ class ToastManager: ObservableObject {
     
     @Published var isShowing: Bool = false
     @Published var toastContent: ToastContent?
-    @Published var action: (() -> Void)? = nil
     
     private var workItem: DispatchWorkItem?
     
@@ -21,7 +20,6 @@ class ToastManager: ObservableObject {
     
     func showToast(
         content: ToastContent,
-        action: (() -> Void)? = nil,
         duration: TimeInterval = 2.0
     ) {
         workItem?.cancel()
@@ -34,18 +32,15 @@ class ToastManager: ObservableObject {
         
         self.displayToast(
             content: content,
-            action: action,
             duration: duration
         )
     }
     
     private func displayToast(
         content: ToastContent,
-        action: (() -> Void)? = nil,
         duration: TimeInterval = 2.0
     ) {
         self.toastContent = content
-        self.action = action
         
         withAnimation(.easeInOut(duration: 0.3)) {
             isShowing = true
@@ -72,21 +67,30 @@ class ToastManager: ObservableObject {
 // MARK: - ToastContent
 
 struct ToastContent: Equatable {
+    let id: UUID = UUID()
     let toastType: ToastType
     let message: String
-    let buttonTitle: String?
+    let toastAction: ToastAction?
     let bottomPadding: CGFloat
-    let id: UUID = UUID()
+    
+    static func == (lhs: ToastContent, rhs: ToastContent) -> Bool {
+        return lhs.id == rhs.id
+    }
     
     init(
         toastType: ToastType,
         message: String,
-        buttonTitle: String?,
+        toastAction: ToastAction? = nil,
         bottomPadding: CGFloat = 28.adjustedHeight
     ) {
         self.toastType = toastType
         self.message = message
-        self.buttonTitle = buttonTitle
+        self.toastAction = toastAction
         self.bottomPadding = bottomPadding
     }
+}
+
+struct ToastAction {
+    let buttonTitle: String
+    let action: (() -> Void)
 }
