@@ -46,4 +46,7 @@ protocol PlaceAPI {
         placeId: Int,
         request: ReportsRequestDTO
     ) async throws -> BaseResponseBody<EmptyResponseDTO>
+    
+    /// 장소 등록 요청
+    func submitRegister(request: RegisterRequestDTO) async throws -> BaseResponseBody<RegisterResponseDTO>
 }
