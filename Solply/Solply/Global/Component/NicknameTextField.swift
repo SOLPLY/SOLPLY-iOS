@@ -7,22 +7,39 @@
 
 import SwiftUI
 
+enum CounterVisibility {
+    case always
+    case whenNotEmpty
+}
+
 struct NicknameTextField: View {
 
     @State private var text: String = ""
     private let state: NicknameTextFieldState
     private let maxLength: Int = 8
+    private let counterVisibility: CounterVisibility
     private let onChange: ((String) -> Void)?
     private let onSubmit: ((String) -> Void)?
 
     init(
         state: NicknameTextFieldState,
+        counterVisibility: CounterVisibility = .whenNotEmpty,
         onChange: ((String) -> Void)? = nil,
         onSubmit: ((String) -> Void)? = nil
     ) {
         self.state = state
+        self.counterVisibility = counterVisibility
         self.onChange = onChange
         self.onSubmit = onSubmit
+    }
+    
+    private var shouldShowCounter: Bool {
+        switch counterVisibility {
+        case .always:
+            return true
+        case .whenNotEmpty:
+            return !text.isEmpty
+        }
     }
 
     var body: some View {
@@ -75,16 +92,17 @@ struct NicknameTextField: View {
                 Text(state.guidance?.text ?? " ")
                     .applySolplyFont(.caption_12_r)
                     .foregroundColor(state.guidance?.color ?? .clear)
-
+                
                 Spacer()
-
-                Text("\(text.count)/\(maxLength)")
-                    .applySolplyFont(.caption_12_r)
-                    .foregroundColor(
-                        state == .editing ? .gray400 :
-                        state == .invalidCharacter || state == .duplicate ? .red500 :
-                        .gray400
-                    )
+                
+                if shouldShowCounter {
+                    Text("\(text.count)/\(maxLength)")
+                        .applySolplyFont(.caption_12_r)
+                        .foregroundColor(
+                            (state == .invalidCharacter || state == .duplicate) ? .red500 : .gray400
+                        )
+                        .animation(.easeInOut(duration: 0.15), value: shouldShowCounter)
+                }
             }
             .padding(.horizontal, 4.adjustedHeight)
         }
