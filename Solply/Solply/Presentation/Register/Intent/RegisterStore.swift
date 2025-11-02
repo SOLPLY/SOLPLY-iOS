@@ -13,7 +13,9 @@ final class RegisterStore: ObservableObject {
     private let effect = RegisterEffect(
         tagsService: TagsService(),
         naverPlaceSearchService: NaverPlaceSearchService(),
-        placeService: PlaceService()
+        placeService: PlaceService(),
+        fileService: FileService(),
+        uploadPhotosService: UploadPhotosService()
     )
     
     func dispatch(_ action: RegisterAction) {
@@ -23,13 +25,51 @@ final class RegisterStore: ObservableObject {
             
         case .startRegister:
             if state.attachedImageData.isEmpty {
-                self.dispatch(.submitRegister)
-                
+                self.dispatch(.submitRegister(imageKeyStrings: []))
             } else {
-                // TODO: - 사진 첨부 O
+                dispatch(
+                    .submitPresignedUrlRequest(
+                        request: PresignedUrlRequestDTO(
+                            files: state.attachedImageData.map { fileName, _ in
+                                File(fileName: fileName)
+                                
+                            }
+                        )
+                    )
+                )
             }
             
+        case .submitPresignedUrlRequest(let request):
+            Task {
+                let result = await effect.submitPresignedUrlRequest(request: request)
+                self.dispatch(result)
+            }
             
+        case .presignedUrlRequestSubmitted(let response):
+            let presignedInformation = response.presignedGetUrlInfos
+            let imageDatas = state.attachedImageData
+
+            var presignedDictionary: [URL: Data] = [:]
+
+            for (info, data) in zip(presignedInformation, imageDatas) {
+                if let url = URL(string: info.presignedUrl) {
+                    presignedDictionary[url] = data.1
+                }
+            }
+            
+            Task {
+                let result = await effect.uploadImages(dictionary: presignedDictionary)
+                self.dispatch(result)
+            }
+            
+        case .photoUploadSuccess(let imageKeys):
+            var imageKeyStrings: [String]
+            
+            imageKeyStrings = imageKeys.map { imageKey in
+                imageKey.absoluteString.truncated(includeStartRange: "dev", excludeEndRange: "?")
+            }
+            
+            self.dispatch(.submitRegister(imageKeyStrings: imageKeyStrings))
             
         case .fetchSubTags(let parentId):
             Task {
@@ -43,7 +83,7 @@ final class RegisterStore: ObservableObject {
                 self.dispatch(result)
             }
             
-        case  .submitRegister:
+        case  .submitRegister(let imageKeyStrings):
             guard let mainTagId = state.selectedMainTag?.parentId else { return }
             
             let subTagAIds = state.selectableSubTagsA
@@ -54,6 +94,13 @@ final class RegisterStore: ObservableObject {
                 .filter { $0.isSelected }
                 .map { $0.id }
             
+            let images = imageKeyStrings.isEmpty ? nil : imageKeyStrings.enumerated().map { index, imageKeyString in
+                RegisterImage(
+                    displayOrder: index + 1 ,
+                    tempFileKey: imageKeyString
+                )
+            }
+            
             Task {
                 let result = await effect.submitRegister(
                     request: RegisterRequestDTO(
@@ -63,7 +110,7 @@ final class RegisterStore: ObservableObject {
                         subTagAIds: subTagAIds,
                         subTagBIds: subTagBIds,
                         reason: state.registerContent,
-                        images: nil // 일단 사진 없게
+                        images: images
                     )
                 )
                 
