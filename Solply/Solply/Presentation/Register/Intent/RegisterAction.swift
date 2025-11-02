@@ -14,6 +14,10 @@ enum RegisterAction {
     case selectSubTagA(selectableSubTags: [SelectableSubTag])
     case selectSubTagB(selectableSubTags: [SelectableSubTag])
     case editReigsterContent(registerContent: String)
+    case attachRegisterPhoto(imageData: [(String, Data)])
+    
+    case startRegister
+    case endRegister
     
     // api
     case errorOccured(error: NetworkError)
@@ -23,4 +27,8 @@ enum RegisterAction {
     case fetchSearchPlaces
     case searchPlacesFetched(places: [RegisterSearch])
     case fetchSearchPlacesFailed(error: NetworkError)
+    
+    case submitRegister
+    case registerSubmitted
+    case submitRegisterFailed(error: NetworkError)
 }

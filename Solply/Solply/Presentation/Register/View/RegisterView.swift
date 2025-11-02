@@ -214,8 +214,8 @@ extension RegisterView {
                     VStack(alignment: .leading, spacing: 12.adjustedHeight) {
                         sectionTitle("장소의 사진이 있다면 추가해주세요", showsSelectionHint: true)
                         
-                        SolplyPhotosPicker { imageKeys in
-                            // TODO: - 사진 등록 연결
+                        SolplyPhotosPicker { imageData in
+                            store.dispatch(.attachRegisterPhoto(imageData: imageData))
                         }
                         .padding(.horizontal, 20.adjustedWidth)
                     }
@@ -227,6 +227,7 @@ extension RegisterView {
     
     private var completeButton: some View {
         CTAMainButton(title: "완료") {
+            store.dispatch(.startRegister)
             appCoordinator.navigate(to: .registerComplete)
         }
         .padding(.horizontal, 20.adjustedWidth)

@@ -32,6 +32,15 @@ enum RegisterReducer {
             
         case .editReigsterContent(let registerContent):
             state.registerContent = registerContent
+            
+        case .attachRegisterPhoto(let imageData):
+            state.attachedImageData = imageData
+            
+        case .startRegister:
+            break
+            
+        case .endRegister:
+            break
              
         case .errorOccured(let error):
             print(error)
@@ -58,6 +67,16 @@ enum RegisterReducer {
             state.searchResult = []
             state.hasSearched = true
             print(error)
+            
+        case .submitRegister:
+            break
+            
+        case .registerSubmitted:
+            break
+            
+        case .submitRegisterFailed(let error):
+            print(error)
+            break
         }
     }
 }

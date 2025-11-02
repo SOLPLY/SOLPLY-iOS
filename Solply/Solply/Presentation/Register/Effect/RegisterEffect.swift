@@ -10,10 +10,16 @@ import Foundation
 struct RegisterEffect {
     private let tagsService: TagsAPI
     private let naverPlaceSearchService: NaverPlaceSearchAPI
+    private let placeService: PlaceAPI
     
-    init(tagsService: TagsAPI, naverPlaceSearchService: NaverPlaceSearchAPI) {
+    init(
+        tagsService: TagsAPI,
+        naverPlaceSearchService: NaverPlaceSearchAPI,
+        placeService: PlaceAPI
+    ) {
         self.tagsService = tagsService
         self.naverPlaceSearchService = naverPlaceSearchService
+        self.placeService = placeService
     }
 }
 
@@ -63,6 +69,25 @@ extension RegisterEffect {
             return .fetchSearchPlacesFailed(error: error)
         } catch {
             return .fetchSearchPlacesFailed(error: NetworkError.unknownError)
+        }
+    }
+}
+
+// MARK: - PlaceAPI
+
+extension RegisterEffect {
+    func submitRegister(request: RegisterRequestDTO) async -> RegisterAction {
+        do {
+            let response = try await placeService.submitRegister(request: request)
+            _ = try await Task.sleep(nanoseconds: 2_000_000_000)
+            
+            guard let _ = response.data else { return .submitRegisterFailed(error: .responseError)}
+            
+            return .registerSubmitted
+        } catch let error as NetworkError {
+            return .submitRegisterFailed(error: error)
+        } catch {
+            return .submitRegisterFailed(error: .unknownError)
         }
     }
 }
