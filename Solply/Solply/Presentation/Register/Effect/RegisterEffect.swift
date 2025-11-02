@@ -55,7 +55,7 @@ extension RegisterEffect {
             let places = response.items.map { item in
                 RegisterSearch(
                     placeName: HTMLCleaner.clean(item.title),
-                    placeAddress: item.roadAddress
+                    placeAddress: item.roadAddress.isEmpty ? item.address : item.roadAddress
                 )
             }
             return .searchPlacesFetched(places: places)
