@@ -24,20 +24,20 @@ enum PlaceDetailAction {
     
     // api
     
-    case fetchCourseArchive(placeId: Int)
+    case fetchCourseArchive
     case courseArchiveFetched([CourseArchiveDTO])
     case errorOccured(error: NetworkError)
     
-    case fetchPlaceDetail(placeId: Int)
+    case fetchPlaceDetail
     case placeDetailFetched(placeDetailInformation: PlaceDetailInformation)
     
-    case submitPlaceBookmark(placeId: Int)
+    case submitPlaceBookmark
     case placeBookmarkSubmitted
     
-    case removePlaceBookmark(placeId: Int)
+    case removePlaceBookmark
     case placeBookmarkRemoved
     
-    case submitAddPlace(courseId: Int, placeId: Int)
+    case submitAddPlace(courseId: Int)
     case addPlaceSubmitted
     
     case updateUserTowns(newTownId: Int)

@@ -14,19 +14,19 @@ struct PlaceDetailView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager
-    @StateObject private var store = PlaceDetailStore()
+    @StateObject private var store: PlaceDetailStore
     @StateObject private var locationManager = LocationManager()
-    
-    private let townId: Int
-    private let placeId: Int
-    private let fromSearch: Bool
     
     // MARK: - Initializer
     
     init(townId: Int, placeId: Int, fromSearch: Bool) {
-        self.townId = townId
-        self.placeId = placeId
-        self.fromSearch = fromSearch
+        _store = StateObject(
+            wrappedValue: PlaceDetailStore(
+                townId: townId,
+                placeId: placeId,
+                fromSearch: fromSearch
+            )
+        )
     }
     
     // MARK: - Body
@@ -53,25 +53,25 @@ struct PlaceDetailView: View {
             }
         }
         .onAppear {
-            store.dispatch(.fetchPlaceDetail(placeId: placeId))
-            store.dispatch(.fetchCourseArchive(placeId: placeId))
+            store.dispatch(.fetchPlaceDetail)
+            store.dispatch(.fetchCourseArchive)
             
-            if fromSearch && appState.townId != self.townId {
-                store.dispatch(
-                    .showToastView(
-                        ToastContent(
-                            toastType: .withActionToast,
-                            message: "이 장소는 ???에 위치해있어요",
-                            toastAction: ToastAction(
-                                buttonTitle: "동네 변경",
-                                action: {
-                                    store.dispatch(.updateUserTowns(newTownId: self.townId))
-                                }
-                            )
-                        )
-                    )
-                )
-            }
+//            if fromSearch && appState.townId != self.townId {
+//                store.dispatch(
+//                    .showToastView(
+//                        ToastContent(
+//                            toastType: .withActionToast,
+//                            message: "이 장소는 ???에 위치해있어요",
+//                            toastAction: ToastAction(
+//                                buttonTitle: "동네 변경",
+//                                action: {
+//                                    store.dispatch(.updateUserTowns(newTownId: self.townId))
+//                                }
+//                            )
+//                        )
+//                    )
+//                )
+//            }
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
@@ -143,7 +143,7 @@ extension PlaceDetailView {
                 } findDirectionAction: {
                     store.dispatch(.requestFindDirection)
                 } addPlaceToCourseAction: {
-                    store.dispatch(.fetchCourseArchive(placeId: placeId))
+                    store.dispatch(.fetchCourseArchive)
                     store.dispatch(.toggleAddToCourse)
                     
                     if store.state.selectedCourseIndex != -1 {
@@ -160,7 +160,7 @@ extension PlaceDetailView {
                         )
                     )
                 } reportsAction: {
-                    appCoordinator.navigate(to: .reports(placeId: self.placeId))
+                    appCoordinator.navigate(to: .reports(placeId: store.placeId))
                 }
                 .transition(.move(edge: .leading))
             } else {
@@ -197,7 +197,7 @@ extension PlaceDetailView {
                         store.dispatch(.selectCourseToAdd(index: index))
                     }
                 } backAction: {
-                    store.dispatch(.fetchCourseArchive(placeId: placeId))
+                    store.dispatch(.fetchCourseArchive)
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(.selectCourseToAdd(index: -1))
                 } goToAddCourseAction: {
@@ -225,7 +225,7 @@ extension PlaceDetailView {
                                 if let addPlaceCourseId = store.state.addPlaceCourseId {
                                     appCoordinator.navigate(
                                         to: .courseDetail(
-                                            townId: townId,
+                                            townId: store.townId,
                                             courseId: addPlaceCourseId,
                                             fromArchive: true
                                         )
@@ -243,8 +243,7 @@ extension PlaceDetailView {
             )
             store.dispatch(
                 .submitAddPlace(
-                    courseId: store.state.courses[selectedCourseIndex].courseId,
-                    placeId: placeId
+                    courseId: store.state.courses[selectedCourseIndex].courseId
                 )
             )
             store.dispatch(.addPlaceToCourse(index: selectedCourseIndex))
@@ -262,9 +261,9 @@ extension PlaceDetailView {
 extension PlaceDetailView {
     private func bookmarkPlace() {
         if store.state.isBookmarked {
-            store.dispatch(.removePlaceBookmark(placeId: placeId))
+            store.dispatch(.removePlaceBookmark)
         } else {
-            store.dispatch(.submitPlaceBookmark(placeId: placeId))
+            store.dispatch(.submitPlaceBookmark)
         }
         
         store.dispatch(.toggleBookmarkPlace)
