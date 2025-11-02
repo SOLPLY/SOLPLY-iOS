@@ -9,4 +9,5 @@ import Foundation
 
 struct RegisterResponseDTO: ResponseModelType {
     let placeRequestId: Int
+    let userId: Int
 }

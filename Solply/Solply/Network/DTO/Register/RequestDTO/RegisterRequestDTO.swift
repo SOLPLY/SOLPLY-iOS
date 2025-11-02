@@ -13,7 +13,7 @@ struct RegisterRequestDTO: RequestModelType {
     let mainTagId: Int
     let subTagAIds: [Int]
     let subTagBIds: [Int]
-    let reason: String?
+    let reason: String
     let images: [RegisterImage]?
 }
 
