@@ -15,6 +15,8 @@ struct RegisterView: View {
     @FocusState private var isFocused: Bool
     @StateObject private var store = RegisterStore()
     
+    private let textEditorId: String = "textEditor"
+    
     // MARK: - Body
     
     var body: some View {
@@ -31,14 +33,15 @@ struct RegisterView: View {
                     Rectangle()
                         .frame(height: 156.adjustedHeight)
                         .foregroundStyle(.clear)
-                        .id("textEditor")
+                        .id(textEditorId)
                 }
             }
+            .scrollDisabled(store.state.registerStep != .selectExtraFeatures)
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: isFocused) { _, isFocused in
                 if isFocused {
                     withAnimation(.easeOut(duration: 0.3)) {
-                        proxy.scrollTo("textEditor", anchor: .bottom)
+                        proxy.scrollTo(textEditorId, anchor: .bottom)
                     }
                 }
             }
@@ -80,8 +83,7 @@ extension RegisterView {
                                 store.dispatch(.updateSearchBarText(text: text))
                             },
                             onSubmit: { text in
-                                // TODO: - 네이버 검색 API 연동
-                                store.dispatch(.tempAction)
+                                store.dispatch(.fetchSearchPlaces)
                             },
                             registerAction: {
                                 store.dispatch(
@@ -95,7 +97,7 @@ extension RegisterView {
                         .padding(.horizontal, 16.adjustedWidth)
                         
                         // 검색 결과 List
-                        if !store.state.searchResult.isEmpty {
+                        if store.state.hasSearched {
                             RegisterSearchList(searchResult: store.state.searchResult) { result in
                                 store.dispatch(
                                     .selectPlaceToRegister(

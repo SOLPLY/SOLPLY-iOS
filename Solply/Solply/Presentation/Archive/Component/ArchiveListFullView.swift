@@ -62,7 +62,7 @@ extension ArchiveListFullView {
                 if store.state.activeDelete {
                     store.dispatch(.togglePlaceArchiveList(placeId: item.placeId))
                 } else {
-                    appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: item.placeId))
+                    appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: item.placeId, fromSearch: false))
                 }
                 
                 if store.state.activeCancel {
