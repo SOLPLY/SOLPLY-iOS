@@ -12,7 +12,8 @@ final class PlaceDetailStore: ObservableObject {
     @Published private(set) var state = PlaceDetailState()
     private let effect = PlaceDetailEffect(
         courseService: CourseService(),
-        placeService: PlaceService()
+        placeService: PlaceService(),
+        userService: UserService()
     )
     
     func dispatch(_ action: PlaceDetailAction) {
@@ -52,13 +53,17 @@ final class PlaceDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
-            
         case .submitAddPlace(let courseId, let placeId):
             Task {
                 let result = await effect.submitAddPlace(courseId: courseId, placeId: placeId)
                 self.dispatch(result)
             }
             
+        case .updateUserTowns(let newTownId):
+            Task {
+                let result = await effect.updateUserTowns(selectedTownId: newTownId)
+                self.dispatch(result)
+            }
             
         default:
             break

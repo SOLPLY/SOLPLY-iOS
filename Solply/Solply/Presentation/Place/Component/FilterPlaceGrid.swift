@@ -156,7 +156,8 @@ struct FilterPlaceGrid: View {
                         ) {
                             appCoordinator.navigate(to: .placeDetail(
                                 townId: townId,
-                                placeId: place.placeId
+                                placeId: place.placeId,
+                                fromSearch: false
                             ))
                         }
                     }

@@ -12,22 +12,38 @@ struct RegisterView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @FocusState private var isFocused: Bool
     @StateObject private var store = RegisterStore()
+    
+    private let textEditorId: String = "textEditor"
     
     // MARK: - Body
     
     var body: some View {
-        ScrollView(.vertical) {
-            VStack(alignment: .center, spacing: 40.adjustedHeight) {
-                searchPlace
-                
-                selectMainTagType
-                
-                selectExtraFeatures
-                
-                Rectangle()
-                    .frame(height: 125.adjustedHeight)
-                    .foregroundStyle(.clear)
+        ScrollViewReader { proxy in
+            ScrollView(.vertical) {
+                VStack(alignment: .center, spacing: 40.adjustedHeight) {
+                    searchPlace
+                    
+                    selectMainTagType
+                    
+                    selectExtraFeatures
+                        .focused($isFocused)
+                    
+                    Rectangle()
+                        .frame(height: 156.adjustedHeight)
+                        .foregroundStyle(.clear)
+                        .id(textEditorId)
+                }
+            }
+            .scrollDisabled(store.state.registerStep != .selectExtraFeatures)
+            .scrollDismissesKeyboard(.interactively)
+            .onChange(of: isFocused) { _, isFocused in
+                if isFocused {
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        proxy.scrollTo(textEditorId, anchor: .bottom)
+                    }
+                }
             }
         }
         .overlay(alignment: .bottom) {
@@ -67,8 +83,7 @@ extension RegisterView {
                                 store.dispatch(.updateSearchBarText(text: text))
                             },
                             onSubmit: { text in
-                                // TODO: - 네이버 검색 API 연동
-                                store.dispatch(.tempAction)
+                                store.dispatch(.fetchSearchPlaces)
                             },
                             registerAction: {
                                 store.dispatch(
@@ -82,7 +97,7 @@ extension RegisterView {
                         .padding(.horizontal, 16.adjustedWidth)
                         
                         // 검색 결과 List
-                        if !store.state.searchResult.isEmpty {
+                        if store.state.hasSearched {
                             RegisterSearchList(searchResult: store.state.searchResult) { result in
                                 store.dispatch(
                                     .selectPlaceToRegister(
@@ -196,7 +211,6 @@ extension RegisterView {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     
                     // 사진 선택
-                    
                     VStack(alignment: .leading, spacing: 12.adjustedHeight) {
                         sectionTitle("장소의 사진이 있다면 추가해주세요", showsSelectionHint: true)
                         

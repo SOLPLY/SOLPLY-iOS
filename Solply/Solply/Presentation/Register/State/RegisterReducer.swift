@@ -35,7 +35,6 @@ enum RegisterReducer {
              
         case .errorOccured(let error):
             print(error)
-            break
             
         case .fetchSubTags:
             break
@@ -47,23 +46,18 @@ enum RegisterReducer {
             state.selectableSubTagsB = selectableSubTags.filter { $0.tagType == "OPTION2" }
             state.isCompleteButtonEnabled = shouldEnableCompleteButton(state)
             
+        case .fetchSearchPlaces:
+            // TODO: - 검색 중 로딩 표시
+            break
             
+        case .searchPlacesFetched(let places):
+            state.searchResult = places
+            state.hasSearched = true
             
-        case .tempAction: // 검색했다고 치고~
-            state.searchResult = [
-                RegisterSearch(
-                    placeName: "공간 이름1이이이이이이이이이이이ㅣ이이이이이이이이이",
-                    placeAddress: "상세 주소 1 아아아아아아아아아아아아아아아ㅏ앙아아"
-                ),
-                RegisterSearch(
-                    placeName: "공간 이름2",
-                    placeAddress: "상세 주소2"
-                ),
-                RegisterSearch(
-                    placeName: "공간 이름3",
-                    placeAddress: "상세 주소3"
-                )
-            ]
+        case .fetchSearchPlacesFailed(let error):
+            state.searchResult = []
+            state.hasSearched = true
+            print(error)
         }
     }
 }

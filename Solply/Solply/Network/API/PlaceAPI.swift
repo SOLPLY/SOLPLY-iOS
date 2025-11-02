@@ -40,4 +40,10 @@ protocol PlaceAPI {
     
     /// 장소 검색
     func searchPlace(placeName: String) async throws -> BaseResponseBody<PlaceSearchResponseDTO>
+    
+    /// 잘못된 정보 제보
+    func submitReports(
+        placeId: Int,
+        request: ReportsRequestDTO
+    ) async throws -> BaseResponseBody<EmptyResponseDTO>
 }

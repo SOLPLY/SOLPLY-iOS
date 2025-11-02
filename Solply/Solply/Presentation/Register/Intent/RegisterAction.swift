@@ -15,10 +15,12 @@ enum RegisterAction {
     case selectSubTagB(selectableSubTags: [SelectableSubTag])
     case editReigsterContent(registerContent: String)
     
-    case tempAction // 임시로 검색하는 action
-    
     // api
     case errorOccured(error: NetworkError)
     case fetchSubTags(parentId: Int)
     case subTagsFetched(selectableSubTags: [SelectableSubTag])
+    
+    case fetchSearchPlaces
+    case searchPlacesFetched(places: [RegisterSearch])
+    case fetchSearchPlacesFailed(error: NetworkError)
 }

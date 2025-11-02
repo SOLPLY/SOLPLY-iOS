@@ -8,8 +8,12 @@
 import Foundation
 
 struct ReportsState {
+    var placeId: Int?
+    
     var shouldGoBack: Bool = false
     var reportsStep: ReportsStep = .reportsSelect
+    
     var selectedReportsType: ReportsType?
     var reportsContent: String = ""
+    var attachedImageData: [(String, Data)] = []
 }

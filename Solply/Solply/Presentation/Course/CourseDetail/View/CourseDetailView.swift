@@ -63,15 +63,7 @@ struct CourseDetailView: View {
         .onChange(of: store.state.toastContent) { _, toastContent in
             guard let toastContent else { return }
             
-            toastManager.showToast(content: toastContent) {
-                appCoordinator.navigate(
-                    to: .courseDetail(
-                        townId: townId,
-                        courseId: courseId,
-                        fromArchive: true
-                    )
-                )
-            }
+            toastManager.showToast(content: toastContent)
         }
         .sheet(
             isPresented: Binding(
@@ -187,7 +179,7 @@ extension CourseDetailView {
                     ) {
                         store.dispatch(.focusPlace(index: index))
                     } detailAction: {
-                        appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: store.state.places[index].placeId))
+                        appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: store.state.places[index].placeId, fromSearch: false))
                     } findDirectionAction: {
                         store.dispatch(.requestFindDirection(
                             destinationLatitude: store.state.places[index].latitude,
@@ -204,8 +196,7 @@ extension CourseDetailView {
                                 .showToastView(
                                     ToastContent(
                                         toastType: .defaultToast,
-                                        message: "'\(place.placeName.truncated(9))'가 수집함에 저장되었어요.",
-                                        buttonTitle: nil
+                                        message: "'\(place.placeName.truncated(length: 9))'가 수집함에 저장되었어요."
                                     )
                                 )
                             )
@@ -216,8 +207,7 @@ extension CourseDetailView {
                                 .showToastView(
                                     ToastContent(
                                         toastType: .defaultToast,
-                                        message: "'\(place.placeName.truncated(9))'가 수집함에서 삭제되었어요.",
-                                        buttonTitle: nil
+                                        message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요."
                                     )
                                 )
                             )
@@ -351,7 +341,7 @@ extension CourseDetailView {
                     store.dispatch(
                         .submitCreateCourseDetail(
                             request: CourseCreateRequestDTO(
-                                courseName: store.state.courseName.removingTextAfterParenthesis(),
+                                courseName: store.state.courseName.truncated(excludeEndRange: " ("),
                                 courseDescription: store.state.courseDescription,
                                 places: store.state.places.enumerated().map { index, place in
                                     PlaceOrderDTO(
@@ -368,8 +358,7 @@ extension CourseDetailView {
                         .showToastView(
                             ToastContent(
                                 toastType: .defaultToast,
-                                message: "새 코스로 저장되었어요.",
-                                buttonTitle: nil
+                                message: "새 코스로 저장되었어요."
                             )
                         )
                     )
@@ -398,7 +387,18 @@ extension CourseDetailView {
                     ToastContent(
                         toastType: .withActionToast,
                         message: "코스가 수집함에 저장되었어요.",
-                        buttonTitle: "코스 수정하기"
+                        toastAction: ToastAction(
+                            buttonTitle: "코스 수정하기",
+                            action: {
+                                appCoordinator.navigate(
+                                    to: .courseDetail(
+                                        townId: townId,
+                                        courseId: courseId,
+                                        fromArchive: true
+                                    )
+                                )
+                            }
+                        )
                     )
                 )
             )

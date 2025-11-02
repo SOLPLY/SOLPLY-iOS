@@ -11,6 +11,7 @@ struct PlaceDetailView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager
     @StateObject private var store = PlaceDetailStore()
@@ -18,12 +19,14 @@ struct PlaceDetailView: View {
     
     private let townId: Int
     private let placeId: Int
+    private let fromSearch: Bool
     
     // MARK: - Initializer
     
-    init(townId: Int, placeId: Int) {
+    init(townId: Int, placeId: Int, fromSearch: Bool) {
         self.townId = townId
         self.placeId = placeId
+        self.fromSearch = fromSearch
     }
     
     // MARK: - Body
@@ -52,6 +55,23 @@ struct PlaceDetailView: View {
         .onAppear {
             store.dispatch(.fetchPlaceDetail(placeId: placeId))
             store.dispatch(.fetchCourseArchive(placeId: placeId))
+            
+            if fromSearch && appState.townId != self.townId {
+                store.dispatch(
+                    .showToastView(
+                        ToastContent(
+                            toastType: .withActionToast,
+                            message: "이 장소는 ???에 위치해있어요",
+                            toastAction: ToastAction(
+                                buttonTitle: "동네 변경",
+                                action: {
+                                    store.dispatch(.updateUserTowns(newTownId: self.townId))
+                                }
+                            )
+                        )
+                    )
+                )
+            }
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
@@ -59,17 +79,7 @@ struct PlaceDetailView: View {
         .onChange(of: store.state.toastContent) { _, toastContent in
             guard let toastContent else { return }
             
-            toastManager.showToast(content: toastContent) {
-                if let addPlaceCourseId = store.state.addPlaceCourseId {
-                    appCoordinator.navigate(
-                        to: .courseDetail(
-                            townId: townId,
-                            courseId: addPlaceCourseId,
-                            fromArchive: true
-                        )
-                    )
-                }
-            }
+            toastManager.showToast(content: toastContent)
         }
     }
 }
@@ -145,13 +155,12 @@ extension PlaceDetailView {
                         .showToastView(
                             ToastContent(
                                 toastType: .defaultToast,
-                                message: "클립보드에 복사되었습니다",
-                                buttonTitle: nil
+                                message: "클립보드에 복사되었습니다."
                             )
                         )
                     )
                 } reportsAction: {
-                    appCoordinator.navigate(to: .reports)
+                    appCoordinator.navigate(to: .reports(placeId: self.placeId))
                 }
                 .transition(.move(edge: .leading))
             } else {
@@ -171,8 +180,7 @@ extension PlaceDetailView {
                             .showToastView(
                                 ToastContent(
                                     toastType: .withIconToast,
-                                    message: "해당 장소가 코스에 이미 담겨있어요.",
-                                    buttonTitle: nil
+                                    message: "해당 장소가 코스에 이미 담겨있어요."
                                 )
                             )
                         )
@@ -181,8 +189,7 @@ extension PlaceDetailView {
                             .showToastView(
                                 ToastContent(
                                     toastType: .withIconToast,
-                                    message: "코스에 이미 6개의 장소가 꽉 차 있어요.",
-                                    buttonTitle: nil
+                                    message: "코스에 이미 6개의 장소가 꽉 차 있어요."
                                 )
                             )
                         )
@@ -211,8 +218,21 @@ extension PlaceDetailView {
                 .showToastView(
                     ToastContent(
                         toastType: .withActionToast,
-                        message: "‘\(store.state.courses[selectedCourseIndex].courseName.truncated(8))’에 추가되었어요.",
-                        buttonTitle: "자세히 보기"
+                        message: "‘\(store.state.courses[selectedCourseIndex].courseName.truncated(length: 8))’에 추가되었어요.",
+                        toastAction: ToastAction(
+                            buttonTitle: "자세히 보기",
+                            action: {
+                                if let addPlaceCourseId = store.state.addPlaceCourseId {
+                                    appCoordinator.navigate(
+                                        to: .courseDetail(
+                                            townId: townId,
+                                            courseId: addPlaceCourseId,
+                                            fromArchive: true
+                                        )
+                                    )
+                                }
+                            }
+                        )
                     )
                 )
             )
@@ -254,8 +274,7 @@ extension PlaceDetailView {
                 .showToastView(
                     ToastContent(
                         toastType: .defaultToast,
-                        message: "장소가 수집함에 저장되었어요.",
-                        buttonTitle: nil
+                        message: "장소가 수집함에 저장되었어요."
                     )
                 )
             )
@@ -264,6 +283,7 @@ extension PlaceDetailView {
 }
 
 #Preview {
-    PlaceDetailView(townId: 1, placeId: 1)
+    PlaceDetailView(townId: 1, placeId: 1, fromSearch: false)
+        .environmentObject(AppState())
         .environmentObject(AppCoordinator())
 }
