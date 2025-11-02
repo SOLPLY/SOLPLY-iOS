@@ -40,7 +40,7 @@ struct PlaceDataView: View {
                     .padding(.horizontal, 20.adjustedWidth)
                     .padding(.bottom, 16.adjustedHeight)
 
-                ForEach(places, id: \.placeId) { place in
+                ForEach(places.prefix(3), id: \.placeId) { place in
                     SearchPlaceCard(
                         thumbnailUrl: place.thumbnailImageUrl,
                         placeName: place.placeName,
