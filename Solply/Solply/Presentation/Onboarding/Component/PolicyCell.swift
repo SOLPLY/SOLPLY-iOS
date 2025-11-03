@@ -8,11 +8,30 @@
 import SwiftUI
 
 struct PolicyCell: View {
-    let title: String
-    let isRequired: Bool
-    let isChecked: Bool
-    var showsChevron: Bool = false
-    let onTap: () -> Void
+    
+    // MARK: - Properties
+    
+       private let title: String
+       private let isRequired: Bool
+       private let isChecked: Bool
+       private let showsChevron: Bool
+       private let onTap: () -> Void
+
+       // MARK: - Init
+    
+       init(
+           title: String,
+           isRequired: Bool,
+           isChecked: Bool,
+           showsChevron: Bool = false,
+           onTap: @escaping () -> Void
+       ) {
+           self.title = title
+           self.isRequired = isRequired
+           self.isChecked = isChecked
+           self.showsChevron = showsChevron
+           self.onTap = onTap
+       }
 
     var body: some View {
         Button(action: onTap) {
@@ -41,31 +60,4 @@ struct PolicyCell: View {
     private var prefix: String {
         isRequired ? "(필수) " : "(선택) "
     }
-}
-
-#Preview {
-    VStack(alignment: .leading, spacing: 16) {
-        PolicyCell(
-            title: "만 14세 이상입니다",
-            isRequired: true,
-            isChecked: true
-        ) { print("첫 번째 셀") }
-
-        PolicyCell(
-            title: "서비스 이용 약관",
-            isRequired: true,
-            isChecked: false,
-            showsChevron: true
-        ) { print("두 번째") }
-
-        PolicyCell(
-            title: "개인정보 처리방침",
-            isRequired: true,
-            isChecked: true,
-            showsChevron: true
-        ) { print("세 번째") }
-    }
-    .padding(.horizontal, 20)
-    .padding(.vertical, 16)
-    .background(.gray100)
 }
