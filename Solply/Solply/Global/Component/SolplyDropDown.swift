@@ -185,6 +185,7 @@ private extension SolplyDropDown {
             switch option {
             case .text(let textValue):
                 Text(textValue)
+                    .applySolplyFont(.body_16_r)
                     .foregroundColor(.gray900)
                     .lineLimit(1)
                     .truncationMode(.tail)
@@ -192,6 +193,7 @@ private extension SolplyDropDown {
             case .tag(let mainTagType):
                 Image(mainTagType.icon)
                 Text(mainTagType.title)
+                    .applySolplyFont(.body_16_r)
                     .foregroundColor(.gray900)
                     .lineLimit(1)
                     .truncationMode(.tail)
