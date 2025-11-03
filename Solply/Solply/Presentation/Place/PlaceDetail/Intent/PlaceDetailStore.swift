@@ -43,6 +43,11 @@ final class PlaceDetailStore: ObservableObject {
         PlaceDetailReducer.reduce(state: &state, action: action)
         
         switch action {
+        case .compareUserTownId(let userTownId):
+            if userTownId != townId {
+                dispatch(.showTownToast)
+            }
+            
         case .requestFindDirection:
             effect.findDirection(
                 startLatitude: state.userLatitude,
@@ -65,8 +70,38 @@ final class PlaceDetailStore: ObservableObject {
             }
             
         case .placeDetailFetched(let placeDetailInformation):
-            if fromSearch &&
-            print(placeDetailInformation.townName)
+            guard state.shouldShowTownToast && fromSearch else { return }
+            
+            let townName = placeDetailInformation.townName
+            
+            self.dispatch(
+                .showToastView(
+                    ToastContent(
+                        toastType: .withActionToast,
+                        message: "이 장소는 \(townName)에 위치해있어요.",
+                        toastAction: ToastAction(
+                            buttonTitle: "동네 변경",
+                            action: {
+                                self.dispatch(
+                                    .updateUserTowns(
+                                        newTownId: self.townId
+                                    )
+                                )
+                            }
+                        )
+                    )
+                )
+            )
+            
+        case .userTownsUpdated(let townName):
+            self.dispatch(
+                .showToastView(
+                    ToastContent(
+                        toastType: .defaultToast,
+                        message: "동네가 \(townName)으로 변경되었어요."
+                    )
+                )
+            )
             
         case .submitPlaceBookmark:
             Task {

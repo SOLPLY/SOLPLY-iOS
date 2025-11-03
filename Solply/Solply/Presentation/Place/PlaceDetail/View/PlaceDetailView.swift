@@ -55,23 +55,7 @@ struct PlaceDetailView: View {
         .onAppear {
             store.dispatch(.fetchPlaceDetail)
             store.dispatch(.fetchCourseArchive)
-            
-//            if fromSearch && appState.townId != self.townId {
-//                store.dispatch(
-//                    .showToastView(
-//                        ToastContent(
-//                            toastType: .withActionToast,
-//                            message: "이 장소는 ???에 위치해있어요",
-//                            toastAction: ToastAction(
-//                                buttonTitle: "동네 변경",
-//                                action: {
-//                                    store.dispatch(.updateUserTowns(newTownId: self.townId))
-//                                }
-//                            )
-//                        )
-//                    )
-//                )
-//            }
+            store.dispatch(.compareUserTownId(userTownId: appState.townId))
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))

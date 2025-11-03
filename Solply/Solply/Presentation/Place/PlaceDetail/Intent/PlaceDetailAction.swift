@@ -8,6 +8,9 @@
 import Foundation
 
 enum PlaceDetailAction {
+    case compareUserTownId(userTownId: Int)
+    case showTownToast
+    
     case toggleAddToCourse
     case toggleBookmarkPlace
     case requestFindDirection
@@ -41,6 +44,6 @@ enum PlaceDetailAction {
     case addPlaceSubmitted
     
     case updateUserTowns(newTownId: Int)
-    case userTownsUpdated
+    case userTownsUpdated(townName: String)
     case updateUserTownsFailed(error: NetworkError)
 }

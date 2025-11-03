@@ -10,6 +10,12 @@ import UIKit
 enum PlaceDetailReducer {
     static func reduce(state: inout PlaceDetailState, action: PlaceDetailAction) {
         switch action {
+        case .compareUserTownId:
+            break
+            
+        case .showTownToast:
+            state.shouldShowTownToast = true
+            
         case .toggleAddToCourse:
             state.addButtonSelected.toggle()
             state.findDirectionEnabled = state.addButtonSelected ? false : true
@@ -99,10 +105,7 @@ enum PlaceDetailReducer {
             break
             
         case .userTownsUpdated:
-            state.toastContent = ToastContent(
-                toastType: .defaultToast,
-                message: "동네가 ???으로 변경되었어요."
-            )
+            state.shouldShowTownToast = false
             
         case .updateUserTownsFailed(let error):
             print(error)

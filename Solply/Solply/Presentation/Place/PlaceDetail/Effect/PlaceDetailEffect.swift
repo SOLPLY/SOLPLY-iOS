@@ -143,9 +143,13 @@ extension PlaceDetailEffect {
                 selectedTownId: selectedTownId
             )
             
-            _ = try await userService.updateUserTowns(request)
+            let response = try await userService.updateUserTowns(request)
             
-            return .userTownsUpdated
+            guard let data = response.data else { return .updateUserTownsFailed(error: .responseError)}
+            
+            let townName = data.selectedTown.townName
+            
+            return .userTownsUpdated(townName: townName)
         } catch let error as NetworkError {
             return .updateUserTownsFailed(error: error)
         } catch {

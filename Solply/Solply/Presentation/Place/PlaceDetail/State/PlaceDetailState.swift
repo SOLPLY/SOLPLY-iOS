@@ -8,6 +8,8 @@
 import Foundation
 
 struct PlaceDetailState {
+    var shouldShowTownToast: Bool = false
+    
     var addButtonSelected: Bool = false
     var bookmarkButtonSelected: Bool = false
     var bookmarkButtonEnabled: Bool = true
