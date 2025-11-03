@@ -8,6 +8,7 @@
 import Foundation
 
 enum OnboardingStep: Int, CaseIterable {
+    case agreement
     case onboardingJGD
     case personaOption
     case nickName
