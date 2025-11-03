@@ -9,5 +9,4 @@ import Foundation
 
 struct UserTownsResponseDTO: ResponseModelType {
     let selectedTown: TownDTO
-    let favoriteTownList: [TownDTO]
 }
