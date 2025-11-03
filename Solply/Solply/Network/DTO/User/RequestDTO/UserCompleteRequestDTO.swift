@@ -7,9 +7,29 @@
 
 import Foundation
 
-struct UserCompleteRequestDTO: Encodable, RequestModelType {
+struct UserCompleteRequestDTO: RequestModelType {
     let selectedTownId: Int
     let persona: String
     let nickname: String
-    let policyAgreementInfos: [PolicyAgreementInfo]
+    let policyAgreementInfos: [PolicyAgreementInfoDTO]
+    
+    init(
+        selectedTownId: Int,
+        persona: String,
+        nickname: String,
+        policyAgreementInfos: [PolicyAgreementInfo] = []
+    ) {
+        self.selectedTownId = selectedTownId
+        self.persona = persona
+        self.nickname = nickname
+        self.policyAgreementInfos = policyAgreementInfos.map {
+            PolicyAgreementInfoDTO(policyId: $0.policyId, isAgree: $0.isAgree)
+        }
+    }
+    
+    struct PolicyAgreementInfoDTO: Encodable {
+        let policyId: Int
+        let isAgree: Bool
+    }
 }
+

@@ -15,6 +15,7 @@ struct UserCompleteResponseDTO: ResponseModelType {
 
     func toEntity() -> OnboardingCompleteInfo {
         OnboardingCompleteInfo(
+            policyAgreementInfos: [],
             townId: selectedTownId,
             townName: selectedTownName,
             persona: persona,

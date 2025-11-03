@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserPoliciesResponseDTO: Decodable, ResponseModelType {
+struct UserPoliciesResponseDTO: ResponseModelType {
     let userPolicies: [PolicyDTO]
 }
 
