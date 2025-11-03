@@ -13,10 +13,36 @@ enum OnboardingReducer {
             state.step = OnboardingStep(rawValue: state.step.rawValue + 1) ?? .onboardingComplete
             
         case .goBack:
-            state.step = OnboardingStep(rawValue: state.step.rawValue - 1) ?? .onboardingJGD
+            state.step = OnboardingStep(rawValue: state.step.rawValue - 1) ?? .agreement
             
         case .skip:
             state.step = .onboardingComplete
+            
+        case .fetchPolicies:
+            state.isPoliciesLoading = true
+            state.policyErrorMessage = nil
+
+        case .fetchPoliciesSuccess(let list):
+            state.isPoliciesLoading = false
+            state.policyList = list
+            
+            for i in state.policyList.indices {
+                state.policyList[i].isAgreed = false
+            }
+
+        case .fetchPoliciesFailure(let message):
+            state.isPoliciesLoading = false
+            state.policyErrorMessage = message
+        
+        case .togglePolicy(let id):
+            if let idx = state.policyList.firstIndex(where: { $0.id == id }) {
+                state.policyList[idx].isAgreed.toggle()
+            }
+
+        case .toggleAllPolicies(let newValue):
+            for idx in state.policyList.indices {
+                state.policyList[idx].isAgreed = newValue
+            }
             
         case .selectTown(let town):
             state.selectedTown = town
