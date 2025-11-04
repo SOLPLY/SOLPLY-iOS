@@ -10,6 +10,12 @@ import UIKit
 enum PlaceDetailReducer {
     static func reduce(state: inout PlaceDetailState, action: PlaceDetailAction) {
         switch action {
+        case .compareUserTownId:
+            break
+            
+        case .showTownToast:
+            state.shouldShowTownToast = true
+            
         case .toggleAddToCourse:
             state.addButtonSelected.toggle()
             state.findDirectionEnabled = state.addButtonSelected ? false : true
@@ -56,23 +62,20 @@ enum PlaceDetailReducer {
         case .fetchPlaceDetail:
             break
             
-        case .placeDetailFetched(let placeDetail):
-            state.isBookmarked = placeDetail.isBookmarked
-            state.primaryTag = placeDetail.mainTag
-            state.placeName = placeDetail.placeName
-            state.introduction = placeDetail.introduction
-            
-            state.imageURLs = placeDetail.imageInfos.map { $0.url }
-            state.address = placeDetail.address
-            state.contactNumber = placeDetail.contactNumber ?? ""
-            state.openingHours = placeDetail.openingHours.replacingOccurrences(of: "\\n", with: "\n")
-            state.snsLink = placeDetail.snsLinks.map {
-                PlaceDetailSnsLink(snsPlatform: $0.snsPlatform, url: $0.url)
-            }
-            state.latitude = Double(placeDetail.latitude) ?? 0.0
-            state.longtitude = Double(placeDetail.longitude) ?? 0.0
-            state.placeDefaultId = placeDetail.placeDefaultId
-            state.placeType = placeDetail.placeType
+        case .placeDetailFetched(let placeDetailInformation):
+            state.isBookmarked = placeDetailInformation.isBookmarked
+            state.primaryTag = placeDetailInformation.primaryTag
+            state.placeName = placeDetailInformation.placeName
+            state.introduction = placeDetailInformation.introduction
+            state.imageURLs = placeDetailInformation.imageUrls
+            state.address = placeDetailInformation.address
+            state.contactNumber = placeDetailInformation.contactNumber
+            state.openingHours = placeDetailInformation.openingHours
+            state.snsLink = placeDetailInformation.snsLink
+            state.latitude = placeDetailInformation.latitude
+            state.longitude = placeDetailInformation.longitude
+            state.placeDefaultId = placeDetailInformation.placeDefaultId
+            state.placeType = placeDetailInformation.placeType
             
         case .submitPlaceBookmark:
             break
@@ -102,10 +105,7 @@ enum PlaceDetailReducer {
             break
             
         case .userTownsUpdated:
-            state.toastContent = ToastContent(
-                toastType: .defaultToast,
-                message: "동네가 ???으로 변경되었어요."
-            )
+            state.shouldShowTownToast = false
             
         case .updateUserTownsFailed(let error):
             print(error)
