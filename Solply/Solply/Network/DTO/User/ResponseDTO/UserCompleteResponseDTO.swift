@@ -1,5 +1,5 @@
 //
-//  OnboardingCompleteResponseDTO.swift
+//  UserCompleteResponseDTO.swift
 //  Solply
 //
 //  Created by sun on 8/26/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OnboardingCompleteResponseDTO: ResponseModelType {
+struct UserCompleteResponseDTO: ResponseModelType {
     let selectedTownId: Int
     let selectedTownName: String
     let persona: String
@@ -15,6 +15,7 @@ struct OnboardingCompleteResponseDTO: ResponseModelType {
 
     func toEntity() -> OnboardingCompleteInfo {
         OnboardingCompleteInfo(
+            policyAgreementInfos: [],
             townId: selectedTownId,
             townName: selectedTownName,
             persona: persona,

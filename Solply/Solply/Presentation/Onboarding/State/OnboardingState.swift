@@ -6,8 +6,15 @@
 //
 
 struct OnboardingState {
-    var step: OnboardingStep = .onboardingJGD
-
+    var step: OnboardingStep = .agreement
+    
+    var policyList: [Policy] = []
+    var isPoliciesLoading: Bool = false
+    var policyErrorMessage: String? = nil
+    var policyAgreementInfos: [PolicyAgreementInfo] {
+        policyList.map { PolicyAgreementInfo(policyId: $0.id, isAgree: $0.isAgreed) }
+    }
+    
     var townList: [Town] = []
     var selectedTown: Town? = nil
     var selectedSubTown: SubTown? = nil

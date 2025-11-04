@@ -11,6 +11,13 @@ enum OnboardingAction {
     case next
     case goBack
     case skip
+    
+    case fetchPolicies
+    case fetchPoliciesSuccess([Policy])
+    case fetchPoliciesFailure(String)
+    
+    case togglePolicy(id: Int)
+    case toggleAllPolicies(Bool)
 
     case updateNickname(String)
     case updateNicknameText(String)
