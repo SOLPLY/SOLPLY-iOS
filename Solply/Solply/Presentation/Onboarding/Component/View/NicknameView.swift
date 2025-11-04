@@ -21,6 +21,7 @@ struct NicknameView: View {
             
             NicknameTextField(
                 state: store.state.nicknameType,
+                counterVisibility: .always,
                 onChange: { text in
                     store.dispatch(.updateNickname(text))
                 },
