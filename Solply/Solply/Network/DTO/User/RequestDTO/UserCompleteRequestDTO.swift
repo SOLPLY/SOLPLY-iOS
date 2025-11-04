@@ -27,7 +27,7 @@ struct UserCompleteRequestDTO: RequestModelType {
         }
     }
     
-    struct PolicyAgreementInfoDTO: Encodable {
+    struct PolicyAgreementInfoDTO: RequestModelType {
         let policyId: Int
         let isAgree: Bool
     }

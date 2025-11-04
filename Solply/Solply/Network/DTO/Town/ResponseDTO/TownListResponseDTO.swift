@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TownDTO: Decodable {
+struct TownDTO: ResponseModelType {
     let townId: Int
     let townName: String
     let parentTownId: Int?

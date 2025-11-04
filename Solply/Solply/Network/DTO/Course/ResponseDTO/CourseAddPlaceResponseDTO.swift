@@ -14,7 +14,7 @@ struct CourseAddPlaceResponseDTO: ResponseModelType {
     let addedPlaceInfo: AddedPlaceInformationDTO
 }
 
-struct AddedPlaceInformationDTO: Decodable {
+struct AddedPlaceInformationDTO: ResponseModelType {
     let placeId: Int
     let placeOrder: Int
 }

@@ -11,7 +11,7 @@ struct UserPoliciesResponseDTO: ResponseModelType {
     let userPolicies: [PolicyDTO]
 }
 
-struct PolicyDTO: Decodable {
+struct PolicyDTO: ResponseModelType {
     let id: Int
     let policyType: String
     let title: String
