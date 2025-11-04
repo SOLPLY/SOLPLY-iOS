@@ -53,7 +53,7 @@ final class PlaceDetailStore: ObservableObject {
                 startLatitude: state.userLatitude,
                 startLongitude: state.userLongitude,
                 destinationLatitude: state.latitude,
-                destinationLongitude: state.longtitude,
+                destinationLongitude: state.longitude,
                 destinationName: state.placeName
             )
             
@@ -81,12 +81,10 @@ final class PlaceDetailStore: ObservableObject {
                         message: "이 장소는 \(townName)에 위치해있어요.",
                         toastAction: ToastAction(
                             buttonTitle: "동네 변경",
-                            action: {
-                                self.dispatch(
-                                    .updateUserTowns(
-                                        newTownId: self.townId
-                                    )
-                                )
+                            action: { [weak self] in
+                                guard let self else { return }
+                                
+                                self.dispatch(.updateUserTowns(newTownId: self.townId))
                             }
                         )
                     )

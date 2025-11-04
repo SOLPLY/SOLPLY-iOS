@@ -73,7 +73,7 @@ enum PlaceDetailReducer {
             state.openingHours = placeDetailInformation.openingHours
             state.snsLink = placeDetailInformation.snsLink
             state.latitude = placeDetailInformation.latitude
-            state.longtitude = placeDetailInformation.longitude
+            state.longitude = placeDetailInformation.longitude
             state.placeDefaultId = placeDetailInformation.placeDefaultId
             state.placeType = placeDetailInformation.placeType
             
