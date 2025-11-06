@@ -57,6 +57,8 @@ struct PlaceDetailMapView: UIViewRepresentable {
     }
     
     func updateUIView(_ mapView: NMFMapView, context: Context) {
+        guard latitude != 0.0 && longitude != 0.0 else { return }
+        
         addMarker(to: mapView, context: context) // 조건 없이 무조건 호출
         configureCamera(mapView, coordinator: context.coordinator)
     }
@@ -71,8 +73,7 @@ struct PlaceDetailMapView: UIViewRepresentable {
 extension PlaceDetailMapView {
     class Coordinator {
         var marker: NMFMarker?
-        var currentLatitude: Double = 0.0
-        var currentLongitude: Double = 0.0
+        var didInitialMove: Bool = false
     }
 }
 
@@ -99,14 +100,14 @@ private extension PlaceDetailMapView {
                 zoomTo: zoomLevel
             )
             
-            if coordinator.currentLatitude == 0.0 && coordinator.currentLongitude == 0.0 {
+            if coordinator.didInitialMove == false {
                 cameraUpdate.animation = .none
-                
-                coordinator.currentLatitude = latitude
-                coordinator.currentLongitude = longitude
+                coordinator.didInitialMove = true
             } else {
                 cameraUpdate.animation = .fly
             }
+            
+            print("움직")
             
             mapView.moveCamera(cameraUpdate)
         }
