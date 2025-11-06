@@ -59,7 +59,7 @@ struct PlaceDetailMapView: UIViewRepresentable {
     func updateUIView(_ mapView: NMFMapView, context: Context) {
         guard latitude != 0.0 && longitude != 0.0 else { return }
         
-        addMarker(to: mapView, context: context) // 조건 없이 무조건 호출
+        addMarker(to: mapView, context: context)
         configureCamera(mapView, coordinator: context.coordinator)
     }
     
