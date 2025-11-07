@@ -13,7 +13,6 @@ final class OnboardingStore: ObservableObject {
     @Published private(set) var state = OnboardingState()
     private let effect = OnboardingEffect(
         townService : TownService(),
-        onboardingService : OnboardingService(),
         userService : UserService()
     )
     
@@ -22,6 +21,15 @@ final class OnboardingStore: ObservableObject {
         
         switch action {
             
+        case .fetchPolicies:
+            Task {
+                let result = await effect.fetchPolicies()
+                dispatch(result)
+            }
+        
+        case .togglePolicy, .toggleAllPolicies:
+            break
+        
         case .updateNickname(let nickname):
             state.nickname = nickname
             
@@ -67,9 +75,9 @@ final class OnboardingStore: ObservableObject {
             Task {
                 let result = await effect.completeOnboarding(
                     selectedTownId: selectedSubTown.id,
-                    favoriteTownIdList: state.townList.flatMap { $0.subTowns.map { $0.id } },
                     persona: selectedPersona.type,
-                    nickname: state.nickname
+                    nickname: state.nickname,
+                    policyAgreementInfos: state.policyAgreementInfos
                 )
                 dispatch(result)
             }

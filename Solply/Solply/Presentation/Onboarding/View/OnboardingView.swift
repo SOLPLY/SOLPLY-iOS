@@ -22,6 +22,8 @@ struct OnboardingView: View {
                             .animation(.easeInOut(duration: 0.3), value: store.state.step)
                     }
                     switch store.state.step {
+                    case .agreement:
+                        OnboardingAgreementView(store: store)
                     case .onboardingJGD:
                         OnboardingJGDView(store: store)
                     case .personaOption:
@@ -41,9 +43,9 @@ struct OnboardingView: View {
                 }
                 .customNavigationBar(.onboarding(backAction: {
                     switch store.state.step {
-                    case .onboardingJGD:
+                    case .agreement:
                         appCoordinator.changeRoot(to: .auth)
-                    case .personaOption, .nickName:
+                    case .onboardingJGD, .personaOption, .nickName:
                         store.dispatch(.goBack)
                     case .onboardingComplete:
                         break

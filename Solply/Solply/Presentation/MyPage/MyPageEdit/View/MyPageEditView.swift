@@ -88,6 +88,7 @@ private extension MyPageEditView {
             
             NicknameTextField(
                 state: .editing,
+                counterVisibility: .whenNotEmpty,
                 onChange: { store.dispatch(.nicknameChanged($0)) },
                 onSubmit: { store.dispatch(.nicknameChanged($0)) }
             )
@@ -113,7 +114,7 @@ private extension MyPageEditView {
 
 // MARK: - Preview
 
-//#Preview {
-//    MyPageEditView()
-//        .environmentObject(AppCoordinator())
-//}
+#Preview {
+    MyPageEditView()
+        .environmentObject(AppCoordinator())
+}

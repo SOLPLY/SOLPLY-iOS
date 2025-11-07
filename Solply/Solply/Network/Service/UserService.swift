@@ -13,6 +13,10 @@ final class UserService: BaseService<UserTargetType> { }
 
 extension UserService: UserAPI {
     
+    func fetchPolicies() async throws -> BaseResponseBody<UserPoliciesResponseDTO> {
+            try await self.request(with: .fetchPolicies)
+        }
+    
     func fetchUserInformation() async throws -> BaseResponseBody<UserInformationResponseDTO> {
         return try await self.request(with: .fetchUserInformation)
     }
@@ -29,4 +33,11 @@ extension UserService: UserAPI {
         -> BaseResponseBody<UserTownsUpdateResponseDTO> {
             try await self.request(with: .updateUserTowns(body))
         }
+    func fetchPersonaList() async throws -> BaseResponseBody<UserPersonaListResponseDTO> {
+        return try await self.request(with: .fetchPersonaList)
+    }
+    
+    func updateOnboardingUserInfo(request: UserCompleteRequestDTO) async throws -> BaseResponseBody<UserCompleteResponseDTO> {
+        return try await self.request(with: .completeOnboarding(request))
+    }
 }

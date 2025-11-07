@@ -8,6 +8,9 @@
 import Foundation
 
 enum PlaceDetailAction {
+    case compareUserTownId(userTownId: Int)
+    case showTownToast
+    
     case toggleAddToCourse
     case toggleBookmarkPlace
     case requestFindDirection
@@ -24,23 +27,23 @@ enum PlaceDetailAction {
     
     // api
     
-    case fetchCourseArchive(placeId: Int)
+    case fetchCourseArchive
     case courseArchiveFetched([CourseArchiveDTO])
     case errorOccured(error: NetworkError)
     
-    case fetchPlaceDetail(placeId: Int)
-    case placeDetailFetched(PlaceDetailResponseDTO)
+    case fetchPlaceDetail
+    case placeDetailFetched(placeDetailInformation: PlaceDetailInformation)
     
-    case submitPlaceBookmark(placeId: Int)
+    case submitPlaceBookmark
     case placeBookmarkSubmitted
     
-    case removePlaceBookmark(placeId: Int)
+    case removePlaceBookmark
     case placeBookmarkRemoved
     
-    case submitAddPlace(courseId: Int, placeId: Int)
+    case submitAddPlace(courseId: Int)
     case addPlaceSubmitted
     
     case updateUserTowns(newTownId: Int)
-    case userTownsUpdated
+    case userTownsUpdated(townName: String)
     case updateUserTownsFailed(error: NetworkError)
 }

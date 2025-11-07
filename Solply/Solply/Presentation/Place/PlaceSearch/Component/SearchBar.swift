@@ -48,5 +48,6 @@ struct SearchBar: View {
             borderWidth: 1
         )
         .padding(.horizontal, 16.adjustedWidth)
+        .padding(.top, 16.adjustedHeight)
     }
 }

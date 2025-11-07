@@ -1,5 +1,5 @@
 //
-//  OnboardingPersonaListResponseDTO.swift
+//  UserPersonaListResponseDTO.swift
 //  Solply
 //
 //  Created by sun on 8/26/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OnboardingPersonaListResponseDTO: ResponseModelType {
+struct UserPersonaListResponseDTO: ResponseModelType {
     let personaList: [PersonaDTO]
 }
 

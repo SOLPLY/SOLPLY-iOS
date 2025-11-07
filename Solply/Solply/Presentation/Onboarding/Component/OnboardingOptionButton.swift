@@ -1,5 +1,5 @@
 //
-//  PersonaOptionButton.swift
+//  OnboardingOptionButton.swift
 //  Solply
 //
 //  Created by 선영주 on 7/10/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PersonaOptionButton: View {
+struct OnboardingOptionButton: View {
 
     // MARK: - Properties
 

@@ -38,7 +38,6 @@ struct CourseDetailMapView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> NMFMapView {
         let mapView = configureMapView(context: context)
-        configureInitialCamera(mapView)
         return mapView
     }
     
@@ -49,7 +48,7 @@ struct CourseDetailMapView: UIViewRepresentable {
 
         addMarkersToMap(mapView, context: context)
         addLineToMap(mapView, context: context)
-        updateCameraWithCalculatedZoom(mapView)
+        configureCameraWithCalculatedZoom(mapView, coordinator: context.coordinator)
     }
 }
 
@@ -90,31 +89,21 @@ extension CourseDetailMapView {
 // MARK: - Camera Management
 
 extension CourseDetailMapView {
-    /// 초기 카메라 위치를 설정하는 함수입니다 (기본 줌 레벨 15.5).
-    private func configureInitialCamera(_ mapView: NMFMapView) {
-        let centerCoordinate: NMGLatLng
-        
-        if places.isEmpty {
-            centerCoordinate = NMGLatLng(lat: 37.5665, lng: 126.9780)
-        } else {
-            centerCoordinate = calculateCenterCoordinate()
-        }
-        
-        DispatchQueue.main.async {
-            let cameraUpdate = NMFCameraUpdate(scrollTo: centerCoordinate, zoomTo: self.defaultZoomLevel)
-            cameraUpdate.animation = .none
-            mapView.moveCamera(cameraUpdate)
-        }
-    }
-    
     /// 계산된 줌 레벨로 카메라를 업데이트하는 함수입니다.
-    private func updateCameraWithCalculatedZoom(_ mapView: NMFMapView) {
+    private func configureCameraWithCalculatedZoom(_ mapView: NMFMapView, coordinator: Coordinator) {
         let centerCoordinate = calculateCenterCoordinate()
         let calculatedZoomLevel = calculateOptimalZoomLevel()
         
         DispatchQueue.main.async {
             let cameraUpdate = NMFCameraUpdate(scrollTo: centerCoordinate, zoomTo: calculatedZoomLevel)
-            cameraUpdate.animation = .fly
+            
+            if coordinator.didInitialMove == false {
+                cameraUpdate.animation = .none
+                coordinator.didInitialMove = true
+            } else {
+                cameraUpdate.animation = .fly
+            }
+            
             mapView.moveCamera(cameraUpdate)
         }
     }
@@ -246,10 +235,12 @@ extension CourseDetailMapView {
 }
 
 // MARK: - Coordinator
-
-class Coordinator {
-    var markers: [NMFMarker] = []
-    var polyline: NMFPolylineOverlay?
+extension CourseDetailMapView {
+    class Coordinator {
+        var markers: [NMFMarker] = []
+        var polyline: NMFPolylineOverlay?
+        var didInitialMove: Bool = false
+    }
 }
 
 // MARK: - Equatable

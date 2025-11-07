@@ -22,7 +22,7 @@ struct PersonaOptionView: View {
 
             VStack(spacing: 16.adjustedHeight) {
                 ForEach(store.state.personaList.dropFirst().prefix(4), id: \.self) { persona in
-                    PersonaOptionButton(
+                    OnboardingOptionButton(
                         title: persona.description,
                         isSelected: store.state.selectedPersona?.type == persona.type
                     ) {

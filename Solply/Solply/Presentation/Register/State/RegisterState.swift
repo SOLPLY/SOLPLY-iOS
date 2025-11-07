@@ -17,6 +17,7 @@ struct RegisterState {
     var selectableSubTagsA: [SelectableSubTag] = [] // selectableSubTagsA.isSelect로 선택 여부 확인
     var selectableSubTagsB: [SelectableSubTag] = []
     var registerContent: String = ""
+    var attachedImageData: [(String, Data)] = []
     
     var isCompleteButtonEnabled: Bool = false
     
