@@ -49,7 +49,7 @@ extension AuthView {
             
             ProgressView()
                 .scaleEffect(1.5)
-                .progressViewStyle(CircularProgressViewStyle())
+                .progressViewStyle(.circular)
         }
     }
     
