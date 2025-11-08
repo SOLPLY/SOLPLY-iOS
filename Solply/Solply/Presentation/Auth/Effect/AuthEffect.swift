@@ -41,11 +41,7 @@ struct AuthEffect {
 
             TokenManager.shared.saveTokens(accessToken: accessToken, refreshToken: refreshToken)
             
-            return .loginSuccess(
-                accessToken: accessToken,
-                refreshToken: refreshToken,
-                isNewUser: isNewUser
-            )
+            return .loginSuccess(isNewUser: isNewUser)
         } catch let error as NetworkError {
             return .loginFailed(error)
         } catch {

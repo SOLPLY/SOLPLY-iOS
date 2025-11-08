@@ -14,10 +14,8 @@ enum AuthReducer {
         case .login:
             break
             
-        case .loginSuccess(let accessToken, let refreshToken, let isNewUser):
+        case .loginSuccess(let isNewUser):
             state.isLoggedIn = true
-            state.accessToken = accessToken
-            state.refreshToken = refreshToken
             state.isNewUser = isNewUser
             
         case .loginFailed(let networkError):

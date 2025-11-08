@@ -10,6 +10,6 @@ import Foundation
 enum AuthAction {
     
     case login(SocialLoginType)
-    case loginSuccess(accessToken: String, refreshToken: String, isNewUser: Bool)
+    case loginSuccess(isNewUser: Bool)
     case loginFailed(NetworkError)
 }
