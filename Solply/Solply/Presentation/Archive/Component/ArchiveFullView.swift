@@ -42,6 +42,7 @@ struct ArchiveFullView: View {
                 }
             }
             .padding(.top, 16.adjustedHeight)
+            .padding(.bottom, 100.adjustedHeight)
         }
         .background(.gray100)
     }

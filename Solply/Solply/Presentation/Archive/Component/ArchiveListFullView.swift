@@ -42,6 +42,7 @@ struct ArchiveListFullView: View {
                 }
             }
             .padding(.top, 16.adjustedHeight)
+            .padding(.bottom, 100.adjustedHeight)
         }
     }
 }
