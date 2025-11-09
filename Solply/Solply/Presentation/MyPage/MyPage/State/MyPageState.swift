@@ -8,7 +8,6 @@
 import Foundation
 
 struct MyPageState {
-    var nickname: String = ""
-    var loginProvider: String = ""
-    var places: [Place] = []
+    var user: UserInformation?
+    var registeredPlaces: [UserPlace] = []
 }

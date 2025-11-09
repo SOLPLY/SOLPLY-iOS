@@ -8,30 +8,28 @@
 import SwiftUI
 
 struct MyPageView: View {
-
+    
     // MARK: - Properties
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = MyPageStore()
-
+    
     // MARK: - Body
     
     var body: some View {
         ZStack(alignment: .top) {
             Color(.gray100)
                 .ignoresSafeArea(edges: .top)
-
+            
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     header
-
-                    MyPageRegisteredPlaces(
-                        places: [] // TODO: API 연결 시 실제 리스트로 교체
-                    )
-                    .padding(.top, 44.adjustedHeight)
-
+                    
+                    MyPageRegisteredPlaces(places: store.state.registeredPlaces)
+                        .padding(.top, 44.adjustedHeight)
+                    
                     MyPageSettings(
-//                        loginProvider: store.state.loginProvider,
                         loginProvider: "카카오 로그인",
                         appVersion: "v" + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"),
                         onTapCustomerCenter: { store.dispatch(.customerCenterTapped) },
@@ -47,6 +45,9 @@ struct MyPageView: View {
         .background(Color(.gray100).ignoresSafeArea())
         .customNavigationBar(.myPage(backAction: appCoordinator.goBack))
         .ignoresSafeArea(edges: .bottom)
+        .onAppear {
+            store.dispatch(.fetchUser)
+        }
     }
 }
 
@@ -59,7 +60,7 @@ private extension MyPageView {
                 Circle()
                     .frame(width: 80.adjustedWidth, height: 80.adjustedHeight)
                     .foregroundColor(.gray800)
-
+                
                 Image(.myNavIcon)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -67,12 +68,11 @@ private extension MyPageView {
                     .foregroundColor(.gray100)
             }
             .padding(.top, 24.adjustedHeight)
-
-//            Text(store.state.nickname)
-            Text("솔플리 화이띵")
+            
+            Text(store.state.user?.nickname ?? "")
                 .applySolplyFont(.title_18_sb)
                 .foregroundColor(.coreBlack)
-
+            
             Button {
                 appCoordinator.navigate(to: .myPageEdit)
             } label: {
@@ -80,7 +80,7 @@ private extension MyPageView {
                     Text("프로필 수정")
                         .applySolplyFont(.button_14_m)
                         .foregroundColor(.gray600)
-
+                    
                     Image(.arrowRightIcon)
                         .renderingMode(.template)
                         .resizable()
@@ -90,11 +90,11 @@ private extension MyPageView {
                 }
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 
-#Preview {
-    MyPageView()
-        .environmentObject(AppCoordinator())
-}
+//#Preview {
+//    MyPageView()
+//        .environmentObject(AppCoordinator())
+//}
