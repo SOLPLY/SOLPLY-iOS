@@ -58,12 +58,12 @@ extension AuthView {
             Image(.logoFullVector)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 40.adjustedHeight, height: 58.adjustedHeight)
+                .frame(width: 40.adjustedWidth, height: 58.adjustedHeight)
             
             Image(.letteringVector)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 215.adjustedHeight)
+                .frame(width: 215.adjustedWidth)
             
             Text("혼자만의 시간을\n더 쉽게, 더 즐겁게!")
                 .applySolplyFont(.display_20_sb)
@@ -72,7 +72,7 @@ extension AuthView {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 108.adjustedHeight)
-        .padding(.horizontal, 40.adjustedHeight)
+        .padding(.horizontal, 40.adjustedWidth)
     }
     
     private var buttons: some View {

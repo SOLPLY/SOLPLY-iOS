@@ -27,11 +27,11 @@ struct SocialLoginButton: View {
         Button {
             action?()
         } label: {
-            HStack(alignment: .center, spacing: 12) {
+            HStack(alignment: .center, spacing: 12.adjustedWidth) {
                 Image(socialLoginType.buttonIcon)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 28.adjustedHeight, height: 28.adjustedHeight)
+                    .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
                 
                 Text(socialLoginType.buttonTitle)
                     .applySolplyFont(.button_16_m)
