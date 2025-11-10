@@ -13,31 +13,30 @@ final class MyPageStore: ObservableObject {
     private let effect = MyPageEffect(userService: UserService())
 
     func dispatch(_ action: MyPageAction) {
+        MyPageReducer.reduce(state: &state, action: action)
+
         switch action {
+            
         case .fetchUser:
             Task {
-                if let result = await effect.fetchUser() {
-                    dispatch(result)
-                }
+                let result = await effect.fetchUser()
+                dispatch(result)
             }
 
         case let .fetchRegisteredPlaces(userId, page, size):
             Task {
-                if let result = await effect.fetchRegisteredPlaces(userId: userId, page: page, size: size) {
-                    dispatch(result)                }
+                let result = await effect.fetchRegisteredPlaces(userId: userId, page: page, size: size)
+                dispatch(result)
             }
 
         case let .userLoaded(user):
-            MyPageReducer.reduce(state: &state, action: .userLoaded(user))
             Task {
-                if let result = await effect.fetchRegisteredPlaces(userId: user.userId) {
-                    dispatch(result)
-                }
+                let result = await effect.fetchRegisteredPlaces(userId: user.userId)
+                dispatch(result)
             }
 
-        case .registeredPlacesLoaded,
-             .editProfileTapped, .customerCenterTapped, .logoutTapped, .deleteAccountTapped:
-            MyPageReducer.reduce(state: &state, action: action)
+        default:
+            break
         }
     }
 }

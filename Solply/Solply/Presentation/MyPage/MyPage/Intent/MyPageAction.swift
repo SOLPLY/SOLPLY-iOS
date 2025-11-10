@@ -12,6 +12,8 @@ enum MyPageAction {
     case fetchRegisteredPlaces(userId: Int, page: Int = 1, size: Int = 3)
     case userLoaded(UserInformation)
     case registeredPlacesLoaded([UserPlace])
+    case userLoadFailed(error: NetworkError)
+    case registeredPlacesLoadFailed(error: NetworkError)
     
     case editProfileTapped
     case customerCenterTapped

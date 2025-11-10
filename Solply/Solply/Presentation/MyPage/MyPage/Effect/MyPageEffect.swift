@@ -21,15 +21,25 @@ struct MyPageEffect {
     
     // MARK: - Functions
     
-    func fetchUser() async -> MyPageAction? {
+    func fetchUser() async -> MyPageAction {
         do {
             let response = try await userService.fetchUserInformation()
             
-            guard let dto = response.data else { return nil }
+            guard let dto = response.data else {
+                return .userLoadFailed(error: .apiError(message: "Empty response body"))
+            }
+            
             let user = UserInformation(dto: dto)
             return .userLoaded(user)
+            
+        } catch let error as NetworkError {
+            return .userLoadFailed(error: error)
+        } catch is DecodingError {
+            return .userLoadFailed(error: .responseDecodingError)
+        } catch is URLError {
+            return .userLoadFailed(error: .networkFail)
         } catch {
-            return nil
+            return .userLoadFailed(error: .unknownError)
         }
     }
 
@@ -37,20 +47,30 @@ struct MyPageEffect {
         userId: Int,
         page: Int = 1,
         size: Int = 3
-    ) async -> MyPageAction? {
+    ) async -> MyPageAction {
         do {
             let response = try await userService.fetchRegisteredPlaces(
                 userId: userId,
                 page: page,
                 size: size
             )
-            guard let dto = response.data else { return nil }
-
-            let places = dto.places.map(UserPlace.init(dto:))
+            
+            guard let dto = response.data else {
+                return .registeredPlacesLoadFailed(error: .apiError(message: "Empty response body"))
+            }
+            
+            let places = dto.places.map(UserPlace.init)
             return .registeredPlacesLoaded(places)
-
+            
+        } catch let error as NetworkError {
+            return .registeredPlacesLoadFailed(error: error)
+        } catch is DecodingError {
+            return .registeredPlacesLoadFailed(error: .responseDecodingError)
+        } catch is URLError {
+            return .registeredPlacesLoadFailed(error: .networkFail)
         } catch {
-            return nil
+            return .registeredPlacesLoadFailed(error: .unknownError)
         }
     }
 }
+

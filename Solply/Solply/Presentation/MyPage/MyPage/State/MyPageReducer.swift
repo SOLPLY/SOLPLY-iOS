@@ -19,6 +19,10 @@ enum MyPageReducer {
         case let .registeredPlacesLoaded(places):
             state.registeredPlaces = places
             
+        case let .userLoadFailed(error),
+            let .registeredPlacesLoadFailed(error):
+            state.error = error
+            
         case .editProfileTapped:
             // TODO: Coordinator 통해 프로필 수정 화면 이동
             break
