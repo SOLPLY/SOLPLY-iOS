@@ -48,23 +48,8 @@ struct MyPageSettings: View {
             
             row(title: "고객센터", action: onTapCustomerCenter)
             
-            row(
-                title: "로그인 정보",
-                trailing: AnyView(
-                    Text(loginProvider)
-                        .applySolplyFont(.body_16_r)
-                        .foregroundColor(.gray600)
-                    )
-            )
-
-            row(
-                title: "앱 버전",
-                trailing: AnyView(
-                    Text(appVersion)
-                        .applySolplyFont(.body_16_r)
-                        .foregroundColor(.gray600)
-                    )
-            )
+            row(title: "로그인 정보", trailing: loginProvider)
+            row(title: "앱 버전", trailing: appVersion)
 
             row(title: "로그아웃", action: onTapLogout)
             row(title: "탈퇴하기", action: onTapDeleteAccount)
@@ -77,7 +62,7 @@ struct MyPageSettings: View {
     
     private func row(
         title: String,
-        trailing: AnyView? = nil,
+        trailing: String? = nil,
         action: (() -> Void)? = nil
     ) -> some View {
         HStack(spacing: 0) {
@@ -86,7 +71,11 @@ struct MyPageSettings: View {
                 .foregroundColor(.coreBlack)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            trailing
+            if let trailing {
+                Text(trailing)
+                    .applySolplyFont(.body_16_r)
+                    .foregroundColor(.gray600)
+            }
         }
         .padding(.horizontal, 16.adjustedWidth)
         .frame(maxWidth: .infinity, minHeight: 48.adjustedHeight, alignment: .leading)
