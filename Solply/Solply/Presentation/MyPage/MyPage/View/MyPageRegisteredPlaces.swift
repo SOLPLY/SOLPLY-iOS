@@ -51,7 +51,7 @@ struct MyPageRegisteredPlaces: View {
                                 placeCategory: MainTagType(rawValue: place.mainTag) ?? .cafe,
                                 isSelected: false,
                                 size: 145.adjustedWidth
-                            ) { }
+                            )
                         }
                     }
                     .padding(.horizontal, 0)
