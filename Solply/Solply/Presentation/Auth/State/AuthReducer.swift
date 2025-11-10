@@ -12,16 +12,16 @@ enum AuthReducer {
         
         switch action {
         case .login:
-            break
+            state.isLoading = true
             
-        case .loginSuccess(let accessToken, let refreshToken, let isNewUser):
+        case .loginSuccess(let isNewUser):
             state.isLoggedIn = true
-            state.accessToken = accessToken
-            state.refreshToken = refreshToken
             state.isNewUser = isNewUser
+            state.isLoading = false
             
         case .loginFailed(let networkError):
             state.isLoggedIn = false
+            state.isLoading = false
             print(networkError.description)
         }
     }

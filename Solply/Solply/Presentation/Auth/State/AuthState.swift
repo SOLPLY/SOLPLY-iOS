@@ -8,8 +8,7 @@
 import Foundation
 
 struct AuthState {
+    var isLoading: Bool = false
     var isLoggedIn: Bool = false
-    var accessToken: String = ""
-    var refreshToken: String = ""
     var isNewUser: Bool = false
 }
