@@ -11,6 +11,7 @@ import Moya
 
 enum UserTargetType {
     case fetchUserInformation
+    case fetchRegisteredPlaces(userId: Int, page: Int, size: Int)
     case checkNickname(nickname: String)
     case fetchUserTowns
     case updateUserTowns(UserTownsUpdateRequestDTO)
@@ -28,9 +29,11 @@ extension UserTargetType: BaseTargetType {
     
     var path: String {
         switch self {
-
+            
         case .fetchUserInformation:
             return "/users"
+        case let .fetchRegisteredPlaces(userId, _, _):
+            return "/users/\(userId)/places"
         case .checkNickname:
             return "/users/check-nickname"
         case .fetchUserTowns, .updateUserTowns:
@@ -56,9 +59,15 @@ extension UserTargetType: BaseTargetType {
     
     var task: Task {
         switch self {
-
+            
         case .fetchUserInformation, .fetchUserTowns, .fetchPersonaList, .fetchPolicies:
             return .requestPlain
+            
+        case let .fetchRegisteredPlaces(_, page, size):
+            return .requestParameters(
+                parameters: ["page": page, "size": size],
+                encoding: URLEncoding.queryString
+            )
             
         case .checkNickname(let nickname):
             return .requestParameters(parameters: ["nickname": nickname],

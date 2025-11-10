@@ -21,6 +21,10 @@ extension UserService: UserAPI {
         return try await self.request(with: .fetchUserInformation)
     }
     
+    func fetchRegisteredPlaces(userId: Int, page: Int, size: Int) async throws -> BaseResponseBody<UserRegisteredPlacesResponseDTO> {
+        return try await self.request(with: .fetchRegisteredPlaces(userId: userId, page: page, size: size))
+    }
+    
     func fetchUserNicknameCheck(_ nickname: String) async throws -> BaseResponseBody<UserNicknameCheckResponseDTO> {
         return try await self.request(with: .checkNickname(nickname: nickname))
     }

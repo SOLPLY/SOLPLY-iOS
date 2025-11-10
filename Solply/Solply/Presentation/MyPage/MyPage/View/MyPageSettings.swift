@@ -45,22 +45,11 @@ struct MyPageSettings: View {
                 .padding(.horizontal, 16.adjustedWidth)
                 .padding(.top, 16.adjustedHeight)
                 .padding(.bottom, 12.adjustedHeight)
-
+            
             row(title: "고객센터", action: onTapCustomerCenter)
-
-            row(
-                title: "로그인 정보",
-                trailing: Text(loginProvider)
-                    .applySolplyFont(.body_16_r)
-                    .foregroundColor(.gray600)
-            )
-
-            row(
-                title: "앱 버전",
-                trailing: Text(appVersion)
-                    .applySolplyFont(.body_16_r)
-                    .foregroundColor(.gray600)
-            )
+            
+            row(title: "로그인 정보", trailing: loginProvider)
+            row(title: "앱 버전", trailing: appVersion)
 
             row(title: "로그아웃", action: onTapLogout)
             row(title: "탈퇴하기", action: onTapDeleteAccount)
@@ -73,44 +62,35 @@ struct MyPageSettings: View {
     
     private func row(
         title: String,
-        trailing: some View = EmptyView(),
+        trailing: String? = nil,
         action: (() -> Void)? = nil
     ) -> some View {
-        Button {
-            action?()
-        } label: {
-            HStack(alignment: .center, spacing: 0) {
-                Text(title)
-                    .applySolplyFont(.body_16_r)
-                    .foregroundColor(.coreBlack)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        HStack(spacing: 0) {
+            Text(title)
+                .applySolplyFont(.body_16_r)
+                .foregroundColor(.coreBlack)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-                trailing
+            if let trailing {
+                Text(trailing)
+                    .applySolplyFont(.body_16_r)
+                    .foregroundColor(.gray600)
             }
-            .padding(.horizontal, 16.adjustedWidth)
-            .frame(
-                maxWidth: .infinity,
-                minHeight: 48.adjustedHeight,
-                alignment: .leading
-            )
         }
-        .buttonStyle(.plain)
+        .padding(.horizontal, 16.adjustedWidth)
+        .frame(maxWidth: .infinity, minHeight: 48.adjustedHeight, alignment: .leading)
         .contentShape(Rectangle())
+        .background(
+            Rectangle()
+                .foregroundColor(.white)
+        )
         .overlay(
             Divider()
                 .padding(.horizontal, 16.adjustedWidth),
             alignment: .bottom
         )
+        .onTapGesture {
+            action?()
+        }
     }
-
-}
-
-#Preview {
-    MyPageSettings(
-        loginProvider: "카카오 로그인",
-        appVersion: "v1.0.0",
-        onTapCustomerCenter: {},
-        onTapLogout: {},
-        onTapDeleteAccount: {}
-    )
 }
