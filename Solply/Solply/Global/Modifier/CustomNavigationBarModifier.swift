@@ -423,11 +423,11 @@ extension View {
             
         // MARK: - MyPageEdit
             
-        case .myPageEdit(let title, let backAction):
+        case .myPageEdit(let backAction):
             self.modifier(
                 CustomNavigationBarModifier(
                     centerView: {
-                        Text(title)
+                        Text("프로필 수정")
                             .applySolplyFont(.head_16_m)
                     },
                     leftView: {
