@@ -59,6 +59,9 @@ public struct MyPageEditView: View {
         .onAppear {
             store.dispatch(.loadUserInformation)
         }
+        .onTapGesture {
+            hideKeyboard()
+        }
     }
 }
 
@@ -92,6 +95,7 @@ private extension MyPageEditView {
             
             NicknameTextField(
                 initialText: store.userInformation.nickname,
+                placeholder: store.userInformation.nickname,
                 state: .editing,
                 counterVisibility: .whenNotEmpty,
                 onChange: { store.dispatch(.nicknameChanged($0)) },
@@ -107,8 +111,8 @@ private extension MyPageEditView {
                 .foregroundStyle(.gray900)
             
             SolplyDropDown(
-                title: "조용한 공간에 오래 머물고 싶어요",
-                options: store.state.personaOptions,
+                title: store.userInformation.persona.personaString,
+                options: PersonaType.allCases.map { $0.personaString },
                 selectedText: store.state.selectedPersona
             ) { chosen in
                 store.dispatch(.personaSelected(chosen))
