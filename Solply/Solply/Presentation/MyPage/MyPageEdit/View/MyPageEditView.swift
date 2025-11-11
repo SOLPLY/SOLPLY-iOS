@@ -56,6 +56,9 @@ public struct MyPageEditView: View {
             appCoordinator.goBack()
         }))
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onAppear {
+            store.dispatch(.loadUserInformation)
+        }
     }
 }
 
@@ -88,6 +91,7 @@ private extension MyPageEditView {
                 .foregroundStyle(.gray900)
             
             NicknameTextField(
+                initialText: store.userInformation.nickname,
                 state: .editing,
                 counterVisibility: .whenNotEmpty,
                 onChange: { store.dispatch(.nicknameChanged($0)) },

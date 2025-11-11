@@ -30,6 +30,9 @@ final class MyPageEditStore: ObservableObject {
         MyPageEditReducer.reduce(state: &state, action: action)
         
         switch action {
+            
+        case .loadUserInformation:
+            state.nickname = userInformation.nickname
         default:
             break
         }

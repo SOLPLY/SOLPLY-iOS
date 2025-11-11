@@ -13,25 +13,16 @@ enum CounterVisibility {
 }
 
 struct NicknameTextField: View {
+    
+    // MARK: - Properties
 
-    @State private var text: String = ""
+    @State private var text: String
+    
     private let state: NicknameTextFieldState
     private let maxLength: Int = 8
     private let counterVisibility: CounterVisibility
     private let onChange: ((String) -> Void)?
     private let onSubmit: ((String) -> Void)?
-
-    init(
-        state: NicknameTextFieldState,
-        counterVisibility: CounterVisibility = .whenNotEmpty,
-        onChange: ((String) -> Void)? = nil,
-        onSubmit: ((String) -> Void)? = nil
-    ) {
-        self.state = state
-        self.counterVisibility = counterVisibility
-        self.onChange = onChange
-        self.onSubmit = onSubmit
-    }
     
     private var shouldShowCounter: Bool {
         switch counterVisibility {
@@ -41,6 +32,24 @@ struct NicknameTextField: View {
             return !text.isEmpty
         }
     }
+    
+    // MARK: - Initializer
+
+    init(
+        initialText: String = "",
+        state: NicknameTextFieldState,
+        counterVisibility: CounterVisibility = .whenNotEmpty,
+        onChange: ((String) -> Void)? = nil,
+        onSubmit: ((String) -> Void)? = nil
+    ) {
+        self._text = State(initialValue: initialText)
+        self.state = state
+        self.counterVisibility = counterVisibility
+        self.onChange = onChange
+        self.onSubmit = onSubmit
+    }
+    
+    // MARK: - Body
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {

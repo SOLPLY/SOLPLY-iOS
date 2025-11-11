@@ -10,6 +10,9 @@ import Foundation
 enum MyPageEditReducer {
     static func reduce(state: inout MyPageEditState, action: MyPageEditAction) {
         switch action {
+        case .loadUserInformation:
+            break
+            
         case .nicknameChanged(let text):
             state.nickname = text
 

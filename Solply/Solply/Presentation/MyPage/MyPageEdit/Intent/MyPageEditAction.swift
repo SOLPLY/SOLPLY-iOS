@@ -8,6 +8,8 @@
 import Foundation
 
 enum MyPageEditAction: Equatable {
+    case loadUserInformation
+    
     case nicknameChanged(String)
     case personaSelected(String)
     case completeTapped
