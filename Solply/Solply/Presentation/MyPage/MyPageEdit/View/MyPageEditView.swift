@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// MARK: - MyPageEditView
-
 public struct MyPageEditView: View {
     
     // MARK: - Properties
@@ -59,8 +57,6 @@ public struct MyPageEditView: View {
 // MARK: - Subviews
 
 private extension MyPageEditView {
-    
-    // MARK: Header
     var header: some View {
         VStack(alignment: .center, spacing: 15.adjustedHeight) {
             ZStack {
