@@ -7,13 +7,14 @@
 
 import SwiftUI
 
-public struct MyPageEditView: View {
+struct MyPageEditView: View {
     
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store: MyPageEditStore
+    @FocusState private var isNicknameTextFieldFocused: Bool
     
     // MARK: - Initializer
     
@@ -28,19 +29,40 @@ public struct MyPageEditView: View {
     
     // MARK: - Body
     
-    public var body: some View {
-        ScrollView {
+    var body: some View {
+        ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 24.adjustedHeight) {
                 header
                 nickname
                 persona
             }
-            .padding(.horizontal, 20.adjustedWidth)
-            .padding(.top, 15.adjustedHeight)
-            .padding(.bottom, 24.adjustedHeight)
         }
-        .scrollDismissesKeyboard(.interactively)
-        .safeAreaInset(edge: .bottom) {
+        .scrollDisabled(true)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .padding(.horizontal, 20.adjustedWidth)
+        .padding(.top, 15.adjustedHeight)
+        .padding(.bottom, 24.adjustedHeight)
+        .background(.coreWhite)
+        .customNavigationBar(.myPageEdit(backAction: {
+            if store.state.isUserInformationChanged {
+                alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
+                    appCoordinator.goBack()
+                }
+            }
+        }))
+        .onAppear {
+            store.dispatch(.loadUserInformation)
+        }
+        .onChange(of: isNicknameTextFieldFocused) { _, newValue in
+            if !newValue {
+                store.dispatch(.fetchUserNicknameCheck)
+            }
+        }
+        .onTapGesture {
+            hideKeyboard()
+        }
+        .disableSwipeBack()
+        .overlay(alignment: .bottom) {
             CTAMainButton(
                 title: "완료",
                 isEnabled: true
@@ -50,23 +72,8 @@ public struct MyPageEditView: View {
             }
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.vertical, 16.adjustedHeight)
-            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
-        .customNavigationBar(.myPageEdit(backAction: {
-            if store.state.isUserInformationChanged {
-                alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
-                    appCoordinator.goBack()
-                }
-            }
-        }))
-        .ignoresSafeArea(.keyboard, edges: .bottom)
-        .onAppear {
-            store.dispatch(.loadUserInformation)
-        }
-        .onTapGesture {
-            hideKeyboard()
-        }
-        .disableSwipeBack()
+        .ignoresSafeArea(.keyboard)
     }
 }
 
@@ -108,6 +115,7 @@ private extension MyPageEditView {
             } onSubmit: { _ in
                 store.dispatch(.fetchUserNicknameCheck)
             }
+            .focused($isNicknameTextFieldFocused)
         }
     }
     
