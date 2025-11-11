@@ -9,5 +9,9 @@ import Foundation
 
 struct MyPageEditState {
     var nickname: String = ""
+    var nicknameTextFieldState: NicknameTextFieldState = .editing
+    
     var selectedPersona: String? = nil
+    
+    var isUserInformationChanged: Bool = false
 }

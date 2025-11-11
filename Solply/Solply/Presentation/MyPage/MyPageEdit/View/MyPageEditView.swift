@@ -12,6 +12,7 @@ public struct MyPageEditView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store: MyPageEditStore
     
     // MARK: - Initializer
@@ -52,8 +53,11 @@ public struct MyPageEditView: View {
             .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .customNavigationBar(.myPageEdit(backAction: {
-            store.dispatch(.backTapped)
-            appCoordinator.goBack()
+            if store.state.isUserInformationChanged {
+                alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
+                    appCoordinator.goBack()
+                }
+            }
         }))
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .onAppear {
@@ -62,6 +66,7 @@ public struct MyPageEditView: View {
         .onTapGesture {
             hideKeyboard()
         }
+        .disableSwipeBack()
     }
 }
 
@@ -96,11 +101,13 @@ private extension MyPageEditView {
             NicknameTextField(
                 initialText: store.userInformation.nickname,
                 placeholder: store.userInformation.nickname,
-                state: .editing,
-                counterVisibility: .whenNotEmpty,
-                onChange: { store.dispatch(.nicknameChanged($0)) },
-                onSubmit: { store.dispatch(.nicknameChanged($0)) }
-            )
+                state: store.state.nicknameTextFieldState,
+                counterVisibility: .whenNotEmpty
+            ) { text in
+                store.dispatch(.nicknameChanged(text))
+            } onSubmit: { _ in
+                store.dispatch(.fetchUserNicknameCheck)
+            }
         }
     }
     

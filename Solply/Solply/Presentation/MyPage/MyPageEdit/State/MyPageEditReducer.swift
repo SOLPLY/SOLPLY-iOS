@@ -15,6 +15,7 @@ enum MyPageEditReducer {
             
         case .nicknameChanged(let text):
             state.nickname = text
+            state.nicknameTextFieldState = .editing
 
         case .personaSelected(let persona):
             state.selectedPersona = persona
@@ -22,9 +23,21 @@ enum MyPageEditReducer {
         case .completeTapped:
             // 저장/검증/API 호출 등은 외부에서 처리
             break
-
-        case .backTapped:
+            
+        case .fetchUserNicknameCheck:
             break
+            
+        case .fetchUserNicknameCheckSuccess(let isDuplicated):
+            state.nicknameTextFieldState = isDuplicated ? .duplicate : .valid
+            break
+            
+        case .fetchUserNicknameCheckFailed(let error):
+            print(error)
+            if state.nickname.count < 2 {
+                state.nicknameTextFieldState = .shouldTwoCharacter
+            } else {
+                state.nicknameTextFieldState = .invalidCharacter
+            }
         }
     }
 }

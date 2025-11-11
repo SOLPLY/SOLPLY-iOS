@@ -14,12 +14,21 @@ final class MyPageEditStore: ObservableObject {
     
     @Published private(set) var state = MyPageEditState()
     
+    private let effect: MyPageEditEffect
+    
     let userInformation: UserInformation
     let profileImageUrl: String
     
     // MARK: - Initializer
     
-    init(userInformation: UserInformation, profileImageUrl: String) {
+    init(
+        effect: MyPageEditEffect = MyPageEditEffect(
+            userService: UserService()
+        ),
+        userInformation: UserInformation,
+        profileImageUrl: String
+    ) {
+        self.effect = effect
         self.userInformation = userInformation
         self.profileImageUrl = profileImageUrl
     }
@@ -33,6 +42,12 @@ final class MyPageEditStore: ObservableObject {
             
         case .loadUserInformation:
             state.nickname = userInformation.nickname
+            
+        case .fetchUserNicknameCheck:
+            Task {
+                let result = await effect.fetchUserNicknameCheck(nickname: state.nickname)
+                self.dispatch(result)
+            }
         default:
             break
         }
