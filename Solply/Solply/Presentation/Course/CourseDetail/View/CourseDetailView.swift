@@ -406,7 +406,7 @@ extension CourseDetailView {
     }
     
     private func showAlert() {
-        alertManager.showAlert(alertType: .leaveCourseDetail, onCancel: nil) {
+        alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
             appCoordinator.goBack()
         }
     }
