@@ -12,7 +12,18 @@ public struct MyPageEditView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @StateObject private var store = MyPageEditStore()
+    @StateObject private var store: MyPageEditStore
+    
+    // MARK: - Initializer
+    
+    init(userInformation: UserInformation, profileImageUrl: String) {
+        self._store = StateObject(
+            wrappedValue: MyPageEditStore(
+                userInformation: userInformation,
+                profileImageUrl: profileImageUrl
+            )
+        )
+    }
     
     // MARK: - Body
     
@@ -40,19 +51,13 @@ public struct MyPageEditView: View {
             .padding(.vertical, 16.adjustedHeight)
             .ignoresSafeArea(.keyboard, edges: .bottom)
         }
-        .customNavigationBar(
-            .myPageEdit(
-                title: "프로필 수정",
-                backAction: {
-                    store.dispatch(.backTapped)
-                    appCoordinator.goBack()
-                }
-            )
-        )
+        .customNavigationBar(.myPageEdit(backAction: {
+            store.dispatch(.backTapped)
+            appCoordinator.goBack()
+        }))
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
-
 
 // MARK: - Subviews
 
@@ -106,11 +111,4 @@ private extension MyPageEditView {
             }
         }
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    MyPageEditView()
-        .environmentObject(AppCoordinator())
 }
