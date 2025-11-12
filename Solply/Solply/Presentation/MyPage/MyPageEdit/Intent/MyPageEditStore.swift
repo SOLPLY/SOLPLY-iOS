@@ -48,6 +48,21 @@ final class MyPageEditStore: ObservableObject {
                 let result = await effect.fetchUserNicknameCheck(nickname: state.nickname)
                 self.dispatch(result)
             }
+            
+        case .updateUserInformation:
+            let nickname = state.nickname.isEmpty ? userInformation.nickname : state.nickname
+            let persona = PersonaType.allCases.first { $0.personaString == state.selectedPersona }?.rawValue ?? userInformation.persona.rawValue
+            
+            let request =  UpdateUserInformationRequestDTO(
+                nickname: nickname,
+                persona: persona,
+                profileImageFileKey: nil
+            )
+            
+            Task {
+                let result = await effect.updateUserInformation(request: request)
+                self.dispatch(result)
+            }
         default:
             break
         }

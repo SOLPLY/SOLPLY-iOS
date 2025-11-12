@@ -18,4 +18,8 @@ enum MyPageEditAction {
     case fetchUserNicknameCheck
     case fetchUserNicknameCheckSuccess(isDuplicated: Bool)
     case fetchUserNicknameCheckFailed(error: NetworkError)
+    
+    case updateUserInformation
+    case updateUserInformationSuccess
+    case updateUserInformationFailed(error: NetworkError)
 }

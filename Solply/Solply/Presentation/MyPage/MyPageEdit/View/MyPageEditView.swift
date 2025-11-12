@@ -58,6 +58,11 @@ struct MyPageEditView: View {
                 store.dispatch(.fetchUserNicknameCheck)
             }
         }
+        .onChange(of: store.state.shouldGoBack, { _, newValue in
+            if newValue {
+                appCoordinator.goBack()
+            }
+        })
         .onTapGesture {
             hideKeyboard()
         }
@@ -67,8 +72,8 @@ struct MyPageEditView: View {
                 title: "완료",
                 isEnabled: true
             ) {
-                store.dispatch(.completeTapped)
-                appCoordinator.goBack()
+                store.dispatch(.updateUserInformation)
+//                appCoordinator.goBack()
             }
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.vertical, 16.adjustedHeight)

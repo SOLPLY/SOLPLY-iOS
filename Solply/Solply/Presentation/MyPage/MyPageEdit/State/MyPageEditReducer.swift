@@ -38,6 +38,17 @@ enum MyPageEditReducer {
             } else {
                 state.nicknameTextFieldState = .invalidCharacter
             }
+            
+        case .updateUserInformation:
+            break
+            
+        case .updateUserInformationSuccess:
+            state.shouldGoBack = true
+            break
+            
+        case .updateUserInformationFailed(let error):
+            print(error)
+            break
         }
     }
 }

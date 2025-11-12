@@ -33,4 +33,20 @@ extension MyPageEditEffect {
             return .fetchUserNicknameCheckFailed(error: .unknownError)
         }
     }
+    
+    func updateUserInformation(request: UpdateUserInformationRequestDTO) async -> MyPageEditAction {
+        do {
+            let response = try await userService.updateUserInformation(request: request)
+            
+            guard let data = response.data else {
+                return .updateUserInformationFailed(error: .responseError)
+            }
+            
+            return .updateUserInformationSuccess
+        } catch let error as NetworkError {
+            return .updateUserInformationFailed(error: error)
+        } catch {
+            return .updateUserInformationFailed(error: .unknownError)
+        }
+    }
 }

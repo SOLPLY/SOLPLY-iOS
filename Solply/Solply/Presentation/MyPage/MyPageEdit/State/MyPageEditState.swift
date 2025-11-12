@@ -14,4 +14,5 @@ struct MyPageEditState {
     var selectedPersona: String? = nil
     
     var isUserInformationChanged: Bool = false
+    var shouldGoBack: Bool = false
 }
