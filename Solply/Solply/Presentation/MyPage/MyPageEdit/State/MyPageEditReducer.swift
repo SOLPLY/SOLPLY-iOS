@@ -16,13 +16,11 @@ enum MyPageEditReducer {
         case .nicknameChanged(let text):
             state.nickname = text
             state.nicknameTextFieldState = .editing
+            state.isUserInformationChanged = true
 
         case .personaSelected(let persona):
             state.selectedPersona = persona
-
-        case .completeTapped:
-            // 저장/검증/API 호출 등은 외부에서 처리
-            break
+            state.isUserInformationChanged = true
             
         case .fetchUserNicknameCheck:
             break

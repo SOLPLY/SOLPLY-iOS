@@ -48,6 +48,8 @@ struct MyPageEditView: View {
                 alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
                     appCoordinator.goBack()
                 }
+            } else {
+                appCoordinator.goBack()
             }
         }))
         .onAppear {
@@ -72,8 +74,11 @@ struct MyPageEditView: View {
                 title: "완료",
                 isEnabled: true
             ) {
-                store.dispatch(.updateUserInformation)
-//                appCoordinator.goBack()
+                if store.state.isUserInformationChanged {
+                    store.dispatch(.updateUserInformation)
+                } else {
+                    appCoordinator.goBack()
+                }
             }
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.vertical, 16.adjustedHeight)
@@ -116,7 +121,7 @@ private extension MyPageEditView {
                 state: store.state.nicknameTextFieldState,
                 counterVisibility: .whenNotEmpty
             ) { text in
-                store.dispatch(.nicknameChanged(text))
+                store.dispatch(.nicknameChanged(nickname: text))
             } onSubmit: { _ in
                 store.dispatch(.fetchUserNicknameCheck)
             }
@@ -135,7 +140,7 @@ private extension MyPageEditView {
                 options: PersonaType.allCases.map { $0.personaString },
                 selectedText: store.state.selectedPersona
             ) { chosen in
-                store.dispatch(.personaSelected(chosen))
+                store.dispatch(.personaSelected(persona: chosen))
             }
         }
     }

@@ -10,9 +10,8 @@ import Foundation
 enum MyPageEditAction {
     case loadUserInformation
     
-    case nicknameChanged(String)
-    case personaSelected(String)
-    case completeTapped
+    case nicknameChanged(nickname: String)
+    case personaSelected(persona: String)
     
     // api
     case fetchUserNicknameCheck

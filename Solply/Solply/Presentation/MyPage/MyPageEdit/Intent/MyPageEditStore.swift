@@ -17,7 +17,7 @@ final class MyPageEditStore: ObservableObject {
     private let effect: MyPageEditEffect
     
     let userInformation: UserInformation
-    let profileImageUrl: String
+    let profileImageUrl: String?
     
     // MARK: - Initializer
     
@@ -26,7 +26,7 @@ final class MyPageEditStore: ObservableObject {
             userService: UserService()
         ),
         userInformation: UserInformation,
-        profileImageUrl: String
+        profileImageUrl: String?
     ) {
         self.effect = effect
         self.userInformation = userInformation
