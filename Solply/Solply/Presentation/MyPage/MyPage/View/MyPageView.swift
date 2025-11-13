@@ -74,7 +74,14 @@ private extension MyPageView {
                 .foregroundColor(.coreBlack)
             
             Button {
-                appCoordinator.navigate(to: .myPageEdit)
+                guard let user = store.state.user else { return }
+                
+                appCoordinator.navigate(
+                    to: .myPageEdit(
+                        userInformation: user,
+                        profileImageUrl: "" // 임시 프로필 이미지 url 주입
+                    )
+                )
             } label: {
                 HStack(alignment: .center, spacing: 4.adjustedWidth) {
                     Text("프로필 수정")

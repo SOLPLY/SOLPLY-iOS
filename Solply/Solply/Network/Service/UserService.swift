@@ -44,4 +44,10 @@ extension UserService: UserAPI {
     func updateOnboardingUserInfo(request: UserCompleteRequestDTO) async throws -> BaseResponseBody<UserCompleteResponseDTO> {
         return try await self.request(with: .completeOnboarding(request))
     }
+    
+    func updateUserInformation(
+        request: UpdateUserInformationRequestDTO
+    ) async throws -> BaseResponseBody<UpdateUserInformationResponseDTO> {
+        return try await self.request(with: .updateUserInformation(request: request))
+    }
 }

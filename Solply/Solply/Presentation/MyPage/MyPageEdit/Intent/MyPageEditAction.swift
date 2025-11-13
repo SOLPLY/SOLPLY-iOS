@@ -7,9 +7,18 @@
 
 import Foundation
 
-enum MyPageEditAction: Equatable {
-    case nicknameChanged(String)
-    case personaSelected(String)
-    case completeTapped
-    case backTapped
+enum MyPageEditAction {
+    case loadUserInformation
+    
+    case nicknameChanged(nickname: String)
+    case personaSelected(persona: String)
+    
+    // api
+    case fetchUserNicknameCheck
+    case fetchUserNicknameCheckSuccess(isDuplicated: Bool)
+    case fetchUserNicknameCheckFailed(error: NetworkError)
+    
+    case updateUserInformation
+    case updateUserInformationSuccess
+    case updateUserInformationFailed(error: NetworkError)
 }
