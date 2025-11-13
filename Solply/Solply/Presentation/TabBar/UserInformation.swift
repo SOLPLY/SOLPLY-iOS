@@ -8,6 +8,7 @@
 import Foundation
 
 struct UserInformation {
+    let userId: Int
     let nickname: String
     let persona: PersonaType
     let townName: String
@@ -16,6 +17,7 @@ struct UserInformation {
 
 extension UserInformation {
     init(dto: UserInformationResponseDTO) {
+        userId = dto.userId
         nickname = dto.nickname
         persona = dto.persona
         townName = dto.selectedTown.townName

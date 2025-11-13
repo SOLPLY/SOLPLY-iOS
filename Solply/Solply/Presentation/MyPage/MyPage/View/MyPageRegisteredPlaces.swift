@@ -8,16 +8,17 @@
 import SwiftUI
 
 struct MyPageRegisteredPlaces: View {
-
+    
+    
     // MARK: - Properties
     
-    private let places: [Place]
+    private let places: [UserPlace]
     private let emptyText: String
-
+    
     // MARK: - Initializer
     
     init(
-        places: [Place],
+        places: [UserPlace],
         emptyText: String = "등록한 장소가 없어요"
     ) {
         self.places = places
@@ -31,7 +32,7 @@ struct MyPageRegisteredPlaces: View {
             Text("내가 등록한 장소")
                 .applySolplyFont(.body_16_m)
                 .foregroundColor(.coreBlack)
-
+            
             if places.isEmpty {
                 Text(emptyText)
                     .applySolplyFont(.body_16_r)
@@ -40,19 +41,17 @@ struct MyPageRegisteredPlaces: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .frame(height: 40.adjustedHeight)
             } else {
-                // TODO: 나중에 API 연결하면서 손 볼 예정
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(alignment: .top, spacing: 16.adjustedWidth) {
-                        ForEach(places) { place in
+                        ForEach(places, id: \.id) { place in
                             PlaceCard(
                                 isSaved: place.isBookmarked,
-                                thumbnailUrl: place.thumbnailUrl,
-                                placeName: place.placeName,
-                                placeCategory: place.mainTag,
-                                isSelected: true,
+                                thumbnailUrl: place.thumbnail,
+                                placeName: place.name,
+                                placeCategory: MainTagType(rawValue: place.mainTag) ?? .cafe,
+                                isSelected: false,
                                 size: 145.adjustedWidth
-                            ) {
-                            }
+                            )
                         }
                     }
                     .padding(.horizontal, 0)
@@ -65,10 +64,4 @@ struct MyPageRegisteredPlaces: View {
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .background(.coreWhite)
     }
-}
-
-#Preview {
-    MyPageRegisteredPlaces(
-        places: []
-    )
 }

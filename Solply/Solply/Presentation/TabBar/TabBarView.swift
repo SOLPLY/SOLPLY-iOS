@@ -102,6 +102,7 @@ extension TabBarView {
             }
             
             return UserInformation(
+                userId: data.userId,
                 nickname: data.nickname,
                 persona: data.persona,
                 townName: data.selectedTown.townName,

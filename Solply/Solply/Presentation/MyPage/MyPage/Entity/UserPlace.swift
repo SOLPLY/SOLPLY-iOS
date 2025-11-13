@@ -1,0 +1,24 @@
+//
+//  UserPlace.swift
+//  Solply
+//
+//  Created by sun on 11/9/25.
+//
+
+struct UserPlace: Equatable {
+    let id: Int
+    let name: String
+    let thumbnail: String
+    let mainTag: String
+    let isBookmarked: Bool
+}
+
+extension UserPlace {
+    init(dto: UserRegisteredPlaceDTO) {
+        id = dto.placeId
+        name = dto.placeName
+        thumbnail = dto.thumbnailImageUrl
+        mainTag = dto.mainTag
+        isBookmarked = dto.isBookmarked
+    }
+}

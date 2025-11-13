@@ -10,6 +10,9 @@ import Foundation
 protocol UserAPI {
     func fetchUserInformation() async throws
     -> BaseResponseBody<UserInformationResponseDTO>
+    
+    func fetchRegisteredPlaces(userId: Int, page: Int, size: Int) async throws
+    -> BaseResponseBody<UserRegisteredPlacesResponseDTO>
 
     func fetchUserNicknameCheck(_ nickname: String) async throws
     -> BaseResponseBody<UserNicknameCheckResponseDTO>
