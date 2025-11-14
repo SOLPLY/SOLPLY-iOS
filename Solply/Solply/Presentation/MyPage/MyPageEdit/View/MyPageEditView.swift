@@ -20,11 +20,10 @@ struct MyPageEditView: View {
     
     // MARK: - Initializer
     
-    init(userInformation: UserInformation, profileImageUrl: String?) {
+    init(userInformation: UserInformation) {
         self._store = StateObject(
             wrappedValue: MyPageEditStore(
-                userInformation: userInformation,
-                profileImageUrl: profileImageUrl
+                userInformation: userInformation
             )
         )
     }
@@ -95,7 +94,7 @@ private extension MyPageEditView {
     var header: some View {
         VStack(alignment: .center, spacing: 15.adjustedHeight) {
             ProfilePhotoPicker(
-                profileImageUrl: store.profileImageUrl,
+                profileImageUrl: store.userInformation.profileImageUrl,
                 onComplete: { fileName, data in
                     store.dispatch(.attachProfileImage(imageData: (fileName, data)))
                 }

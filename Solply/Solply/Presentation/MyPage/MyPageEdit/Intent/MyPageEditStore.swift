@@ -17,7 +17,6 @@ final class MyPageEditStore: ObservableObject {
     private let effect: MyPageEditEffect
     
     let userInformation: UserInformation
-    let profileImageUrl: String?
     
     // MARK: - Initializer
     
@@ -28,11 +27,9 @@ final class MyPageEditStore: ObservableObject {
             uploadPhotosService: UploadPhotosService()
         ),
         userInformation: UserInformation,
-        profileImageUrl: String?
     ) {
         self.effect = effect
         self.userInformation = userInformation
-        self.profileImageUrl = profileImageUrl
     }
     
     // MARK: - Dispatch
