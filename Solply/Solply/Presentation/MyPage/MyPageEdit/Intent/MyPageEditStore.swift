@@ -42,6 +42,7 @@ final class MyPageEditStore: ObservableObject {
             
         case .loadUserInformation:
             state.nickname = userInformation.nickname
+            // TODO: -  이게 진짜 필요한 건가 고민해보자
             
         case .fetchUserNicknameCheck:
             Task {

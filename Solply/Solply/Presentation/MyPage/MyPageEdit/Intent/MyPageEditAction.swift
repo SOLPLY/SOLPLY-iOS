@@ -10,6 +10,7 @@ import Foundation
 enum MyPageEditAction {
     case loadUserInformation
     
+    case attachProfileImage(imageData: (String, Data))
     case nicknameChanged(nickname: String)
     case personaSelected(persona: String)
     

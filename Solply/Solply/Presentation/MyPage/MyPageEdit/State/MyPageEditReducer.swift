@@ -10,6 +10,10 @@ import Foundation
 enum MyPageEditReducer {
     static func reduce(state: inout MyPageEditState, action: MyPageEditAction) {
         switch action {
+        case .attachProfileImage(let imageData):
+            state.attachedImageData = imageData
+            state.isUserInformationChanged = true
+            
         case .loadUserInformation:
             break
             
