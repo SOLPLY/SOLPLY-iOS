@@ -9,9 +9,17 @@ import Foundation
 
 struct MyPageEditEffect {
     private let userService: UserAPI
+    private let fileSerive: FileAPI
+    private let uploadPhotosService: UploadPhotosAPI
     
-    init(userService: UserAPI) {
+    init(
+        userService: UserAPI,
+        fileService: FileAPI,
+        uploadPhotosService: UploadPhotosAPI
+    ) {
         self.userService = userService
+        self.fileSerive = fileService
+        self.uploadPhotosService = uploadPhotosService
     }
 }
 
@@ -47,6 +55,48 @@ extension MyPageEditEffect {
             return .updateUserInformationFailed(error: error)
         } catch {
             return .updateUserInformationFailed(error: .unknownError)
+        }
+    }
+}
+
+// MARK: - FileAPI
+
+extension MyPageEditEffect {
+    func submitPresignedUrlRequest(request: PresignedUrlRequestDTO) async -> MyPageEditAction {
+        do {
+            let response = try await fileSerive.submitPresignedUrlRequest(request: request)
+            
+            guard let data = response.data,
+                  let presignedUrl = data.presignedGetUrlInfos.first?.presignedUrl else {
+                return .submitPresignedUrlRequestFailed(error: .responseError)
+            }
+            
+            return .submitPresignedUrlRequestSuccess(presignedUrl: presignedUrl)
+        } catch let error as NetworkError {
+            return .submitPresignedUrlRequestFailed(error: error)
+        } catch {
+            return .submitPresignedUrlRequestFailed(error: .unknownError)
+        }
+    }
+}
+
+// MARK: - UploadPhotoAPI
+
+extension MyPageEditEffect {
+    func uploadImage(dictionary: [URL: Data]) async -> MyPageEditAction {
+        do {
+            let response = try await uploadPhotosService.uploadImages(dictionary)
+            
+            guard let imageKey = response.first else {
+                return .photoUploadFailed(error: .responseError)
+            }
+            
+            return .photoUploadSuccess(imageKey: imageKey)
+            
+        } catch let error as NetworkError {
+            return .photoUploadFailed(error: error)
+        } catch {
+            return .photoUploadFailed(error: .unknownError)
         }
     }
 }

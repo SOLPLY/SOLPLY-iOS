@@ -16,7 +16,7 @@ enum AppDestination: Hashable {
     case reports(placeId: Int)
     case placeSearch
     case myPage
-    case myPageEdit(userInformation: UserInformation, profileImageUrl: String)
+    case myPageEdit(userInformation: UserInformation, profileImageUrl: String?)
     case withdraw
     case register
     case registerComplete

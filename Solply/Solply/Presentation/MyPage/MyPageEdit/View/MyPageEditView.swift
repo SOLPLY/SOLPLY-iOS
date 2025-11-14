@@ -20,7 +20,7 @@ struct MyPageEditView: View {
     
     // MARK: - Initializer
     
-    init(userInformation: UserInformation, profileImageUrl: String) {
+    init(userInformation: UserInformation, profileImageUrl: String?) {
         self._store = StateObject(
             wrappedValue: MyPageEditStore(
                 userInformation: userInformation,
@@ -77,7 +77,7 @@ struct MyPageEditView: View {
                 isEnabled: true
             ) {
                 if store.state.isUserInformationChanged {
-                    store.dispatch(.updateUserInformation)
+                    store.dispatch(.startUpdateUserInformation)
                 } else {
                     appCoordinator.goBack()
                 }

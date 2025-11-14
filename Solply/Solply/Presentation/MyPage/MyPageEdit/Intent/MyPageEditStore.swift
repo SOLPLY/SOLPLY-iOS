@@ -23,7 +23,9 @@ final class MyPageEditStore: ObservableObject {
     
     init(
         effect: MyPageEditEffect = MyPageEditEffect(
-            userService: UserService()
+            userService: UserService(),
+            fileService: FileService(),
+            uploadPhotosService: UploadPhotosService()
         ),
         userInformation: UserInformation,
         profileImageUrl: String?
@@ -50,14 +52,52 @@ final class MyPageEditStore: ObservableObject {
                 self.dispatch(result)
             }
             
-        case .updateUserInformation:
+        case .startUpdateUserInformation:
+            if let attachedImageData = state.attachedImageData {
+                self.dispatch(
+                    .submitPresignedUrlRequest(
+                        request: PresignedUrlRequestDTO(
+                            files: [File(fileName: attachedImageData.0)]
+                        )
+                    )
+                )
+            } else {
+                self.dispatch(.updateUserInformation(imageKeyString: nil))
+            }
+            
+        case .submitPresignedUrlRequest(let request):
+            Task {
+                let result = await effect.submitPresignedUrlRequest(request: request)
+                self.dispatch(result)
+            }
+            
+        case .submitPresignedUrlRequestSuccess(let presignedUrl):
+            guard let attachedImageData = state.attachedImageData else { return }
+            
+            var presignedDictionary: [URL: Data] = [:]
+            
+            if let url = URL(string: presignedUrl) {
+                presignedDictionary[url] = attachedImageData.1
+            }
+            
+            Task {
+                let result = await effect.uploadImage(dictionary: presignedDictionary)
+                self.dispatch(result)
+            }
+            
+        case .photoUploadSuccess(let imageKey):
+            let imageKeyString = imageKey.absoluteString.truncated(includeStartRange: "dev", excludeEndRange: "?")
+            
+            self.dispatch(.updateUserInformation(imageKeyString: imageKeyString))
+            
+        case .updateUserInformation(let imageKeyString):
             let nickname = state.nickname.isEmpty ? userInformation.nickname : state.nickname
             let persona = PersonaType.allCases.first { $0.personaString == state.selectedPersona }?.rawValue ?? userInformation.persona.rawValue
             
             let request =  UpdateUserInformationRequestDTO(
                 nickname: nickname,
                 persona: persona,
-                profileImageFileKey: nil
+                profileImageFileKey: imageKeyString
             )
             
             Task {
