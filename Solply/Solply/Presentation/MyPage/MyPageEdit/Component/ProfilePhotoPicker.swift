@@ -66,22 +66,13 @@ extension ProfilePhotoPicker {
         Button {
             isPickerPresented = true
         } label: {
-            ZStack {
-                Circle()
-                    .frame(width: width, height: height)
-                    .foregroundColor(.gray800)
-                
-                Image(.myNavIcon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
-                    .foregroundColor(.gray100)
-                
+            Group {
                 if let selectedImage {
                     Image(uiImage: selectedImage)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: width, height: height)
+                        .background(.gray800)
                         .circleClipped()
                     
                 } else if let profileImageUrl {
@@ -90,6 +81,19 @@ extension ProfilePhotoPicker {
                         .aspectRatio(contentMode: .fill)
                         .frame(width: width, height: height)
                         .circleClipped()
+                    
+                } else {
+                    ZStack(alignment: .center) {
+                        Circle()
+                            .frame(width: width, height: height)
+                            .foregroundColor(.gray800)
+                        
+                        Image(.myNavIcon)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
+                            .foregroundColor(.gray100)
+                    }
                 }
             }
         }

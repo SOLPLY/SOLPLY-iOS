@@ -27,25 +27,23 @@ struct ProfileImage: View {
     // MARK: - Body
     
     var body: some View {
-        Group {
+        ZStack(alignment: .center) {
+            Circle()
+                .frame(width: width, height: height)
+                .foregroundColor(.gray800)
+            
+            Image(.myNavIcon)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
+                .foregroundColor(.gray100)
+            
             if let profileImageUrl {
                 KFImage(URL(string: profileImageUrl))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)
                     .circleClipped()
-            } else {
-                ZStack(alignment: .center) {
-                    Circle()
-                        .frame(width: width, height: height)
-                        .foregroundColor(.gray800)
-                    
-                    Image(.myNavIcon)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
-                        .foregroundColor(.gray100)
-                }
             }
         }
     }
