@@ -15,6 +15,7 @@ enum UserTargetType {
     case checkNickname(nickname: String)
     case fetchUserTowns
     case updateUserTowns(UserTownsUpdateRequestDTO)
+    case updateUserInformation(request: UpdateUserInformationRequestDTO)
     
     case fetchPersonaList
     case fetchPolicies
@@ -30,7 +31,7 @@ extension UserTargetType: BaseTargetType {
     var path: String {
         switch self {
             
-        case .fetchUserInformation:
+        case .fetchUserInformation, .updateUserInformation:
             return "/users"
         case let .fetchRegisteredPlaces(userId, _, _):
             return "/users/\(userId)/places"
@@ -50,7 +51,7 @@ extension UserTargetType: BaseTargetType {
     
     var method: Moya.Method {
         switch self {
-        case .updateUserTowns, .completeOnboarding:
+        case .updateUserTowns, .completeOnboarding, .updateUserInformation:
             return .patch
         default:
             return .get
@@ -75,6 +76,9 @@ extension UserTargetType: BaseTargetType {
             
         case .updateUserTowns(let requestDTO):
             return .requestJSONEncodable(requestDTO)
+            
+        case .updateUserInformation(let request):
+            return .requestJSONEncodable(request)
             
         case .completeOnboarding(let requestDTO):
             return .requestJSONEncodable(requestDTO)

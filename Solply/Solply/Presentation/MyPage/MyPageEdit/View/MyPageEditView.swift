@@ -7,60 +7,89 @@
 
 import SwiftUI
 
-// MARK: - MyPageEditView
-
-public struct MyPageEditView: View {
+struct MyPageEditView: View {
     
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @StateObject private var store = MyPageEditStore()
+    @EnvironmentObject private var alertManager: AlertManager
+    @StateObject private var store: MyPageEditStore
+    @FocusState private var isNicknameTextFieldFocused: Bool
+    
+    // MARK: - Initializer
+    
+    init(userInformation: UserInformation, profileImageUrl: String) {
+        self._store = StateObject(
+            wrappedValue: MyPageEditStore(
+                userInformation: userInformation,
+                profileImageUrl: profileImageUrl
+            )
+        )
+    }
     
     // MARK: - Body
     
-    public var body: some View {
-        ScrollView {
+    var body: some View {
+        ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 24.adjustedHeight) {
                 header
                 nickname
                 persona
             }
-            .padding(.horizontal, 20.adjustedWidth)
-            .padding(.top, 15.adjustedHeight)
-            .padding(.bottom, 24.adjustedHeight)
         }
-        .scrollDismissesKeyboard(.interactively)
-        .safeAreaInset(edge: .bottom) {
+        .scrollDisabled(true)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .padding(.horizontal, 20.adjustedWidth)
+        .padding(.top, 15.adjustedHeight)
+        .padding(.bottom, 24.adjustedHeight)
+        .background(.coreWhite)
+        .customNavigationBar(.myPageEdit(backAction: {
+            if store.state.isUserInformationChanged {
+                alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
+                    appCoordinator.goBack()
+                }
+            } else {
+                appCoordinator.goBack()
+            }
+        }))
+        .onAppear {
+            store.dispatch(.loadUserInformation)
+        }
+        .onChange(of: isNicknameTextFieldFocused) { _, newValue in
+            if !newValue {
+                store.dispatch(.fetchUserNicknameCheck)
+            }
+        }
+        .onChange(of: store.state.shouldGoBack, { _, newValue in
+            if newValue {
+                appCoordinator.goBack()
+            }
+        })
+        .onTapGesture {
+            hideKeyboard()
+        }
+        .disableSwipeBack()
+        .overlay(alignment: .bottom) {
             CTAMainButton(
                 title: "완료",
                 isEnabled: true
             ) {
-                store.dispatch(.completeTapped)
-                appCoordinator.goBack()
+                if store.state.isUserInformationChanged {
+                    store.dispatch(.updateUserInformation)
+                } else {
+                    appCoordinator.goBack()
+                }
             }
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.vertical, 16.adjustedHeight)
-            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
-        .customNavigationBar(
-            .myPageEdit(
-                title: "프로필 수정",
-                backAction: {
-                    store.dispatch(.backTapped)
-                    appCoordinator.goBack()
-                }
-            )
-        )
-        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .ignoresSafeArea(.keyboard)
     }
 }
-
 
 // MARK: - Subviews
 
 private extension MyPageEditView {
-    
-    // MARK: Header
     var header: some View {
         VStack(alignment: .center, spacing: 15.adjustedHeight) {
             ZStack {
@@ -87,11 +116,16 @@ private extension MyPageEditView {
                 .foregroundStyle(.gray900)
             
             NicknameTextField(
-                state: .editing,
-                counterVisibility: .whenNotEmpty,
-                onChange: { store.dispatch(.nicknameChanged($0)) },
-                onSubmit: { store.dispatch(.nicknameChanged($0)) }
-            )
+                initialText: store.userInformation.nickname,
+                placeholder: store.userInformation.nickname,
+                state: store.state.nicknameTextFieldState,
+                counterVisibility: .whenNotEmpty
+            ) { text in
+                store.dispatch(.nicknameChanged(nickname: text))
+            } onSubmit: { _ in
+                store.dispatch(.fetchUserNicknameCheck)
+            }
+            .focused($isNicknameTextFieldFocused)
         }
     }
     
@@ -102,19 +136,12 @@ private extension MyPageEditView {
                 .foregroundStyle(.gray900)
             
             SolplyDropDown(
-                title: "조용한 공간에 오래 머물고 싶어요",
-                options: store.state.personaOptions,
+                title: store.userInformation.persona.personaString,
+                options: PersonaType.allCases.map { $0.personaString },
                 selectedText: store.state.selectedPersona
             ) { chosen in
-                store.dispatch(.personaSelected(chosen))
+                store.dispatch(.personaSelected(persona: chosen))
             }
         }
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    MyPageEditView()
-        .environmentObject(AppCoordinator())
 }

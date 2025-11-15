@@ -31,4 +31,7 @@ protocol UserAPI {
 
     func updateOnboardingUserInfo(request: UserCompleteRequestDTO) async throws
     -> BaseResponseBody<UserCompleteResponseDTO>
+    
+    func updateUserInformation(request: UpdateUserInformationRequestDTO) async throws
+    -> BaseResponseBody<UpdateUserInformationResponseDTO>
 }
