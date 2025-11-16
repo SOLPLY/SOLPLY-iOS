@@ -22,5 +22,4 @@ final class WithdrawStore: ObservableObject {
             break
         }
     }
-
 }

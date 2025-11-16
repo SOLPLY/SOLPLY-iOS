@@ -16,7 +16,12 @@ struct WithdrawView: View {
     
     
     var body: some View {
-        WithdrawSelectView(selectedWithdrawType: store.state.selectedWithdrawType) { WithdrawType in
+        WithdrawSelectView(
+            selectedWithdrawType: store.state.selectedWithdrawType,
+            withdrawContent: Binding(
+               get: { store.state.withdrawContent },
+               set: { store.dispatch(.updateContent($0)) }
+            )) { WithdrawType in
             store.dispatch(.selectWithdrawType(withdrawType: WithdrawType))
         } withdrawAction: {
             // TODO: - 탈퇴탈퇴
@@ -33,7 +38,3 @@ struct WithdrawView: View {
     }
 }
 
-#Preview {
-    WithdrawView()
-        .environmentObject(AppCoordinator())
-}
