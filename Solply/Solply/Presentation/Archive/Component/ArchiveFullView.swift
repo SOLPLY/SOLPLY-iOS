@@ -17,7 +17,7 @@ struct ArchiveFullView: View {
     @ObservedObject var store: ArchiveStore
     
     private let archiveCategory: SolplyContentType
-    private let columns = [GridItem(.fixed(165.adjustedWidth)), GridItem(.fixed(165.adjustedWidth))]
+    private let columns = [GridItem(.fixed(165.adjustedWidth), spacing: 12.adjustedWidth), GridItem(.fixed(165.adjustedWidth), spacing: 12.adjustedWidth)]
     
     // MARK: - Initializers
     
@@ -42,6 +42,7 @@ struct ArchiveFullView: View {
                 }
             }
             .padding(.top, 16.adjustedHeight)
+            .padding(.bottom, 100.adjustedHeight)
         }
         .background(.gray100)
     }
