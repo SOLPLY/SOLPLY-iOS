@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import Kingfisher
-
 struct MyPageEditView: View {
     
     // MARK: - Properties
@@ -99,7 +97,6 @@ private extension MyPageEditView {
                     store.dispatch(.attachProfileImage(imageData: (fileName, data)))
                 }
             )
-            .buttonStyle(.plain)
         }
         .frame(maxWidth: .infinity)
     }

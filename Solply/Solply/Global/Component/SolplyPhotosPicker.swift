@@ -47,7 +47,7 @@ struct SolplyPhotosPicker: View {
             matching: .images
         )
         .onChange(of: selectedItems) { _, newItems in
-            Task {
+            Task { @MainActor in
                 selectedImages.removeAll()
                 var imageData: [(String, Data)] = []
                 

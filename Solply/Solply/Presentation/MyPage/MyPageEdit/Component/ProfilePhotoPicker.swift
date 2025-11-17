@@ -44,7 +44,7 @@ struct ProfilePhotoPicker: View {
             .onChange(of: selectedItem) { _, newItem in
                 guard let newItem else { return }
                 
-                Task {
+                Task { @MainActor in
                     if let data = try? await newItem.loadTransferable(type: Data.self),
                        let image = UIImage(data: data) {
                         
@@ -64,7 +64,7 @@ struct ProfilePhotoPicker: View {
 extension ProfilePhotoPicker {
     private var profileImagePicker: some View {
         Button {
-            isPickerPresented = true
+            requestPhotoAuthorization()
         } label: {
             Group {
                 if let selectedImage {

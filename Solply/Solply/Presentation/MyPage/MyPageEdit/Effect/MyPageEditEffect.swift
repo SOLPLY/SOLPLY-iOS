@@ -9,7 +9,7 @@ import Foundation
 
 struct MyPageEditEffect {
     private let userService: UserAPI
-    private let fileSerive: FileAPI
+    private let fileService: FileAPI
     private let uploadPhotosService: UploadPhotosAPI
     
     init(
@@ -18,7 +18,7 @@ struct MyPageEditEffect {
         uploadPhotosService: UploadPhotosAPI
     ) {
         self.userService = userService
-        self.fileSerive = fileService
+        self.fileService = fileService
         self.uploadPhotosService = uploadPhotosService
     }
 }
@@ -64,7 +64,7 @@ extension MyPageEditEffect {
 extension MyPageEditEffect {
     func submitPresignedUrlRequest(request: PresignedUrlRequestDTO) async -> MyPageEditAction {
         do {
-            let response = try await fileSerive.submitPresignedUrlRequest(request: request)
+            let response = try await fileService.submitPresignedUrlRequest(request: request)
             
             guard let data = response.data,
                   let presignedUrl = data.presignedGetUrlInfos.first?.presignedUrl else {
