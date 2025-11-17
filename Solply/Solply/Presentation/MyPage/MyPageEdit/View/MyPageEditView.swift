@@ -18,11 +18,10 @@ struct MyPageEditView: View {
     
     // MARK: - Initializer
     
-    init(userInformation: UserInformation, profileImageUrl: String) {
+    init(userInformation: UserInformation) {
         self._store = StateObject(
             wrappedValue: MyPageEditStore(
-                userInformation: userInformation,
-                profileImageUrl: profileImageUrl
+                userInformation: userInformation
             )
         )
     }
@@ -40,7 +39,7 @@ struct MyPageEditView: View {
         .scrollDisabled(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding(.horizontal, 20.adjustedWidth)
-        .padding(.top, 15.adjustedHeight)
+        .padding(.top, 16.adjustedHeight)
         .padding(.bottom, 24.adjustedHeight)
         .background(.coreWhite)
         .customNavigationBar(.myPageEdit(backAction: {
@@ -75,7 +74,7 @@ struct MyPageEditView: View {
                 isEnabled: true
             ) {
                 if store.state.isUserInformationChanged {
-                    store.dispatch(.updateUserInformation)
+                    store.dispatch(.startUpdateUserInformation)
                 } else {
                     appCoordinator.goBack()
                 }
@@ -92,19 +91,12 @@ struct MyPageEditView: View {
 private extension MyPageEditView {
     var header: some View {
         VStack(alignment: .center, spacing: 15.adjustedHeight) {
-            ZStack {
-                Circle()
-                    .frame(width: 80.adjustedWidth, height: 80.adjustedHeight)
-                    .foregroundColor(.gray800)
-                
-                Image(.myNavIcon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
-                    .foregroundColor(.gray100)
-            }
-            .padding(.top, 24.adjustedHeight)
-            .frame(maxWidth: .infinity)
+            ProfilePhotoPicker(
+                profileImageUrl: store.userInformation.profileImageUrl,
+                onComplete: { fileName, data in
+                    store.dispatch(.attachProfileImage(imageData: (fileName, data)))
+                }
+            )
         }
         .frame(maxWidth: .infinity)
     }

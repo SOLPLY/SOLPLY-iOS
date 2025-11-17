@@ -13,6 +13,7 @@ struct UserInformation: Hashable {
     let persona: PersonaType
     let townName: String
     let townId: Int
+    let profileImageUrl: String?
 }
 
 extension UserInformation {
@@ -22,5 +23,6 @@ extension UserInformation {
         persona = dto.persona
         townName = dto.selectedTown.townName
         townId = dto.selectedTown.townId
+        profileImageUrl = dto.profileImageUrl
     }
 }

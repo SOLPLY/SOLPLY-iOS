@@ -10,6 +10,10 @@ import Foundation
 enum MyPageEditReducer {
     static func reduce(state: inout MyPageEditState, action: MyPageEditAction) {
         switch action {
+        case .attachProfileImage(let imageData):
+            state.attachedImageData = imageData
+            state.isUserInformationChanged = true
+            
         case .loadUserInformation:
             break
             
@@ -21,6 +25,9 @@ enum MyPageEditReducer {
         case .personaSelected(let persona):
             state.selectedPersona = persona
             state.isUserInformationChanged = true
+            
+        case .startUpdateUserInformation:
+            break
             
         case .fetchUserNicknameCheck:
             break
@@ -46,6 +53,24 @@ enum MyPageEditReducer {
             
         case .updateUserInformationFailed(let error):
             print(error)
+            break
+            
+        case .submitPresignedUrlRequest:
+            break
+            
+        case .submitPresignedUrlRequestSuccess:
+            break
+            
+        case .submitPresignedUrlRequestFailed(let error):
+            print(error)
+            break
+            
+        case .photoUploadSuccess:
+            print("S3 사진 업로드 성공")
+            break
+            
+        case .photoUploadFailed(let error):
+            print("S3 사진 업로드 실패 error: \(error)")
             break
         }
     }
