@@ -102,10 +102,12 @@ extension TabBarView {
             }
             
             return UserInformation(
+                userId: data.userId,
                 nickname: data.nickname,
                 persona: data.persona,
                 townName: data.selectedTown.townName,
-                townId: data.selectedTown.townId
+                townId: data.selectedTown.townId,
+                profileImageUrl: data.profileImageUrl
             )
         } catch let error as NetworkError {
             throw error

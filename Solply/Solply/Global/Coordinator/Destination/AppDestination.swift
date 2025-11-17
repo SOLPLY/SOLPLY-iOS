@@ -16,7 +16,7 @@ enum AppDestination: Hashable {
     case reports(placeId: Int)
     case placeSearch
     case myPage
-    case myPageEdit
+    case myPageEdit(userInformation: UserInformation)
     case withdraw
     case register
     case registerComplete
@@ -42,8 +42,8 @@ extension AppDestination {
             ReportsView(placeId: placeId)
         case .myPage:
             MyPageView()
-        case .myPageEdit:
-            MyPageEditView()
+        case .myPageEdit(let userInformation):
+            MyPageEditView(userInformation: userInformation)
         case .withdraw:
             WithdrawView()
         case .register:

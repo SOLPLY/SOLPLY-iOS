@@ -98,7 +98,7 @@ extension RegisterEffect {
     }
 }
 
-// MARK: - FileService
+// MARK: - FileAPI
 
 extension RegisterEffect {
     func submitPresignedUrlRequest(request: PresignedUrlRequestDTO) async -> RegisterAction {

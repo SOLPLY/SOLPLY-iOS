@@ -10,9 +10,9 @@ import Foundation
 struct MyPageEditState {
     var nickname: String = ""
     var selectedPersona: String? = nil
-    var personaOptions: [String] = [
-        "이곳저곳 둘러보고 싶어요",
-        "취향이 담긴 곳을 찾고 싶어요",
-        "자연을 감상하며 쉬고 싶어요"
-    ]
+    var attachedImageData: (String, Data)?
+    
+    var nicknameTextFieldState: NicknameTextFieldState = .editing
+    var isUserInformationChanged: Bool = false
+    var shouldGoBack: Bool = false
 }

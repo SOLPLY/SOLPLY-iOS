@@ -101,8 +101,3 @@ extension ArchiveListView {
         }
     }
 }
-
-//#Preview {
-//    ArchiveListView(archiveCategory: .course)
-//        .environmentObject(AppCoordinator())
-//}

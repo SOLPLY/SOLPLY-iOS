@@ -11,9 +11,11 @@ import Moya
 
 enum UserTargetType {
     case fetchUserInformation
+    case fetchRegisteredPlaces(userId: Int, page: Int, size: Int)
     case checkNickname(nickname: String)
     case fetchUserTowns
     case updateUserTowns(UserTownsUpdateRequestDTO)
+    case updateUserInformation(request: UpdateUserInformationRequestDTO)
     
     case fetchPersonaList
     case fetchPolicies
@@ -28,9 +30,11 @@ extension UserTargetType: BaseTargetType {
     
     var path: String {
         switch self {
-
-        case .fetchUserInformation:
+            
+        case .fetchUserInformation, .updateUserInformation:
             return "/users"
+        case let .fetchRegisteredPlaces(userId, _, _):
+            return "/users/\(userId)/places"
         case .checkNickname:
             return "/users/check-nickname"
         case .fetchUserTowns, .updateUserTowns:
@@ -47,7 +51,7 @@ extension UserTargetType: BaseTargetType {
     
     var method: Moya.Method {
         switch self {
-        case .updateUserTowns, .completeOnboarding:
+        case .updateUserTowns, .completeOnboarding, .updateUserInformation:
             return .patch
         default:
             return .get
@@ -56,9 +60,15 @@ extension UserTargetType: BaseTargetType {
     
     var task: Task {
         switch self {
-
+            
         case .fetchUserInformation, .fetchUserTowns, .fetchPersonaList, .fetchPolicies:
             return .requestPlain
+            
+        case let .fetchRegisteredPlaces(_, page, size):
+            return .requestParameters(
+                parameters: ["page": page, "size": size],
+                encoding: URLEncoding.queryString
+            )
             
         case .checkNickname(let nickname):
             return .requestParameters(parameters: ["nickname": nickname],
@@ -66,6 +76,9 @@ extension UserTargetType: BaseTargetType {
             
         case .updateUserTowns(let requestDTO):
             return .requestJSONEncodable(requestDTO)
+            
+        case .updateUserInformation(let request):
+            return .requestJSONEncodable(request)
             
         case .completeOnboarding(let requestDTO):
             return .requestJSONEncodable(requestDTO)

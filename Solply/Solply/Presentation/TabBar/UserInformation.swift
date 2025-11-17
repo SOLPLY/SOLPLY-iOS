@@ -7,18 +7,22 @@
 
 import Foundation
 
-struct UserInformation {
+struct UserInformation: Hashable {
+    let userId: Int
     let nickname: String
     let persona: PersonaType
     let townName: String
     let townId: Int
+    let profileImageUrl: String?
 }
 
 extension UserInformation {
     init(dto: UserInformationResponseDTO) {
+        userId = dto.userId
         nickname = dto.nickname
         persona = dto.persona
         townName = dto.selectedTown.townName
         townId = dto.selectedTown.townId
+        profileImageUrl = dto.profileImageUrl
     }
 }
