@@ -17,7 +17,7 @@ final class AppCoordinator: ObservableObject {
     
     private var tokenExpiredObserver: NSObjectProtocol?
     
-    // MARK: - Init
+    // MARK: - Initializer
     
     init() {
         observeTokenExpired()
@@ -60,7 +60,9 @@ final class AppCoordinator: ObservableObject {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            self?.changeRoot(to: .auth)
+            guard let self else { return }
+            
+            self.changeRoot(to: .auth)
         }
     }
 }
