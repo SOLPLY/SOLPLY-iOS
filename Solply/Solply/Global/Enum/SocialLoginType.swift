@@ -15,6 +15,13 @@ enum SocialLoginType: String, Equatable {
 // MARK: - SocialLoginButtonStyle
 
 extension SocialLoginType {
+    var loginInformation: String {
+        switch self {
+        case .kakao: return "카카오 로그인"
+        case .apple: return "Apple 로그인"
+        }
+    }
+    
     var buttonIcon: ImageResource {
         switch self {
         case .kakao: return .kakaoTalkIcon
