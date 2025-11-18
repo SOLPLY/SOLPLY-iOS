@@ -104,6 +104,7 @@ extension ProfilePhotoPicker {
             Group {
                 if didDelete {
                     defaultProfileImage
+                    
                 } else if let selectedImage {
                     Image(uiImage: selectedImage)
                         .resizable()
