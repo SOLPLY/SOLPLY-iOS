@@ -68,3 +68,26 @@ struct MyPageEffect {
     }
 }
 
+ // MARK: - AuthAPI
+
+extension MyPageEffect {
+    func fetchLoginInformation() async -> MyPageAction {
+        do {
+            let response = try await authService.fetchLoginInformation()
+            
+            guard let data = response.data else {
+                return .fetchLoginInformationFailed(error: .responseError)
+            }
+            
+            print("MyPageEffect - fetchLoginInformation\n:\(data)")
+            
+            let loginInformation = SocialLoginType(rawValue: data.socialPlatform)
+            return .fetchLoginInformationSuccess(loginInformation: loginInformation)
+            
+        } catch let error as NetworkError {
+            return .fetchLoginInformationFailed(error: error)
+        } catch {
+            return .fetchLoginInformationFailed(error: .unknownError)
+        }
+    }
+}

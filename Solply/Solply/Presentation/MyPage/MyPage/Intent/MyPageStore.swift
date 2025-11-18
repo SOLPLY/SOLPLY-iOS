@@ -37,6 +37,12 @@ final class MyPageStore: ObservableObject {
                 let result = await effect.fetchRegisteredPlaces(userId: user.userId)
                 dispatch(result)
             }
+            
+        case .fetchLoginInformation:
+            Task {
+                let result = await effect.fetchLoginInformation()
+                dispatch(result)
+            }
 
         default:
             break

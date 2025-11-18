@@ -48,7 +48,7 @@ struct MyPageSettings: View {
             
             row(title: "고객센터", action: onTapCustomerCenter)
             
-            row(title: "로그인 정보", trailing: loginProvider?.loginInformation ?? "알 수 없음")
+            row(title: "로그인 정보", trailing: loginProvider?.loginInformation ?? "")
             row(title: "앱 버전", trailing: appVersion)
 
             row(title: "로그아웃", action: onTapLogout)

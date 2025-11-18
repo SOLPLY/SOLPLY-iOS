@@ -73,9 +73,9 @@ struct AuthEffect {
     }
 }
 
-// MARK: - Implementation
+// MARK: - AuthAPI
 
-extension AuthEffect: AuthAPI {
+extension AuthEffect {
     func submitLogin(
         provider: String,
         request: AuthLoginRequestDTO

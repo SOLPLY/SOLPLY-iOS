@@ -18,5 +18,5 @@ protocol AuthAPI {
     ) async throws -> BaseResponseBody<AuthRefreshResponseDTO>
     
     /// 사용자 로그인 정보 조회
-    func fetchAuthLoginInformation() async throws -> BaseResponseBody<LoginInformationResponseDTO>
+    func fetchLoginInformation() async throws -> BaseResponseBody<LoginInformationResponseDTO>
 }
