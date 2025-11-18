@@ -28,7 +28,7 @@ extension AuthTargetType: BaseTargetType {
         switch self {
         case .submitLogin(let provider, _): return "/auth/social/\(provider)/login"
         case .refreshToken: return "/auth/refresh"
-        case .fetchLoginInformation: return"/auth/login-info"
+        case .fetchLoginInformation: return "/auth/login-info"
         }
     }
     
