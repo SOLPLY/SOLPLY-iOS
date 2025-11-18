@@ -14,6 +14,11 @@ enum MyPageEditReducer {
             state.attachedImageData = imageData
             state.isUserInformationChanged = true
             
+        case .deleteProfileImage:
+            state.attachedImageData = ("", Data())
+            state.isUserInformationChanged = true
+            break
+            
         case .loadUserInformation:
             break
             

@@ -95,6 +95,9 @@ private extension MyPageEditView {
                 profileImageUrl: store.userInformation.profileImageUrl,
                 onComplete: { fileName, data in
                     store.dispatch(.attachProfileImage(imageData: (fileName, data)))
+                },
+                onDelete: {
+                    store.dispatch(.deleteProfileImage)
                 }
             )
         }

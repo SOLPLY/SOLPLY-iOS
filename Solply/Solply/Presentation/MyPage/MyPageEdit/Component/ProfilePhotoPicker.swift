@@ -16,20 +16,28 @@ struct ProfilePhotoPicker: View {
     
     @EnvironmentObject private var alertManager: AlertManager
     @State private var isPickerPresented: Bool = false
+    @State private var isDialogPresented: Bool = false
     @State private var selectedItem: PhotosPickerItem?
     @State private var selectedImage: UIImage?
+    @State private var didDelete: Bool = false
     
     private let profileImageUrl: String?
     private let onComplete: ((String, Data) -> Void)?
+    private let onDelete: (() -> Void)?
     
     private let width: CGFloat = 80.adjustedWidth
     private let height: CGFloat = 80.adjustedHeight
     
     // MARK: - Initializer
     
-    init(profileImageUrl: String?, onComplete: ((String, Data) -> Void)? = nil) {
+    init(
+        profileImageUrl: String?,
+        onComplete: ((String, Data) -> Void)? = nil,
+        onDelete: (() -> Void)? = nil
+    ) {
         self.profileImageUrl = profileImageUrl
         self.onComplete = onComplete
+        self.onDelete = onDelete
     }
     
     // MARK: - Body
@@ -41,6 +49,24 @@ struct ProfilePhotoPicker: View {
                 selection: $selectedItem,
                 matching: .images
             )
+            .confirmationDialog(
+                "원하는 작업을 선택하세요",
+                isPresented: $isDialogPresented,
+                titleVisibility: .visible
+            ) {
+                Button("삭제", role: .destructive) {
+                    selectedImage = nil
+                    selectedItem = nil
+                    didDelete = true
+                    onDelete?()
+                }
+                
+                Button("편집") {
+                    requestPhotoAuthorization()
+                }
+                
+                Button("취소", role: .cancel) { }
+            }
             .onChange(of: selectedItem) { _, newItem in
                 guard let newItem else { return }
                 
@@ -49,6 +75,7 @@ struct ProfilePhotoPicker: View {
                        let image = UIImage(data: data) {
                         
                         selectedImage = image
+                        didDelete = false
                         
                         if let (fileName, data) = image.convertToJPGFile() {
                             onComplete?(fileName, data)
@@ -64,10 +91,18 @@ struct ProfilePhotoPicker: View {
 extension ProfilePhotoPicker {
     private var profileImagePicker: some View {
         Button {
-            requestPhotoAuthorization()
+            if let _ = profileImageUrl {
+                isDialogPresented = true
+            } else if let _ = selectedImage {
+                isDialogPresented = true
+            } else {
+                requestPhotoAuthorization()
+            }
         } label: {
             Group {
-                if let selectedImage {
+                if didDelete {
+                    defaultProfileImage
+                } else if let selectedImage {
                     Image(uiImage: selectedImage)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -83,21 +118,25 @@ extension ProfilePhotoPicker {
                         .circleClipped()
                     
                 } else {
-                    ZStack(alignment: .center) {
-                        Circle()
-                            .frame(width: width, height: height)
-                            .foregroundColor(.gray800)
-                        
-                        Image(.myNavIcon)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
-                            .foregroundColor(.gray100)
-                    }
+                    defaultProfileImage
                 }
             }
         }
         .buttonStyle(.plain)
+    }
+    
+    private var defaultProfileImage: some View {
+        ZStack(alignment: .center) {
+            Circle()
+                .frame(width: width, height: height)
+                .foregroundColor(.gray800)
+            
+            Image(.myNavIcon)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
+                .foregroundColor(.gray100)
+        }
     }
 }
 
