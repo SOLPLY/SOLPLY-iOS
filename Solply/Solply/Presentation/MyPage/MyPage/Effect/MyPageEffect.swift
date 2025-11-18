@@ -12,11 +12,13 @@ struct MyPageEffect {
     // MARK: - Properties
     
     private let userService: UserAPI
+    private let authService: AuthService
     
     // MARK: - Init
     
-    init(userService: UserAPI) {
+    init(userService: UserAPI, authService: AuthService) {
         self.userService = userService
+        self.authService = authService
     }
     
     // MARK: - Functions

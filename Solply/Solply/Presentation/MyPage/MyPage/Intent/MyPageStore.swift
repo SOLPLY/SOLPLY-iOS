@@ -10,7 +10,10 @@ import Foundation
 @MainActor
 final class MyPageStore: ObservableObject {
     @Published private(set) var state = MyPageState()
-    private let effect = MyPageEffect(userService: UserService())
+    private let effect = MyPageEffect(
+        userService: UserService(),
+        authService: AuthService()
+    )
 
     func dispatch(_ action: MyPageAction) {
         MyPageReducer.reduce(state: &state, action: action)
