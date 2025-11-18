@@ -23,7 +23,6 @@ final class Interceptor: RequestInterceptor {
     // MARK: - Config
     
     private let skipAuthKeywords: [String] = [
-        "/auth/login",
         "/auth/social",
         "/auth/refresh"
     ]
@@ -122,7 +121,7 @@ private extension Interceptor {
     }
 
     func shouldSkipAuth(for path: String) -> Bool {
-        skipAuthKeywords.contains { path.hasPrefix($0) }
+        skipAuthKeywords.contains { path.contains($0) }
     }
 
     func shouldAttachAuth(for path: String) -> Bool {
