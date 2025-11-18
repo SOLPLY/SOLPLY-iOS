@@ -91,7 +91,9 @@ struct ProfilePhotoPicker: View {
 extension ProfilePhotoPicker {
     private var profileImagePicker: some View {
         Button {
-            if let _ = profileImageUrl {
+            if didDelete {
+                requestPhotoAuthorization()
+            } else if let _ = profileImageUrl {
                 isDialogPresented = true
             } else if let _ = selectedImage {
                 isDialogPresented = true
