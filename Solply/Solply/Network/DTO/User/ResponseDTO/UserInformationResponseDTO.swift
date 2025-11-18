@@ -24,7 +24,7 @@ struct SelectedTownDTO: ResponseModelType {
 struct PlacePreviewResponseDTO: ResponseModelType {
     let placeId: Int
     let placeName: String
-    let thumbnailImageUrl: String
+    let thumbnailImageUrl: String?
     let mainTag: String
     let isBookmarked: Bool
 }
