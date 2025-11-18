@@ -121,7 +121,7 @@ private extension Interceptor {
     }
 
     func shouldSkipAuth(for path: String) -> Bool {
-        skipAuthKeywords.contains { path.contains($0) }
+        skipAuthKeywords.contains { path.hasPrefix($0) }
     }
 
     func shouldAttachAuth(for path: String) -> Bool {
