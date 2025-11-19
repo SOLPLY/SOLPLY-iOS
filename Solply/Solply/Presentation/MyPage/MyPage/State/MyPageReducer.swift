@@ -38,6 +38,17 @@ enum MyPageReducer {
         case .deleteAccountTapped:
             // TODO: 탈퇴 처리 + 앱 상태 초기화
             break
+            
+        case .fetchLoginInformation:
+            break
+            
+        case .fetchLoginInformationSuccess(let loginInformation):
+            state.loginInformation = loginInformation
+            
+        case .fetchLoginInformationFailed(let error):
+            state.error = error
+            print(error)
+            break
         }
     }
 }

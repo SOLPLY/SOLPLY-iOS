@@ -19,4 +19,8 @@ enum MyPageAction {
     case customerCenterTapped
     case logoutTapped
     case deleteAccountTapped
+    
+    case fetchLoginInformation
+    case fetchLoginInformationSuccess(loginInformation: SocialLoginType?)
+    case fetchLoginInformationFailed(error: NetworkError)
 }

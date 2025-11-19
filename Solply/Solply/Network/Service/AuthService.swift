@@ -26,4 +26,8 @@ extension AuthService: AuthAPI {
     ) async throws -> BaseResponseBody<AuthRefreshResponseDTO> {
         return try await self.request(with: .refreshToken(refreshToken: refreshToken))
     }
+    
+    func fetchLoginInformation() async throws -> BaseResponseBody<LoginInformationResponseDTO> {
+        return try await self.request(with: .fetchLoginInformation)
+    }
 }

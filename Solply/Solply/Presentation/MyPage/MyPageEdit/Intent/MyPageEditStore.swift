@@ -51,13 +51,17 @@ final class MyPageEditStore: ObservableObject {
             
         case .startUpdateUserInformation:
             if let attachedImageData = state.attachedImageData {
-                self.dispatch(
-                    .submitPresignedUrlRequest(
-                        request: PresignedUrlRequestDTO(
-                            files: [File(fileName: attachedImageData.0)]
+                if attachedImageData.0.isEmpty {
+                    self.dispatch(.updateUserInformation(imageKeyString: ""))
+                } else {
+                    self.dispatch(
+                        .submitPresignedUrlRequest(
+                            request: PresignedUrlRequestDTO(
+                                files: [File(fileName: attachedImageData.0)]
+                            )
                         )
                     )
-                )
+                }
             } else {
                 self.dispatch(.updateUserInformation(imageKeyString: nil))
             }
