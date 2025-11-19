@@ -13,8 +13,8 @@ struct MyPageSettings: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     @EnvironmentObject var alertManager: AlertManager
-    
-    private let loginProvider: String
+
+    private let loginProvider: SocialLoginType?
     private let appVersion: String
     private let onTapCustomerCenter: (() -> Void)?
     private let onTapLogout: (() -> Void)?
@@ -23,7 +23,7 @@ struct MyPageSettings: View {
     // MARK: - Initializer
     
     init(
-        loginProvider: String,
+        loginProvider: SocialLoginType?,
         appVersion: String,
         onTapCustomerCenter: (() -> Void)? = nil,
         onTapLogout: (() -> Void)? = nil,
@@ -49,7 +49,7 @@ struct MyPageSettings: View {
             
             row(title: "고객센터", action: onTapCustomerCenter)
             
-            row(title: "로그인 정보", trailing: loginProvider)
+            row(title: "로그인 정보", trailing: loginProvider?.loginInformation ?? "")
             row(title: "앱 버전", trailing: appVersion)
             
             row(title: "로그아웃") {

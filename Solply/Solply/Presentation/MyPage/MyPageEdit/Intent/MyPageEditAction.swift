@@ -11,6 +11,7 @@ enum MyPageEditAction {
     case loadUserInformation
     
     case attachProfileImage(imageData: (String, Data))
+    case deleteProfileImage
     case nicknameChanged(nickname: String)
     case personaSelected(persona: String)
     
