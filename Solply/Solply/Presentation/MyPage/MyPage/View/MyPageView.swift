@@ -45,6 +45,8 @@ struct MyPageView: View {
                     )
                     .padding(.top, 16.adjustedHeight)
                 }
+                Spacer()
+                    .frame(height: 30.adjustedHeight)
             }
         }
         .background(Color(.gray100).ignoresSafeArea())
@@ -77,8 +79,8 @@ private extension MyPageView {
                     Text("프로필 수정")
                         .applySolplyFont(.button_14_m)
                         .foregroundColor(.gray600)
-                        .frame(width: 64.adjustedWidth, height: 18.adjustedHeight)
-                        .padding(.leading, 16.adjustedWidth)
+                        .frame(width: 68.adjustedWidth, height: 18.adjustedHeight)
+                        .padding(.leading, 12.adjustedWidth)
                     
                     Image(.arrowRightIcon)
                         .renderingMode(.template)
