@@ -48,7 +48,16 @@ class BaseService<Target: BaseTargetType> {
                             continuation.resume(throwing: NetworkError.responseError)
                         }
                         
-                    case 401, 403:
+                    case 401:
+                        TokenManager.shared.clearTokens()
+                        
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: .tokenExpired, object: nil)
+                        }
+                        
+                        continuation.resume(throwing: NetworkError.unauthorized)
+
+                    case 403:
                         continuation.resume(throwing: NetworkError.unauthorized)
                     case 404:
                         continuation.resume(throwing: NetworkError.notFound)
