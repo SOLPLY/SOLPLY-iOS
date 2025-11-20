@@ -26,8 +26,13 @@ struct MyPageView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     header
                     
-                    MyPageRegisteredPlaces(places: store.state.registeredPlaces)
-                        .padding(.top, 44.adjustedHeight)
+                    MyPageRegisteredPlaces(
+                        places: store.state.user?.myPlacePreviews ?? [],
+                        onSeeAllTapped: {
+                            // TODO: 전체보기> 화면으로 이동하는 로직 추가
+                        }
+                    )
+                    .padding(.top, 44.adjustedHeight)
                     
                     MyPageSettings(
                         loginProvider: store.state.loginInformation,
@@ -87,8 +92,3 @@ private extension MyPageView {
         .frame(maxWidth: .infinity, alignment: .center)
     }
 }
-
-//#Preview {
-//    MyPageView()
-//        .environmentObject(AppCoordinator())
-//}
