@@ -26,11 +26,19 @@ struct AuthEffect {
     // MARK: - Functions
     
     @MainActor
-    func login(provider: String) async -> AuthAction {
+    func login(socialLoginType: SocialLoginType) async -> AuthAction {
         do {
-            let oauthToken = try await fetchKakaoToken()
-            let request = AuthLoginRequestDTO(oauthAccessToken: oauthToken.accessToken)
-            let response = try await service.submitLogin(provider: provider, request: request)
+            var oauthToken: String
+            
+            switch socialLoginType {
+            case .kakao:
+                oauthToken = try await fetchKakaoToken().accessToken
+            case .apple:
+                oauthToken = try await fetchKakaoToken().accessToken
+            }
+            
+            let request = AuthLoginRequestDTO(oauthAccessToken: oauthToken)
+            let response = try await service.submitLogin(provider: socialLoginType.rawValue, request: request)
             guard
                 let accessToken = response.data?.accessToken,
                 let refreshToken = response.data?.refreshToken,

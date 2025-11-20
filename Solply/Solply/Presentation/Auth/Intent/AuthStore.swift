@@ -19,7 +19,7 @@ final class AuthStore: ObservableObject {
         switch action {
         case .login(let socialLoginType):
             Task {
-                let result = await effect.login(provider: socialLoginType.rawValue)
+                let result = await effect.login(socialLoginType: socialLoginType)
                 self.dispatch(result)
             }
             
