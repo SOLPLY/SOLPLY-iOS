@@ -39,13 +39,15 @@ struct MyPageRegisteredPlaces: View {
                                 .applySolplyFont(.body_14_r)
                                 .foregroundColor(.gray600)
                             
-                            Image(.arrowRightIconLightGray)
+                            Image(.arrowRightIconGray)
+                                .renderingMode(.template)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(
                                     width: 4.adjustedWidth,
                                     height: 8.adjustedHeight
                                 )
+                                .foregroundColor(.gray600)
                         }
                     }
                     .padding(.trailing, 10.adjustedWidth)
