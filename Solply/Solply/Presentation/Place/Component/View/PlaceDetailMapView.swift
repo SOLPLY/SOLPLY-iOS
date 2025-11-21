@@ -106,9 +106,7 @@ private extension PlaceDetailMapView {
             } else {
                 cameraUpdate.animation = .fly
             }
-            
-            print("움직")
-            
+
             mapView.moveCamera(cameraUpdate)
         }
     }
