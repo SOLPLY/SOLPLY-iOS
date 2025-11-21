@@ -104,7 +104,7 @@ extension AuthStore: ASAuthorizationControllerDelegate {
     ) {
         if let authError = error as? ASAuthorizationError,
            authError.code == .canceled {
-            print("애플로그인을 취소했습니다.")
+            self.dispatch(.loginFailed(.apiError(message: "사용자가 애플 로그인을 취수했습니다.")))
             return
         }
     }
