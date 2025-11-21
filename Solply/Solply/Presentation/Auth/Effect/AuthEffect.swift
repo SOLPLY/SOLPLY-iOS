@@ -25,7 +25,6 @@ struct AuthEffect {
     
     // MARK: - Functions
     
-    @MainActor
     func login(with socialLoginType: SocialLoginType, oauthAccessToken: String = "") async -> AuthAction {
         do {
             var oauthAccessToken = oauthAccessToken
@@ -38,7 +37,10 @@ struct AuthEffect {
             }
             
             let request = AuthLoginRequestDTO(oauthAccessToken: oauthAccessToken)
-            let response = try await service.submitLogin(provider: SocialLoginType.kakao.rawValue, request: request)
+            let response = try await service.submitLogin(
+                provider: socialLoginType.rawValue,
+                request: request
+            )
             
             guard
                 let accessToken = response.data?.accessToken,
