@@ -16,29 +16,30 @@ struct AuthEffect {
     // MARK: - Properties
     
     private let service: AuthAPI
-
+    
     // MARK: - Initializer
-
+    
     init(service: AuthAPI) {
         self.service = service
     }
-
+    
     // MARK: - Functions
     
     @MainActor
-    func login(socialLoginType: SocialLoginType) async -> AuthAction {
+    func login(with socialLoginType: SocialLoginType, oauthAccessToken: String = "") async -> AuthAction {
         do {
-            var oauthToken: String
+            var oauthAccessToken = oauthAccessToken
             
             switch socialLoginType {
             case .kakao:
-                oauthToken = try await fetchKakaoToken().accessToken
+                oauthAccessToken = try await fetchKakaoToken().accessToken
             case .apple:
-                oauthToken = try await fetchKakaoToken().accessToken
+                break
             }
             
-            let request = AuthLoginRequestDTO(oauthAccessToken: oauthToken)
-            let response = try await service.submitLogin(provider: socialLoginType.rawValue, request: request)
+            let request = AuthLoginRequestDTO(oauthAccessToken: oauthAccessToken)
+            let response = try await service.submitLogin(provider: SocialLoginType.kakao.rawValue, request: request)
+            
             guard
                 let accessToken = response.data?.accessToken,
                 let refreshToken = response.data?.refreshToken,
@@ -56,7 +57,11 @@ struct AuthEffect {
             return .loginFailed(.unknownError)
         }
     }
+}
 
+// MARK: - KakaoLoagin
+
+extension AuthEffect {
     @MainActor
     private func fetchKakaoToken() async throws -> OAuthToken {
         return try await withCheckedThrowingContinuation { continuation in
