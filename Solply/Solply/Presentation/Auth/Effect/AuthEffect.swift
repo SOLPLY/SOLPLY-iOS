@@ -25,18 +25,18 @@ struct AuthEffect {
     
     // MARK: - Functions
     
-    func login(with socialLoginType: SocialLoginType, oauthAccessToken: String = "") async -> AuthAction {
+    func login(with socialLoginType: SocialLoginType, token: String = "") async -> AuthAction {
         do {
-            var oauthAccessToken = oauthAccessToken
+            var token = token
             
             switch socialLoginType {
             case .kakao:
-                oauthAccessToken = try await fetchKakaoToken().accessToken
+                token = try await fetchKakaoToken().accessToken
             case .apple:
                 break
             }
             
-            let request = AuthLoginRequestDTO(oauthAccessToken: oauthAccessToken)
+            let request = AuthLoginRequestDTO(token: token)
             let response = try await service.submitLogin(
                 provider: socialLoginType.rawValue,
                 request: request
@@ -69,18 +69,26 @@ extension AuthEffect {
         return try await withCheckedThrowingContinuation { continuation in
             if UserApi.isKakaoTalkLoginAvailable() {
                 UserApi.shared.loginWithKakaoTalk { token, error in
+                    if let error {
+                        continuation.resume(throwing: NetworkError.apiError(message: "⚠️ 카카오 로그인에 실패했습니다: \(error.localizedDescription)"))
+                    }
+                    
                     if let token = token {
                         continuation.resume(returning: token)
                     } else {
-                        continuation.resume(throwing: error ?? NSError(domain: "KakaoLogin", code: -1))
+                        continuation.resume(throwing: NetworkError.apiError(message: "⚠️ 카카오 로그인에 실패했습니다: 카카오 토큰 확인을 확인할 수 없습니다."))
                     }
                 }
             } else {
                 UserApi.shared.loginWithKakaoAccount { token, error in
+                    if let error {
+                        continuation.resume(throwing: NetworkError.apiError(message: "⚠️ 카카오 로그인에 실패했습니다: \(error.localizedDescription)"))
+                    }
+                    
                     if let token = token {
                         continuation.resume(returning: token)
                     } else {
-                        continuation.resume(throwing: error ?? NSError(domain: "KakaoLogin", code: -1))
+                        continuation.resume(throwing: NetworkError.apiError(message: "⚠️ 카카오 로그인에 실패했습니다: 카카오 토큰 확인을 확인할 수 없습니다."))
                     }
                 }
             }

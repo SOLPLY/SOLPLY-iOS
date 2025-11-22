@@ -78,22 +78,22 @@ extension AuthStore: ASAuthorizationControllerDelegate {
         didCompleteWithAuthorization authorization: ASAuthorization
     ) {
         guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else {
-            self.dispatch(.loginFailed(.apiError(message: "애플 인증 정보를 가져오는 데 실패했습니다.")))
+            self.dispatch(.loginFailed(.apiError(message: "⚠️ 애플 로그인에 실패했습니다: 애플 인증 정보를 가져오는 데 실패했습니다.")))
             return
         }
         
         guard let tokenData = credential.identityToken else {
-            self.dispatch(.loginFailed(.apiError(message: "애플 로그인 토큰을 확인할 수 없습니다.")))
+            self.dispatch(.loginFailed(.apiError(message: "⚠️ 애플 로그인에 실패했습니다: 애플 로그인 토큰을 확인할 수 없습니다.")))
             return
         }
         
         guard let token = String(data: tokenData, encoding: .utf8) else {
-            self.dispatch(.loginFailed(.apiError(message: "애플 인증에 실패했습니다.")))
+            self.dispatch(.loginFailed(.apiError(message: "⚠️ 애플 로그인에 실패했습니다: 애플 인증에 실패했습니다.")))
             return
         }
 
         Task {
-            let result = await effect.login(with: .apple, oauthAccessToken: token)
+            let result = await effect.login(with: .apple, token: token)
             self.dispatch(result)
         }
     }
@@ -104,7 +104,7 @@ extension AuthStore: ASAuthorizationControllerDelegate {
     ) {
         if let authError = error as? ASAuthorizationError,
            authError.code == .canceled {
-            self.dispatch(.loginFailed(.apiError(message: "사용자가 애플 로그인을 취수했습니다.")))
+            self.dispatch(.loginFailed(.apiError(message: "⚠️ 애플 로그인에 실패했습니다: 사용자가 애플 로그인을 취소했습니다.")))
             return
         }
     }
