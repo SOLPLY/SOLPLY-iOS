@@ -18,14 +18,11 @@ struct WithdrawView: View {
     var body: some View {
         WithdrawSelectView(
             selectedWithdrawType: store.state.selectedWithdrawType,
-            withdrawContent: Binding(
-               get: { store.state.withdrawContent },
-               set: { store.dispatch(.updateContent($0)) }
-            )) { WithdrawType in
-            store.dispatch(.selectWithdrawType(withdrawType: WithdrawType))
-        } withdrawAction: {
+            withdrawContent: store.state.withdrawContent,
+            onChangeContent: { store.dispatch(.updateContent($0)) },
+            withdrawAction: { }
             // TODO: - 탈퇴탈퇴
-        }
+            )
         .customNavigationBar(
             .withdraw(
                 backAction: appCoordinator.goBack
@@ -37,4 +34,3 @@ struct WithdrawView: View {
         }
     }
 }
-
