@@ -30,7 +30,7 @@ struct MyPageView: View {
                         .padding(.top, 44.adjustedHeight)
                     
                     MyPageSettings(
-                        loginProvider: "카카오 로그인",
+                        loginProvider: store.state.loginInformation,
                         appVersion: "v" + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"),
                         onTapCustomerCenter: { store.dispatch(.customerCenterTapped) },
                         onTapLogout: { store.dispatch(.logoutTapped) },
@@ -47,6 +47,7 @@ struct MyPageView: View {
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchUser)
+            store.dispatch(.fetchLoginInformation)
         }
     }
 }
@@ -56,18 +57,7 @@ struct MyPageView: View {
 private extension MyPageView {
     var header: some View {
         VStack(alignment: .center, spacing: 15.adjustedHeight) {
-            ZStack {
-                Circle()
-                    .frame(width: 80.adjustedWidth, height: 80.adjustedHeight)
-                    .foregroundColor(.gray800)
-                
-                Image(.myNavIcon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
-                    .foregroundColor(.gray100)
-            }
-            .padding(.top, 24.adjustedHeight)
+            ProfileImage(profileImageUrl: store.state.user?.profileImageUrl)
             
             Text(store.state.user?.nickname ?? "")
                 .applySolplyFont(.title_18_sb)
@@ -76,23 +66,20 @@ private extension MyPageView {
             Button {
                 guard let user = store.state.user else { return }
                 
-                appCoordinator.navigate(
-                    to: .myPageEdit(
-                        userInformation: user,
-                        profileImageUrl: "" // 임시 프로필 이미지 url 주입
-                    )
-                )
+                appCoordinator.navigate(to: .myPageEdit(userInformation: user))
             } label: {
-                HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                HStack(alignment: .center, spacing: 0) {
                     Text("프로필 수정")
                         .applySolplyFont(.button_14_m)
                         .foregroundColor(.gray600)
+                        .frame(width: 64.adjustedWidth, height: 18.adjustedHeight)
+                        .padding(.leading, 16.adjustedWidth)
                     
                     Image(.arrowRightIcon)
                         .renderingMode(.template)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 14.adjustedWidth, height: 14.adjustedWidth)
+                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
                         .foregroundColor(.gray600)
                 }
             }

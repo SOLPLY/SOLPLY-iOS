@@ -10,11 +10,21 @@ import Foundation
 struct UserInformationResponseDTO: ResponseModelType {
     let userId: Int
     let nickname: String
+    let profileImageUrl: String?
     let selectedTown: SelectedTownDTO
-    let persona: PersonaType
+    let persona: String
+    let myPlacePreviews: [PlacePreviewResponseDTO]
 }
 
-struct SelectedTownDTO: ResponseModelType{
+struct SelectedTownDTO: ResponseModelType {
     let townId: Int
     let townName: String
+}
+
+struct PlacePreviewResponseDTO: ResponseModelType {
+    let placeId: Int
+    let placeName: String
+    let thumbnailImageUrl: String?
+    let mainTag: String
+    let isBookmarked: Bool
 }

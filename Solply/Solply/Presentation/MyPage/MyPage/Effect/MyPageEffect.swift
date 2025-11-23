@@ -12,11 +12,13 @@ struct MyPageEffect {
     // MARK: - Properties
     
     private let userService: UserAPI
+    private let authService: AuthService
     
     // MARK: - Init
     
-    init(userService: UserAPI) {
+    init(userService: UserAPI, authService: AuthService) {
         self.userService = userService
+        self.authService = authService
     }
     
     // MARK: - Functions
@@ -66,3 +68,24 @@ struct MyPageEffect {
     }
 }
 
+ // MARK: - AuthAPI
+
+extension MyPageEffect {
+    func fetchLoginInformation() async -> MyPageAction {
+        do {
+            let response = try await authService.fetchLoginInformation()
+            
+            guard let data = response.data else {
+                return .fetchLoginInformationFailed(error: .responseError)
+            }
+            
+            let loginInformation = SocialLoginType(rawValue: data.socialPlatform)
+            return .fetchLoginInformationSuccess(loginInformation: loginInformation)
+            
+        } catch let error as NetworkError {
+            return .fetchLoginInformationFailed(error: error)
+        } catch {
+            return .fetchLoginInformationFailed(error: .unknownError)
+        }
+    }
+}

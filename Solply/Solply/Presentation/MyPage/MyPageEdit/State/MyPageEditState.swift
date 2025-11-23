@@ -10,7 +10,7 @@ import Foundation
 struct MyPageEditState {
     var nickname: String = ""
     var selectedPersona: String? = nil
-    var profileImageUrl: String? = nil
+    var attachedImageData: (String, Data)?
     
     var nicknameTextFieldState: NicknameTextFieldState = .editing
     var isUserInformationChanged: Bool = false
