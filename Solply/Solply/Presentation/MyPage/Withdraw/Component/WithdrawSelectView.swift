@@ -61,7 +61,7 @@ extension WithdrawSelectView {
             ForEach(WithdrawType.allCases, id: \.self) { withdraws in
                 SolplySelectRow(
                     title: withdraws.title,
-                    isSelected: selectedWithdrawType ?? nil == withdraws
+                    isSelected: selectedWithdrawType == withdraws
                 ) {
                     selectWithdrawAction?(withdraws)
                 }

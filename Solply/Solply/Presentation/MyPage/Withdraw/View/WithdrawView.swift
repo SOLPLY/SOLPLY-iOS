@@ -20,6 +20,9 @@ struct WithdrawView: View {
             selectedWithdrawType: store.state.selectedWithdrawType,
             withdrawContent: store.state.withdrawContent,
             onChangeContent: { store.dispatch(.updateContent($0)) },
+            selectWithdrawAction: {
+                store.dispatch(.selectWithdrawType(withdrawType: $0))
+            },
             withdrawAction: { }
             // TODO: - 탈퇴탈퇴
             )
