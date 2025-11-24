@@ -11,7 +11,10 @@ enum AuthReducer {
     static func reduce(state: inout AuthState, action: AuthAction) {
         
         switch action {
-        case .login:
+        case .loginWithKakao:
+            state.isLoading = true
+            
+        case .loginWithApple:
             state.isLoading = true
             
         case .loginSuccess(let isNewUser):

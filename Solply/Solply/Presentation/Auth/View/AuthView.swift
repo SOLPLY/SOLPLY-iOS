@@ -78,11 +78,11 @@ extension AuthView {
     private var buttons: some View {
         VStack(alignment: .center, spacing: 12.adjustedHeight) {
             SocialLoginButton(.kakao) {
-                store.dispatch(.login(.kakao))
+                store.dispatch(.loginWithKakao)
             }
-            
+
             SocialLoginButton(.apple) {
-                store.dispatch(.login(.apple))
+                store.dispatch(.loginWithApple)
             }
         }
         .padding(.horizontal, 20.adjustedWidth)

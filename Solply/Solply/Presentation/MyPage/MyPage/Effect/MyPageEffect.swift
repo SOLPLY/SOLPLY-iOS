@@ -53,8 +53,6 @@ extension MyPageEffect {
                 return .fetchLoginInformationFailed(error: .responseError)
             }
             
-            print("MyPageEffect - fetchLoginInformation\n:\(data)")
-            
             let loginInformation = SocialLoginType(rawValue: data.socialPlatform)
             return .fetchLoginInformationSuccess(loginInformation: loginInformation)
             
