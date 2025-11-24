@@ -9,7 +9,7 @@ struct UserPlace: Equatable {
     let id: Int
     let name: String
     let thumbnail: String
-    let mainTag: String
+    let mainTag: MainTagType
     let isBookmarked: Bool
 }
 

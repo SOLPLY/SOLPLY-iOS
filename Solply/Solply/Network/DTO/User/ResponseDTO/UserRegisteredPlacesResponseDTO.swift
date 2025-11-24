@@ -13,6 +13,6 @@ struct UserRegisteredPlaceDTO: ResponseModelType {
     let placeId: Int
     let placeName: String
     let thumbnailImageUrl: String
-    let mainTag: String
+    let mainTag: MainTagType
     let isBookmarked: Bool
 }
