@@ -8,5 +8,5 @@
 import Foundation
 
 struct AuthLoginRequestDTO: RequestModelType {
-    let oauthAccessToken: String
+    let token: String
 }

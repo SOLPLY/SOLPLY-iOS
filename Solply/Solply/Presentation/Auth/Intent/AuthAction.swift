@@ -8,8 +8,8 @@
 import Foundation
 
 enum AuthAction {
-    
-    case login(SocialLoginType)
+    case loginWithKakao
+    case loginWithApple
     case loginSuccess(isNewUser: Bool)
     case loginFailed(NetworkError)
 }

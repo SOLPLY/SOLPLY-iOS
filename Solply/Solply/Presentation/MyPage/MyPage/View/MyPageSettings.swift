@@ -12,17 +12,18 @@ struct MyPageSettings: View {
     // MARK: - Properties
     
     @EnvironmentObject var appCoordinator: AppCoordinator
+    @EnvironmentObject var alertManager: AlertManager
 
-    private let loginProvider: String
+    private let loginProvider: SocialLoginType?
     private let appVersion: String
     private let onTapCustomerCenter: (() -> Void)?
     private let onTapLogout: (() -> Void)?
     private let onTapDeleteAccount: (() -> Void)?
-
+    
     // MARK: - Initializer
-
+    
     init(
-        loginProvider: String,
+        loginProvider: SocialLoginType?,
         appVersion: String,
         onTapCustomerCenter: (() -> Void)? = nil,
         onTapLogout: (() -> Void)? = nil,
@@ -48,16 +49,19 @@ struct MyPageSettings: View {
             
             row(title: "고객센터", action: onTapCustomerCenter)
             
-            row(title: "로그인 정보", trailing: loginProvider)
+            row(title: "로그인 정보", trailing: loginProvider?.loginInformation ?? "")
             row(title: "앱 버전", trailing: appVersion)
-
-            row(title: "로그아웃", action: onTapLogout)
+            
+            row(title: "로그아웃") {
+                showLogoutAlert()
+            }
+            
             row(title: "탈퇴하기", action: onTapDeleteAccount)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.white)
     }
-
+    
     // MARK: - Row
     
     private func row(
@@ -70,7 +74,7 @@ struct MyPageSettings: View {
                 .applySolplyFont(.body_16_r)
                 .foregroundColor(.coreBlack)
                 .frame(maxWidth: .infinity, alignment: .leading)
-
+            
             if let trailing {
                 Text(trailing)
                     .applySolplyFont(.body_16_r)
@@ -93,4 +97,19 @@ struct MyPageSettings: View {
             action?()
         }
     }
+    
+    // MARK: - Alert
+    
+    private func showLogoutAlert() {
+        alertManager.showAlert(alertType: .logout, onCancel: nil) {
+            performLogout()
+        }
+    }
+    
+    private func performLogout() {
+        onTapLogout?()
+        TokenManager.shared.clearTokens()
+        appCoordinator.changeRoot(to: .auth)
+    }
 }
+

@@ -12,6 +12,7 @@ import Moya
 enum AuthTargetType {
     case submitLogin(provider: String, request: AuthLoginRequestDTO)
     case refreshToken(refreshToken: String)
+    case fetchLoginInformation
 }
 
 extension AuthTargetType: BaseTargetType {
@@ -19,6 +20,7 @@ extension AuthTargetType: BaseTargetType {
         switch self {
         case .submitLogin: return .contentTypeJSON
         case .refreshToken(let refreshToken): return .refreshToken(refreshToken)
+        case .fetchLoginInformation: return .contentTypeJSON
         }
     }
     
@@ -26,6 +28,7 @@ extension AuthTargetType: BaseTargetType {
         switch self {
         case .submitLogin(let provider, _): return "/auth/social/\(provider)/login"
         case .refreshToken: return "/auth/refresh"
+        case .fetchLoginInformation: return "/auth/login-info"
         }
     }
     
@@ -33,6 +36,7 @@ extension AuthTargetType: BaseTargetType {
         switch self {
         case .submitLogin: return .post
         case .refreshToken: return .post
+        case .fetchLoginInformation: return .get
         }
     }
     
@@ -40,6 +44,7 @@ extension AuthTargetType: BaseTargetType {
         switch self {
         case .submitLogin(_, let request): return .requestJSONEncodable(request)
         case .refreshToken: return .requestPlain
+        case .fetchLoginInformation: return .requestPlain
         }
     }
 }

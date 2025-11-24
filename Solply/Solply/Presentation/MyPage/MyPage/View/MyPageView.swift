@@ -30,7 +30,7 @@ struct MyPageView: View {
                         .padding(.top, 44.adjustedHeight)
                     
                     MyPageSettings(
-                        loginProvider: "카카오 로그인",
+                        loginProvider: store.state.loginInformation,
                         appVersion: "v" + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"),
                         onTapCustomerCenter: { store.dispatch(.customerCenterTapped) },
                         onTapLogout: { store.dispatch(.logoutTapped) },
@@ -47,6 +47,7 @@ struct MyPageView: View {
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchUser)
+            store.dispatch(.fetchLoginInformation)
         }
     }
 }
