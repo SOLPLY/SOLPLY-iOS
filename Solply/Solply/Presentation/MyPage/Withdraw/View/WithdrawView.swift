@@ -16,11 +16,16 @@ struct WithdrawView: View {
     
     
     var body: some View {
-        WithdrawSelectView(selectedWithdrawType: store.state.selectedWithdrawType) { WithdrawType in
-            store.dispatch(.selectWithdrawType(withdrawType: WithdrawType))
-        } withdrawAction: {
+        WithdrawSelectView(
+            selectedWithdrawType: store.state.selectedWithdrawType,
+            withdrawContent: store.state.withdrawContent,
+            onChangeContent: { store.dispatch(.updateContent($0)) },
+            selectWithdrawAction: {
+                store.dispatch(.selectWithdrawType(withdrawType: $0))
+            },
+            withdrawAction: { }
             // TODO: - 탈퇴탈퇴
-        }
+            )
         .customNavigationBar(
             .withdraw(
                 backAction: appCoordinator.goBack
@@ -31,9 +36,4 @@ struct WithdrawView: View {
             hideKeyboard()
         }
     }
-}
-
-#Preview {
-    WithdrawView()
-        .environmentObject(AppCoordinator())
 }

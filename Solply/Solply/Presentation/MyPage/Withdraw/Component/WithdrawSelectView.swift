@@ -12,6 +12,8 @@ struct WithdrawSelectView: View {
     // MARK: - Properties
     
     private let selectedWithdrawType: WithdrawType?
+    private var withdrawContent: String
+    private let onChangeContent: ((String) -> Void)?
     private let selectWithdrawAction: ((WithdrawType) -> Void)?
     private let withdrawAction: (() -> Void)?
     
@@ -19,10 +21,14 @@ struct WithdrawSelectView: View {
     
     init(
         selectedWithdrawType: WithdrawType?,
+        withdrawContent: String,
+        onChangeContent: ((String) -> Void)? = nil,
         selectWithdrawAction: ((WithdrawType) -> Void)? = nil,
         withdrawAction: (() -> Void)? = nil
     ) {
         self.selectedWithdrawType = selectedWithdrawType
+        self.withdrawContent = withdrawContent
+        self.onChangeContent = onChangeContent
         self.selectWithdrawAction = selectWithdrawAction
         self.withdrawAction = withdrawAction
     }
@@ -32,6 +38,14 @@ struct WithdrawSelectView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             withdrawSelectList
+            
+            if selectedWithdrawType == .others {
+                SolplyTextEditor(
+                    onTextChanged: { text in
+                        onChangeContent?(text)
+                    }
+                )
+            }
             
             Spacer()
             
@@ -46,7 +60,7 @@ extension WithdrawSelectView {
             ForEach(WithdrawType.allCases, id: \.self) { withdraws in
                 SolplySelectRow(
                     title: withdraws.title,
-                    isSelected: selectedWithdrawType ?? nil == withdraws
+                    isSelected: selectedWithdrawType == withdraws
                 ) {
                     selectWithdrawAction?(withdraws)
                 }
@@ -64,3 +78,4 @@ extension WithdrawSelectView {
         .padding(.bottom, 16.adjustedHeight)
     }
 }
+

@@ -251,7 +251,7 @@ extension RegisterView {
     }
 }
 
-#Preview {
-    RegisterView()
-        .environmentObject(AppCoordinator())
-}
+//#Preview {
+//    RegisterView()
+//        .environmentObject(AppCoordinator())
+//}
