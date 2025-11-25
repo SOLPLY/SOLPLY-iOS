@@ -14,8 +14,8 @@ struct CourseRecommendGrid: View {
     @ObservedObject var store: CourseRecommendStore
     
     private let columns = [
-        GridItem(.fixed(165.adjustedWidth), spacing: 12.5.adjustedWidth),
-        GridItem(.fixed(165.adjustedWidth))
+        GridItem(.fixed(165.adjusted), spacing: 12.5.adjustedWidth),
+        GridItem(.fixed(165.adjusted))
     ]
     private let placeCategory: MainTagType = .all
     private let courseDetailAction: ((Int) -> Void)?
@@ -43,7 +43,6 @@ struct CourseRecommendGrid: View {
                     ) {
                         courseDetailAction?(course.id)
                     }
-                    .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
                 }
             }
         }

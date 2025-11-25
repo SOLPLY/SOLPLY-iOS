@@ -85,7 +85,7 @@ struct CourseCard: View {
             .cornerRadius(4, corners: [.topLeft, .topRight])
         }
         .frame(width: 165.adjusted, height: 165.adjusted)
-        .background(.red)
+        .background(.blue)
         .cornerRadius(20, corners: .allCorners)
         .contentShape(Rectangle())
         .onTapGesture {
