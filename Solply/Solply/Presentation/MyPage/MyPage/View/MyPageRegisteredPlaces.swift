@@ -9,29 +9,50 @@ import SwiftUI
 
 struct MyPageRegisteredPlaces: View {
     
-    
-    // MARK: - Properties
-    
     private let places: [UserPlace]
     private let emptyText: String
-    
-    // MARK: - Initializer
+    private let onSeeAllTapped: (() -> Void)?
     
     init(
         places: [UserPlace],
-        emptyText: String = "등록한 장소가 없어요"
+        emptyText: String = "등록한 장소가 없어요",
+        onSeeAllTapped: (() -> Void)? = nil
     ) {
         self.places = places
         self.emptyText = emptyText
+        self.onSeeAllTapped = onSeeAllTapped
     }
 
-    // MARK: - Body
-    
     var body: some View {
         VStack(alignment: .leading, spacing: 16.adjustedHeight) {
-            Text("내가 등록한 장소")
-                .applySolplyFont(.body_16_m)
-                .foregroundColor(.coreBlack)
+            HStack(alignment: .center) {
+                Text("내가 등록한 장소")
+                    .applySolplyFont(.body_16_m)
+                    .foregroundColor(.coreBlack)
+                
+                Spacer()
+                
+                if !places.isEmpty, let onSeeAllTapped {
+                    Button(action: onSeeAllTapped) {
+                        HStack(spacing: 9.adjustedWidth) {
+                            Text("전체 보기")
+                                .applySolplyFont(.body_14_r)
+                                .foregroundColor(.gray600)
+                            
+                            Image(.arrowRightIconGray)
+                                .renderingMode(.template)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(
+                                    width: 4.adjustedWidth,
+                                    height: 8.adjustedHeight
+                                )
+                                .foregroundColor(.gray600)
+                        }
+                    }
+                    .padding(.trailing, 10.adjustedWidth)
+                }
+            }
             
             if places.isEmpty {
                 Text(emptyText)

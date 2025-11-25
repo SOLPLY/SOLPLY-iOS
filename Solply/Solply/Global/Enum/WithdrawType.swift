@@ -22,7 +22,7 @@ enum WithdrawType: String, CaseIterable {
         case .inconvenient: return "앱 기능이 불편해서"
         case .hateRecommend: return "추천 콘텐츠가 나와 맞지 않아서"
         case .useOtherService: return "다른 서비스를 사용하고 있습니다."
-        case .others: return "기타"
+        case .others: return "기타 (직접 입력)"
         }
     }
 }

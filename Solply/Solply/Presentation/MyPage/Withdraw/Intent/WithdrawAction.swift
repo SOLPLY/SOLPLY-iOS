@@ -9,4 +9,5 @@ import Foundation
 
 enum WithdrawAction {
     case selectWithdrawType(withdrawType: WithdrawType)
+    case updateContent(String)
 }
