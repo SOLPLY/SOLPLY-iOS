@@ -63,14 +63,7 @@ final class KeychainManager {
         ]
         
         let status = SecItemDelete(query)
-        
-        if status == errSecItemNotFound {
-            return
-        }
-        
-        if status != errSecSuccess {
-            assertionFailure("failed to delete the value, status code: \(status)")
-        }
+        assert(status == noErr, "failed to delete the value, status code: \(status)")
     }
 }
 
@@ -80,3 +73,4 @@ extension KeychainManager {
         case refreshToken
     }
 }
+
