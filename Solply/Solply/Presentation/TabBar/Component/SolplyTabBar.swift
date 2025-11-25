@@ -19,10 +19,10 @@ struct SolplyTabBar: View {
     @State private var isDragging: Bool = false
     @State private var dragStartOffset: CGFloat = 0
     
-    private let tabIconWidth: CGFloat = 36.adjustedWidth
-    private let tabIconHeight: CGFloat = 36.adjustedHeight
-    private let tabItemCapsuleWidth: CGFloat = 48.adjustedWidth
-    private let tabItemCapsuleHeight: CGFloat = 48.adjustedHeight
+    private let tabIconWidth: CGFloat = 36.adjusted
+    private let tabIconHeight: CGFloat = 36.adjusted
+    private let tabItemCapsuleWidth: CGFloat = 48.adjusted
+    private let tabItemCapsuleHeight: CGFloat = 48.adjusted
     
     // TODO: - 1차 스프린트 이후 클로저 프로퍼티 삭제
     private let bookmarkAction: (() -> Void)?
@@ -48,8 +48,8 @@ struct SolplyTabBar: View {
             
             tabButton
         }
-        .padding(.horizontal, 8.adjustedWidth)
-        .padding(.vertical, 6.adjustedHeight)
+        .padding(.horizontal, 8.adjusted)
+        .padding(.vertical, 6.adjusted)
         .background(.gray900)
         .capsuleClipped()
         .onChange(of: selectedTab) {
