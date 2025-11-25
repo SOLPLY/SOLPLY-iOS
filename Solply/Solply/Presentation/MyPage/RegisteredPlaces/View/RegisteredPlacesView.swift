@@ -29,5 +29,6 @@ struct RegisteredPlacesView: View {
                 )
             }
         }
+        .customNavigationBar(.registeredPlace(backAction: appCoordinator.goBack))
     }
 }

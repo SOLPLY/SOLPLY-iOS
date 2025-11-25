@@ -20,6 +20,7 @@ enum NavigationBarType {
     case reports(reportStep: ReportsStep, backAction: () -> Void)
     case myPage(backAction: () -> Void)
     case myPageEdit(backAction: () -> Void)
+    case registeredPlace(backAction: () -> Void)
     case register(backAction: () -> Void)
     case withdraw(backAction: () -> Void)
 }
