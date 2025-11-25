@@ -49,7 +49,7 @@ struct PlaceCard: View {
                 KFImage(URL(string: thumbnailUrl))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: size.adjustedWidth, height: size.adjustedHeight)
+                    .frame(width: size.adjusted, height: size.adjusted)
                 
                 if isSaved {
                     Image(placeCategory.savedBadge ?? "")
@@ -59,6 +59,7 @@ struct PlaceCard: View {
                         .padding(.horizontal, 16.adjustedWidth)
                 }
             }
+            .background(.blue)
             .cornerRadius(20, corners: .allCorners)
             
             HStack(alignment: .center, spacing: 4.adjustedWidth) {
