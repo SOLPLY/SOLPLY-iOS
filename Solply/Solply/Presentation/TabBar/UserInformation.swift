@@ -7,13 +7,14 @@
 
 import Foundation
 
-struct UserInformation: Hashable {
+struct UserInformation : Hashable {
     let userId: Int
     let nickname: String
     let persona: PersonaType
     let townName: String
     let townId: Int
     let profileImageUrl: String?
+    let myPlacePreviews: [UserPlace]
 }
 
 extension UserInformation {
@@ -24,5 +25,6 @@ extension UserInformation {
         townName = dto.selectedTown.townName
         townId = dto.selectedTown.townId
         profileImageUrl = dto.profileImageUrl
+        myPlacePreviews = dto.myPlacePreviews.map(UserPlace.init)
     }
 }

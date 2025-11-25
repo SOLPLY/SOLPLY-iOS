@@ -56,7 +56,7 @@ struct MyPageSettings: View {
                 showLogoutAlert()
             }
             
-            row(title: "탈퇴하기", action: onTapDeleteAccount)
+            row(title: "탈퇴하기", isLast: true, action: onTapDeleteAccount)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.white)
@@ -67,6 +67,7 @@ struct MyPageSettings: View {
     private func row(
         title: String,
         trailing: String? = nil,
+        isLast: Bool = false,
         action: (() -> Void)? = nil
     ) -> some View {
         HStack(spacing: 0) {
@@ -89,8 +90,11 @@ struct MyPageSettings: View {
                 .foregroundColor(.white)
         )
         .overlay(
-            Divider()
-                .padding(.horizontal, 16.adjustedWidth),
+            Group {
+                if !isLast {
+                    Divider().padding(.horizontal, 16.adjustedWidth)
+                }
+            },
             alignment: .bottom
         )
         .onTapGesture {

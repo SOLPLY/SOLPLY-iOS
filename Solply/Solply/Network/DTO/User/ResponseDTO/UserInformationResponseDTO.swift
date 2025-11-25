@@ -13,7 +13,7 @@ struct UserInformationResponseDTO: ResponseModelType {
     let profileImageUrl: String?
     let selectedTown: SelectedTownDTO
     let persona: String
-    let myPlacePreviews: [PlacePreviewResponseDTO]
+    let myPlacePreviews: [MyPlacePreviewDTO]
 }
 
 struct SelectedTownDTO: ResponseModelType {
@@ -21,7 +21,7 @@ struct SelectedTownDTO: ResponseModelType {
     let townName: String
 }
 
-struct PlacePreviewResponseDTO: ResponseModelType {
+struct MyPlacePreviewDTO: ResponseModelType {
     let placeId: Int
     let placeName: String
     let thumbnailImageUrl: String?
