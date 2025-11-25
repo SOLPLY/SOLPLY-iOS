@@ -26,8 +26,13 @@ struct MyPageView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     header
                     
-                    MyPageRegisteredPlaces(places: store.state.registeredPlaces)
-                        .padding(.top, 44.adjustedHeight)
+                    MyPageRegisteredPlaces(
+                        places: store.state.user?.myPlacePreviews ?? [],
+                        onSeeAllTapped: {
+                            // TODO: 전체보기> 화면으로 이동하는 로직 추가
+                        }
+                    )
+                    .padding(.top, 44.adjustedHeight)
                     
                     MyPageSettings(
                         loginProvider: store.state.loginInformation,
@@ -40,6 +45,8 @@ struct MyPageView: View {
                     )
                     .padding(.top, 16.adjustedHeight)
                 }
+                Spacer()
+                    .frame(height: 30.adjustedHeight)
             }
         }
         .background(Color(.gray100).ignoresSafeArea())
@@ -72,8 +79,8 @@ private extension MyPageView {
                     Text("프로필 수정")
                         .applySolplyFont(.button_14_m)
                         .foregroundColor(.gray600)
-                        .frame(width: 64.adjustedWidth, height: 18.adjustedHeight)
-                        .padding(.leading, 16.adjustedWidth)
+                        .frame(width: 68.adjustedWidth, height: 18.adjustedHeight)
+                        .padding(.leading, 12.adjustedWidth)
                     
                     Image(.arrowRightIcon)
                         .renderingMode(.template)
@@ -87,8 +94,3 @@ private extension MyPageView {
         .frame(maxWidth: .infinity, alignment: .center)
     }
 }
-
-//#Preview {
-//    MyPageView()
-//        .environmentObject(AppCoordinator())
-//}

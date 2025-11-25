@@ -25,18 +25,6 @@ final class MyPageStore: ObservableObject {
                 let result = await effect.fetchUser()
                 dispatch(result)
             }
-
-        case let .fetchRegisteredPlaces(userId, page, size):
-            Task {
-                let result = await effect.fetchRegisteredPlaces(userId: userId, page: page, size: size)
-                dispatch(result)
-            }
-
-        case let .userLoaded(user):
-            Task {
-                let result = await effect.fetchRegisteredPlaces(userId: user.userId)
-                dispatch(result)
-            }
             
         case .fetchLoginInformation:
             Task {

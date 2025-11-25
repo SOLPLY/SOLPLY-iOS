@@ -10,17 +10,14 @@ import Foundation
 enum MyPageReducer {
     static func reduce(state: inout MyPageState, action: MyPageAction) {
         switch action {
-        case .fetchUser, .fetchRegisteredPlaces:
+        case .fetchUser:
             break
             
         case let .userLoaded(user):
             state.user = user
+            state.registeredPlaces = user.myPlacePreviews
             
-        case let .registeredPlacesLoaded(places):
-            state.registeredPlaces = places
-            
-        case let .userLoadFailed(error),
-            let .registeredPlacesLoadFailed(error):
+        case .userLoadFailed(let error):
             state.error = error
             
         case .editProfileTapped:

@@ -104,11 +104,9 @@ private extension Interceptor {
         let service = AuthService()
         let response = try await service.refreshToken(refreshToken: refreshToken)
 
-        guard let wrapper = response.data else {
+        guard let token = response.data else {
             throw TokenError.reissueFailed
         }
-
-        let token = wrapper.data
 
         guard !token.accessToken.isEmpty else {
             throw TokenError.reissueFailed
@@ -121,7 +119,7 @@ private extension Interceptor {
     }
 
     func shouldSkipAuth(for path: String) -> Bool {
-        skipAuthKeywords.contains { path.hasPrefix($0) }
+        skipAuthKeywords.contains { path.contains($0) }
     }
 
     func shouldAttachAuth(for path: String) -> Bool {
@@ -132,3 +130,4 @@ private extension Interceptor {
         print("🍏 [TokenInterceptor] \(message)")
     }
 }
+
