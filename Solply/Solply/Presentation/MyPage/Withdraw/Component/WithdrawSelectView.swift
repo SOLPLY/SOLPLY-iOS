@@ -13,7 +13,7 @@ struct WithdrawSelectView: View {
     
     private let selectedWithdrawType: WithdrawType?
     private var withdrawContent: String
-    private let onChangeContent: (String) -> Void
+    private let onChangeContent: ((String) -> Void)?
     private let selectWithdrawAction: ((WithdrawType) -> Void)?
     private let withdrawAction: (() -> Void)?
     
@@ -22,7 +22,7 @@ struct WithdrawSelectView: View {
     init(
         selectedWithdrawType: WithdrawType?,
         withdrawContent: String,
-        onChangeContent: @escaping (String) -> Void,
+        onChangeContent: ((String) -> Void)? = nil,
         selectWithdrawAction: ((WithdrawType) -> Void)? = nil,
         withdrawAction: (() -> Void)? = nil
     ) {
@@ -41,9 +41,8 @@ struct WithdrawSelectView: View {
             
             if selectedWithdrawType == .others {
                 SolplyTextEditor(
-                    placeholder: "최대 200자 입력 가능",
                     onTextChanged: { text in
-                        onChangeContent(text)
+                        onChangeContent?(text)
                     }
                 )
             }
