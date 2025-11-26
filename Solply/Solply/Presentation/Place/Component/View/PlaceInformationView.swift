@@ -115,7 +115,7 @@ extension PlaceInformationView {
                         .renderingMode(.template)
                         .foregroundStyle(.gray900)
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
+                        .frame(width: 28.adjusted, height: 28.adjusted)
                 }
                 .buttonStyle(.plain)
             }
@@ -191,7 +191,7 @@ extension PlaceInformationView {
                 Image(.tolinkIcon)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 20.adjustedWidth, height: 20.adjustedHeight)
+                    .frame(width: 20.adjusted, height: 20.adjusted)
             }
             .frame(width: 57.adjustedWidth, height: 24.adjustedHeight)
             .padding(.vertical, 8.adjustedHeight)
@@ -224,7 +224,8 @@ extension PlaceInformationView {
         HStack(alignment: .center, spacing: 4.adjustedWidth) {
             Image(.warningIcon)
                 .resizable()
-                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24.adjusted, height: 24.adjusted)
             
             Text("잘못된 정보가 있어요.")
                 .applySolplyFont(.body_14_r)
@@ -244,7 +245,8 @@ extension PlaceInformationView {
                         .resizable()
                         .renderingMode(.template)
                         .foregroundStyle(.red600)
-                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24.adjusted, height: 24.adjusted)
                 }
             }
             .buttonStyle(.plain)

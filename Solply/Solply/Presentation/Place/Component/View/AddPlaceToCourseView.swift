@@ -57,14 +57,14 @@ extension AddPlaceToCourseView {
         ZStack(alignment: .center) {
             HStack(alignment: .center, spacing: 0) {
                 Button {
-                    withAnimation(.easeInOut(duration: 0.1)) {
+                    withAnimation(.easeInOut(duration: 0.2)) {
                         backAction?()
                     }
                 } label: {
                     Image(.backIconIos)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        .frame(width: 24.adjusted, height: 24.adjusted)
                 }
                 .buttonStyle(.plain)
                 
