@@ -29,7 +29,8 @@ struct MyPageView: View {
                     MyPageRegisteredPlaces(
                         places: store.state.user?.myPlacePreviews ?? [],
                         onSeeAllTapped: {
-                            // TODO: 전체보기> 화면으로 이동하는 로직 추가
+                            guard let userId = store.state.user?.userId else { return }
+                            appCoordinator.navigate(to: .registeredPlaces(userId: userId))
                         }
                     )
                     .padding(.top, 44.adjustedHeight)

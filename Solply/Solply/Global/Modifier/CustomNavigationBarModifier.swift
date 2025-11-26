@@ -446,6 +446,30 @@ extension View {
                 )
             )
             
+        // MARK: - RegisteredPlace
+        case .registeredPlace(let backAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        Text("내가 등록한 장소")
+                            .applySolplyFont(.head_16_m)
+                    },
+                    leftView: {
+                        Button {
+                            backAction()
+                        } label: {
+                            Image(.backIconIos)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    rightView: { EmptyView() },
+                    backgroundColor: .coreWhite
+                )
+            )
+            
         // MARK: - Register
             
         case .register(let backAction):

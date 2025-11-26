@@ -9,7 +9,7 @@ struct UserPlace: Hashable {
     let id: Int
     let name: String
     let thumbnail: String
-    let mainTag: String
+    let mainTag: MainTagType
     let isBookmarked: Bool
 }
 
@@ -18,7 +18,7 @@ extension UserPlace {
         id = dto.placeId
         name = dto.placeName
         thumbnail = dto.thumbnailImageUrl
-        mainTag = dto.mainTag
+        mainTag = dto.primaryTag
         isBookmarked = dto.isBookmarked
     }
     
