@@ -32,7 +32,7 @@ struct ToastView: View {
                         .renderingMode(.template)
                         .aspectRatio(contentMode: .fit)
                         .foregroundStyle(.coreWhite)
-                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        .frame(width: 24.adjusted, height: 24.adjusted)
                 }
                 
                 Text(toastContent.message)
@@ -56,7 +56,7 @@ struct ToastView: View {
                                 .renderingMode(.template)
                                 .aspectRatio(contentMode: .fit)
                                 .foregroundStyle(.purple300)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                     }
                     .buttonStyle(.plain)
@@ -64,7 +64,7 @@ struct ToastView: View {
                 }
             }
             .padding(.horizontal, 16.adjustedWidth)
-            .frame(width: 335.adjustedWidth, height: 40.adjustedHeight, alignment: .leading)
+            .frame(width: 335.adjustedWidth, height: 40.adjusted, alignment: .leading)
             .background(.coreBlack)
             .cornerRadius(12, corners: .allCorners)
         }
