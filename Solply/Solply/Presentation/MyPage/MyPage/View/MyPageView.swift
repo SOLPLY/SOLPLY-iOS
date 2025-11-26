@@ -39,7 +39,7 @@ struct MyPageView: View {
                         loginProvider: store.state.loginInformation,
                         appVersion: "v" + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"),
                         onTapCustomerCenter: { store.dispatch(.customerCenterTapped) },
-                        onTapLogout: { store.dispatch(.logoutTapped) },
+                        onTapLogout: { store.dispatch(.logout) },
                         onTapDeleteAccount: { store.dispatch(.deleteAccountTapped)
                             appCoordinator.navigate(to: .withdraw)
                         }
@@ -48,6 +48,11 @@ struct MyPageView: View {
                 }
                 Spacer()
                     .frame(height: 30.adjustedHeight)
+            }
+        }
+        .onChange(of: store.state.shouldChangeRoot) { _, newValue in
+            if newValue {
+                appCoordinator.changeRoot(to: .auth)
             }
         }
         .background(Color(.gray100).ignoresSafeArea())
