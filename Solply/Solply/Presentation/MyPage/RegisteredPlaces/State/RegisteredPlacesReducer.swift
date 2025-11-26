@@ -16,7 +16,6 @@ enum RegisteredPlacesReducer {
             state.registeredPlaces = places
         case .fetchRegisteredPlacesFailed(let error):
             state.error = error
-            print(error)
         }
     }
 }

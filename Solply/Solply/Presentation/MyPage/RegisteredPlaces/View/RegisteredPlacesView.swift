@@ -11,7 +11,6 @@ struct RegisteredPlacesView: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = RegisteredPlacesStore()
     
@@ -52,7 +51,11 @@ struct RegisteredPlacesView: View {
         }
         .customNavigationBar(.registeredPlace(backAction: appCoordinator.goBack))
         .onAppear {
-            store.dispatch(.fetchRegisteredPlaces(userId: userId))
+            store.dispatch(.fetchRegisteredPlaces(
+                userId: userId,
+                page: 0,
+                size: 100
+            ))
         }
     }
 }

@@ -18,9 +18,13 @@ final class RegisteredPlacesStore: ObservableObject {
         RegisteredPlacesReducer.reduce(state: &state, action: action)
         
         switch action {
-        case let .fetchRegisteredPlaces(userId, _, _):
+        case let .fetchRegisteredPlaces(userId, page, size):
             Task {
-                let results = await effect.fetchRegisteredPlaces(userId: userId)
+                let results = await effect.fetchRegisteredPlaces(
+                    userId: userId,
+                    page: page,
+                    size: size
+                )
                 self.dispatch(results)
             }
             

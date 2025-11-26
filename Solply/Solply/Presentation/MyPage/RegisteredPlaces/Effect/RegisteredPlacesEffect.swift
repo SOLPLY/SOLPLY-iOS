@@ -23,8 +23,8 @@ struct RegisteredPlacesEffect {
     
     func fetchRegisteredPlaces(
         userId: Int,
-        page: Int = 0,
-        size: Int = 100
+        page: Int,
+        size: Int
     ) async -> RegisteredPlacesAction {
         do {
             let response = try await userService.fetchRegisteredPlaces(
