@@ -25,8 +25,8 @@ struct ProfilePhotoPicker: View {
     private let onComplete: ((String, Data) -> Void)?
     private let onDelete: (() -> Void)?
     
-    private let width: CGFloat = 80.adjustedWidth
-    private let height: CGFloat = 80.adjustedHeight
+    private let width: CGFloat = 80.adjusted
+    private let height: CGFloat = 80.adjusted
     
     // MARK: - Initializer
     
@@ -137,7 +137,7 @@ extension ProfilePhotoPicker {
             Image(.myNavIcon)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
+                .frame(width: 60.adjusted, height: 60.adjusted)
                 .foregroundColor(.gray100)
         }
     }

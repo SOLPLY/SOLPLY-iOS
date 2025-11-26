@@ -56,7 +56,11 @@ extension RegisterSearchBar {
             .foregroundStyle(.coreWhite)
             .frame(maxWidth: .infinity)
             .frame(height: 52.adjustedHeight)
-            .addBorder(.roundedRectangle(cornerRadius: 20), borderColor: .gray300, borderWidth: 1)
+            .addBorder(
+                .roundedRectangle(cornerRadius: 20),
+                borderColor: .gray300,
+                borderWidth: 1
+            )
     }
     
     private var placeholder: some View {

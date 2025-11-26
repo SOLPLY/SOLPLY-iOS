@@ -31,7 +31,7 @@ struct MyPageView: View {
                     
                     MyPageSettings(
                         loginProvider: store.state.loginInformation,
-                        appVersion: "v" + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"),
+                        appVersion: AppEnvironment.appVersion,
                         onTapCustomerCenter: { store.dispatch(.customerCenterTapped) },
                         onTapLogout: { store.dispatch(.logoutTapped) },
                         onTapDeleteAccount: { store.dispatch(.deleteAccountTapped)

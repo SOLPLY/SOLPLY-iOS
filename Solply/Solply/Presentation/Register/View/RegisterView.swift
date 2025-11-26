@@ -127,7 +127,11 @@ extension RegisterView {
                     .padding(.vertical, 12.adjustedHeight)
                     .background(.coreWhite)
                     .cornerRadius(20, corners: .allCorners)
-                    .addBorder(.roundedRectangle(cornerRadius: 20), borderColor: .gray300, borderWidth: 1)
+                    .addBorder(
+                        .roundedRectangle(cornerRadius: 20),
+                        borderColor: .gray300,
+                        borderWidth: 1
+                    )
                     .padding(.horizontal, 16.adjustedWidth)
                 }
             }
