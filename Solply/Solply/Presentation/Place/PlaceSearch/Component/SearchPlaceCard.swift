@@ -42,7 +42,6 @@ struct SearchPlaceCard: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 52.adjusted, height: 52.adjusted)
-                    .background(.blue)
                     .cornerRadius(12, corners: .allCorners)
                     .padding(.leading, 20.adjustedWidth)
                 

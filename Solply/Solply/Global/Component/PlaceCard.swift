@@ -59,7 +59,6 @@ struct PlaceCard: View {
                         .padding(.horizontal, 16.adjustedWidth)
                 }
             }
-            .background(.blue)
             .cornerRadius(20, corners: .allCorners)
             
             HStack(alignment: .center, spacing: 4.adjustedWidth) {
