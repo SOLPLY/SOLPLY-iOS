@@ -11,6 +11,7 @@ struct RegisteredPlace: Equatable, Identifiable {
     let thumbnail: String
     let mainTag: MainTagType
     let isBookmarked: Bool
+    let townId: Int
 }
 
 extension RegisteredPlace {
@@ -18,7 +19,8 @@ extension RegisteredPlace {
         id = dto.placeId
         name = dto.placeName
         thumbnail = dto.thumbnailImageUrl
-        mainTag = dto.mainTag
+        mainTag = dto.primaryTag
         isBookmarked = dto.isBookmarked
+        townId = dto.townId
     }
 }

@@ -12,10 +12,11 @@ enum RegisteredPlacesReducer {
         switch action {
         case .fetchRegisteredPlaces:
             break
-        case .registeredPlacesLoaded(let places):
+        case .registeredPlacesFetched(let places):
             state.registeredPlaces = places
-        case .registeredPlacesLoadFailed(let error):
+        case .fetchRegisteredPlacesFailed(let error):
             state.error = error
+            print(error)
         }
     }
 }

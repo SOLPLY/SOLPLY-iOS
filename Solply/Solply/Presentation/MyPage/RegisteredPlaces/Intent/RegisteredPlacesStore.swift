@@ -10,14 +10,18 @@ import Foundation
 @MainActor
 final class RegisteredPlacesStore: ObservableObject {
     @Published private(set) var state = RegisteredPlacesState()
-//    private let effect = RegisteredPlacesEffect()
+    private let effect = RegisteredPlacesEffect(
+        userService: UserService()
+    )
     
     func dispatch(_ action: RegisteredPlacesAction) {
         RegisteredPlacesReducer.reduce(state: &state, action: action)
         
         switch action {
-        case let .fetchRegisteredPlaces(userId, page, size):
+        case let .fetchRegisteredPlaces(userId, _, _):
             Task {
+                let results = await effect.fetchRegisteredPlaces(userId: userId)
+                self.dispatch(results)
             }
             
         default:

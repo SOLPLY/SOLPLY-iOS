@@ -8,7 +8,7 @@
 import Foundation
 
 enum RegisteredPlacesAction {
-    case fetchRegisteredPlaces(userId: Int, page: Int = 1, size: Int = 3)
-    case registeredPlacesLoaded([RegisteredPlace])
-    case registeredPlacesLoadFailed(error: NetworkError)
+    case fetchRegisteredPlaces(userId: Int, page: Int = 0, size: Int = 100)
+    case registeredPlacesFetched([RegisteredPlace])
+    case fetchRegisteredPlacesFailed(error: NetworkError)
 }

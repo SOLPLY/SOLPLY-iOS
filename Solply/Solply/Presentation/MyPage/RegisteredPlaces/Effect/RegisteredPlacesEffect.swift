@@ -33,17 +33,18 @@ struct RegisteredPlacesEffect {
                 size: size
             )
             
-            guard let dto = response.data else {
-                return .registeredPlacesLoadFailed(error: .responseError)
+            guard let data = response.data else {
+                return .fetchRegisteredPlacesFailed(error: .responseError)
             }
             
-            let places = dto.places.map(RegisteredPlace.init)
-            return .registeredPlacesLoaded(places)
+            let places = data.content.map { RegisteredPlace(dto: $0) }
+            
+            return .registeredPlacesFetched(places)
             
         } catch let error as NetworkError {
-            return .registeredPlacesLoadFailed(error: error)
+            return .fetchRegisteredPlacesFailed(error: error)
         } catch {
-            return .registeredPlacesLoadFailed(error: .unknownError)
+            return .fetchRegisteredPlacesFailed(error: .unknownError)
         }
     }
 }

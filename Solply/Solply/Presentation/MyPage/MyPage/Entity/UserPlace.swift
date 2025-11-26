@@ -18,7 +18,7 @@ extension UserPlace {
         id = dto.placeId
         name = dto.placeName
         thumbnail = dto.thumbnailImageUrl
-        mainTag = dto.mainTag
+        mainTag = dto.primaryTag
         isBookmarked = dto.isBookmarked
     }
     
