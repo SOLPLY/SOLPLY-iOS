@@ -12,6 +12,11 @@ enum WithdrawReducer {
         switch action {
         case .selectWithdrawType(let WithdrawType):
             state.selectedWithdrawType = WithdrawType
+            if WithdrawType != .others {   
+                state.withdrawContent = ""
+            }
+        case .updateContent(let text):
+            state.withdrawContent = String(text.prefix(200))
         }
     }
 }

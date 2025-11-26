@@ -8,13 +8,7 @@
 import Foundation
 
 struct AuthRefreshResponseDTO: ResponseModelType {
-    let success: Bool
-    let code: String
-    let message: String
-    let data: TokenData
-    
-    struct TokenData: Codable {
-        let accessToken: String
-        let refreshToken: String
-    }
+    let accessToken: String
+    let refreshToken: String
 }
+

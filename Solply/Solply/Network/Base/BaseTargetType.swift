@@ -35,9 +35,13 @@ extension BaseTargetType {
         
         return header
     }
+    var validationType: ValidationType {
+        return .successCodes
+    }
 }
 
 enum HTTPHeader {
     case contentTypeJSON
     case refreshToken(String)
 }
+
