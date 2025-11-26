@@ -19,4 +19,7 @@ protocol AuthAPI {
     
     /// 사용자 로그인 정보 조회
     func fetchLoginInformation() async throws -> BaseResponseBody<LoginInformationResponseDTO>
+    
+    /// 로그아웃
+    func logout() async throws -> BaseResponseBody<EmptyResponseDTO>
 }

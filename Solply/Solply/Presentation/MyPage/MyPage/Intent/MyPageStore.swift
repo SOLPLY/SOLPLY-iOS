@@ -31,6 +31,12 @@ final class MyPageStore: ObservableObject {
                 let result = await effect.fetchLoginInformation()
                 dispatch(result)
             }
+            
+        case .logout:
+            Task {
+                let result = await effect.logout()
+                dispatch(result)
+            }
 
         default:
             break
