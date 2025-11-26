@@ -13,6 +13,7 @@ enum AuthTargetType {
     case submitLogin(provider: String, request: AuthLoginRequestDTO)
     case refreshToken(refreshToken: String)
     case fetchLoginInformation
+    case logout
 }
 
 extension AuthTargetType: BaseTargetType {
@@ -21,6 +22,7 @@ extension AuthTargetType: BaseTargetType {
         case .submitLogin: return .contentTypeJSON
         case .refreshToken(let refreshToken): return .refreshToken(refreshToken)
         case .fetchLoginInformation: return .contentTypeJSON
+        case .logout: return .contentTypeJSON
         }
     }
     
@@ -29,6 +31,7 @@ extension AuthTargetType: BaseTargetType {
         case .submitLogin(let provider, _): return "/auth/social/\(provider)/login"
         case .refreshToken: return "/auth/refresh"
         case .fetchLoginInformation: return "/auth/login-info"
+        case .logout: return "/auth/logout"
         }
     }
     
@@ -37,6 +40,7 @@ extension AuthTargetType: BaseTargetType {
         case .submitLogin: return .post
         case .refreshToken: return .post
         case .fetchLoginInformation: return .get
+        case .logout: return .delete
         }
     }
     
@@ -45,6 +49,7 @@ extension AuthTargetType: BaseTargetType {
         case .submitLogin(_, let request): return .requestJSONEncodable(request)
         case .refreshToken: return .requestPlain
         case .fetchLoginInformation: return .requestPlain
+        case .logout: return .requestPlain
         }
     }
 }

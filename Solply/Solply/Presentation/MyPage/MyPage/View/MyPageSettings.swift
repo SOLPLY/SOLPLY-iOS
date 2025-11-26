@@ -112,8 +112,6 @@ struct MyPageSettings: View {
     
     private func performLogout() {
         onTapLogout?()
-        TokenManager.shared.clearTokens()
-        appCoordinator.changeRoot(to: .auth)
     }
 }
 
