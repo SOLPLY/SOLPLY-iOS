@@ -123,7 +123,7 @@ extension CourseDetailView {
                             Image(.editingIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
+                                .frame(width: 28.adjusted, height: 28.adjusted)
                         }
                         .buttonStyle(.plain)
                     }
@@ -145,7 +145,7 @@ extension CourseDetailView {
                                     .renderingMode(.template)
                                     .foregroundStyle(.gray900)
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
+                                    .frame(width: 28.adjusted, height: 28.adjusted)
                             }
                             .buttonStyle(.plain)
                         }
@@ -259,12 +259,12 @@ extension CourseDetailView {
         } label: {
             Circle()
                 .fill(.gray900)
-                .frame(width: 64.adjustedWidth, height: 64.adjustedHeight)
+                .frame(width: 64.adjusted, height: 64.adjusted)
                 .overlay(alignment: .center) {
                     Image(.editingIcon)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
+                        .frame(width: 36.adjusted, height: 36.adjusted)
                 }
         }
         .buttonStyle(.plain)
@@ -277,7 +277,7 @@ extension CourseDetailView {
         Image(store.state.isInDeleteZone ? .deleteTrueIcon : .deleteFalseIcon)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
+            .frame(width: 60.adjusted, height: 60.adjusted)
             .deleteDrop(
                 onDelete: {
                     store.dispatch(.droppedInDeleteZone)
