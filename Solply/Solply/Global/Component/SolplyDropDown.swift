@@ -96,11 +96,11 @@ struct SolplyDropDown: View {
             }
         }
         .background(
-            RoundedRectangle(cornerRadius: 16.adjustedHeight, style: .continuous)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color(.coreWhite))
         )
         .addBorder(
-            .roundedRectangle(cornerRadius: 16.adjustedHeight),
+            .roundedRectangle(cornerRadius: 16),
             borderColor: Color(.gray300),
             borderWidth: 1
         )
@@ -125,7 +125,7 @@ private extension SolplyDropDown {
                         Image(selectedTag.icon)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            .frame(width: 24.adjusted, height: 24.adjusted)
                     }
                     
                     Text(currentHeaderText)

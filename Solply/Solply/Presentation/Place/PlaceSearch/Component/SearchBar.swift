@@ -37,13 +37,13 @@ struct SearchBar: View {
                 Image(.searchIcon)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                    .frame(width: 24.adjusted, height: 24.adjusted)
                     .padding(.trailing, 20.adjustedWidth)
             }
         }
         .frame(height: 52.adjustedHeight)
         .addBorder(
-            .roundedRectangle(cornerRadius: 20.adjustedHeight),
+            .roundedRectangle(cornerRadius: 20),
             borderColor: .gray300,
             borderWidth: 1
         )
