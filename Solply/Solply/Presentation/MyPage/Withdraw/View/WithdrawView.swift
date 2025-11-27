@@ -13,7 +13,7 @@ struct WithdrawView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store = WithdrawStore()
-    
+    @EnvironmentObject var alertManager: AlertManager
     
     var body: some View {
         WithdrawSelectView(
@@ -23,17 +23,35 @@ struct WithdrawView: View {
             selectWithdrawAction: {
                 store.dispatch(.selectWithdrawType(withdrawType: $0))
             },
-            withdrawAction: { }
-            // TODO: - 탈퇴탈퇴
+            withdrawAction: {
+                showAlert()
+                }
             )
         .customNavigationBar(
             .withdraw(
                 backAction: appCoordinator.goBack
             )
         )
+        .onChange(of: store.state.shouldChangeRoot) { _, newValue in
+            if newValue {
+                appCoordinator.changeRoot(to: .auth)
+            }
+        }
         .ignoresSafeArea(.keyboard)
         .onTapGesture {
             hideKeyboard()
+        }
+    }
+}
+
+// MARK: - Functions
+
+extension WithdrawView {
+    private func showAlert() {
+        alertManager.showAlert(
+            alertType: .withdraw, onCancel: nil
+        ) {
+            store.dispatch(.withdraw)
         }
     }
 }

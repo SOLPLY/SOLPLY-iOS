@@ -50,4 +50,10 @@ extension UserService: UserAPI {
     ) async throws -> BaseResponseBody<UpdateUserInformationResponseDTO> {
         return try await self.request(with: .updateUserInformation(request: request))
     }
+    
+    func withdraw(
+        request: UserWithdrawRequestDTO
+    ) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .withdraw(request))
+    }
 }

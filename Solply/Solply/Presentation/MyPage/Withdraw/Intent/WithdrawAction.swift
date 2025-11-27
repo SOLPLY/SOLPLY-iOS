@@ -10,4 +10,7 @@ import Foundation
 enum WithdrawAction {
     case selectWithdrawType(withdrawType: WithdrawType)
     case updateContent(String)
+    case withdraw
+    case withdrawSuccess
+    case withdrawFailed(error: NetworkError)
 }
