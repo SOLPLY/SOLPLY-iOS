@@ -13,6 +13,7 @@ enum AlertType {
     case changesNotSaved
     case photoPermissionDenied
     case logout
+    case withdraw
     
     var title: String {
         switch self {
@@ -21,12 +22,13 @@ enum AlertType {
         case .changesNotSaved: return "변경 사항을 저장하지 않고\n나가시겠어요?"
         case .photoPermissionDenied: return "앱에서 사진을 사용하려면 권한을 허용해주세요"
         case .logout: return "로그아웃하시겠습니까?"
+        case .withdraw: return "탈퇴하시겠습니까?"
         }
     }
     
     var cancelText: String {
         switch self {
-        case .deletePlace, .deleteCourse, .changesNotSaved, .photoPermissionDenied, .logout:
+        case .deletePlace, .deleteCourse, .changesNotSaved, .photoPermissionDenied, .logout, .withdraw:
             return "취소"
         }
     }
@@ -41,6 +43,8 @@ enum AlertType {
             return "설정으로 이동"
         case .logout:
             return "로그아웃"
+        case .withdraw:
+            return "탈퇴"
         }
     }
 }
