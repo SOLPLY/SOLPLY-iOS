@@ -30,4 +30,8 @@ extension AuthService: AuthAPI {
     func fetchLoginInformation() async throws -> BaseResponseBody<LoginInformationResponseDTO> {
         return try await self.request(with: .fetchLoginInformation)
     }
+    
+    func logout() async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .logout)
+    }
 }

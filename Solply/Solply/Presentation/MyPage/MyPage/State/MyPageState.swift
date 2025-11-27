@@ -12,4 +12,6 @@ struct MyPageState {
     var registeredPlaces: [UserPlace] = []
     var error: NetworkError?
     var loginInformation: SocialLoginType?
+    
+    var shouldChangeRoot: Bool = false
 }

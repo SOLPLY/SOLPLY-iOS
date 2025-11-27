@@ -28,10 +28,6 @@ enum MyPageReducer {
             // TODO: 고객센터 화면/외부 링크 이동
             break
             
-        case .logoutTapped:
-            // TODO: 로그아웃 처리 + 로그인 화면 이동
-            break
-            
         case .deleteAccountTapped:
             // TODO: 탈퇴 처리 + 앱 상태 초기화
             break
@@ -46,6 +42,18 @@ enum MyPageReducer {
             state.error = error
             print(error)
             break
+            
+        case .logout:
+            break
+            
+        case .logoutSuccess:
+            TokenManager.shared.clearTokens()
+            state.shouldChangeRoot = true
+            break
+            
+        case .logoutFailed(let error):
+            state.error = error
+            print(error)
         }
     }
 }

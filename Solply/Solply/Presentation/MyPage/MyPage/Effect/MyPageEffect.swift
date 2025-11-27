@@ -62,4 +62,17 @@ extension MyPageEffect {
             return .fetchLoginInformationFailed(error: .unknownError)
         }
     }
+    
+    func logout() async -> MyPageAction {
+        do {
+            _ = try await authService.logout()
+            
+            return .logoutSuccess
+            
+        } catch let error as NetworkError {
+            return .logoutFailed(error: error)
+        } catch {
+            return .logoutFailed(error: .unknownError)
+        }
+    }
 }
