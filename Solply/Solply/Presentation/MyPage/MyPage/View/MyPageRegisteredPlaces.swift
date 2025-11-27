@@ -69,7 +69,7 @@ struct MyPageRegisteredPlaces: View {
                                 isSaved: place.isBookmarked,
                                 thumbnailUrl: place.thumbnail,
                                 placeName: place.name,
-                                placeCategory: MainTagType(rawValue: place.mainTag) ?? .cafe,
+                                placeCategory: place.mainTag,
                                 isSelected: false,
                                 size: 145.adjustedWidth
                             )
