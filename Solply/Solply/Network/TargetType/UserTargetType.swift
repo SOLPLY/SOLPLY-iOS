@@ -20,6 +20,7 @@ enum UserTargetType {
     case fetchPersonaList
     case fetchPolicies
     case completeOnboarding(UserCompleteRequestDTO)
+    case withdraw(UserWithdrawRequestDTO)
 }
 
 extension UserTargetType: BaseTargetType {
@@ -46,6 +47,8 @@ extension UserTargetType: BaseTargetType {
             return "/users/policies"
         case .completeOnboarding:
             return "/users/onboarding"
+        case .withdraw:
+            return "/users/withdraw"
         }
     }
     
@@ -53,6 +56,8 @@ extension UserTargetType: BaseTargetType {
         switch self {
         case .updateUserTowns, .completeOnboarding, .updateUserInformation:
             return .patch
+        case .withdraw:
+            return .delete
         default:
             return .get
         }
@@ -81,6 +86,9 @@ extension UserTargetType: BaseTargetType {
             return .requestJSONEncodable(request)
             
         case .completeOnboarding(let requestDTO):
+            return .requestJSONEncodable(requestDTO)
+            
+        case .withdraw(let requestDTO):
             return .requestJSONEncodable(requestDTO)
         }
     }

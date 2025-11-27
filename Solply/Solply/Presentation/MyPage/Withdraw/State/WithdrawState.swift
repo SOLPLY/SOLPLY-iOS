@@ -10,4 +10,7 @@ import Foundation
 struct WithdrawState {
     var selectedWithdrawType: WithdrawType?
     var withdrawContent: String = ""
+    var shouldChangeRoot: Bool = false
+    var error: NetworkError?
+    var isPresented: Bool = false
 }
