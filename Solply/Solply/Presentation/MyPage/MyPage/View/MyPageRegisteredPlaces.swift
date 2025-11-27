@@ -71,7 +71,7 @@ struct MyPageRegisteredPlaces: View {
                                 placeName: place.name,
                                 placeCategory: place.mainTag,
                                 isSelected: false,
-                                size: 145.adjustedWidth
+                                size: 145.adjusted
                             )
                         }
                     }
