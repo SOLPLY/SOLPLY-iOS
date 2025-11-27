@@ -12,5 +12,4 @@ struct WithdrawState {
     var withdrawContent: String = ""
     var shouldChangeRoot: Bool = false
     var error: NetworkError?
-    var isPresented: Bool = false
 }

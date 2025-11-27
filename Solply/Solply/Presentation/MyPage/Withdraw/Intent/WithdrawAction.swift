@@ -13,6 +13,4 @@ enum WithdrawAction {
     case withdraw
     case withdrawSuccess
     case withdrawFailed(error: NetworkError)
-    case showAlert
-    case cancel
 }

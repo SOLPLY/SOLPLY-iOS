@@ -14,8 +14,7 @@ struct WithdrawEffect {
         self.userService = userService
     }
     
-    func withdraw(withdrawReason: String, reasonText: String) async ->
-    WithdrawAction {
+    func withdraw(withdrawReason: String, reasonText: String) async -> WithdrawAction {
         do {
             let _ = try await
             userService.withdraw(request: .init(

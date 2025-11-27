@@ -30,12 +30,6 @@ enum WithdrawReducer {
             state.error = error
             print(error)
             break
-            
-        case .showAlert:
-            state.isPresented = true
-            
-        case .cancel:
-            state.isPresented = false
         }
     }
 }

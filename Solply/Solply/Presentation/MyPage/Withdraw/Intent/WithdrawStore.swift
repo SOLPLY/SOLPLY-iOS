@@ -10,8 +10,7 @@ import Foundation
 @MainActor
 final class WithdrawStore: ObservableObject {
     @Published private(set) var state = WithdrawState()
-    private let effect : WithdrawEffect =  WithdrawEffect(userService: UserService()
-    )
+    private let effect : WithdrawEffect =  WithdrawEffect(userService: UserService())
     
     func dispatch(_ action: WithdrawAction) {
         WithdrawReducer.reduce(state: &state, action: action)
