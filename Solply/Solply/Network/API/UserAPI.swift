@@ -34,4 +34,7 @@ protocol UserAPI {
     
     func updateUserInformation(request: UpdateUserInformationRequestDTO) async throws
     -> BaseResponseBody<UpdateUserInformationResponseDTO>
+    
+    func withdraw(request: UserWithdrawRequestDTO) async throws
+    -> BaseResponseBody<EmptyResponseDTO>
 }

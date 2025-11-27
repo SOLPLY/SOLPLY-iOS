@@ -17,6 +17,19 @@ enum WithdrawReducer {
             }
         case .updateContent(let text):
             state.withdrawContent = String(text.prefix(200))
+            
+        case .withdraw:
+            break
+            
+        case .withdrawSuccess:
+            TokenManager.shared.clearTokens()
+            state.shouldChangeRoot = true
+            break
+            
+        case .withdrawFailed(let error):
+            state.error = error
+            print(error)
+            break
         }
     }
 }
