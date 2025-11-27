@@ -77,6 +77,7 @@ struct PlaceInformationView: View {
                         
                         addPlaceToCourseButton
                     }
+                    .padding(.top, 1.adjustedHeight)
                     .padding(.horizontal, 16.adjustedWidth)
                     
                     mainImage
