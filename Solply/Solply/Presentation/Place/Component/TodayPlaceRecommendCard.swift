@@ -43,6 +43,7 @@ struct TodayPlaceRecommendCard: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 240.adjusted, height: 240.adjusted)
+                .cornerRadius(20, corners: .allCorners)
             
             LinearGradient(
                 gradient: Gradient(colors: [Color.black.opacity(0.8), Color.clear]),
