@@ -22,6 +22,7 @@ struct SearchBar: View {
                         .padding(.leading, 20.adjustedWidth)
                 }
                 TextField("", text: $text)
+                    .configureDefaultTextField()
                     .applySolplyFont(.body_16_r)
                     .foregroundColor(.coreBlack)
                     .padding(.leading, 20.adjustedWidth)
