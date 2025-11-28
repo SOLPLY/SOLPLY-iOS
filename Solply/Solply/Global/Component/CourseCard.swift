@@ -43,6 +43,11 @@ struct CourseCard: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             KFImage(URL(string: imageUrl))
+                .placeholder {
+                    Image(.placePlaceholder)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                }
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 165.adjusted, height: 165.adjusted)

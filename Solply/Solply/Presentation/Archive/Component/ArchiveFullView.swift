@@ -57,6 +57,11 @@ extension ArchiveFullView {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             ZStack(alignment: .center) {
                 KFImage(URL(string: placeItem.folderThumbnailUrl ?? ""))
+                    .placeholder {
+                        Image(.placePlaceholder)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    }
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 165.adjusted, height: 165.adjusted)

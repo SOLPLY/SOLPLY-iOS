@@ -47,6 +47,11 @@ struct PlaceCard: View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             ZStack(alignment: .topTrailing) {
                 KFImage(URL(string: thumbnailUrl))
+                    .placeholder {
+                        Image(.placePlaceholder)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    }
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: size, height: size)

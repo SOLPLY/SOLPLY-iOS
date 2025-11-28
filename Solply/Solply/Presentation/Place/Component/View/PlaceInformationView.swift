@@ -135,10 +135,15 @@ extension PlaceInformationView {
             HStack(alignment: .center, spacing: 12.adjustedWidth) {
                 ForEach(imageURLs, id: \.self) { imageURL in
                     KFImage(URL(string: imageURL))
+                        .placeholder {
+                            Image(.placedetailPlaceholder)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        }
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 307.adjustedWidth, height: 204.adjustedHeight)
-                        .background(.gray300)
+                        .background(.gray200)
                         .cornerRadius(12, corners: .allCorners)
                 }
             }
