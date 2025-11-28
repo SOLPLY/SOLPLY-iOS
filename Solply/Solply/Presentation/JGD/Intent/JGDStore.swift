@@ -32,7 +32,8 @@ final class JGDStore: ObservableObject {
             }
             
         case .saveSelection:
-            guard let currentSelectedSubTown = state.currentSelectedSubTown else { return }
+            guard let currentSelectedSubTown = state.currentSelectedSubTown,
+                  currentSelectedSubTown.id != state.initialTownId else { return }
             
             let selectedTownId = currentSelectedSubTown.id
             Task {

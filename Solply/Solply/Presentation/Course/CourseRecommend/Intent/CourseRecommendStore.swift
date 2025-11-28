@@ -19,6 +19,8 @@ final class CourseRecommendStore: ObservableObject {
 
         switch action {
         case .fetchCourseRecommend(let townId):
+            guard townId != 0 else { return }
+            
             Task {
                 let result = await effect.fetchCourseRecommend(townId: townId)
                 self.dispatch(result)

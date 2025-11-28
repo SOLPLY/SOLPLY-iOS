@@ -20,6 +20,8 @@ final class PlaceRecommendStore: ObservableObject {
 
         switch action {
         case .fetchPlaceRecommend(let townId):
+            guard townId != 0 else { return }
+            
             Task {
                 let result = await effect.fetchPlaceRecommend(townId: townId)
                 self.dispatch(result)
@@ -32,6 +34,8 @@ final class PlaceRecommendStore: ObservableObject {
             }
             
         case .fetchSubTags(let parentId):
+            guard parentId != 0 else { return }
+            
             Task {
                 let result = await effect.fetchSubTags(parentId: parentId)
                 self.dispatch(result)
@@ -45,6 +49,8 @@ final class PlaceRecommendStore: ObservableObject {
             let subTagAIdList,
             let subTagBIdList
         ):
+            guard townId != 0 else { return }
+            
             Task {
                 let result = await effect.fetchPlaceList(
                     townId: townId,
