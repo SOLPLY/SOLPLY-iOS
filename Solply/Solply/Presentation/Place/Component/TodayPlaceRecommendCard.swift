@@ -40,6 +40,11 @@ struct TodayPlaceRecommendCard: View {
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             KFImage(URL(string: thumbnailImageUrl))
+                .placeholder {
+                    Image(.placePlaceholder)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                }
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 240.adjustedWidth, height: 240.adjustedHeight)

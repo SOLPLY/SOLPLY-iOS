@@ -39,6 +39,11 @@ struct SearchPlaceCard: View {
             
             HStack(alignment: .center, spacing: 8.adjustedWidth) {
                 KFImage(URL(string: thumnailUrl))
+                    .placeholder {
+                        Image(.placePlaceholder)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    }
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 52.adjustedWidth, height: 52.adjustedHeight)

@@ -85,6 +85,11 @@ extension DraggablePlaceCell {
         VStack(alignment: .center, spacing: 0) {
             HStack(alignment: .top, spacing: 8.adjustedWidth) {
                 KFImage(URL(string: mainImageURL))
+                    .placeholder {
+                        Image(.placePlaceholder)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    }
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(
