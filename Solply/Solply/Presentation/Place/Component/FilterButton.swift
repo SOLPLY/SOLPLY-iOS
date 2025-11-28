@@ -33,7 +33,7 @@ struct FilterButton: View {
                 Image(.arrowDownIcon)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 24.adjustedWidth)
+                    .frame(width: 24.adjusted, height: 24.adjusted)
             }
             .foregroundStyle(.coreBlack)
             .background(.coreWhite)

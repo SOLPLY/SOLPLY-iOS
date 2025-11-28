@@ -37,7 +37,7 @@ struct MainTagBottomSheet: View {
                 } label: {
                     Image(.xIconSm)
                         .resizable()
-                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        .frame(width: 24.adjusted, height: 24.adjusted)
                         .buttonStyle(.plain)
                 }
             }
@@ -64,7 +64,6 @@ struct MainTagBottomSheet: View {
                     }
                 }
             }
-            .scrollDisabled(true)
         }
         .padding(.horizontal, 16.adjustedWidth)
         .padding(.top, 24.adjustedHeight)
