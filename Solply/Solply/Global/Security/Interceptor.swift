@@ -75,7 +75,7 @@ final class Interceptor: RequestInterceptor {
 
         Task {
             do {
-                try await refreshTokensOnce()
+                try await TokenRefreshManager.shared.refresh()
                 debug("✅ 재발급 성공 → 요청 재시도")
                 completion(.retry)
             } catch {
@@ -95,30 +95,6 @@ final class Interceptor: RequestInterceptor {
 // MARK: - Private
 
 private extension Interceptor {
-
-    func refreshTokensOnce() async throws {
-        guard let refreshToken = TokenManager.shared.fetchRefreshToken(),
-              !refreshToken.isEmpty else {
-            throw TokenError.noRefreshToken
-        }
-
-        let service = AuthService()
-        let response = try await service.refreshToken(refreshToken: refreshToken)
-
-        guard let token = response.data else {
-            throw TokenError.reissueFailed
-        }
-
-        guard !token.accessToken.isEmpty else {
-            throw TokenError.reissueFailed
-        }
-
-        TokenManager.shared.saveTokens(
-            accessToken: token.accessToken,
-            refreshToken: token.refreshToken
-        )
-    }
-
     func shouldSkipAuth(for path: String) -> Bool {
         skipAuthKeywords.contains { path.contains($0) }
     }
