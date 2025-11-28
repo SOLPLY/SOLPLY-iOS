@@ -41,6 +41,7 @@ struct TabBarView: View {
     
     private func loadUserInfo() async {
         print("❗️유저 정보 업데이트❗️")
+        
         do {
             let userInfo = try await fetchUserInformation()
             townName = userInfo.townName
