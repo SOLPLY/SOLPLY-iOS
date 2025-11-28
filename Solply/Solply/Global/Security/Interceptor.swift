@@ -62,7 +62,6 @@ final class Interceptor: RequestInterceptor {
     ) {
         let status = (request.task?.response as? HTTPURLResponse)?.statusCode ?? -1
         let path = request.request?.url?.path ?? ""
-        debug("♻️ retry 확인: \(path), status: \(status), retryCount: \(request.retryCount)")
 
         if shouldSkipAuth(for: path) {
             return completion(.doNotRetryWithError(error))
@@ -71,6 +70,8 @@ final class Interceptor: RequestInterceptor {
         guard status == 401, request.retryCount == 0 else {
             return completion(.doNotRetryWithError(error))
         }
+        
+        debug("♻️ retry 확인: \(path), status: \(status), retryCount: \(request.retryCount)")
 
         Task {
             do {
@@ -127,7 +128,7 @@ private extension Interceptor {
     }
 
     func debug(_ message: String) {
-        print("🍏 [TokenInterceptor] \(message)")
+        print("🍏 [Interceptor] \(message)")
     }
 }
 
