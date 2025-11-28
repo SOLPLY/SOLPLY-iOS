@@ -50,13 +50,8 @@ struct MainTagBottomSheet: View {
                             isSelectedCategory: category == store.state.selectedMainTag
                         ) {
                             store.dispatch(.selectMainTag(category))
-                            store.dispatch(.fetchSubTags(parentId: category.parentId)) {
-                                if !store.state.fetchedSubTags.isEmpty {
-                                    isPresented = false
-                                } else {
-                                    isPresented = false
-                                }
-                            }
+                            store.dispatch(.fetchSubTags(parentId: category.parentId))
+                            isPresented = false
                         }
                         
                         Divider()
