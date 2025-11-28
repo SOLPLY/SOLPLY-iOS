@@ -67,7 +67,7 @@ struct TodayPlaceRecommendCarousel: View {
                 }
             }
         }
-        .frame(height: 240.adjustedHeight)
+        .frame(height: 240.adjusted)
         .gesture(
             DragGesture()
                 .onChanged { value in

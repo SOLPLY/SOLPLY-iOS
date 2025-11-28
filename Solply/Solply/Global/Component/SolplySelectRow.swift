@@ -45,7 +45,7 @@ struct SolplySelectRow: View {
                     Image(.selectIcon)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        .frame(width: 24.adjusted, height: 24.adjusted)
                         .opacity(isSelected ? 1.0 : 0.0)
                         .padding(.trailing, 2.adjustedWidth)
                 }

@@ -29,7 +29,7 @@ struct PlaceCard: View {
         placeName: String,
         placeCategory: MainTagType,
         isSelected: Bool,
-        size: CGFloat = 165,
+        size: CGFloat = 165.adjusted,
         action: (() -> Void)? = nil
     ) {
         self.isSaved = isSaved
@@ -54,7 +54,7 @@ struct PlaceCard: View {
                     }
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: size.adjustedWidth, height: size.adjustedHeight)
+                    .frame(width: size, height: size)
                 
                 if isSaved {
                     Image(placeCategory.savedBadge ?? "")

@@ -37,7 +37,7 @@ struct MainTagBottomSheet: View {
                 } label: {
                     Image(.xIconSm)
                         .resizable()
-                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                        .frame(width: 24.adjusted, height: 24.adjusted)
                         .buttonStyle(.plain)
                 }
             }
@@ -50,13 +50,8 @@ struct MainTagBottomSheet: View {
                             isSelectedCategory: category == store.state.selectedMainTag
                         ) {
                             store.dispatch(.selectMainTag(category))
-                            store.dispatch(.fetchSubTags(parentId: category.parentId)) {
-                                if !store.state.fetchedSubTags.isEmpty {
-                                    isPresented = false
-                                } else {
-                                    isPresented = false
-                                }
-                            }
+                            store.dispatch(.fetchSubTags(parentId: category.parentId))
+                            isPresented = false
                         }
                         
                         Divider()
@@ -64,7 +59,6 @@ struct MainTagBottomSheet: View {
                     }
                 }
             }
-            .scrollDisabled(true)
         }
         .padding(.horizontal, 16.adjustedWidth)
         .padding(.top, 24.adjustedHeight)

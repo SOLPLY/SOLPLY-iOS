@@ -50,20 +50,20 @@ struct CourseCard: View {
                 }
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                .frame(width: 165.adjusted, height: 165.adjusted)
             
             Rectangle()
-                .frame(width: 165.adjustedWidth, height: 11.adjustedHeight)
+                .frame(width: 165.adjusted, height: 93.adjusted)
                 .foregroundStyle(.coreBlackO20)
-                .padding(.bottom, 84.adjustedHeight)
+                .cornerRadius(4, corners: [.topLeft, .topRight])
             
-            VStack(alignment: .leading, spacing: 12.adjustedHeight) {
+            VStack(alignment: .leading, spacing: 12.adjusted) {
                 HStack(alignment: .top, spacing: 0) {
                     Text(courseName)
                         .applySolplyFont(.title_14_m)
                         .foregroundStyle(.coreBlack)
-                        .frame(height: 38.adjustedHeight, alignment: .topLeading)
-                        .padding(.top, 10.adjustedHeight)
+                        .frame(height: 38.adjusted, alignment: .topLeading)
+                        .padding(.top, 8.adjusted)
                     
                     Spacer()
                     
@@ -71,26 +71,25 @@ struct CourseCard: View {
                         Image(isSavedBadge)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 24.adjustedWidth, height: 32.adjustedHeight)
+                            .frame(width: 24.adjusted, height: 32.adjusted)
                     }
                 }
-                .padding(.horizontal, 12.adjustedWidth)
+                .padding(.horizontal, 12.adjusted)
                 
-                HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                HStack(alignment: .center, spacing: 4.adjusted) {
                     ForEach(courseCategory.prefix(2), id: \.self) { category in
                         PlaceCategoryTag(placeCategory: category)
-                            .frame(height: 20.adjustedHeight)
+                            .frame(height: 20.adjusted)
                     }
                 }
-                .padding(.bottom, 12.adjustedHeight)
-                .padding(.leading, 12.adjustedWidth)
+                .padding(.bottom, 12.adjusted)
+                .padding(.leading, 12.adjusted)
             }
-            .frame(width: 165.adjustedWidth, height: 88.adjustedHeight)
+            .frame(width: 165.adjusted, height: 88.adjusted)
             .background(courseCategory.first?.courseBackgroundColor)
             .cornerRadius(4, corners: [.topLeft, .topRight])
-            .cornerRadius(20, corners: [.bottomLeft, .bottomRight])
         }
-        .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+        .frame(width: 165.adjusted, height: 165.adjusted)
         .cornerRadius(20, corners: .allCorners)
         .contentShape(Rectangle())
         .onTapGesture {

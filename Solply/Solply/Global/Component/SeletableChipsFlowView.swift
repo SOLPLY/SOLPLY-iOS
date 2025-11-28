@@ -20,8 +20,8 @@ struct SeletableChipsFlowView: View {
     
     init(
         tags: Binding<[SelectableSubTag]>,
-        horizontalSpacing: CGFloat = 8.adjustedWidth,
-        verticalSpacing: CGFloat = 8.adjustedHeight
+        horizontalSpacing: CGFloat = 8.adjusted,
+        verticalSpacing: CGFloat = 8.adjusted
     ) {
         self._tags = tags
         self.horizontalSpacing = horizontalSpacing

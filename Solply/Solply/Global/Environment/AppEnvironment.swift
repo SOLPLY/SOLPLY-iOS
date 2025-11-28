@@ -44,4 +44,13 @@ enum AppEnvironment {
         
         return secret
     }()
+    
+    /// solply 앱 버전
+    static let appVersion: String = {
+        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            return ""
+        }
+        
+        return "v" + version
+    }()
 }

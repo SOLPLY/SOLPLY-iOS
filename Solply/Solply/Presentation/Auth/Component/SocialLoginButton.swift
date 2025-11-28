@@ -31,13 +31,13 @@ struct SocialLoginButton: View {
                 Image(socialLoginType.buttonIcon)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 28.adjustedWidth, height: 28.adjustedHeight)
+                    .frame(width: 28.adjusted, height: 28.adjusted)
                 
                 Text(socialLoginType.buttonTitle)
                     .applySolplyFont(.button_16_m)
                     .foregroundColor(socialLoginType.buttonTitleColor)
             }
-            .frame(height: 52.adjustedHeight)
+            .frame(height: 52.adjusted)
             .padding(.leading, 16.adjustedWidth)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(socialLoginType.buttonBackgroundColor)

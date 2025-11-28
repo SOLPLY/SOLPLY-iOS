@@ -60,7 +60,9 @@ struct OnboardingOptionButton: View {
         .background(isSelected ? .red100 : .gray100)
         .cornerRadius(20, corners: .allCorners)
         .addBorder(
-            .roundedRectangle(cornerRadius: 20), borderColor: isSelected ? .red300 : .gray300, borderWidth: 1
+            .roundedRectangle(cornerRadius: 20),
+            borderColor: isSelected ? .red300 : .gray300,
+            borderWidth: 1
         )
     }
 }

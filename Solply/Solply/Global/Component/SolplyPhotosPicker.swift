@@ -75,7 +75,7 @@ struct SolplyPhotosPicker: View {
 extension SolplyPhotosPicker {
     private var emptyPhotoCell: some View {
         Rectangle()
-            .frame(width: 72.adjustedWidth, height: 72.adjustedHeight)
+            .frame(width: 72.adjusted, height: 72.adjusted)
             .foregroundStyle(.coreWhite)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
@@ -88,14 +88,14 @@ extension SolplyPhotosPicker {
             requestPhotoAuthorization()
         } label: {
             Rectangle()
-                .frame(width: 72.adjustedWidth, height: 72.adjustedHeight)
+                .frame(width: 72.adjusted, height: 72.adjusted)
                 .foregroundStyle(.gray200)
                 .cornerRadius(12, corners: .allCorners)
                 .overlay {
                     Image(.plusIcon)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 20.adjustedWidth, height: 20.adjustedHeight)
+                        .frame(width: 20.adjusted, height: 20.adjusted)
                 }
         }
         .buttonStyle(.plain)
@@ -108,7 +108,7 @@ extension SolplyPhotosPicker {
             Image(uiImage: image)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 72.adjustedWidth, height: 72.adjustedHeight)
+                .frame(width: 72.adjusted, height: 72.adjusted)
                 .cornerRadius(12, corners: .allCorners)
         }
         .buttonStyle(.plain)

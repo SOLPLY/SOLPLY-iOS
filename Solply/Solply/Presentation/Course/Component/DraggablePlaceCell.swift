@@ -73,7 +73,7 @@ extension DraggablePlaceCell {
     private var numberBadge: some View {
         ZStack(alignment: .center) {
             RoundedRectangle(cornerRadius: 8)
-                .frame(width: 20.adjustedWidth, height: 20.adjustedHeight)
+                .frame(width: 20.adjusted, height: 20.adjusted)
                 .foregroundStyle(.gray200)
             
             Text("\(order)")
@@ -93,25 +93,25 @@ extension DraggablePlaceCell {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(
-                        width: isFocused ? 85.adjustedHeight : 50.adjustedWidth,
-                        height: isFocused ? 85.adjustedHeight : 50.adjustedHeight
+                        width: isFocused ? 85.adjusted : 50.adjusted,
+                        height: isFocused ? 85.adjusted : 50.adjusted
                     )
                     .background(.gray300)
                     .cornerRadius(12, corners: .allCorners)
                 
-                VStack(alignment: .trailing, spacing: 8.adjustedHeight) {
-                    HStack(alignment: .top, spacing: 8.adjustedWidth) {
-                        VStack(alignment: .leading, spacing: 6.adjustedHeight) {
+                VStack(alignment: .trailing, spacing: 8.adjusted) {
+                    HStack(alignment: .top, spacing: 8.adjusted) {
+                        VStack(alignment: .leading, spacing: 6.adjusted) {
                             
-                            HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                            HStack(alignment: .center, spacing: 4.adjusted) {
                                 PlaceCategoryTag(placeCategory: placeCategoryType)
                                 
                                 Text(title)
                                     .applySolplyFont(.title_15_m)
-                                    .frame(height: 19.adjustedHeight)
+                                    .frame(height: 19.adjusted)
                                     .foregroundStyle(.coreBlack)
                             }
-                            .frame(height: 20.adjustedHeight)
+                            .frame(height: 20.adjusted)
                             
                             Text(address)
                                 .applySolplyFont(.caption_12_r)
@@ -126,7 +126,7 @@ extension DraggablePlaceCell {
                                 Image(.dragDropIcon)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                    .frame(width: 24.adjusted, height: 24.adjusted)
                                 
                             } else {
                                 Button {
@@ -136,29 +136,33 @@ extension DraggablePlaceCell {
                                         .resizable()
                                         .renderingMode(.template)
                                         .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                        .frame(width: 24.adjusted, height: 24.adjusted)
                                         .foregroundStyle(isSaved ? .red500 : .gray400)
                                 }
                                 .buttonStyle(.plain)
                             }
                         }
-                        .padding(.top, 10.adjustedHeight)
+                        .padding(.top, 10.adjusted)
                     }
-                    .padding(.top, 4.adjustedHeight)
+                    .padding(.top, 4.adjusted)
                 }
             }
-            .padding(.leading, 8.adjustedWidth)
-            .padding(.vertical, 8.adjustedHeight)
-            .padding(.trailing, 16.adjustedWidth)
+            .padding(.leading, 8.adjusted)
+            .padding(.vertical, 8.adjusted)
+            .padding(.trailing, 16.adjusted)
             
             if isFocused {
                 buttons
             }
         }
-        .frame(height: isFocused ? 155.adjustedHeight : 68.adjustedHeight)
+        .frame(height: isFocused ? 155.adjusted : 68.adjusted)
         .background(isFocused ? .gray100 : .coreWhite)
         .cornerRadius(20, corners: .allCorners)
-        .addBorder(.roundedRectangle(cornerRadius: 20), borderColor: .gray300, borderWidth: 1)
+        .addBorder(
+            .roundedRectangle(cornerRadius: 20),
+            borderColor: .gray300,
+            borderWidth: 1
+        )
         .onTapGesture {
             if !isEditing {
                 tapAction?()
@@ -170,7 +174,7 @@ extension DraggablePlaceCell {
         VStack(alignment: .center, spacing: 0) {
             Rectangle()
                 .frame(maxWidth: .infinity)
-                .frame(height: 1.adjustedHeight)
+                .frame(height: 1.adjusted)
                 .foregroundStyle(.gray300)
             
             HStack(alignment: .center, spacing: 0) {
@@ -180,13 +184,13 @@ extension DraggablePlaceCell {
                     Text("길찾기")
                         .applySolplyFont(.button_14_m)
                         .foregroundStyle(.gray800)
-                        .frame(width: 145.adjustedWidth, height: 43.adjustedHeight)
+                        .frame(width: 145.adjusted, height: 43.adjusted)
                         .background(.gray100)
                 }
                 .buttonStyle(.plain)
                 
                 Rectangle()
-                    .frame(width: 1.adjustedWidth, height: 43.adjustedHeight)
+                    .frame(width: 1.adjusted, height: 43.adjusted)
                     .foregroundStyle(.gray300)
                 
                 Button {
@@ -195,12 +199,12 @@ extension DraggablePlaceCell {
                     Text("상세보기")
                         .applySolplyFont(.button_14_m)
                         .foregroundStyle(.gray800)
-                        .frame(width: 145.adjustedWidth, height: 43.adjustedHeight)
+                        .frame(width: 145.adjusted, height: 43.adjusted)
                         .background(.gray100)
                 }
                 .buttonStyle(.plain)
             }
-            .padding(.vertical, 4.adjustedHeight)
+            .padding(.vertical, 4.adjusted)
         }
     }
 }
