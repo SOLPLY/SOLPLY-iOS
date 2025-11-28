@@ -98,7 +98,7 @@ extension View {
                             Image(.backIconIos)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                         .buttonStyle(.plain)
                     },
@@ -122,7 +122,7 @@ extension View {
                             Image(.townIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                             
                             Button {
                                 filterAction()
@@ -134,7 +134,7 @@ extension View {
                                     Image(.arrowRightIcon)
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                        .frame(width: 24.adjusted, height: 24.adjusted)
                                 }
                             }
                             .buttonStyle(.plain)
@@ -147,7 +147,7 @@ extension View {
                             Image(.searchIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                         .buttonStyle(.plain)
                     },
@@ -170,12 +170,12 @@ extension View {
                             ZStack(alignment: .center) {
                                 Circle()
                                     .foregroundStyle(.coreWhite)
-                                    .frame(width: 40.adjustedWidth, height: 40.adjustedHeight)
+                                    .frame(width: 40.adjusted, height: 40.adjusted)
                                 
                                 Image(.backIconIos)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                    .frame(width: 24.adjusted, height: 24.adjusted)
                             }
                         }
                         .buttonStyle(.plain)
@@ -188,12 +188,12 @@ extension View {
                             ZStack(alignment: .center) {
                                 Circle()
                                     .foregroundStyle(.coreWhite)
-                                    .frame(width: 40.adjustedWidth, height: 40.adjustedHeight)
+                                    .frame(width: 40.adjusted, height: 40.adjusted)
                                 
                                 Image(.homeIcon)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                    .frame(width: 24.adjusted, height: 24.adjusted)
                             }
                         }
                         .buttonStyle(.plain)
@@ -218,12 +218,12 @@ extension View {
                             ZStack(alignment: .center) {
                                 Circle()
                                     .foregroundStyle(.coreWhite)
-                                    .frame(width: 40.adjustedWidth, height: 40.adjustedHeight)
+                                    .frame(width: 40.adjusted, height: 40.adjusted)
                                 
                                 Image(.backIconIos)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                    .frame(width: 24.adjusted, height: 24.adjusted)
                             }
                         }
                         .buttonStyle(.plain)
@@ -236,12 +236,12 @@ extension View {
                             ZStack(alignment: .center) {
                                 Circle()
                                     .foregroundStyle(.coreWhite)
-                                    .frame(width: 40.adjustedWidth, height: 40.adjustedHeight)
+                                    .frame(width: 40.adjusted, height: 40.adjusted)
                                 
                                 Image(.homeIcon)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                    .frame(width: 24.adjusted, height: 24.adjusted)
                             }
                         }
                         .buttonStyle(.plain)
@@ -267,7 +267,7 @@ extension View {
                             Image(.backIconIos)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                         .buttonStyle(.plain)
                     },
@@ -294,7 +294,7 @@ extension View {
                             Image(.backIconIos)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                         .buttonStyle(.plain)
                     },
@@ -321,7 +321,7 @@ extension View {
                             Image(.backIconIos)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                         .buttonStyle(.plain)
                     },
@@ -351,7 +351,7 @@ extension View {
                         Group {
                             if reportsStep == .reportsComplete {
                                 EmptyView()
-                                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                    .frame(width: 24.adjusted, height: 24.adjusted)
                             } else {
                                 Button {
                                     backAction()
@@ -359,7 +359,7 @@ extension View {
                                     Image(.backIconIos)
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                        .frame(width: 24.adjusted, height: 24.adjusted)
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -388,7 +388,7 @@ extension View {
                             Image(.backIconIos)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                         .buttonStyle(.plain)
                     },
@@ -412,7 +412,7 @@ extension View {
                             Image(.backIconIos)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                         .buttonStyle(.plain)
                     },
@@ -437,7 +437,7 @@ extension View {
                             Image(.backIconIos)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                         .buttonStyle(.plain)
                     },
@@ -486,7 +486,7 @@ extension View {
                             Image(.backIconIos)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                         .buttonStyle(.plain)
                     },
@@ -511,7 +511,7 @@ extension View {
                             Image(.backIconIos)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
                         }
                         .buttonStyle(.plain)
                     },

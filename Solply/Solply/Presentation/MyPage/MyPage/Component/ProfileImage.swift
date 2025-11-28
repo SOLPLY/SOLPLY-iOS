@@ -15,8 +15,8 @@ struct ProfileImage: View {
     
     private let profileImageUrl: String?
     
-    private let width: CGFloat = 80.adjustedWidth
-    private let height: CGFloat = 80.adjustedHeight
+    private let width: CGFloat = 80.adjusted
+    private let height: CGFloat = 80.adjusted
     
     // MARK: - Initializer
     
@@ -35,7 +35,7 @@ struct ProfileImage: View {
             Image(.myNavIcon)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 60.adjustedWidth, height: 60.adjustedHeight)
+                .frame(width: 60.adjusted, height: 60.adjusted)
                 .foregroundColor(.gray100)
             
             if let profileImageUrl {

@@ -63,7 +63,10 @@ final class KeychainManager {
         ]
         
         let status = SecItemDelete(query)
-        assert(status == noErr, "failed to delete the value, status code: \(status)")
+        
+        if status != errSecSuccess && status != errSecItemNotFound {
+            print("⚠️ Keychain delete failed: \(status)")
+        }
     }
 }
 

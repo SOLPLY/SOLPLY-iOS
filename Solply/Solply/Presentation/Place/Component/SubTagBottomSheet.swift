@@ -55,7 +55,6 @@ struct SubTagBottomSheet: View {
                 }
                 .padding(.top, 24.adjustedHeight)
             }
-            .scrollDisabled(true)
             
             HStack(alignment: .center, spacing: 12.adjustedWidth) {
                 CTASubButton(title: "초기화") {
@@ -82,6 +81,7 @@ struct SubTagBottomSheet: View {
                 }
                 .frame(width: 210.adjustedWidth)
             }
+            .padding(.vertical, 16.adjustedHeight)
         }
         .padding(.horizontal, 16.adjustedWidth)
         .onAppear {

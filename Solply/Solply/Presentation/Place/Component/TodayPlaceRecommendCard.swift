@@ -42,7 +42,7 @@ struct TodayPlaceRecommendCard: View {
             KFImage(URL(string: thumbnailImageUrl))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 240.adjustedWidth, height: 240.adjustedHeight)
+                .frame(width: 240.adjusted, height: 240.adjusted)
                 .cornerRadius(20, corners: .allCorners)
             
             LinearGradient(
@@ -50,7 +50,7 @@ struct TodayPlaceRecommendCard: View {
                 startPoint: .bottom,
                 endPoint: .center
             )
-            .frame(width: 240.adjustedWidth, height: 240.adjustedHeight)
+            .frame(width: 240.adjusted, height: 240.adjusted)
             .cornerRadius(20, corners: .allCorners)
             .allowsHitTesting(false)
             

@@ -17,7 +17,10 @@ struct ArchiveFullView: View {
     @ObservedObject var store: ArchiveStore
     
     private let archiveCategory: SolplyContentType
-    private let columns = [GridItem(.fixed(165.adjustedWidth), spacing: 12.adjustedWidth), GridItem(.fixed(165.adjustedWidth), spacing: 12.adjustedWidth)]
+    private let columns = [
+        GridItem(.fixed(165.adjusted), spacing: 12.adjustedWidth),
+        GridItem(.fixed(165.adjusted), spacing: 12.adjustedWidth)
+    ]
     
     // MARK: - Initializers
     
@@ -56,12 +59,12 @@ extension ArchiveFullView {
                 KFImage(URL(string: placeItem.folderThumbnailUrl ?? ""))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                    .frame(width: 165.adjusted, height: 165.adjusted)
                 
                 Image("group-cover-image")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                    .frame(width: 165.adjusted, height: 165.adjusted)
             }
             .cornerRadius(20, corners: .allCorners)
             
@@ -94,12 +97,12 @@ extension ArchiveFullView {
                     } ?? [],
                     isSelected: false
                 )
-                .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                .frame(width: 165.adjusted, height: 165.adjusted)
                 
                 Image("group-cover-image")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                    .frame(width: 165.adjusted, height: 165.adjusted)
                     .cornerRadius(20, corners: .allCorners)
             }
             

@@ -54,7 +54,7 @@ struct OnboardingJGDView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.bottom, 16.adjustedHeight)
+        .padding(.bottom, 20.adjustedHeight)
         .onAppear { store.dispatch(.fetchTowns) }
         .sheet(isPresented: $isTownSheetPresented) {
             JGDBottomSheet { town, subTown in

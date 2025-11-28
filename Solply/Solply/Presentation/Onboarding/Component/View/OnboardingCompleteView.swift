@@ -42,7 +42,7 @@ struct OnboardingCompleteView: View {
                 
                 LottieView(jsonName: "finishOnboarding")
                     .padding(.top, 52.adjustedHeight)
-                    .frame(width: 300.adjustedHeight, height: 300.adjustedHeight)
+                    .frame(width: 300.adjusted, height: 300.adjusted)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         }

@@ -86,7 +86,7 @@ struct NicknameTextField: View {
                     icon
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 20.adjustedHeight, height: 20.adjustedHeight)
+                        .frame(width: 20.adjusted, height: 20.adjusted)
                         .foregroundColor(state.borderColor)
                 }
             }
@@ -95,7 +95,7 @@ struct NicknameTextField: View {
             .background(.white)
             .cornerRadius(20)
             .addBorder(
-                .roundedRectangle(cornerRadius: 20.adjustedHeight),
+                .roundedRectangle(cornerRadius: 20),
                 borderColor: state.borderColor,
                 borderWidth: 1
             )

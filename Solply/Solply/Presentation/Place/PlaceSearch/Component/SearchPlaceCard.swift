@@ -41,7 +41,7 @@ struct SearchPlaceCard: View {
                 KFImage(URL(string: thumnailUrl))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 52.adjustedWidth, height: 52.adjustedHeight)
+                    .frame(width: 52.adjusted, height: 52.adjusted)
                     .cornerRadius(12, corners: .allCorners)
                     .padding(.leading, 20.adjustedWidth)
                 
@@ -61,7 +61,11 @@ struct SearchPlaceCard: View {
                     Text(address)
                         .applySolplyFont(.caption_12_r)
                         .foregroundColor(.gray700)
-                        .frame(width: 275.adjustedWidth, height: 18.adjustedHeight, alignment: .leading)
+                        .frame(
+                            width: 275.adjustedWidth,
+                            height: 18.adjustedHeight,
+                            alignment: .leading
+                        )
                         .lineLimit(1)
                 }
             }

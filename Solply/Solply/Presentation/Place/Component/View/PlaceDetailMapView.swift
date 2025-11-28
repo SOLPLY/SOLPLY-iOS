@@ -28,8 +28,8 @@ struct PlaceDetailMapView: UIViewRepresentable {
         right: 0
     )
     
-    private let markerWidth: CGFloat = 36.adjustedWidth
-    private let markerHeight: CGFloat = 36.adjustedHeight
+    private let markerWidth: CGFloat = 36.adjusted
+    private let markerHeight: CGFloat = 36.adjusted
     
     // MARK: - Init
     

@@ -71,6 +71,7 @@ extension AuthEffect {
                 UserApi.shared.loginWithKakaoTalk { token, error in
                     if let error {
                         continuation.resume(throwing: NetworkError.apiError(message: "⚠️ 카카오 로그인에 실패했습니다: \(error.localizedDescription)"))
+                        return
                     }
                     
                     if let token = token {
@@ -83,6 +84,7 @@ extension AuthEffect {
                 UserApi.shared.loginWithKakaoAccount { token, error in
                     if let error {
                         continuation.resume(throwing: NetworkError.apiError(message: "⚠️ 카카오 로그인에 실패했습니다: \(error.localizedDescription)"))
+                        return
                     }
                     
                     if let token = token {

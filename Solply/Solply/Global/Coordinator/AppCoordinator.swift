@@ -15,20 +15,6 @@ final class AppCoordinator: ObservableObject {
     @Published var root: RootDestination = .splash
     @Published var selectedTab: TabBarState = .place
     
-    private var tokenExpiredObserver: NSObjectProtocol?
-    
-    // MARK: - Initializer
-    
-    init() {
-        observeTokenExpired()
-    }
-    
-    deinit {
-        if let tokenExpiredObserver {
-            NotificationCenter.default.removeObserver(tokenExpiredObserver)
-        }
-    }
-    
     // MARK: - Functions
     
     func navigate(to destination: AppDestination) {
@@ -48,21 +34,7 @@ final class AppCoordinator: ObservableObject {
     }
     
     func changeRoot(to root: RootDestination) {
-        path.removeAll()
         self.root = root
-    }
-    
-    // MARK: - Private
-    
-    private func observeTokenExpired() {
-        tokenExpiredObserver = NotificationCenter.default.addObserver(
-            forName: .tokenExpired,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            guard let self else { return }
-            
-            self.changeRoot(to: .auth)
-        }
+        path.removeAll()
     }
 }

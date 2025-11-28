@@ -20,7 +20,7 @@ struct CustomFlowLayout: Layout {
         guard !subviews.isEmpty else { return .zero }
 
         let containerWidth = proposal.width ?? 0
-        let lineHeight: CGFloat = 40.adjustedHeight
+        let lineHeight: CGFloat = 40.adjusted
         var currentX: CGFloat = 0
         var lineCount: Int = 0
 
@@ -53,7 +53,7 @@ struct CustomFlowLayout: Layout {
         cache: inout ()
     ) {
         let containerWidth = bounds.width
-        let lineHeight: CGFloat = 40.adjustedHeight
+        let lineHeight: CGFloat = 40.adjusted
         var currentX: CGFloat = bounds.minX
         var currentY: CGFloat = bounds.minY
 

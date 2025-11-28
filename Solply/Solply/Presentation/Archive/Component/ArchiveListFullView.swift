@@ -15,7 +15,10 @@ struct ArchiveListFullView: View {
     @ObservedObject var store: ArchiveListStore
    
     private let archiveCategory: SolplyContentType
-    private let columns = [GridItem(.fixed(165.adjustedWidth), spacing: 12.adjustedWidth), GridItem(.fixed(171.adjustedWidth), spacing: 12.adjustedWidth)]
+    private let columns = [
+        GridItem(.fixed(165.adjusted), spacing: 12.adjustedWidth),
+        GridItem(.fixed(171.adjusted), spacing: 12.adjustedWidth)
+    ]
     private let townId: Int
     
     // MARK: - Initializers
@@ -70,14 +73,14 @@ extension ArchiveListFullView {
                     store.dispatch(.togglePlaceArchiveList(placeId: item.placeId))
                 }
             }
-            .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+            .frame(width: 165.adjusted, height: 165.adjusted)
             .contentShape(Rectangle())
             .padding(.bottom, 32.adjustedHeight)
             
             if store.state.selectedPlaceIds.contains(item.placeId) {
                 Image(.checkIcon)
                     .resizable()
-                    .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
+                    .frame(width: 36.adjusted, height: 36.adjusted)
                     .padding(.trailing, 12.adjustedWidth)
             }
         }
@@ -109,14 +112,14 @@ extension ArchiveListFullView {
                         store.dispatch(.toggleCourseArchiveList(courseId: item.courseId))
                     }
                 }
-                .frame(width: 165.adjustedWidth, height: 165.adjustedHeight)
+                .frame(width: 165.adjusted, height: 165.adjusted)
                 .contentShape(Rectangle())
             }
 
             if store.state.selectedCourseIds.contains(item.courseId) {
                 Image(.checkIcon)
                     .resizable()
-                    .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
+                    .frame(width: 36.adjusted, height: 36.adjusted)
                     .padding(.trailing, 12.adjustedWidth)
                     .padding(.top, 12.adjustedHeight)
             }

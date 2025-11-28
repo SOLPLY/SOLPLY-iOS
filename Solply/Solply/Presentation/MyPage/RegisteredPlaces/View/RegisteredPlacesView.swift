@@ -17,8 +17,8 @@ struct RegisteredPlacesView: View {
     private let userId: Int
     
     private let columns = [
-        GridItem(.fixed(165.adjustedWidth), spacing: 12.5.adjustedWidth),
-        GridItem(.fixed(165.adjustedWidth))
+        GridItem(.fixed(165.adjusted), spacing: 12.5.adjustedWidth),
+        GridItem(.fixed(165.adjusted))
     ]
     
     // MARK: - Initializer
