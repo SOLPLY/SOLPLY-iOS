@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct OnboardingOptionButton: View {
-
+    
     // MARK: - Properties
-
+    
     private let title: String
     private let isSelected: Bool
     private let action: (() -> Void)?
-
+    
     // MARK: - Initializer
-
+    
     init(
         title: String,
         isSelected: Bool = false,
@@ -26,7 +26,7 @@ struct OnboardingOptionButton: View {
         self.isSelected = isSelected
         self.action = action
     }
-
+    
     // MARK: - Body
     
     var body: some View {
@@ -37,9 +37,9 @@ struct OnboardingOptionButton: View {
         }
         .buttonStyle(.plain)
     }
-
+    
     // MARK: - Subview
-
+    
     private var content: some View {
         HStack {
             Text(title)
@@ -48,12 +48,10 @@ struct OnboardingOptionButton: View {
             
             Spacer()
             
-            if isSelected {
-                Image(.selectIcon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-            }
+            Image(isSelected ? "select-icon" : "select-before-icon")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
         }
         .padding(.horizontal, 16.adjustedWidth)
         .frame(height: 52.adjustedHeight)
@@ -66,3 +64,4 @@ struct OnboardingOptionButton: View {
         )
     }
 }
+
