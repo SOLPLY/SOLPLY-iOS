@@ -29,19 +29,23 @@ enum PlaceDetailAction {
     
     case fetchCourseArchive
     case courseArchiveFetched([CourseArchiveDTO])
-    case errorOccured(error: NetworkError)
+    case fetchCourseArchiveFailed(error: NetworkError)
     
     case fetchPlaceDetail
     case placeDetailFetched(placeDetailInformation: PlaceDetailInformation)
+    case fetchPlaceDetailFailed(error: NetworkError)
     
     case submitPlaceBookmark
     case placeBookmarkSubmitted
+    case submitPlaceBookmarkFailed(error: NetworkError)
     
     case removePlaceBookmark
     case placeBookmarkRemoved
+    case removePlaceBookmarkFailed(error: NetworkError)
     
     case submitAddPlace(courseId: Int)
     case addPlaceSubmitted
+    case submitAddPlaceFailed(error: NetworkError)
     
     case updateUserTowns(newTownId: Int)
     case userTownsUpdated(townName: String)

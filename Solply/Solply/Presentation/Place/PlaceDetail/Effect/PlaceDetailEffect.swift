@@ -46,14 +46,16 @@ extension PlaceDetailEffect {
         do {
             let response = try await courseService.fetchCourseArchive(townId: nil, placeId: placeId)
             
-            guard let courses = response.data?.courses else { return .errorOccured(error: .responseError) }
+            guard let courses = response.data?.courses else {
+                return .fetchCourseArchiveFailed(error: .responseError)
+            }
             
             return .courseArchiveFetched(courses)
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .fetchCourseArchiveFailed(error: error)
             
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .fetchCourseArchiveFailed(error: .unknownError)
         }
     }
     
@@ -64,9 +66,9 @@ extension PlaceDetailEffect {
             return .addPlaceSubmitted
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .submitAddPlaceFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .submitAddPlaceFailed(error: .unknownError)
         }
     }
 }
@@ -78,7 +80,9 @@ extension PlaceDetailEffect {
         do {
             let response = try await placeService.fetchPlaceDetail(placeId: placeId)
             
-            guard let data = response.data else { return .errorOccured(error: .responseError)}
+            guard let data = response.data else {
+                return .fetchPlaceDetailFailed(error: .responseError)
+            }
             
             let placeDetailInformation = PlaceDetailInformation(
                 isBookmarked: data.isBookmarked,
@@ -100,9 +104,9 @@ extension PlaceDetailEffect {
             
             return .placeDetailFetched(placeDetailInformation: placeDetailInformation)
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .fetchPlaceDetailFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .fetchPlaceDetailFailed(error: .unknownError)
         }
     }
     
@@ -113,9 +117,9 @@ extension PlaceDetailEffect {
             return .placeBookmarkSubmitted
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .submitPlaceBookmarkFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .submitPlaceBookmarkFailed(error: .unknownError)
         }
     }
     
@@ -126,9 +130,9 @@ extension PlaceDetailEffect {
             return . placeBookmarkRemoved
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .removePlaceBookmarkFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .removePlaceBookmarkFailed(error: .unknownError)
         }
     }
 }

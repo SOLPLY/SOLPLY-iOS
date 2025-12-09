@@ -49,15 +49,14 @@ enum PlaceDetailReducer {
             state.userLatitude = latitude
             state.userLongitude = longitude
             
+        // api
+            
         case .fetchCourseArchive:
             break
             
         case .courseArchiveFetched(let courseArchive):
             state.courses = courseArchive
             break
-            
-        case .errorOccured(let error):
-            print(error)
             
         case .fetchPlaceDetail:
             break
@@ -110,6 +109,23 @@ enum PlaceDetailReducer {
         case .updateUserTownsFailed(let error):
             print(error)
             break
+            
+        // errors
+            
+        case .fetchCourseArchiveFailed(let error):
+            print(error)
+            
+        case .fetchPlaceDetailFailed(let error):
+            print(error)
+            
+        case .submitPlaceBookmarkFailed(let error):
+            print(error)
+            
+        case .removePlaceBookmarkFailed(let error):
+            print(error)
+            
+        case .submitAddPlaceFailed(let error):
+            print(error)
         }
     }
 }

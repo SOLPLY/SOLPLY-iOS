@@ -50,15 +50,15 @@ extension CourseDetailEffect {
             let response = try await courseService.fetchCourseDetail(courseId: courseId)
             
             guard let data = response.data else {
-                return .errorOccured(error: .responseError)
+                return .fetchCourseDetailFailed(error: .responseError)
             }
             
             return .courseDetailFetched(courseDetail: data)
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .fetchCourseDetailFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .fetchCourseDetailFailed(error: .unknownError)
         }
     }
     
@@ -69,9 +69,9 @@ extension CourseDetailEffect {
             return .courseBookmarkSubmitted
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .submitCourseBookmarkFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .submitCourseBookmarkFailed(error: .unknownError)
         }
     }
     
@@ -82,9 +82,9 @@ extension CourseDetailEffect {
             return .courseBookmarkRemoved
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .removeCourseBookmarkFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .removeCourseBookmarkFailed(error: .unknownError)
         }
     }
     
@@ -93,15 +93,15 @@ extension CourseDetailEffect {
             let response = try await courseService.updateCourseDetail(courseId: courseId, request: request)
             
             guard let data = response.data else {
-                return .errorOccured(error: .responseError)
+                return .updateCourseDetailFailed(error: .responseError)
             }
             
             return .courseDetailUpdated(updatedCourseId: data.updatedCourseId)
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .updateCourseDetailFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .updateCourseDetailFailed(error: .unknownError)
         }
     }
     
@@ -110,15 +110,15 @@ extension CourseDetailEffect {
             let response = try await courseService.submitCreateCourseDetail(request: request)
             
             guard let data = response.data else {
-                return .errorOccured(error: .responseError)
+                return .submitCreateCourseDetailFailed(error: .responseError)
             }
             
             return .createCourseDetailSubmitted(createdCourseId: data.courseId)
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .submitCreateCourseDetailFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .submitCreateCourseDetailFailed(error: .unknownError)
         }
     }
 }
@@ -133,9 +133,9 @@ extension CourseDetailEffect {
             return .placeBookmarkSubmitted
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .submitPlaceBookmarkFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .submitPlaceBookmarkFailed(error: .unknownError)
         }
     }
     
@@ -146,9 +146,9 @@ extension CourseDetailEffect {
             return .placeBookmarkRemoved
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .removePlaceBookmarkFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .removePlaceBookmarkFailed(error: .unknownError)
         }
     }
 }
