@@ -67,7 +67,7 @@ extension PlaceDetailEffect {
                 return .submitAddPlaceFailed(error: .responseError)
             }
             
-            return .addPlaceSubmitted(addPlaceCourseId: data.courseId)
+            return .addPlaceSubmitted(addPlaceCourseInformation: AddPlaceCourseInformation(dto: data))
             
         } catch let error as NetworkError {
             return .submitAddPlaceFailed(error: error)

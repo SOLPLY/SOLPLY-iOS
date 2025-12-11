@@ -65,6 +65,30 @@ struct PlaceDetailView: View {
             
             toastManager.showToast(content: toastContent)
         }
+        .onChange(of: store.state.addPlaceCourseInformation) { _, newValue in
+            guard let addPlaceCourseInformation = newValue else { return }
+            
+            store.dispatch(
+                .showToastView(
+                    ToastContent(
+                        toastType: .withActionToast,
+                        message: "‘\(addPlaceCourseInformation.courseName.truncated(length: 8))’에 추가되었어요.",
+                        toastAction: ToastAction(
+                            buttonTitle: "자세히 보기",
+                            action: {
+                                appCoordinator.navigate(
+                                    to: .courseDetail(
+                                        townId: store.townId,
+                                        courseId: addPlaceCourseInformation.courseId,
+                                        fromArchive: true
+                                    )
+                                )
+                            }
+                        )
+                    )
+                )
+            )
+        }
     }
 }
 
@@ -198,40 +222,12 @@ extension PlaceDetailView {
         CTAMainButton(title: "이 코스에 추가할래요") {
             let selectedCourseIndex = store.state.selectedCourseIndex
             
-            store.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .withActionToast,
-                        message: "‘\(store.state.courses[selectedCourseIndex].courseName.truncated(length: 8))’에 추가되었어요.",
-                        toastAction: ToastAction(
-                            buttonTitle: "자세히 보기",
-                            action: {
-                                if let addPlaceCourseId = store.state.addPlaceCourseId {
-                                    appCoordinator.navigate(
-                                        to: .courseDetail(
-                                            townId: store.townId,
-                                            courseId: addPlaceCourseId,
-                                            fromArchive: true
-                                        )
-                                    )
-                                }
-                            }
-                        )
-                    )
-                )
-            )
-            store.dispatch(
-                .updateAddPlaceCourseId(
-                    courseId: store.state.courses[selectedCourseIndex].courseId
-                )
-            )
+            store.dispatch(.toggleAddToCourse)
             store.dispatch(
                 .submitAddPlace(
                     courseId: store.state.courses[selectedCourseIndex].courseId
                 )
             )
-            store.dispatch(.addPlaceToCourse(index: selectedCourseIndex))
-            store.dispatch(.toggleAddToCourse)
         }
         .padding(.horizontal, 20.adjustedWidth)
         .safeAreaInset(edge: .bottom) {

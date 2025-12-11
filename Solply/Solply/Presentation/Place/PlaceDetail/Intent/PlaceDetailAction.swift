@@ -16,14 +16,12 @@ enum PlaceDetailAction {
     case requestFindDirection
     
     case selectCourseToAdd(index: Int)
-    case addPlaceToCourse(index: Int)
     
     case showToastView(ToastContent)
     
     case copyToClipboard(text: String)
     
     case updateUserCoordinate(latitude: Double, longitude: Double)
-    case updateAddPlaceCourseId(courseId: Int)
     
     // api
     
@@ -44,7 +42,7 @@ enum PlaceDetailAction {
     case removePlaceBookmarkFailed(error: NetworkError)
     
     case submitAddPlace(courseId: Int)
-    case addPlaceSubmitted(addPlaceCourseId: Int)
+    case addPlaceSubmitted(addPlaceCourseInformation: AddPlaceCourseInformation)
     case submitAddPlaceFailed(error: NetworkError)
     
     case updateUserTowns(newTownId: Int)

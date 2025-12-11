@@ -31,9 +31,6 @@ enum PlaceDetailReducer {
         case .selectCourseToAdd(let index):
             state.selectedCourseIndex = index
             
-        case .addPlaceToCourse:
-            state.selectedCourseIndex = -1
-            
         case .showToastView(let toastContent):
             state.toastContent = toastContent
             
@@ -91,14 +88,12 @@ enum PlaceDetailReducer {
             break
             
         case .submitAddPlace:
+            state.selectedCourseIndex = -1
             break
             
-        case .addPlaceSubmitted(let addPlaceCourseId):
-            state.addPlaceCourseId = addPlaceCourseId
+        case .addPlaceSubmitted(let addPlaceCourseInformation):
+            state.addPlaceCourseInformation = addPlaceCourseInformation
             break
-            
-        case .updateAddPlaceCourseId(let courseId):
-            state.addPlaceCourseId = courseId
             
         case .updateUserTowns:
             break
