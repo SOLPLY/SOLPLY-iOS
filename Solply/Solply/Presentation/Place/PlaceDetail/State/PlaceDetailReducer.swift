@@ -93,8 +93,8 @@ enum PlaceDetailReducer {
         case .submitAddPlace:
             break
             
-        case .addPlaceSubmitted:
-            print("내 코스에 장소 추가")
+        case .addPlaceSubmitted(let addPlaceCourseId):
+            state.addPlaceCourseId = addPlaceCourseId
             break
             
         case .updateAddPlaceCourseId(let courseId):

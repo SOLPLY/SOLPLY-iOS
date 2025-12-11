@@ -44,7 +44,7 @@ enum PlaceDetailAction {
     case removePlaceBookmarkFailed(error: NetworkError)
     
     case submitAddPlace(courseId: Int)
-    case addPlaceSubmitted
+    case addPlaceSubmitted(addPlaceCourseId: Int)
     case submitAddPlaceFailed(error: NetworkError)
     
     case updateUserTowns(newTownId: Int)

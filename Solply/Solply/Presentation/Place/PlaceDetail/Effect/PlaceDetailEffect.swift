@@ -61,9 +61,13 @@ extension PlaceDetailEffect {
     
     func submitAddPlace(courseId: Int, placeId: Int) async -> PlaceDetailAction {
         do {
-            _ = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
+            let response = try await courseService.submitAddPlace(courseId: courseId, placeId: placeId)
             
-            return .addPlaceSubmitted
+            guard let data = response.data else {
+                return .submitAddPlaceFailed(error: .responseError)
+            }
+            
+            return .addPlaceSubmitted(addPlaceCourseId: data.courseId)
             
         } catch let error as NetworkError {
             return .submitAddPlaceFailed(error: error)
