@@ -15,6 +15,7 @@ struct DragDropModifier: ViewModifier {
     private let startDragging: (() -> Void)?
     private let whileDragging: (() -> Void)?
     private let endDragging: (() -> Void)?
+    private let endWithoutDragging: (() -> Void)?
     
     // MARK: - Initializer
     
@@ -22,12 +23,14 @@ struct DragDropModifier: ViewModifier {
         isEditing: Bool,
         startDragging: (() -> Void)?,
         whileDragging: (() -> Void)?,
-        endDragging: (() -> Void)?
+        endDragging: (() -> Void)?,
+        endWithoutDragging: (() -> Void)?
     ) {
         self.isEditing = isEditing
         self.startDragging = startDragging
         self.whileDragging = whileDragging
         self.endDragging = endDragging
+        self.endWithoutDragging = endWithoutDragging
     }
     
     // MARK: - Body
@@ -35,6 +38,11 @@ struct DragDropModifier: ViewModifier {
     func body(content: Content) -> some View {
         if isEditing {
             content
+                .overlay(
+                    LongPressRecognizerView {
+                        endWithoutDragging?()
+                    }
+                )
                 .onDrag {
                     guard isEditing else { return NSItemProvider() }
                     
@@ -83,14 +91,16 @@ extension View {
         isEditing: Bool,
         startDragging: (() -> Void)?,
         whileDragging: (() -> Void)?,
-        endDragging: (() -> Void)?
+        endDragging: (() -> Void)?,
+        endWithoutDragging: (() -> Void)?
     ) -> some View {
         self.modifier(
             DragDropModifier(
                 isEditing: isEditing,
                 startDragging: startDragging,
                 whileDragging: whileDragging,
-                endDragging: endDragging
+                endDragging: endDragging,
+                endWithoutDragging: endWithoutDragging
             )
         )
     }
