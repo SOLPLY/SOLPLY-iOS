@@ -39,13 +39,9 @@ struct DeleteDropModifier: ViewModifier {
                     },
                     onEntered: {
                         onEntered?()
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
                     },
                     onExited: {
                         onExited?()
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
                     }
                 )
             )

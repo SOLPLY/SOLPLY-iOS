@@ -38,11 +38,7 @@ struct DragDropModifier: ViewModifier {
                 .onDrag {
                     guard isEditing else { return NSItemProvider() }
                     
-                    let generator = UIImpactFeedbackGenerator(style: .light)
-                    generator.impactOccurred()
-                    
                     startDragging?()
-                    
                     return NSItemProvider()
                 }
                 .onDrop(
