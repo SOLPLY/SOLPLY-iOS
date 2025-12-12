@@ -86,10 +86,16 @@ enum CourseDetailReducer {
             
             if let index = state.places.firstIndex(of: draggedPlace) {
                 state.places.remove(at: index)
-                state.canDelete = false
-                state.draggedPlace = nil
             }
             
+            state.draggedPlace = nil
+            state.canDelete = false
+            state.isInDeleteZone = false
+            
+        case .deletePlaceFailed:
+            state.dragDropState = .completed
+            state.draggedPlace = nil
+            state.canDelete = false
             state.isInDeleteZone = false
             
         case .droppedInDeleteZone:

@@ -24,6 +24,8 @@ enum CourseDetailAction {
     case endWithoutDragging
     
     case deletePlace
+    case deletePlaceFailed
+    
     case droppedInDeleteZone
     case draggedInDeleteZone
     case draggedOutDeleteZone
