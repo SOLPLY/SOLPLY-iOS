@@ -233,16 +233,17 @@ extension CourseDetailView {
                     )
                 }
             }
-            .simultaneousGesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { _ in
-                        
-                    }
-                    .onEnded { _ in
-                        
-                        store.dispatch(.endDragging)
-                    }
-            )
+            // TODO: - 드래그앤 드롭 버그 생기는 부분
+//            .simultaneousGesture(
+//                DragGesture(minimumDistance: 0)
+//                    .onChanged { _ in
+//                        
+//                    }
+//                    .onEnded { _ in
+//                        
+//                        store.dispatch(.endDragging)
+//                    }
+//            )
             .animation(.easeInOut(duration: 0.1), value: store.state.focusedPlaceIndex)
             .padding(.bottom, 35.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)
