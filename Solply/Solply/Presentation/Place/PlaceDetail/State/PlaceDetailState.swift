@@ -16,7 +16,7 @@ struct PlaceDetailState {
     var findDirectionEnabled: Bool = true
     var userLatitude: Double = 0.0
     var userLongitude: Double = 0.0
-    var addPlaceCourseId: Int?
+    var addPlaceCourseInformation: AddPlaceCourseInformation?
     
     var courses: [CourseArchiveDTO] = []
     
