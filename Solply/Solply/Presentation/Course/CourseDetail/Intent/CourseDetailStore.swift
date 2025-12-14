@@ -46,6 +46,8 @@ final class CourseDetailStore: ObservableObject {
                         )
                     )
                 )
+                
+                self.dispatch(.deletePlaceFailed)
             }
             
         case .startEditing:

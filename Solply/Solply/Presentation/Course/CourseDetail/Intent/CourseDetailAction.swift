@@ -21,7 +21,11 @@ enum CourseDetailAction {
     case startDragging(draggedPlace: PlaceDetailInCourse)
     case whileDragging(destination: PlaceDetailInCourse)
     case endDragging
+    case endWithoutDragging
+    
     case deletePlace
+    case deletePlaceFailed
+    
     case droppedInDeleteZone
     case draggedInDeleteZone
     case draggedOutDeleteZone
