@@ -21,12 +21,15 @@ struct PolicyDTO: ResponseModelType {
 
 extension PolicyDTO {
     func toEntity() -> Policy {
-        Policy(
+        let type = PolicyType.from(serverValue: policyType)
+
+        return Policy(
             id: id,
             title: title,
             content: content,
             isRequired: required,
-            isAgreed: false
+            isAgreed: false,
+            type: type
         )
     }
 }
