@@ -37,8 +37,9 @@ struct MyPageEditView: View {
             }
         }
         .scrollDisabled(true)
+        .scrollClipDisabled() 
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding(.horizontal, 20.adjustedWidth)
+        .padding(.horizontal, 16.adjustedWidth)
         .padding(.top, 16.adjustedHeight)
         .padding(.bottom, 24.adjustedHeight)
         .background(.coreWhite)
@@ -50,6 +51,7 @@ struct MyPageEditView: View {
             } else {
                 appCoordinator.goBack()
             }
+            
         }))
         .onAppear {
             store.dispatch(.loadUserInformation)
@@ -79,7 +81,7 @@ struct MyPageEditView: View {
                     appCoordinator.goBack()
                 }
             }
-            .padding(.horizontal, 20.adjustedWidth)
+            .padding(.horizontal, 16.adjustedWidth)
             .padding(.vertical, 16.adjustedHeight)
         }
         .ignoresSafeArea(.keyboard)
