@@ -17,62 +17,72 @@ struct ArchiveView: View {
     // MARK: - Body
     
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 0) {
-            ArchiveBar(
-                selected: store.state.selectedCategory,
-                action: { newCategory in
-                    store.dispatch(.toggleArchiveBar(archiveCategory: newCategory))
-                }
-            )
+            archiveBar
             
-            Group {
-                switch store.state.selectedCategory {
-                case .place:
-                    if store.state.folderThumbnailList.isEmpty {
-                        ArchiveEmptyView(archiveCategory: .place)
-                            .transition(.move(edge: .leading))
-                    } else {
-                        ArchiveFullView(archiveCategory: .place, store: store)
-                            .transition(.move(edge: .leading))
-                    }
-
-                case .course:
-                    if store.state.folders.isEmpty {
-                        ArchiveEmptyView(archiveCategory: .course)
-                            .transition(.move(edge: .trailing))
-                    } else {
-                        ArchiveFullView(archiveCategory: .course, store: store)
-                            .transition(.move(edge: .trailing))
-                    }
-                }
-            }
-            .animation(.easeInOut(duration: 0.2), value: store.state.selectedCategory)
-            .gesture(
-                DragGesture()
-                    .onEnded { value in
-                        if value.translation.width < -50 {
-                            if store.state.selectedCategory != .course {
-                                withAnimation {
-                                    store.dispatch(.toggleArchiveBar(archiveCategory: .course))
-                                }
-                            }
-                        } else if value.translation.width > 50 {
-                            if store.state.selectedCategory != .place {
-                                withAnimation {
-                                    store.dispatch(.toggleArchiveBar(archiveCategory: .place))
-                                }
-                            }
-                        }
-                    }
-            )
+            archiveGrid
         }
-        .frame(maxHeight: .infinity, alignment: .top)
         .customNavigationBar(.archive(backAction: appCoordinator.goBack))
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchPlaceThumbnail)
             store.dispatch(.fetchCourseThumbnail)
         }
+    }
+}
+
+// MARK: - Subviews
+
+extension ArchiveView {
+    private var archiveBar: some View {
+        ArchiveBar(
+            selected: store.state.selectedCategory,
+            action: { newCategory in
+                store.dispatch(.toggleArchiveBar(archiveCategory: newCategory))
+            }
+        )
+    }
+    
+    private var archiveGrid: some View {
+        Group {
+            switch store.state.selectedCategory {
+            case .place:
+                if store.state.folderThumbnailList.isEmpty {
+                    ArchiveEmptyView(archiveCategory: .place)
+                        .transition(.move(edge: .leading))
+                } else {
+                    ArchiveFullView(archiveCategory: .place, store: store)
+                        .transition(.move(edge: .leading))
+                }
+
+            case .course:
+                if store.state.folders.isEmpty {
+                    ArchiveEmptyView(archiveCategory: .course)
+                        .transition(.move(edge: .trailing))
+                } else {
+                    ArchiveFullView(archiveCategory: .course, store: store)
+                        .transition(.move(edge: .trailing))
+                }
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: store.state.selectedCategory)
+        .gesture(
+            DragGesture()
+                .onEnded { value in
+                    if value.translation.width < -50 {
+                        if store.state.selectedCategory != .course {
+                            withAnimation {
+                                store.dispatch(.toggleArchiveBar(archiveCategory: .course))
+                            }
+                        }
+                    } else if value.translation.width > 50 {
+                        if store.state.selectedCategory != .place {
+                            withAnimation {
+                                store.dispatch(.toggleArchiveBar(archiveCategory: .place))
+                            }
+                        }
+                    }
+                }
+        )
     }
 }
