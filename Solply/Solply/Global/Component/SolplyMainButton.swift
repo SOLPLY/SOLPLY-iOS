@@ -13,6 +13,7 @@ struct SolplyMainButton: View {
     
     private let title: String
     private let isEnabled: Bool
+    private let isLoading: Bool
     private let action: (() -> Void)?
     
     // MARK: - Initializer
@@ -20,23 +21,37 @@ struct SolplyMainButton: View {
     init(
         title: String,
         isEnabled: Bool = true,
+        isLoading: Bool = false,
         action: (() -> Void)? = nil
     ) {
         self.title   = title
         self.isEnabled = isEnabled
+        self.isLoading = isLoading
         self.action  = action
     }
     
     // MARK: - Body
     
     var body: some View {
-        Button {
-            action?()
-        } label: {
-            content
+        if isLoading {
+            ProgressView()
+                .tint(.coreWhite)
+                .progressViewStyle(.circular)
+                .frame(maxWidth: .infinity)
+                .frame(height: 64.adjustedHeight)
+                .background(
+                    Capsule()
+                        .foregroundStyle(.gray900)
+                )
+        } else {
+            Button {
+                action?()
+            } label: {
+                content
+            }
+            .buttonStyle(.plain)
+            .allowsHitTesting(isEnabled)
         }
-        .buttonStyle(.plain)
-        .allowsHitTesting(isEnabled)
     }
     
     // MARK: - Content View
@@ -53,5 +68,10 @@ struct SolplyMainButton: View {
             )
             .animation(.easeInOut(duration: 0.2), value: isEnabled)
     }
+}
 
+#Preview {
+    SolplyMainButton(title: "확인", isEnabled: true, isLoading: false)
+    SolplyMainButton(title: "확인", isEnabled: false, isLoading: false)
+    SolplyMainButton(title: "확인", isEnabled: true, isLoading: true)
 }
