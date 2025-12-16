@@ -52,11 +52,12 @@ struct JGDBottomSheet: View {
                 .padding(.horizontal, 20.adjustedWidth)
                 .padding(.bottom, 16.adjustedHeight)
             }
-            .cornerRadius(20)
         }
         .onAppear {
             store.dispatch(.fetchTowns)
         }
+        .background(.coreWhite)
+        .cornerRadius(20)
     }
 }
 
@@ -125,4 +126,5 @@ private extension JGDBottomSheet {
         .frame(width: 247.adjustedWidth)
     }
 }
+
 
