@@ -230,7 +230,7 @@ extension RegisterView {
     }
     
     private var completeButton: some View {
-        CTAMainButton(title: "완료") {
+        SolplyMainButton(title: "완료") {
             store.dispatch(.startRegister)
             appCoordinator.navigate(to: .registerComplete)
         }

@@ -1,5 +1,5 @@
 //
-//  CTASubButton.swift
+//  SolplySubButton.swift
 //  Solply
 //
 //  Created by 선영주 on 7/9/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CTASubButton: View {
+struct SolplySubButton: View {
 
     // MARK: - Properties
     
@@ -56,7 +56,7 @@ struct CTASubButton: View {
 
 // MARK: - Type
 
-extension CTASubButton {
+extension SolplySubButton {
     enum CTASubButtonType {
         case white
         case clear

@@ -1,5 +1,5 @@
 //
-//  CTAMainButton.swift
+//  SolplyMainButton.swift
 //  Solply
 //
 //  Created by 선영주 on 7/9/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CTAMainButton: View {
+struct SolplyMainButton: View {
     
     // MARK: - Properties
     

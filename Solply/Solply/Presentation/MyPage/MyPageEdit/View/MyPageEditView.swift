@@ -69,7 +69,7 @@ struct MyPageEditView: View {
         }
         .disableSwipeBack()
         .overlay(alignment: .bottom) {
-            CTAMainButton(
+            SolplyMainButton(
                 title: "완료",
                 isEnabled: true
             ) {
