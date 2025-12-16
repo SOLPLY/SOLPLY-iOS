@@ -71,7 +71,8 @@ struct MyPageEditView: View {
         .overlay(alignment: .bottom) {
             SolplyMainButton(
                 title: "완료",
-                isEnabled: true
+                isEnabled: store.state.isCompleteButtonEnabled,
+                isLoading: store.state.isCompleteButtonLoading
             ) {
                 if store.state.isUserInformationChanged {
                     store.dispatch(.startUpdateUserInformation)
