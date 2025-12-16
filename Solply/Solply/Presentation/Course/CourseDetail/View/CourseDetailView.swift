@@ -221,6 +221,10 @@ extension CourseDetailView {
                         isEditing: store.state.isEditing,
                         startDragging: {
                             store.dispatch(.startDragging(draggedPlace: place))
+                            
+                            if store.state.dragDropState == .dragging {
+                                HapticManager.shared.impact(style: .medium)
+                            }
                         },
                         whileDragging: {
                             withAnimation(.interactiveSpring) {
@@ -229,20 +233,13 @@ extension CourseDetailView {
                         },
                         endDragging: {
                             store.dispatch(.endDragging)
+                        },
+                        endWithoutDragging: {
+                            store.dispatch(.endWithoutDragging)
                         }
                     )
                 }
             }
-            .simultaneousGesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { _ in
-                        
-                    }
-                    .onEnded { _ in
-                        
-                        store.dispatch(.endDragging)
-                    }
-            )
             .animation(.easeInOut(duration: 0.1), value: store.state.focusedPlaceIndex)
             .padding(.bottom, 35.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)
@@ -284,9 +281,11 @@ extension CourseDetailView {
                 },
                 onEntered: {
                     store.dispatch(.draggedInDeleteZone)
+                    HapticManager.shared.impact(style: .medium)
                 },
                 onExited: {
                     store.dispatch(.draggedOutDeleteZone)
+                    HapticManager.shared.impact(style: .medium)
                 }
             )
     }

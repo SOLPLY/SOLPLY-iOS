@@ -21,7 +21,11 @@ enum CourseDetailAction {
     case startDragging(draggedPlace: PlaceDetailInCourse)
     case whileDragging(destination: PlaceDetailInCourse)
     case endDragging
+    case endWithoutDragging
+    
     case deletePlace
+    case deletePlaceFailed
+    
     case droppedInDeleteZone
     case draggedInDeleteZone
     case draggedOutDeleteZone
@@ -45,23 +49,29 @@ enum CourseDetailAction {
     // api
     case fetchCourseDetail(courseId: Int)
     case courseDetailFetched(courseDetail: CourseDetailResponseDTO)
-    case errorOccured(error: NetworkError)
+    case fetchCourseDetailFailed(error: NetworkError)
     
     case submitCourseBookmark(courseId: Int)
     case courseBookmarkSubmitted
+    case submitCourseBookmarkFailed(error: NetworkError)
     
     case removeCourseBookmark(courseId: Int)
     case courseBookmarkRemoved
+    case removeCourseBookmarkFailed(error: NetworkError)
     
     case submitPlaceBookmark(placeId: Int)
     case placeBookmarkSubmitted
+    case submitPlaceBookmarkFailed(error: NetworkError)
     
     case removePlaceBookmark(placeId: Int)
     case placeBookmarkRemoved
+    case removePlaceBookmarkFailed(error: NetworkError)
     
     case updateCourseDetail(courseId: Int, request: CourseUpdateRequestDTO)
     case courseDetailUpdated(updatedCourseId: Int)
+    case updateCourseDetailFailed(error: NetworkError)
     
     case submitCreateCourseDetail(request: CourseCreateRequestDTO)
     case createCourseDetailSubmitted(createdCourseId: Int)
+    case submitCreateCourseDetailFailed(error: NetworkError)
 }

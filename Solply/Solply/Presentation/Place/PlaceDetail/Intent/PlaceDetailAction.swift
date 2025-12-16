@@ -16,32 +16,34 @@ enum PlaceDetailAction {
     case requestFindDirection
     
     case selectCourseToAdd(index: Int)
-    case addPlaceToCourse(index: Int)
     
     case showToastView(ToastContent)
     
     case copyToClipboard(text: String)
     
     case updateUserCoordinate(latitude: Double, longitude: Double)
-    case updateAddPlaceCourseId(courseId: Int)
     
     // api
     
     case fetchCourseArchive
     case courseArchiveFetched([CourseArchiveDTO])
-    case errorOccured(error: NetworkError)
+    case fetchCourseArchiveFailed(error: NetworkError)
     
     case fetchPlaceDetail
     case placeDetailFetched(placeDetailInformation: PlaceDetailInformation)
+    case fetchPlaceDetailFailed(error: NetworkError)
     
     case submitPlaceBookmark
     case placeBookmarkSubmitted
+    case submitPlaceBookmarkFailed(error: NetworkError)
     
     case removePlaceBookmark
     case placeBookmarkRemoved
+    case removePlaceBookmarkFailed(error: NetworkError)
     
     case submitAddPlace(courseId: Int)
-    case addPlaceSubmitted
+    case addPlaceSubmitted(addPlaceCourseInformation: AddPlaceCourseInformation)
+    case submitAddPlaceFailed(error: NetworkError)
     
     case updateUserTowns(newTownId: Int)
     case userTownsUpdated(townName: String)

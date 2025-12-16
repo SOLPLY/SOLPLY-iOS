@@ -74,16 +74,28 @@ enum CourseDetailReducer {
             state.canDelete = false
             state.isInDeleteZone = false
             
+        case .endWithoutDragging:
+            state.dragDropState = .prepared
+            state.draggedPlace = nil
+            state.canDelete = false
+            state.isInDeleteZone = false
+            
         case .deletePlace:
             guard let draggedPlace = state.draggedPlace else { return }
             state.dragDropState = .completed
             
             if let index = state.places.firstIndex(of: draggedPlace) {
                 state.places.remove(at: index)
-                state.canDelete = false
-                state.draggedPlace = nil
             }
             
+            state.draggedPlace = nil
+            state.canDelete = false
+            state.isInDeleteZone = false
+            
+        case .deletePlaceFailed:
+            state.dragDropState = .completed
+            state.draggedPlace = nil
+            state.canDelete = false
             state.isInDeleteZone = false
             
         case .droppedInDeleteZone:
@@ -125,6 +137,8 @@ enum CourseDetailReducer {
             state.courseName = courseInformation.courseName
             state.courseDescription = courseInformation.courseDescription
             
+        // api
+            
         case .fetchCourseDetail:
             break
             
@@ -137,10 +151,6 @@ enum CourseDetailReducer {
 
             state.isCourseBookmarked = courseDetails.isBookmarked
             state.courseBookmarkSelected = courseDetails.isBookmarked
-
-        case .errorOccured(let error):
-            print(error)
-            break
             
         case .submitCourseBookmark:
             break
@@ -173,15 +183,38 @@ enum CourseDetailReducer {
         case .updateCourseDetail:
             break
             
-        case .courseDetailUpdated(updatedCourseId: let updatedCourseId):
+        case .courseDetailUpdated(let updatedCourseId):
             state.updatedCourseId = updatedCourseId
             break
             
         case .submitCreateCourseDetail:
             break
             
-        case .createCourseDetailSubmitted(createdCourseId: let createdCourseId):
+        case .createCourseDetailSubmitted(let createdCourseId):
             state.updatedCourseId = createdCourseId
+            
+        // errors
+            
+        case .fetchCourseDetailFailed(let error):
+            print(error)
+            
+        case .submitCourseBookmarkFailed(let error):
+            print(error)
+            
+        case .removeCourseBookmarkFailed(let error):
+            print(error)
+            
+        case .submitPlaceBookmarkFailed(let error):
+            print(error)
+            
+        case .removePlaceBookmarkFailed(let error):
+            print(error)
+            
+        case .updateCourseDetailFailed(let error):
+            print(error)
+            
+        case .submitCreateCourseDetailFailed(let error):
+            print(error)
         }
     }
 }
