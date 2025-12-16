@@ -91,16 +91,14 @@ struct SolplyDropDown: View {
                 Rectangle()
                     .fill(Color(.gray200))
                     .frame(height: 52.adjustedHeight)
-                    .cornerRadius(16, corners: [.topLeft, .topRight])
+                    .cornerRadius(20, corners: [.topLeft, .topRight])
                     .allowsHitTesting(false)
             }
         }
-        .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color(.coreWhite))
-        )
+        .background(Color(.coreWhite))
+        .cornerRadius(20)
         .addBorder(
-            .roundedRectangle(cornerRadius: 16),
+            .roundedRectangle(cornerRadius: 20),
             borderColor: Color(.gray300),
             borderWidth: 1
         )
