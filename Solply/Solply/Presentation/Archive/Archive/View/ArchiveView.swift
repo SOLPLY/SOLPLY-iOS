@@ -118,6 +118,22 @@ extension ArchiveView {
             )
             .scrollTargetBehavior(.paging)
             .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.always)
+        }
+        .overlay {
+            swipeBackArea
+        }
+    }
+    
+    private var swipeBackArea: some View {
+        HStack(alignment: .center, spacing: 0) {
+            Rectangle()
+                .fill(.clear)
+                .frame(width: 30.adjustedWidth)
+                .frame(maxHeight: .infinity)
+                .contentShape(Rectangle())
+            
+            Spacer()
         }
     }
 }
