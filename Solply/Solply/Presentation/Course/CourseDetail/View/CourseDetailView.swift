@@ -296,7 +296,7 @@ extension CourseDetailView {
                 deleteArea
             }
             
-            CTAMainButton(
+            SolplyMainButton(
                 title: "완료",
                 isEnabled: true
             ) {

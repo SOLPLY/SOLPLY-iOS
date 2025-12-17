@@ -8,6 +8,9 @@
 import Foundation
 
 struct MyPageEditState {
+    var isCompleteButtonLoading: Bool = false
+    var isCompleteButtonEnabled: Bool = true
+    
     var nickname: String = ""
     var selectedPersona: String? = nil
     var attachedImageData: (String, Data)?

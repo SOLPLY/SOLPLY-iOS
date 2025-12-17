@@ -83,7 +83,7 @@ extension ReportsDetailView {
     }
     
     private var completeButton: some View {
-        CTAMainButton(title: "완료", isEnabled: !editedReportsContent.isEmpty) {
+        SolplyMainButton(title: "완료", isEnabled: !editedReportsContent.isEmpty) {
             onCompleteAction?()
         }
         .padding(.horizontal, 20.adjustedWidth)

@@ -35,13 +35,13 @@ enum OnboardingReducer {
             state.policyErrorMessage = message
         
         case .togglePolicy(let id):
-            if let idx = state.policyList.firstIndex(where: { $0.id == id }) {
-                state.policyList[idx].isAgreed.toggle()
+            if let index = state.policyList.firstIndex(where: { $0.id == id }) {
+                state.policyList[index].isAgreed.toggle()
             }
 
         case .toggleAllPolicies(let newValue):
-            for idx in state.policyList.indices {
-                state.policyList[idx].isAgreed = newValue
+            for index in state.policyList.indices {
+                state.policyList[index].isAgreed = newValue
             }
             
         case .selectTown(let town):
