@@ -118,7 +118,6 @@ extension ArchiveView {
             )
             .scrollTargetBehavior(.paging)
             .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.always)
         }
         .overlay {
             swipeBackArea
