@@ -37,7 +37,7 @@ struct PersonaOptionView: View {
 
             Spacer()
 
-            CTAMainButton(
+            SolplyMainButton(
                 title: "다음",
                 isEnabled: store.state.selectedPersona != nil
             ) {

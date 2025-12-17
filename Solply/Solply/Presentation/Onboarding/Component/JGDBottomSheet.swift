@@ -45,7 +45,7 @@ struct JGDBottomSheet: View {
                     }
                 }
                 
-                CTAMainButton(title: "완료", isEnabled: store.state.selectedSubTown != nil) {
+                SolplyMainButton(title: "완료", isEnabled: store.state.selectedSubTown != nil) {
                     onDone(store.state.selectedTown, store.state.selectedSubTown)
                     if onClose == nil { dismiss() } else { onClose?() }
                 }

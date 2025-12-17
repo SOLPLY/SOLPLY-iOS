@@ -57,7 +57,7 @@ struct SubTagBottomSheet: View {
             }
             
             HStack(alignment: .center, spacing: 12.adjustedWidth) {
-                CTASubButton(title: "초기화") {
+                SolplySubButton(title: "초기화") {
                     optionTags1.indices.forEach { index in
                         optionTags1[index].isSelected = false
                     }
@@ -69,7 +69,7 @@ struct SubTagBottomSheet: View {
                 }
                 .frame(maxWidth: .infinity)
                 
-                CTAMainButton(title: "완료") {
+                SolplyMainButton(title: "완료") {
                     let selectedTags = (optionTags1 + optionTags2).filter { $0.isSelected }
                     // TODO: - 네트워크 로직 추가
                     

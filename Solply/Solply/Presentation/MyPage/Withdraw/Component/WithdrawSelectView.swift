@@ -71,7 +71,7 @@ extension WithdrawSelectView {
     }
     
     private var withdrawButton: some View {
-        CTAMainButton(title: "탈퇴하기", isEnabled: selectedWithdrawType != nil) {
+        SolplyMainButton(title: "탈퇴하기", isEnabled: selectedWithdrawType != nil) {
             withdrawAction?()
         }
         .padding(.horizontal, 20.adjustedWidth)

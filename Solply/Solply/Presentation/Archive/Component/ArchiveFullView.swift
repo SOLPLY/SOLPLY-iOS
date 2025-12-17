@@ -35,11 +35,11 @@ struct ArchiveFullView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16.adjustedHeight) {
                 if archiveCategory == .place {
-                    ForEach(Array(store.state.folderThumbnailList.enumerated()), id: \.offset) { index, item in
+                    ForEach(Array(store.state.PlacefolderList.enumerated()), id: \.offset) { index, item in
                         archivePlaceCell(index: index, placeItem: item)
                     }
                 } else {
-                    ForEach(Array(store.state.folders.enumerated()), id: \.offset) { index, item in
+                    ForEach(Array(store.state.CourseFolderList.enumerated()), id: \.offset) { index, item in
                         archiveCourseCell(index: index, courseItem: item)
                     }
                 }

@@ -35,9 +35,10 @@ struct JGDView: View {
             )
             .ignoresSafeArea(edges: .bottom)
             
-            CTAMainButton(
+            SolplyMainButton(
                 title: "완료",
-                isEnabled: store.state.selectedSubTown != nil
+                isEnabled: store.state.selectedSubTown != nil,
+                isLoading: store.state.isCompleteButtonLoading
             ) {
                 store.dispatch(.saveSelection)
             }

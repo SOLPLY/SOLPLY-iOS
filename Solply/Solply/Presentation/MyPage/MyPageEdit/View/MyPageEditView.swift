@@ -71,9 +71,10 @@ struct MyPageEditView: View {
         }
         .disableSwipeBack()
         .overlay(alignment: .bottom) {
-            CTAMainButton(
+            SolplyMainButton(
                 title: "완료",
-                isEnabled: true
+                isEnabled: store.state.isCompleteButtonEnabled,
+                isLoading: store.state.isCompleteButtonLoading
             ) {
                 if store.state.isUserInformationChanged {
                     store.dispatch(.startUpdateUserInformation)
