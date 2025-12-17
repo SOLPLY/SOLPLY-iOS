@@ -34,15 +34,7 @@ struct SolplyMainButton: View {
     
     var body: some View {
         if isLoading {
-            ProgressView()
-                .tint(.coreWhite)
-                .progressViewStyle(.circular)
-                .frame(maxWidth: .infinity)
-                .frame(height: 64.adjustedHeight)
-                .background(
-                    Capsule()
-                        .foregroundStyle(.gray900)
-                )
+            loadingContent
         } else {
             Button {
                 action?()
@@ -68,7 +60,19 @@ struct SolplyMainButton: View {
             )
             .animation(.easeInOut(duration: 0.2), value: isEnabled)
     }
+    
+    private var loadingContent: some View {
+        ProgressView()
+            .tint(.coreWhite)
+            .progressViewStyle(.circular)
+            .frame(maxWidth: .infinity)
+            .frame(height: 64.adjustedHeight)
+            .background(
+                Capsule()
+            )
+    }
 }
+
 
 #Preview {
     SolplyMainButton(title: "확인", isEnabled: true, isLoading: false)
