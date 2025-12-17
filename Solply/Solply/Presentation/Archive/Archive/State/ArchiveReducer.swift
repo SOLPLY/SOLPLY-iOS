@@ -17,14 +17,14 @@ enum ArchiveReducer {
             break
             
         case .placeThumbnailFetched(let placeArchiveThumbnails):
-            state.folderThumbnailList = placeArchiveThumbnails
+            state.PlacefolderList = placeArchiveThumbnails
             print(placeArchiveThumbnails)
             
         case .fetchCourseThumbnail:
             break
             
         case .courseThumbnailFetched(let courseArchiveThumbnails):
-            state.folders = courseArchiveThumbnails
+            state.CourseFolderList = courseArchiveThumbnails
             print(courseArchiveThumbnails)
             
         case .errorOccured(let error):
