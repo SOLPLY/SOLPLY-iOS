@@ -15,8 +15,8 @@ struct PolicyCell: View {
     private let isRequired: Bool
     private let isChecked: Bool
     private let showsChevron: Bool
-    private let onToggle: () -> Void
-    private let onShowPolicy: () -> Void
+    private let onToggle: (() -> Void)?
+    private let onShowPolicy: (() -> Void)?
     
     // MARK: - Init
     
@@ -25,8 +25,8 @@ struct PolicyCell: View {
         isRequired: Bool,
         isChecked: Bool,
         showsChevron: Bool = false,
-        onToggle: @escaping () -> Void,
-        onShowPolicy: @escaping () -> Void
+        onToggle: (() -> Void)? = nil,
+        onShowPolicy: (() -> Void)? = nil
     ) {
         self.title = title
         self.isRequired = isRequired
@@ -39,7 +39,9 @@ struct PolicyCell: View {
     var body: some View {
         HStack(spacing: 4) {
             
-            Button(action: onToggle) {
+            Button {
+                onToggle?()
+            } label: {
                 Image(isChecked ? "select-check-icon" : "default-check-icon")
                     .resizable()
                     .frame(width: 24, height: 24)
@@ -51,7 +53,9 @@ struct PolicyCell: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             if showsChevron {
-                Button(action: onShowPolicy) {
+                Button {
+                    onShowPolicy?()
+                } label: {
                     Image("arrow-right-icon-light-gray")
                         .resizable()
                         .scaledToFit()
