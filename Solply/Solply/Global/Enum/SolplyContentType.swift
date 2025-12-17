@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SolplyContentType {
+enum SolplyContentType: CaseIterable{
     case place
     case course
     

@@ -1,5 +1,5 @@
 //
-//  CTAMainButton.swift
+//  SolplySubButton.swift
 //  Solply
 //
 //  Created by 선영주 on 7/9/25.
@@ -7,26 +7,26 @@
 
 import SwiftUI
 
-struct CTAMainButton: View {
-    
+struct SolplySubButton: View {
+
     // MARK: - Properties
     
     private let title: String
-    private let isEnabled: Bool
+    private let type: CTASubButtonType
     private let action: (() -> Void)?
-    
+
     // MARK: - Initializer
     
     init(
         title: String,
-        isEnabled: Bool = true,
+        type: CTASubButtonType = .white,
         action: (() -> Void)? = nil
     ) {
-        self.title   = title
-        self.isEnabled = isEnabled
-        self.action  = action
+        self.title  = title
+        self.type   = type
+        self.action = action
     }
-    
+
     // MARK: - Body
     
     var body: some View {
@@ -36,22 +36,38 @@ struct CTAMainButton: View {
             content
         }
         .buttonStyle(.plain)
-        .allowsHitTesting(isEnabled)
     }
-    
+
     // MARK: - Content View
     
     private var content: some View {
         Text(title)
             .applySolplyFont(.button_16_m)
-            .foregroundStyle(isEnabled ? .coreWhite : .gray800)
+            .foregroundStyle(type.foregroundColor)
             .frame(maxWidth: .infinity)
             .frame(height: 64.adjustedHeight)
             .background(
                 Capsule()
-                    .fill(isEnabled ? .gray900 : .gray300)
+                    .fill(type.backgroundColor)
             )
-            .animation(.easeInOut(duration: 0.2), value: isEnabled)
+            .animation(.easeInOut(duration: 0.2), value: type)
     }
+}
 
+// MARK: - Type
+
+extension SolplySubButton {
+    enum CTASubButtonType {
+        case white
+        case clear
+
+        var backgroundColor: Color {
+            switch self {
+            case .white: return .coreWhite
+            case .clear: return .clear
+            }
+        }
+
+        var foregroundColor: Color { .gray900 }
+    }
 }

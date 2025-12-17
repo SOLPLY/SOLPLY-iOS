@@ -219,7 +219,7 @@ extension PlaceDetailView {
     }
     
     private var addPlaceToCourseButton: some View {
-        CTAMainButton(title: "이 코스에 추가할래요") {
+        SolplyMainButton(title: "이 코스에 추가할래요") {
             let selectedCourseIndex = store.state.selectedCourseIndex
             
             store.dispatch(.toggleAddToCourse)

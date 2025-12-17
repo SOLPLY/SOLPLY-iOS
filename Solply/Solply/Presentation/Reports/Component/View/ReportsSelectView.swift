@@ -59,7 +59,7 @@ extension ReportsSelectView {
     }
     
     private var nextButton: some View {
-        CTAMainButton(title: "다음", isEnabled: selectedReportsType != nil) {
+        SolplyMainButton(title: "다음", isEnabled: selectedReportsType != nil) {
             nextAction?()
         }
         .padding(.horizontal, 20.adjustedWidth)

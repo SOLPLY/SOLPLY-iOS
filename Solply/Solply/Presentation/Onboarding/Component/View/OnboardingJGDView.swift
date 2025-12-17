@@ -43,7 +43,7 @@ struct OnboardingJGDView: View {
             Spacer(minLength: 0)
             
             HStack {
-                CTAMainButton(
+                SolplyMainButton(
                     title: "다음",
                     isEnabled: store.state.selectedSubTown != nil
                 ) {

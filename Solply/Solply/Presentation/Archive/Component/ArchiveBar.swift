@@ -8,40 +8,52 @@
 import SwiftUI
 
 struct ArchiveBar: View {
-    private let archiveCategory: [SolplyContentType] = [.place, .course]
+    
+    // MARK: - Properties
+    
     private let action: ((SolplyContentType) -> Void)?
     private let selected: SolplyContentType
     
-    @Namespace private var namespace
+    // MARK: - Initializer
     
-    init(selected: SolplyContentType, action: ((SolplyContentType) -> Void)? = nil) {
+    init(
+        selected: SolplyContentType,
+        action: ((SolplyContentType) -> Void)? = nil
+    ) {
         self.selected = selected
         self.action = action
     }
     
+    // MARK: - Body
+    
     var body: some View {
-        HStack {
-            ForEach(archiveCategory, id: \.self) { category in
-                ZStack(alignment: .bottom) {
-                    if selected == category {
-                        Capsule()
-                            .fill(.gray800)
-                            .matchedGeometryEffect(id: "categoryUnderLine", in: namespace)
-                            .frame(width: 181.adjustedWidth, height: 3.adjustedHeight)
-                            .offset(y:14.adjustedHeight)
-                    }
-                    Text(category.title)
-                        .foregroundColor(selected == category ? .coreBlack : .gray800)
-                        .applySolplyFont(.head_15_sb)
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: 48.adjustedHeight)
-                .onTapGesture {
-                    withAnimation(.spring()) {
-                        action?(category)
+        HStack(spacing: 0) {
+            ForEach(SolplyContentType.allCases, id: \.self) { category in
+                Button {
+                    action?(category)
+                } label: {
+                    VStack(spacing: 0) {
+                        Text(category.title)
+                            .foregroundColor(selected == category ? .coreBlack : .gray800)
+                            .applySolplyFont(.head_15_sb)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 48.adjustedHeight)
+                            .contentShape(Rectangle())
                     }
                 }
+                .buttonStyle(.plain)
             }
         }
+        .overlay(alignment: .bottom) {
+            Capsule()
+                .fill(.gray800)
+                .frame(width: 181.adjustedWidth, height: 3.adjustedHeight)
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: selected == .place ? .leading : .trailing
+                )
+                .animation(.easeInOut(duration: 0.3), value: selected)
+        }
+        .background(.coreWhite)
     }
 }

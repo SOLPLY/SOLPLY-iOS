@@ -10,6 +10,6 @@ import Foundation
 struct ArchiveState {
     var selectedCategory: SolplyContentType = .place
     
-    var folderThumbnailList : [PlaceArchiveThumbnailDTO] = []
-    var folders: [CourseArchiveThumbnailDTO] = []
+    var PlacefolderList : [PlaceArchiveThumbnailDTO] = []
+    var CourseFolderList: [CourseArchiveThumbnailDTO] = []
 }

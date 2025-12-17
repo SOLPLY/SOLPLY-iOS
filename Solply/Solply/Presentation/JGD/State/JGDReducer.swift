@@ -44,10 +44,11 @@ struct JGDReducer {
             state.currentSelectedSubTown = subTown
 
         case .saveSelection:
-            break
+            state.isCompleteButtonLoading = true
             
         case .saveSelectionSuccess:
             state.shouldGoBack = true
+            state.isCompleteButtonLoading = false
             
         case .saveSelectionFailure(let error):
             // TODO: - 선택 실패시 에러 처리 필요(일단 goBack)

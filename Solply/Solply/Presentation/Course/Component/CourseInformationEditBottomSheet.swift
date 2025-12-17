@@ -131,7 +131,7 @@ extension CourseInformationEditBottomSheet {
     }
     
     private var completeButton: some View {
-        CTAMainButton(
+        SolplyMainButton(
             title: "완료",
             isEnabled: isCourseNameValid && isCourseDescriptionValid
         ) {

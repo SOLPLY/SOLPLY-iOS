@@ -32,13 +32,14 @@ enum MyPageEditReducer {
             state.isUserInformationChanged = true
             
         case .startUpdateUserInformation:
-            break
+            state.isCompleteButtonLoading = true
             
         case .fetchUserNicknameCheck:
             break
             
         case .fetchUserNicknameCheckSuccess(let isDuplicated):
             state.nicknameTextFieldState = isDuplicated ? .duplicate : .valid
+            state.isCompleteButtonEnabled = !isDuplicated
             break
             
         case .fetchUserNicknameCheckFailed(let error):
@@ -49,15 +50,19 @@ enum MyPageEditReducer {
                 state.nicknameTextFieldState = .invalidCharacter
             }
             
+            state.isCompleteButtonEnabled = false
+            
         case .updateUserInformation:
             break
             
         case .updateUserInformationSuccess:
             state.shouldGoBack = true
+            state.isCompleteButtonLoading = false
             break
             
         case .updateUserInformationFailed(let error):
             print(error)
+            state.isCompleteButtonLoading = false
             break
             
         case .submitPresignedUrlRequest:

@@ -51,7 +51,7 @@ struct OnboardingAgreementView: View {
 
             Spacer()
 
-            CTAMainButton(
+            SolplyMainButton(
                 title: "다음",
                 isEnabled: canProceed
             ) {
