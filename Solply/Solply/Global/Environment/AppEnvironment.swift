@@ -45,6 +45,24 @@ enum AppEnvironment {
         return secret
     }()
     
+    /// 개인정보 처리방침 URL
+    static let privacyPolicyURL: URL = {
+        guard let urlString = Bundle.main.object(forInfoDictionaryKey: "PRIVACY_POLICY_URL") as? String,
+              let url = URL(string: urlString) else {
+            fatalError("Info.plist에 PRIVACY_POLICY_URL이 없거나 URL 형식이 잘못되었습니다.")
+        }
+        return url
+    }()
+
+    /// 서비스 이용약관 URL
+    static let servicePolicyURL: URL = {
+        guard let urlString = Bundle.main.object(forInfoDictionaryKey: "SERVICE_POLICY_URL") as? String,
+              let url = URL(string: urlString) else {
+            fatalError("Info.plist에 SERVICE_POLICY_URL이 없거나 URL 형식이 잘못되었습니다.")
+        }
+        return url
+    }()
+    
     /// solply 앱 버전
     static let appVersion: String = {
         guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {

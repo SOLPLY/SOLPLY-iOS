@@ -4,6 +4,12 @@
 <dict>
 	<key>BASE_URL</key>
 	<string>$(BASE_URL)</string>
+    <key>PRIVACY_POLICY_URL</key>
+    <string>$(PRIVACY_POLICY_URL)</string>
+
+    <key>SERVICE_POLICY_URL</key>
+    <string>$(SERVICE_POLICY_URL)</string>
+    
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
