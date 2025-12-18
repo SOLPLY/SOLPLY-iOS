@@ -36,7 +36,7 @@ struct ProfileImage: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 60.adjusted, height: 60.adjusted)
-                .foregroundColor(.gray100)
+                .foregroundColor(.green100)
             
             if let profileImageUrl {
                 KFImage(URL(string: profileImageUrl))
