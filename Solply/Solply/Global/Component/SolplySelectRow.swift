@@ -13,6 +13,7 @@ struct SolplySelectRow: View {
     
     private let title: String
     private let isSelected: Bool
+    private let hideSeparator: Bool
     private let action: (() -> Void)?
     
     // MARK: - Initializer
@@ -20,26 +21,28 @@ struct SolplySelectRow: View {
     init(
         title: String,
         isSelected: Bool = false,
+        hideSeparator: Bool = false,
         action: (() -> Void)? = nil
     ) {
         self.title = title
         self.isSelected = isSelected
+        self.hideSeparator = hideSeparator
         self.action = action
     }
     
     // MARK: - Body
     
     var body: some View {
-        Button {
-            action?()
-        } label: {
-            ZStack(alignment: .bottom) {
+        ZStack(alignment: .bottom) {
+            Button {
+                action?()
+            } label: {
                 HStack(alignment: .center, spacing: 0) {
                     Text(title)
                         .applySolplyFont(isSelected ? .body_16_m : .body_16_r)
                         .foregroundStyle(.coreBlack)
                         .frame(height: 46.adjustedHeight)
-
+                    
                     Spacer()
                     
                     Image(.selectIcon)
@@ -49,13 +52,13 @@ struct SolplySelectRow: View {
                         .opacity(isSelected ? 1.0 : 0.0)
                         .padding(.trailing, 2.adjustedWidth)
                 }
-                
-                Rectangle()
-                    .foregroundStyle(.gray200)
-                    .frame(height: 1.adjustedHeight)
+                .background(.coreWhite)
             }
-            .background(.coreWhite)
+            .buttonStyle(.plain)
+            
+            Rectangle()
+                .foregroundStyle(.gray200)
+                .frame(height: hideSeparator ? 0 : 1.adjustedHeight)
         }
-        .buttonStyle(.plain)
     }
 }
