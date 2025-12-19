@@ -11,14 +11,23 @@ enum PlaceSearchReducer {
     @MainActor static func reduce(state: inout PlaceSearchState, action: PlaceSearchAction) {
         switch action {
         case .searchPlace:
-            state.isSearchCompleted = false
-        case .placeSearched(let places):
-            state.places = places
+            break
+            
+        case .searchPlaceSuccess(let places):
+            state.searchedPlaces = places
             state.isSearchCompleted = true
-        case .errorOccured(let error):
+            
+        case .searchPlaceFailed(let error):
             state.isSearchCompleted = true
+            state.searchedPlaces = []
             print(error)
             break
+            
+        case .searchQueryLengthInvalid:
+            state.toastContent = ToastContent(
+                toastType: .defaultToast,
+                message: "검색어는 최소 2자 이상이어야 해요"
+            )
         }
     }
 }

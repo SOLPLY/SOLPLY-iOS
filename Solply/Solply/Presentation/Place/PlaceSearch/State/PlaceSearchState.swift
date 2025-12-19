@@ -9,6 +9,8 @@ import Foundation
 
 struct PlaceSearchState {
     var placeName: String = ""
-    var places: [PlaceSearchDTO] = []
+    var searchedPlaces: [PlaceSearchDTO] = []
     var isSearchCompleted: Bool = false
+    
+    var toastContent: ToastContent?
 }

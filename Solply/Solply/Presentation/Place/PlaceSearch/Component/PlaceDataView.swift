@@ -44,27 +44,28 @@ struct PlaceDataView: View {
                     placeName: place.placeName,
                     address: place.address,
                     mainTag: place.primaryTag,
-                )
-                .onTapGesture {
+                ) {
                     placeDetailAction?(place.townId, place.placeId)
                 }
             }
             
-            HStack(alignment: .center, spacing: 0) {
-                Text("찾는 장소가 없어요")
-                    .applySolplyFont(.button_14_m)
-                    .foregroundColor(.gray700)
-                    .padding(.leading, 20.adjustedWidth)
-                
-                Image(.arrowRightIconGray)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24.adjustedWidth, height: 10.adjustedHeight)
-            }
-            .padding(.top, 16.adjustedHeight)
-            .onTapGesture {
+            Button {
                 registerAction?()
+            } label: {
+                HStack(alignment: .center, spacing: 0) {
+                    Text("찾는 장소가 없어요")
+                        .applySolplyFont(.button_14_m)
+                        .foregroundColor(.gray700)
+                        .padding(.leading, 20.adjustedWidth)
+                    
+                    Image(.arrowRightIconGray)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24.adjustedWidth, height: 10.adjustedHeight)
+                }
+                .padding(.top, 16.adjustedHeight)
             }
+            .buttonStyle(.plain)
         }
     }
 }

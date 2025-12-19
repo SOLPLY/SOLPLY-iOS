@@ -17,17 +17,20 @@ struct SearchPlaceCard: View {
     private let placeName: String
     private let address: String
     private let mainTag: MainTagType
+    private let onTap: (() -> Void)?
     
     init(
         thumbnailUrl: String,
         placeName: String,
         address: String,
-        mainTag: MainTagType
+        mainTag: MainTagType,
+        onTap: (() -> Void)? = nil
     ) {
         self.thumnailUrl = thumbnailUrl
         self.placeName = placeName
         self.address = address
         self.mainTag = mainTag
+        self.onTap = onTap
     }
     
     // MARK: - Body
@@ -37,43 +40,48 @@ struct SearchPlaceCard: View {
             Divider()
                 .overlay(Color.gray200)
             
-            HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                KFImage(URL(string: thumnailUrl))
-                    .placeholder {
-                        Image(.placePlaceholder)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    }
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 52.adjusted, height: 52.adjusted)
-                    .cornerRadius(12, corners: .allCorners)
-                    .padding(.leading, 20.adjustedWidth)
-                
-                VStack(alignment: .leading, spacing: 6.adjustedHeight) {
+            Button {
+                onTap?()
+            } label: {
+                HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                    KFImage(URL(string: thumnailUrl))
+                        .placeholder {
+                            Image(.placePlaceholder)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        }
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 52.adjusted, height: 52.adjusted)
+                        .cornerRadius(12, corners: .allCorners)
+                        .padding(.leading, 20.adjustedWidth)
                     
-                    HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                    VStack(alignment: .leading, spacing: 6.adjustedHeight) {
                         
-                        PlaceCategoryTag(placeCategory: mainTag)
+                        HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                            
+                            PlaceCategoryTag(placeCategory: mainTag)
+                            
+                            Text(placeName)
+                                .applySolplyFont(.title_15_m)
+                                .foregroundColor(.black)
+                                .frame(height: 19.adjustedHeight, alignment: .leading)
+                                .lineLimit(1)
+                        }
                         
-                        Text(placeName)
-                            .applySolplyFont(.title_15_m)
-                            .foregroundColor(.black)
-                            .frame(height: 19.adjustedHeight, alignment: .leading)
+                        Text(address)
+                            .applySolplyFont(.caption_12_r)
+                            .foregroundColor(.gray700)
+                            .frame(
+                                width: 275.adjustedWidth,
+                                height: 18.adjustedHeight,
+                                alignment: .leading
+                            )
                             .lineLimit(1)
                     }
-                    
-                    Text(address)
-                        .applySolplyFont(.caption_12_r)
-                        .foregroundColor(.gray700)
-                        .frame(
-                            width: 275.adjustedWidth,
-                            height: 18.adjustedHeight,
-                            alignment: .leading
-                        )
-                        .lineLimit(1)
                 }
             }
+            .buttonStyle(.plain)
             
             Divider()
                 .overlay(Color.gray200)

@@ -19,14 +19,14 @@ struct PlaceSearchEffect {
             let response = try await placeService.searchPlace(placeName: placeName)
             
             guard let data = response.data else {
-                return .errorOccured(error: .responseError)
+                return .searchPlaceFailed(error: .responseError)
             }
             
-            return .placeSearched(places: data.places)
+            return .searchPlaceSuccess(places: data.places)
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .searchPlaceFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .searchPlaceFailed(error: .unknownError)
         }
     }
 }
