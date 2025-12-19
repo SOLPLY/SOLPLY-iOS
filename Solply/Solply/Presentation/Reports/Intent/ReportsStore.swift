@@ -33,7 +33,7 @@ final class ReportsStore: ObservableObject {
                             request: ReportsRequestDTO(
                                 reportType: selectedReportsType.rawValue,
                                 content: state.reportsContent,
-                                imageKeys: nil
+                                imageKeys: []
                             )
                         )
                     )

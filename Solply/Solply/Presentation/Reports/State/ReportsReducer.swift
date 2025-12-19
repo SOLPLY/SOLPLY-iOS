@@ -44,7 +44,9 @@ enum ReportsReducer {
             state.shouldGoBack = true
             
         case .reportsFailed(let error):
+            // TODO: - 제보 실패했을 때 처리 필요
             print("제보하기에 실패했습니다 error: \(error)")
+            state.shouldGoBack = true
             break
             
         case .photoUploadSuccess:
