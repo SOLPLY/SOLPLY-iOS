@@ -70,6 +70,7 @@ struct PlaceRecommendView: View {
         }
         .onChange(of: appState.townId) { _, newTownId in
             store.dispatch(.fetchPlaceRecommend(townId: newTownId))
+            store.dispatch(.resetTags)
             
             let subTagAIdList = store.state.selectedSubTags
                 .filter { $0.tagType == "OPTION1" && $0.isSelected }

@@ -8,6 +8,8 @@
 import Foundation
 
 enum PlaceRecommendAction {
+    case resetTags
+    
     case toggleMainTagBottomSheet
     case dismissMainTagBottomSheet
     case selectMainTag(MainTagType)
