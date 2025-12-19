@@ -37,6 +37,7 @@ enum PlaceRecommendAction {
         subTagBIdList: [Int]?
     )
     case placeListFetched([PlaceDTO])
+    case fetchPlaceListFailed(error: NetworkError)
     
     case errorOccurred(error: NetworkError)
 }

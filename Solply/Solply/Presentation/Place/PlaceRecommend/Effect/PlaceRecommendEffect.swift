@@ -84,14 +84,14 @@ struct PlaceRecommendEffect {
             )
             
             guard let data = response.data else {
-                return .errorOccurred(error: .responseError)
+                return .fetchPlaceListFailed(error: .responseError)
             }
             
             return .placeListFetched(data.places)
         } catch let error as NetworkError {
-            return .errorOccurred(error: error)
+            return .fetchPlaceListFailed(error: error)
         } catch {
-            return .errorOccurred(error: .unknownError)
+            return .fetchPlaceListFailed(error: .unknownError)
         }
     }
 }

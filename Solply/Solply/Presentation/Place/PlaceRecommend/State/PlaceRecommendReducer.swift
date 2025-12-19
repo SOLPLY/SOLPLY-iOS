@@ -56,6 +56,10 @@ struct PlaceRecommendReducer {
         case .placeListFetched(let placeList):
             state.fetchedPlaceList = placeList.map { Place(dto: $0) }
             
+        case .fetchPlaceListFailed(let error):
+            print(error)
+            state.fetchedPlaceList = []
+            
         case .errorOccurred(error: let error):
             print(error)
         }
