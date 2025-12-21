@@ -10,6 +10,9 @@ import Foundation
 struct PlaceRecommendReducer {
     static func reduce(state: inout PlaceRecommendState, action: PlaceRecommendAction) {
         switch action {
+        case .resetTags:
+            state.selectedMainTag = .all
+            state.selectedSubTags = []
         case .toggleMainTagBottomSheet:
             state.isMainTagBottomSheetPresented = true
         case .dismissMainTagBottomSheet:
@@ -55,6 +58,10 @@ struct PlaceRecommendReducer {
             
         case .placeListFetched(let placeList):
             state.fetchedPlaceList = placeList.map { Place(dto: $0) }
+            
+        case .fetchPlaceListFailed(let error):
+            print(error)
+            state.fetchedPlaceList = []
             
         case .errorOccurred(error: let error):
             print(error)

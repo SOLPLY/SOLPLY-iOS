@@ -27,19 +27,21 @@ struct PlaceEmptyView: View {
                 .applySolplyFont(.body_16_r)
                 .foregroundColor(.coreBlack)
             
-            HStack(alignment: .center, spacing: 0) {
-                Text("장소 등록하러 가기")
-                    .applySolplyFont(.button_16_m)
-                    .foregroundColor(.purple600)
-                    
-                Image(.arrowRightIconPurple)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24.adjustedWidth, height: 10.adjustedHeight)
-            }
-            .onTapGesture {
+            Button {
                 registerAction?()
+            } label: {
+                HStack(alignment: .center, spacing: 0) {
+                    Text("장소 등록하러 가기")
+                        .applySolplyFont(.button_16_m)
+                        .foregroundColor(.purple600)
+                        
+                    Image(.arrowRightIconPurple)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24.adjustedWidth, height: 10.adjustedHeight)
+                }
             }
+            .buttonStyle(.plain)
         }
         .padding(.leading, 20.adjustedWidth)
     }

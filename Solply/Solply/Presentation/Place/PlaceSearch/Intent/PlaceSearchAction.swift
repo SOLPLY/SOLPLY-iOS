@@ -9,6 +9,7 @@ import Foundation
 
 enum PlaceSearchAction {
     case searchPlace(placeName: String)
-    case placeSearched(places: [PlaceSearchDTO])
-    case errorOccured(error: NetworkError)
+    case searchPlaceSuccess(places: [PlaceSearchDTO])
+    case searchPlaceFailed(error: NetworkError)
+    case searchQueryLengthInvalid
 }

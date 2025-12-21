@@ -18,7 +18,7 @@ struct PolicyCell: View {
     private let onToggle: (() -> Void)?
     private let onShowPolicy: (() -> Void)?
     
-    // MARK: - Init
+    // MARK: - Initializer
     
     init(
         title: String,
@@ -36,30 +36,35 @@ struct PolicyCell: View {
         self.onShowPolicy = onShowPolicy
     }
     
+    // MARK: - Body
+    
     var body: some View {
-        HStack(spacing: 4) {
-            
+        HStack(alignment: .center, spacing: 0) {
             Button {
                 onToggle?()
             } label: {
-                Image(isChecked ? "select-check-icon" : "default-check-icon")
-                    .resizable()
-                    .frame(width: 24, height: 24)
+                HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                    Image(isChecked ? .selectCheckIcon : .defaultCheckIcon)
+                        .resizable()
+                        .frame(width: 24.adjusted, height: 24.adjusted)
+                    
+                    Text("\(prefix)\(title)")
+                        .applySolplyFont(.body_14_m)
+                        .foregroundColor(.gray900)
+                }
             }
+            .buttonStyle(.plain)
             
-            Text("\(prefix)\(title)")
-                .applySolplyFont(.body_14_m)
-                .foregroundColor(.gray900)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            Spacer()
             
             if showsChevron {
                 Button {
                     onShowPolicy?()
                 } label: {
-                    Image("arrow-right-icon-light-gray")
+                    Image(.arrowRightIconLightGray)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 12, height: 12)
+                        .frame(width: 12.adjusted, height: 12.adjusted)
                 }
             }
         }

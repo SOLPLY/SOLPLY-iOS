@@ -94,7 +94,10 @@ struct FilterPlaceGrid: View {
                         .presentationCornerRadius(20)
                     }
                     
-                    FilterButton(title: isSelectedEmpty ? "추가옵션" : (filteredCount > 1 ? "\(filteredFirstTag) 외 \(filteredCount - 1)개" : "\(filteredFirstTag)")) {
+                    FilterButton(
+                        title: isSelectedEmpty ? "추가옵션" : filteredFirstTag,
+                        selectedSubTagsCount: filteredCount
+                    ) {
                         store.dispatch(.toggleSubTagBottomSheet)
                     }
                     .visible(
@@ -144,23 +147,31 @@ struct FilterPlaceGrid: View {
                     }
                 }
                 
-                LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {
-                    ForEach(store.state.fetchedPlaceList) { place in
-                        PlaceCard(
-                            isSaved: place.isBookmarked,
-                            thumbnailUrl: place.thumbnailUrl,
-                            placeName: place.placeName,
-                            placeCategory: place.mainTag,
-                            isSelected: true,
-                            size: 145.adjusted
-                        ) {
-                            appCoordinator.navigate(to: .placeDetail(
-                                townId: townId,
-                                placeId: place.placeId,
-                                fromSearch: false
-                            ))
+                if !store.state.fetchedPlaceList.isEmpty {
+                    LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {
+                        ForEach(store.state.fetchedPlaceList) { place in
+                            PlaceCard(
+                                isSaved: place.isBookmarked,
+                                thumbnailUrl: place.thumbnailUrl,
+                                placeName: place.placeName,
+                                placeCategory: place.mainTag,
+                                isSelected: true,
+                                size: 145.adjusted
+                            ) {
+                                appCoordinator.navigate(to: .placeDetail(
+                                    townId: townId,
+                                    placeId: place.placeId,
+                                    fromSearch: false
+                                ))
+                            }
                         }
                     }
+                } else {
+                    Text("검색 결과가 없어요")
+                        .applySolplyFont(.body_14_m)
+                        .foregroundStyle(.gray700)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .frame(height: 40.adjustedHeight)
                 }
             }
             .onChange(of: store.state.selectedMainTag) { _, _ in

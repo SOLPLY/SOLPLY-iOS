@@ -18,10 +18,13 @@ final class PlaceSearchStore: ObservableObject {
         
         switch action {
         case .searchPlace(let placeName):
-            Task {
-                let result = await
-                effect.searchPlace(placeName: placeName)
-                self.dispatch(result)
+            if placeName.count > 1 {
+                Task {
+                    let result = await effect.searchPlace(placeName: placeName)
+                    self.dispatch(result)
+                }
+            } else {
+                self.dispatch(.searchQueryLengthInvalid)
             }
         
         default:
