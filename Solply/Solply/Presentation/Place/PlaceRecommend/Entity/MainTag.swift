@@ -17,6 +17,6 @@ extension MainTag {
     init(dto: MainTagDTO) {
         self.id = dto.tagId
         self.tagType = dto.tagType
-        self.name = dto.name
+        self.name = MainTagType(rawValue:dto.name) ?? .book
     }
 }

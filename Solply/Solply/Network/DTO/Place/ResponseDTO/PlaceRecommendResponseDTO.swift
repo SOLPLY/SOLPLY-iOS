@@ -15,6 +15,6 @@ struct PlaceInfoDTO: ResponseModelType {
     let placeId: Int
     let placeName: String
     let thumbnailImageUrl: String
-    let mainTag: MainTagType
+    let mainTag: String
     let introduction: String
 }

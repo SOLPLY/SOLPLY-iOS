@@ -37,9 +37,7 @@ struct PlaceRecommendView: View {
                 }
                 .padding(.horizontal, 20.adjustedWidth)
                 
-                if !store.state.placeRecommendItems.isEmpty {
-                    TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
-                }
+                TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
                 
                 FilterPlaceGrid(store: store, townId: appState.townId)
                     .padding(.horizontal, 16.adjustedWidth)

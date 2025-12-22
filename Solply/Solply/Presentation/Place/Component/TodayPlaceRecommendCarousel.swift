@@ -65,9 +65,14 @@ struct TodayPlaceRecommendCarousel: View {
                     .scaleEffect(scale)
                     .offset(x: totalOffset)
                 }
+            } else {
+                Text("추천 장소가 없어요")
+                    .applySolplyFont(.body_14_m)
+                    .foregroundStyle(.gray700)
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
         }
-        .frame(height: 240.adjusted)
+        .frame(height: store.state.placeRecommendItems.isEmpty ? 60.adjustedHeight : 240.adjusted)
         .gesture(
             DragGesture()
                 .onChanged { value in

@@ -10,40 +10,40 @@ import Foundation
 enum SubTagType: String, ResponseModelType, RequestModelType {
 
     // MARK: - 카페 추천 옵션 1
-    case coffeeDessert = "COFFEE_DESSERT"
-    case work = "WORK"
-    case reading = "READING"
-    case healing = "HEALING"
+    case coffeeDessert = "커피/디저트"
+    case work = "작업"
+    case reading = "독서"
+    case healing = "힐링"
 
     // MARK: - 카페 추천 옵션 2
-    case signatureMenu = "SIGNATURE_MENU"
-    case moodInterior = "MOOD_INTERIOR"
-    case sunlight = "SUNLIGHT"
-    case manyPlug = "MANY_PLUG"
-    case noTimeLimit = "NO_TIME_LIMIT"
-    case barTable = "BAR_TABLE"
+    case signatureMenu = "시그니처메뉴"
+    case moodInterior = "감성인테리어"
+    case sunlight = "채광좋음"
+    case manyPlug = "콘센트많음"
+    case noTimeLimit = "시간제한없음"
+    case barTable = "바테이블"
 
     // MARK: - 음식 추천 옵션 1
-    case koreanFood = "KOREAN_FOOD"
-    case chineseFood = "CHINESE_FOOD"
-    case japaneseFood = "JAPANESE_FOOD"
-    case westernFood = "WESTERN_FOOD"
-    case bar = "BAR"
-    case bakery = "BAKERY"
-    case asianFood = "ASIAN_FOOD"
+    case koreanFood = "한식"
+    case chineseFood = "중식"
+    case japaneseFood = "일식"
+    case westernFood = "양식"
+    case bar = "바/술집"
+    case bakery = "베이커리"
+    case asianFood = "아시안푸드"
 
     // MARK: - 음식 추천 옵션 2
-    case singleMenu = "SINGLE_MENU"
-    case selfService = "SELF_SERVICE"
+    case singleMenu = "1인메뉴"
+    case selfService = "셀프서비스"
 
     // MARK: - 이색공간 추천 옵션
-    case art = "ART"
-    case workshop = "WORKSHOP"
+    case art = "문화예술"
+    case workshop = "공방/클래스"
 
     // MARK: - 쇼핑 추천 옵션
-    case lifestyleShop = "LIFESTYLE_SHOP"
-    case vintageShop = "VINTAGE_SHOP"
-    case popupMarket = "POPUP_MARKET"
+    case lifestyleShop = "소품샵"
+    case vintageShop = "빈티지샵"
+    case popupMarket = "팝업/플리마켓"
     
     
     var title: String {

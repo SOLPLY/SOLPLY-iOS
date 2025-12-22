@@ -15,6 +15,6 @@ struct PlaceDTO: ResponseModelType {
     let placeId: Int
     let placeName: String
     let thumbnailImageUrl: String
-    let primaryTag: MainTagType
+    let primaryTag: String
     let isBookmarked: Bool
 }

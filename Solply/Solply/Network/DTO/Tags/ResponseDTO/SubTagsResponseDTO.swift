@@ -14,6 +14,6 @@ struct SubTagsResponseDTO: ResponseModelType {
 struct SubTagDTO: ResponseModelType {
     let tagId: Int
     let tagType: String
-    let name: SubTagType
+    let name: String
     let parentId: Int?
 }
