@@ -8,13 +8,13 @@
 import SwiftUI
 
 enum MainTagType: String, CaseIterable, Identifiable, ResponseModelType, RequestModelType {
-    case all = "ALL"
-    case cafe = "CAFE"
-    case food = "FOOD"
-    case shopping = "SHOPPING"
-    case book = "BOOKSTORE"
-    case unique = "UNIQUE_SPACE"
-    case walk = "WALKING"
+    case all = "전체"
+    case cafe = "카페"
+    case food = "음식"
+    case shopping = "쇼핑"
+    case book = "서점/책방"
+    case unique = "이색공간"
+    case walk = "산책"
     
     var id: Self { self }
     

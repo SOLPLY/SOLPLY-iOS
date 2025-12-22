@@ -17,6 +17,6 @@ extension SubTag {
     init(dto: SubTagDTO) {
         self.id = dto.tagId
         self.tagType = dto.tagType
-        self.name = dto.name
+        self.name = SubTagType(rawValue: dto.name) ?? .art
     }
 }

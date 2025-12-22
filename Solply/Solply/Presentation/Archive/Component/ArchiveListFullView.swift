@@ -60,7 +60,7 @@ extension ArchiveListFullView {
                 isSaved: true,
                 thumbnailUrl: item.thumbnailImageUrl,
                 placeName: item.placeName,
-                placeCategory: item.primaryTag,
+                placeCategory: MainTagType(rawValue: item.primaryTag) ?? .book,
                 isSelected: store.state.selectedPlaceIds.contains(item.placeId),
             ) {
                 if store.state.activeDelete {

@@ -22,7 +22,7 @@ extension Place {
         self.placeId = dto.placeId
         self.placeName = dto.placeName
         self.thumbnailUrl = dto.thumbnailImageUrl
-        self.mainTag = dto.primaryTag
+        self.mainTag = MainTagType(rawValue: dto.primaryTag) ?? .book
         self.isBookmarked = dto.isBookmarked
     }
 }
