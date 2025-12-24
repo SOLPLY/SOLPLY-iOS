@@ -16,6 +16,6 @@ struct PlaceSearchDTO: ResponseModelType {
     let townId: Int
     let placeName: String
     let thumbnailImageUrl: String
-    let primaryTag: MainTagType
+    let primaryTag: String
     let address: String
 }
