@@ -43,7 +43,7 @@ struct PlaceDataView: View {
                     thumbnailUrl: place.thumbnailImageUrl,
                     placeName: place.placeName,
                     address: place.address,
-                    mainTag: place.primaryTag,
+                    mainTag: MainTagType(rawValue: place.primaryTag) ?? .book,
                 ) {
                     placeDetailAction?(place.townId, place.placeId)
                 }
