@@ -209,7 +209,7 @@ extension PlaceDetailView {
                     store.dispatch(.toggleAddToCourse)
                     store.dispatch(.selectCourseToAdd(index: -1))
                 } goToAddCourseAction: {
-                    appCoordinator.goBack()
+                    appCoordinator.goToRoot()
                     appCoordinator.switchTab(to: .course)
                 }
                 .transition(.move(edge: .trailing))
