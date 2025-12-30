@@ -176,6 +176,50 @@ extension View {
                     }
                 )
             )
+            
+        // MARK: - PlaceDetailLoading
+            
+        case .placeInformationLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    loadingType: loadingType,
+                    isLoading: isLoading,
+                    loadingView: {
+                        VStack(alignment: .leading, spacing: 20.adjustedHeight) {
+                            VStack(alignment: .leading, spacing: 10.5.adjustedHeight) {
+                                SolplySkeletonView(font: .title_18_sb, width: 110)
+                                SolplySkeletonView(font: .caption_14_r, width: 200, cornerRadius: 4)
+                            }
+                            
+                            HStack(alignment: .center,spacing: 8.adjustedWidth) {
+                                SolplySkeletonView(
+                                    width: 85.adjustedWidth,
+                                    height: 40.adjustedHeight,
+                                    cornerRadius: 20
+                                )
+                                SolplySkeletonView(
+                                    width: 112.adjustedWidth,
+                                    height: 40.adjustedHeight,
+                                    cornerRadius: 20
+                                )
+                            }
+                            
+                            HStack(alignment: .center, spacing: 12.adjustedWidth) {
+                                ForEach(0..<2) { _ in
+                                    SolplySkeletonView(
+                                        width: 307.adjustedWidth,
+                                        height: 204.adjustedHeight,
+                                        cornerRadius: 12
+                                    )
+                                }
+                            }
+                        }
+                        .padding(.leading, 16.adjustedWidth)
+                        .frame(width: 375.adjustedWidth, alignment: .leading)
+                        .clipped()
+                    }
+                )
+            )
         }
     }
 }
@@ -183,7 +227,7 @@ extension View {
 #Preview {
     Text("dasdf")
         .customLoading(
-            .courseRecommendGridLoading,
+            .placeInformationLoading,
             isLoading: true
         )
 }

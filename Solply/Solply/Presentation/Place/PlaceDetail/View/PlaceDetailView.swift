@@ -110,6 +110,7 @@ extension PlaceDetailView {
         ZStack {
             if !store.state.addButtonSelected {
                 placeInformation
+                    .customLoading(.placeInformationLoading, isLoading: store.state.isPlaceInformationLoading)
                     .transition(.move(edge: .leading))
             } else {
                 addPlaceToCourse
