@@ -128,7 +128,7 @@ extension View {
                             verticalSpacing: 16.adjusted
                         ) {
                             ForEach(0..<2) { _ in
-                                GridRow {
+                                GridRow(alignment: .center) {
                                     ForEach(0..<2) { _ in
                                         VStack(alignment: .leading, spacing: 8.adjusted) {
                                             SolplySkeletonView(
@@ -147,6 +147,35 @@ extension View {
                     }
                 )
             )
+            
+        // MARK: - CourseRecommendGridLoading
+            
+        case .courseRecommendGridLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    loadingType: loadingType,
+                    isLoading: isLoading,
+                    loadingView: {
+                        Grid(
+                            alignment: .center,
+                            horizontalSpacing: 12.adjusted,
+                            verticalSpacing: 16.adjusted
+                        ) {
+                            ForEach(0..<3) { _ in
+                                GridRow(alignment: .center) {
+                                    ForEach(0..<2) { _ in
+                                        SolplySkeletonView(
+                                            width: 165.adjusted,
+                                            height: 165.adjusted,
+                                            cornerRadius: 20
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                )
+            )
         }
     }
 }
@@ -154,7 +183,7 @@ extension View {
 #Preview {
     Text("dasdf")
         .customLoading(
-            .placeRecommendGridLoading,
+            .courseRecommendGridLoading,
             isLoading: true
         )
 }

@@ -13,4 +13,5 @@ enum CustomLoadingType {
     case recommendTitleLoading
     case todayPlaceRecommendCarouselLoading
     case placeRecommendGridLoading
+    case courseRecommendGridLoading
 }

@@ -69,7 +69,8 @@ extension TabBarView {
             
             CourseRecommendView(
                 title: courseRecommendTitle,
-                townName: townName
+                townName: townName,
+                isUserInformationLoading: isUserInformationLoading
             )
             .visible(appCoordinator.selectedTab == .course)
         }

@@ -17,12 +17,14 @@ struct CourseRecommendView: View {
     
     private let title: String
     private let townName: String
+    private let isUserInformationLoading: Bool
     
     // MARK: - Initializer
     
-    init(title: String, townName: String) {
+    init(title: String, townName: String, isUserInformationLoading: Bool) {
         self.title = title
         self.townName = townName
+        self.isUserInformationLoading = isUserInformationLoading
     }
     
     // MARK: - Body
@@ -33,8 +35,11 @@ struct CourseRecommendView: View {
                 HStack(alignment: .center, spacing: 0) {
                     Text(title)
                         .applySolplyFont(.display_20_sb)
+                        .foregroundStyle(.coreBlack)
+                    
                     Spacer()
                 }
+                .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
                 .padding(.horizontal, 20.adjustedWidth)
                 
                 CourseRecommendGrid(store: store) { courseId in
@@ -46,13 +51,14 @@ struct CourseRecommendView: View {
                         )
                     )
                 }
+                .customLoading(.courseRecommendGridLoading, isLoading: store.state.isCourseGridLoading)
             }
             .frame(maxWidth: .infinity)
             .padding(.bottom, 112.adjustedHeight)
         }
         .customNavigationBar(
             .recommend(
-                isLoading: true, // 수정 필요
+                isLoading: isUserInformationLoading,
                 filterTitle: townName,
                 filterAction: {
                     appCoordinator.navigate(to: .JGD)
