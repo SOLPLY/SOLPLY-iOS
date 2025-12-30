@@ -97,16 +97,19 @@ extension RegisterView {
                         .padding(.horizontal, 16.adjustedWidth)
                         
                         // 검색 결과 List
-                        if store.state.hasSearched {
-                            RegisterSearchList(searchResult: store.state.searchResult) { result in
-                                store.dispatch(
-                                    .selectPlaceToRegister(
-                                        placeName: result.placeName,
-                                        placeAddress: result.placeAddress
+                        Group {
+                            if store.state.hasSearched {
+                                RegisterSearchList(searchResult: store.state.searchResult) { result in
+                                    store.dispatch(
+                                        .selectPlaceToRegister(
+                                            placeName: result.placeName,
+                                            placeAddress: result.placeAddress
+                                        )
                                     )
-                                )
+                                }
                             }
                         }
+                        .customLoading(.searchLoading, isLoading: store.state.isSearchLoading)
                     }
                     
                 case .selectMainTagType, .selectExtraFeatures:

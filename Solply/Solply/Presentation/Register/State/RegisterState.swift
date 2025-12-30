@@ -10,6 +10,7 @@ import Foundation
 struct RegisterState {
     var registerStep: RegisterStep = .searchPlace
     var hasSearched: Bool = false
+    var isSearchLoading: Bool = false
     
     var placeName: String = ""
     var placeAddress: String? = nil
