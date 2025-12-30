@@ -18,6 +18,7 @@ struct TabBarView: View {
     @State private var townName: String = ""
     @State private var placeRecommendTitle: String = ""
     @State private var courseRecommendTitle: String = ""
+    @State private var isUserInformationLoading: Bool = false
     
     private let userService = UserService()
     
@@ -61,7 +62,8 @@ extension TabBarView {
         Group {
             PlaceRecommendView(
                 title: placeRecommendTitle,
-                townName: townName
+                townName: townName,
+                isUserInformationLoading: isUserInformationLoading
             )
             .visible(appCoordinator.selectedTab == .place)
             
@@ -96,18 +98,23 @@ extension TabBarView {
 extension TabBarView {
     func fetchUserInformation() async throws -> UserInformation {
         do {
+            isUserInformationLoading = true
+            
             let response = try await userService.fetchUserInformation()
             
             guard let data = response.data else {
                 throw NetworkError.responseError
             }
             
+            isUserInformationLoading = false
             return UserInformation(dto: data)
 
         } catch let error as NetworkError {
+            isUserInformationLoading = false
             throw error
             
         } catch {
+            isUserInformationLoading = false
             throw error
         }
     }

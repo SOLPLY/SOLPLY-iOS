@@ -47,6 +47,9 @@ extension View {
     @ViewBuilder
     func customLoading(_ loadingType: CustomLoadingType, isLoading: Bool) -> some View {
         switch loadingType {
+            
+        // MARK: - SearchLoading
+            
         case .searchLoading:
             self.modifier(
                 CustomLoadingModifier(
@@ -62,6 +65,35 @@ extension View {
                     }
                 )
             )
+            
+        // MARK: - JGDButtonLoading
+            
+        case .JGDButtonLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    loadingType: loadingType,
+                    isLoading: isLoading,
+                    loadingView: {
+                        SolplySkeletonView(font: .body_16_m, width: 42.adjustedWidth)
+                    }
+                )
+            )
+            
+        // MARK: - RecommendTitleLoading
+            
+        case .recommendTitleLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    loadingType: loadingType,
+                    isLoading: isLoading,
+                    loadingView: {
+                        VStack(alignment: .leading, spacing: 0) {
+                            SolplySkeletonView(font: .display_20_sb, width: 150.adjustedWidth)
+                            SolplySkeletonView(font: .display_20_sb, width: 300.adjustedWidth)
+                        }
+                    }
+                )
+            )
         }
     }
 }
@@ -69,7 +101,7 @@ extension View {
 #Preview {
     Text("dasdf")
         .customLoading(
-            .searchLoading,
+            .recommendTitleLoading,
             isLoading: true
         )
 }

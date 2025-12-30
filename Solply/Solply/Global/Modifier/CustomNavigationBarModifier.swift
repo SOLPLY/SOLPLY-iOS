@@ -111,7 +111,7 @@ extension View {
             
         // MARK: - Recommend
             
-        case .recommend(let filterTitle, let filterAction, let settingAction):
+        case .recommend(let isLoading, let filterTitle, let filterAction, let settingAction):
             self.modifier(
                 CustomNavigationBarModifier(
                     centerView: {
@@ -130,6 +130,8 @@ extension View {
                                 HStack(alignment: .center, spacing: 4.adjustedWidth) {
                                     Text(filterTitle)
                                         .applySolplyFont(.body_16_m)
+                                        .foregroundStyle(.coreBlack)
+                                        .customLoading(.JGDButtonLoading, isLoading: isLoading)
                                     
                                     Image(.arrowRightIcon)
                                         .resizable()

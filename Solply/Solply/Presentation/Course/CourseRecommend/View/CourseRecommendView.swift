@@ -50,15 +50,18 @@ struct CourseRecommendView: View {
             .frame(maxWidth: .infinity)
             .padding(.bottom, 112.adjustedHeight)
         }
-        .customNavigationBar(.recommend(
-            filterTitle: townName,
-            filterAction: {
-                appCoordinator.navigate(to: .JGD)
-            },
-            settingAction: {
-                appCoordinator.navigate(to: .placeSearch)
-            }
-        ))
+        .customNavigationBar(
+            .recommend(
+                isLoading: true, // 수정 필요
+                filterTitle: townName,
+                filterAction: {
+                    appCoordinator.navigate(to: .JGD)
+                },
+                settingAction: {
+                    appCoordinator.navigate(to: .placeSearch)
+                }
+            )
+        )
         .onChange(of: appState.townId) { _, townId in
             store.dispatch(.fetchCourseRecommend(townId: townId))
         }
