@@ -31,28 +31,30 @@ struct PlaceSearchView: View {
                 store.dispatch(.searchPlace(placeName: text))
                 hideKeyboard()
             }
-            
-            if store.state.isSearchCompleted {
-                if store.state.searchedPlaces.isEmpty {
-                    PlaceEmptyView() {
-                        appCoordinator.navigate(to: .register)
-                    }
-                } else {
-                    PlaceDataView(places: store.state.searchedPlaces) { townId, placeId in
-                        appCoordinator.navigate(
-                            to: .placeDetail(
-                                townId: townId,
-                                placeId: placeId,
-                                fromSearch: true
+            Group {
+                if store.state.isSearchCompleted {
+                    if store.state.searchedPlaces.isEmpty {
+                        PlaceEmptyView() {
+                            appCoordinator.navigate(to: .register)
+                        }
+                    } else {
+                        PlaceDataView(places: store.state.searchedPlaces) { townId, placeId in
+                            appCoordinator.navigate(
+                                to: .placeDetail(
+                                    townId: townId,
+                                    placeId: placeId,
+                                    fromSearch: true
+                                )
                             )
-                        )
-                        
-                        hideKeyboard()
-                    } registerAction: {
-                        appCoordinator.navigate(to: .register)
+                            
+                            hideKeyboard()
+                        } registerAction: {
+                            appCoordinator.navigate(to: .register)
+                        }
                     }
                 }
             }
+            .customLoading(.searchLoading, isLoading: store.state.isSearchLoading)
         }
         .frame(maxWidth: .infinity)
         .customNavigationBar(.placeSearch(backAction: appCoordinator.goBack))
