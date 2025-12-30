@@ -40,7 +40,9 @@ struct PlaceRecommendReducer {
             break
             
         case .placeRecommendFetched(let placeRecommend):
-            state.isCarouselLoading = false
+            // TODO: - 추천 장소 없을 때 어떻게 표시할지 논의 필요
+            // 일단 스켈레톤뷰 노출
+            state.isCarouselLoading = true
             state.placeRecommendItems = placeRecommend.prefix(3).map { PlaceRecommend(dto: $0) }
             
         case .fetchPlaceRecommendFailed(let error):
@@ -61,12 +63,15 @@ struct PlaceRecommendReducer {
             state.fetchedSubTags = subTags.map { SubTag(dto: $0) }
             
         case .fetchPlaceList:
+            state.isPlaceGridLoading = true
             break
             
         case .placeListFetched(let placeList):
+            state.isPlaceGridLoading = false
             state.fetchedPlaceList = placeList.map { Place(dto: $0) }
             
         case .fetchPlaceListFailed(let error):
+            state.isPlaceGridLoading = false
             print(error)
             state.fetchedPlaceList = []
             

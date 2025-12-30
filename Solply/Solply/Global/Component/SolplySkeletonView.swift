@@ -59,10 +59,11 @@ struct SolplySkeletonView: View {
                 .fill(baseColor)
                 .overlay {
                     shimmerLayer
+                        .frame(height: contentHeight * 3)
+                        .cornerRadius(cornerRadius, corners: .allCorners)
                 }
-                
-                .cornerRadius(cornerRadius, corners: .allCorners)
                 .frame(height: contentHeight)
+                .cornerRadius(cornerRadius, corners: .allCorners)
                 .onAppear {
                     isAnimating = true
                 }

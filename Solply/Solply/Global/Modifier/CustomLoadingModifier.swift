@@ -108,11 +108,45 @@ extension View {
                             SolplySkeletonView(width: 240.adjusted, height: 240.adjusted, cornerRadius: 20)
                             SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
                         }
-                        .frame(width: 632.adjusted)
+                        .frame(width: 375.adjustedWidth)
+                        .clipped()
                     }
                 )
             )
             
+        // MARK: - PlaceRecommendGridLoading
+            
+        case .placeRecommendGridLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    loadingType: loadingType,
+                    isLoading: isLoading,
+                    loadingView: {
+                        Grid(
+                            alignment: .center,
+                            horizontalSpacing: 12.5.adjusted,
+                            verticalSpacing: 16.adjusted
+                        ) {
+                            ForEach(0..<2) { _ in
+                                GridRow {
+                                    ForEach(0..<2) { _ in
+                                        VStack(alignment: .leading, spacing: 8.adjusted) {
+                                            SolplySkeletonView(
+                                                width: 145.adjusted,
+                                                height: 145.adjusted,
+                                                cornerRadius: 20
+                                            )
+                                            
+                                            SolplySkeletonView(font: .body_14_m, width: 110.adjusted)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                )
+            )
         }
     }
 }
@@ -120,7 +154,7 @@ extension View {
 #Preview {
     Text("dasdf")
         .customLoading(
-            .todayPlaceRecommendCarouselLoading,
+            .placeRecommendGridLoading,
             isLoading: true
         )
 }
