@@ -11,4 +11,5 @@ enum CustomLoadingType {
     case searchLoading
     case JGDButtonLoading
     case recommendTitleLoading
+    case todayPlaceRecommendCarouselLoading
 }

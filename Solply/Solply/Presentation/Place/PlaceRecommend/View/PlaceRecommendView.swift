@@ -43,6 +43,7 @@ struct PlaceRecommendView: View {
                 .padding(.horizontal, 20.adjustedWidth)
                 
                 TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
+                    .customLoading(.todayPlaceRecommendCarouselLoading, isLoading: store.state.isCarouselLoading)
                 
                 FilterPlaceGrid(store: store, townId: appState.townId)
                     .padding(.horizontal, 16.adjustedWidth)

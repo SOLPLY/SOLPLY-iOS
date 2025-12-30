@@ -24,6 +24,7 @@ enum PlaceRecommendAction {
     // api
     case fetchPlaceRecommend(townId: Int)
     case placeRecommendFetched([PlaceInfoDTO])
+    case fetchPlaceRecommendFailed(error: NetworkError)
     
     case fetchMainTags
     case mainTagsFetched([MainTagDTO])

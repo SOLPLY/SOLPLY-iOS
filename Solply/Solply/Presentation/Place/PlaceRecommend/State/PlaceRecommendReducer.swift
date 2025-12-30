@@ -36,10 +36,17 @@ struct PlaceRecommendReducer {
             
             // api
         case .fetchPlaceRecommend:
+            state.isCarouselLoading = true
             break
             
         case .placeRecommendFetched(let placeRecommend):
+            state.isCarouselLoading = false
             state.placeRecommendItems = placeRecommend.prefix(3).map { PlaceRecommend(dto: $0) }
+            
+        case .fetchPlaceRecommendFailed(let error):
+            state.isCarouselLoading = false
+            print(error)
+            break
             
         case .fetchMainTags:
             break

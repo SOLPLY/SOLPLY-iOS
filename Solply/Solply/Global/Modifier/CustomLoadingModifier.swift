@@ -94,6 +94,25 @@ extension View {
                     }
                 )
             )
+            
+        // MARK: - TodayPlaceRecommendCarouselLoading
+            
+        case .todayPlaceRecommendCarouselLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    loadingType: loadingType,
+                    isLoading: isLoading,
+                    loadingView: {
+                        HStack(alignment: .center, spacing: 16.adjustedWidth) {
+                            SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
+                            SolplySkeletonView(width: 240.adjusted, height: 240.adjusted, cornerRadius: 20)
+                            SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
+                        }
+                        .frame(width: 632.adjusted)
+                    }
+                )
+            )
+            
         }
     }
 }
@@ -101,7 +120,7 @@ extension View {
 #Preview {
     Text("dasdf")
         .customLoading(
-            .recommendTitleLoading,
+            .todayPlaceRecommendCarouselLoading,
             isLoading: true
         )
 }

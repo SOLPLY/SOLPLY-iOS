@@ -25,13 +25,13 @@ struct PlaceRecommendEffect {
             let response = try await recommendService.fetchPlaceRecommend(townId: townId)
             
             guard let data = response.data else {
-                return .errorOccurred(error: .responseError)
+                return .fetchPlaceRecommendFailed(error: .responseError)
             }
             return .placeRecommendFetched(data.placeInfos)
         } catch let error as NetworkError {
-            return .errorOccurred(error: error)
+            return .fetchPlaceRecommendFailed(error: error)
         } catch {
-            return .errorOccurred(error: .unknownError)
+            return .fetchPlaceRecommendFailed(error: .unknownError)
         }
     }
     
