@@ -104,6 +104,7 @@ extension CourseDetailView {
                     
                     placeList
                 }
+                .customLoading(.courseDetailLoading, isLoading: store.state.isCourseDetailLoading)
             }
     }
     

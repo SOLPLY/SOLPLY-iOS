@@ -15,4 +15,5 @@ enum CustomLoadingType {
     case placeRecommendGridLoading
     case courseRecommendGridLoading
     case placeInformationLoading
+    case courseDetailLoading
 }

@@ -83,7 +83,7 @@ extension DraggablePlaceCell {
     
     private var placeCell: some View {
         VStack(alignment: .center, spacing: 0) {
-            HStack(alignment: .top, spacing: 8.adjustedWidth) {
+            HStack(alignment: .top, spacing: 8.adjusted) {
                 KFImage(URL(string: mainImageURL))
                     .placeholder {
                         Image(.placePlaceholder)

@@ -220,6 +220,61 @@ extension View {
                     }
                 )
             )
+            
+        // MARK: - CourseDetailLoading
+            
+        case .courseDetailLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    loadingType: loadingType,
+                    isLoading: isLoading,
+                    loadingView: {
+                        VStack(alignment: .leading, spacing: 20.adjustedHeight) {
+                            VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                                SolplySkeletonView(font: .display_20_sb, width: 183)
+                                SolplySkeletonView(font: .caption_14_r, width: 270, cornerRadius: 4)
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 12) {
+                                ForEach(0..<4) { _ in
+                                    HStack(alignment: .center, spacing: 17.adjusted) {
+                                        SolplySkeletonView(
+                                            width: 20.adjusted,
+                                            height: 20.adjusted,
+                                            cornerRadius: 6
+                                        )
+                                        
+                                        HStack(alignment: .top, spacing: 8.adjusted) {
+                                            SolplySkeletonView(
+                                                width: 52.adjusted,
+                                                height: 52.adjusted,
+                                                cornerRadius: 12
+                                            )
+                                            
+                                            VStack(alignment: .leading, spacing: 4.adjusted) {
+                                                SolplySkeletonView(font: .title_15_m, width: 100.adjusted)
+                                                SolplySkeletonView(
+                                                    font: .title_15_m,
+                                                    width: 165.adjusted,
+                                                    cornerRadius: 4
+                                                )
+                                            }
+                                        }
+                                        .padding(8.adjusted)
+                                        .frame(width: 300.adjusted, height: 68.adjusted, alignment: .leading)
+                                        .addBorder(
+                                            .roundedRectangle(cornerRadius: 20),
+                                            borderColor: .gray300,
+                                            borderWidth: 1
+                                        )
+                                        .background(.coreWhite)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                )
+            )
         }
     }
 }
@@ -227,7 +282,7 @@ extension View {
 #Preview {
     Text("dasdf")
         .customLoading(
-            .placeInformationLoading,
+            .courseDetailLoading,
             isLoading: true
         )
 }
