@@ -29,7 +29,7 @@ struct SolplySkeletonView: View {
         font?.lineHeight ?? height
     }
     
-    // MARK: - Init
+    // MARK: - Initializer
     
     init(
         width: CGFloat,

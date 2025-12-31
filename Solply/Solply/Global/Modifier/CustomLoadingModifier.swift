@@ -24,8 +24,7 @@ struct CustomLoadingModifier<T>: ViewModifier where T: View {
     ) {
         self.loadingType = loadingType
         self.isLoading = isLoading
-        self.loadingView = loadingView
-        
+        self.loadingView = loadingView 
     }
     
     // MARK: - Body
