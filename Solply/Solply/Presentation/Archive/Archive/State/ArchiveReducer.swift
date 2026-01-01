@@ -20,6 +20,10 @@ enum ArchiveReducer {
             state.PlacefolderList = placeArchiveThumbnails
             print(placeArchiveThumbnails)
             
+        case .fetchPlaceThumbnailFailed(let error):
+            print(error)
+            break
+            
         case .fetchCourseThumbnail:
             break
             
@@ -27,7 +31,7 @@ enum ArchiveReducer {
             state.CourseFolderList = courseArchiveThumbnails
             print(courseArchiveThumbnails)
             
-        case .errorOccured(let error):
+        case .fetchCourseThumbnailFailed(let error):
             print(error)
             break
         }
