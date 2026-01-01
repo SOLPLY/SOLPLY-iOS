@@ -104,6 +104,7 @@ extension TabBarView {
             let response = try await userService.fetchUserInformation()
             
             guard let data = response.data else {
+                isUserInformationLoading = true
                 throw NetworkError.responseError
             }
             
@@ -111,11 +112,11 @@ extension TabBarView {
             return UserInformation(dto: data)
 
         } catch let error as NetworkError {
-            isUserInformationLoading = false
+            isUserInformationLoading = true
             throw error
             
         } catch {
-            isUserInformationLoading = false
+            isUserInformationLoading = true
             throw error
         }
     }

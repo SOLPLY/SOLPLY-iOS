@@ -113,7 +113,7 @@ enum PlaceDetailReducer {
             print(error)
             
         case .fetchPlaceDetailFailed(let error):
-            state.isPlaceInformationLoading = false
+            state.isPlaceInformationLoading = true
             print(error)
             
         case .submitPlaceBookmarkFailed(let error):

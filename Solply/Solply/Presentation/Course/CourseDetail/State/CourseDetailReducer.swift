@@ -199,7 +199,7 @@ enum CourseDetailReducer {
         // errors
             
         case .fetchCourseDetailFailed(let error):
-            state.isCourseDetailLoading = false
+            state.isCourseDetailLoading = true
             print(error)
             
         case .submitCourseBookmarkFailed(let error):

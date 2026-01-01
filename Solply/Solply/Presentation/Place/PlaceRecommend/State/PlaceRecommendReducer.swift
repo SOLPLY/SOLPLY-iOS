@@ -46,7 +46,7 @@ struct PlaceRecommendReducer {
             state.placeRecommendItems = placeRecommend.prefix(3).map { PlaceRecommend(dto: $0) }
             
         case .fetchPlaceRecommendFailed(let error):
-            state.isCarouselLoading = false
+            state.isCarouselLoading = true
             print(error)
             break
             
@@ -71,7 +71,7 @@ struct PlaceRecommendReducer {
             state.fetchedPlaceList = placeList.map { Place(dto: $0) }
             
         case .fetchPlaceListFailed(let error):
-            state.isPlaceGridLoading = false
+            state.isPlaceGridLoading = true
             print(error)
             state.fetchedPlaceList = []
             

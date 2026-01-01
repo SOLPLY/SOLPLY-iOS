@@ -84,6 +84,7 @@ extension View {
                             SolplySkeletonView(font: .display_20_sb, width: 150.adjustedWidth)
                             SolplySkeletonView(font: .display_20_sb, width: 300.adjustedWidth)
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 )
             )

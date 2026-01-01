@@ -20,7 +20,7 @@ struct CourseRecommendReducer {
             state.courses = courses.map { CourseRecommend(dto: $0) }
             
         case .errorOccurred(error: let error):
-            state.isCourseGridLoading = false
+            state.isCourseGridLoading = true
             print(error)
         }
     }
