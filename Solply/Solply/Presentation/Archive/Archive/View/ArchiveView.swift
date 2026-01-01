@@ -87,7 +87,10 @@ extension ArchiveView {
             .scrollTargetBehavior(.paging)
             .scrollIndicators(.hidden)
         }
-        .customLoading(.archiveFolderLoading, isLoading: true)
+        .customLoading(
+            .archiveFolderLoading,
+            isLoading: store.state.isPlaceFolderLoading || store.state.isCourseFolderLoading
+        )
         .overlay {
             swipeBackArea
         }

@@ -8,6 +8,9 @@
 import Foundation
 
 struct ArchiveState {
+    var isPlaceFolderLoading: Bool = false
+    var isCourseFolderLoading: Bool = false
+    
     var selectedCategory: SolplyContentType = .place
     
     var PlacefolderList : [PlaceArchiveThumbnailDTO] = []
