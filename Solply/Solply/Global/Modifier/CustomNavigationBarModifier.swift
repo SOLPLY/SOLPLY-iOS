@@ -8,25 +8,35 @@
 import SwiftUI
 
 struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View, R: View {
+    
+    // MARK: - Properties
+    
     let centerView: (() -> C)?
     let leftView: (() -> L)?
     let rightView: (() -> R)?
     let backgroundColor: Color
+    let isFloatingBar: Bool
+    
+    // MARK: - Initializer
     
     init(
         centerView: (() -> C)? = nil,
         leftView: (() -> L)? = nil,
         rightView: (() -> R)? = nil,
-        backgroundColor: Color
+        backgroundColor: Color,
+        isFloatingBar: Bool = false
     ) {
         self.centerView = centerView
         self.leftView = leftView
         self.rightView = rightView
         self.backgroundColor = backgroundColor
+        self.isFloatingBar = isFloatingBar
     }
     
+    // MARK: - Body
+    
     func body(content: Content) -> some View {
-        if backgroundColor == Color.clear {
+        if isFloatingBar {
             floatingNavigationBar(content)
         } else {
             defaultNavigationBar(content)
@@ -201,7 +211,8 @@ extension View {
                         .buttonStyle(.plain)
                         .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
                     },
-                    backgroundColor: .clear
+                    backgroundColor: .clear,
+                    isFloatingBar: true
                 )
             )
             
@@ -249,7 +260,8 @@ extension View {
                         .buttonStyle(.plain)
                         .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
                     },
-                    backgroundColor: .clear
+                    backgroundColor: .clear,
+                    isFloatingBar: true
                 )
             )
             
