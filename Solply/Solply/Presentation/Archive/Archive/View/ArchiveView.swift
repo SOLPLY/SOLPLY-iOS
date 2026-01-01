@@ -46,38 +46,6 @@ extension ArchiveView {
         )
     }
     
-    private var archiveGridWithTabView: some View {
-        TabView(
-            selection: Binding(
-                get: { store.state.selectedCategory },
-                set: { selectedCategory in
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        store.dispatch(.toggleArchiveBar(archiveCategory: selectedCategory))
-                    }
-                }
-            )
-        ) {
-            Group {
-                if store.state.PlacefolderList.isEmpty {
-                    ArchiveEmptyView(archiveCategory: .place)
-                } else {
-                    ArchiveFullView(archiveCategory: .place, store: store)
-                }
-            }
-            .tag(SolplyContentType.place)
-            
-            Group {
-                if store.state.CourseFolderList.isEmpty {
-                    ArchiveEmptyView(archiveCategory: .course)
-                } else {
-                    ArchiveFullView(archiveCategory: .course, store: store)
-                }
-            }
-            .tag(SolplyContentType.course)
-        }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-    }
-    
     private var archiveGrid: some View {
         GeometryReader { geometry in
             ScrollView(.horizontal) {
@@ -119,6 +87,7 @@ extension ArchiveView {
             .scrollTargetBehavior(.paging)
             .scrollIndicators(.hidden)
         }
+        .customLoading(.archiveFolderLoading, isLoading: true)
         .overlay {
             swipeBackArea
         }

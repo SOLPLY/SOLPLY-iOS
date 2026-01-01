@@ -263,6 +263,40 @@ extension View {
                     }
                 )
             )
+            
+        // MARK: - ArchiveLoading
+            
+        case .archiveFolderLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    isLoading: isLoading,
+                    loadingView: {
+                        Grid(
+                            alignment: .center,
+                            horizontalSpacing: 12.5.adjusted,
+                            verticalSpacing: 16.adjusted
+                        ) {
+                            ForEach(0..<2) { _ in
+                                GridRow(alignment: .center) {
+                                    ForEach(0..<2) { _ in
+                                        VStack(alignment: .leading, spacing: 8.adjusted) {
+                                            SolplySkeletonView(
+                                                width: 165.adjusted,
+                                                height: 165.adjusted,
+                                                cornerRadius: 20
+                                            )
+                                            
+                                            SolplySkeletonView(font: .title_15_m, width: 100.adjusted)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 16.adjustedHeight)
+                    }
+                )
+            )
         }
     }
 }
