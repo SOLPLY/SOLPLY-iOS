@@ -89,4 +89,3 @@ struct OnboardingAgreementView: View {
         }
     }
 }
-

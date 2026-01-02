@@ -48,14 +48,9 @@ struct MyPageSettings: View {
                 .padding(.bottom, 12.adjustedHeight)
             
             row(title: "고객센터", action: onTapCustomerCenter)
-            
             row(title: "로그인 정보", trailing: loginProvider?.loginInformation ?? "")
             row(title: "앱 버전", trailing: appVersion)
-            
-            row(title: "로그아웃") {
-                showLogoutAlert()
-            }
-            
+            row(title: "로그아웃", action: showLogoutAlert)
             row(title: "탈퇴하기", isLast: true, action: onTapDeleteAccount)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
