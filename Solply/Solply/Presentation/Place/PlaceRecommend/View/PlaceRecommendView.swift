@@ -15,42 +15,54 @@ struct PlaceRecommendView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceRecommendStore()
     
+    @Binding private var scrollToTopTarget: ScrollToTopTarget?
+    
     private let title: String
     private let townName: String
     private let isUserInformationLoading: Bool
     
+    private let topId: String = "TOP"
+    
     // MARK: - Initializer
     
-    init(title: String, townName: String, isUserInformationLoading: Bool) {
+    init(
+        title: String,
+        townName: String,
+        isUserInformationLoading: Bool,
+        scrollToTopTarget: Binding<ScrollToTopTarget?>
+    ) {
         self.title = title
         self.townName = townName
         self.isUserInformationLoading = isUserInformationLoading
+        self._scrollToTopTarget = scrollToTopTarget
     }
     
     // MARK: - Body
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .center, spacing: 28.adjustedHeight) {
-                HStack(alignment: .center, spacing: 0) {
-                    Text(title)
-                        .applySolplyFont(.display_20_sb)
-                        .foregroundStyle(.coreBlack)
+        ScrollViewReader { proxy in
+            ScrollView(.vertical, showsIndicators: false) {
+                scrollToTop
+                
+                VStack(alignment: .center, spacing: 28.adjustedHeight) {
+                    placeRecommendTitle
                     
-                    Spacer()
+                    todayPlaceRecommendCarousel
+                    
+                    filterPlaceGrid
                 }
-                .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
-                .padding(.horizontal, 20.adjustedWidth)
-                
-                TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
-                    .customLoading(.todayPlaceRecommendCarouselLoading, isLoading: store.state.isCarouselLoading)
-                
-                FilterPlaceGrid(store: store, townId: appState.townId)
-                    .padding(.horizontal, 16.adjustedWidth)
-                
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, 112.adjustedHeight)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.bottom, 112.adjustedHeight)
+            .onChange(of: scrollToTopTarget) { _, target in
+                guard target == .placeTopTarget else { return }
+                
+                withAnimation(.easeInOut(duration: 0.4)) {
+                    proxy.scrollTo(topId, anchor: .top)
+                }
+                
+                scrollToTopTarget = nil
+            }
         }
         .customNavigationBar(
             .recommend(
@@ -95,5 +107,37 @@ struct PlaceRecommendView: View {
                 subTagBIdList: subTagBIdList
             ))
         }
+    }
+}
+
+// MARK: - SubViews
+
+extension PlaceRecommendView {
+    private var scrollToTop: some View {
+        Color.clear
+            .frame(height: 0)
+            .id(topId)
+    }
+    
+    private var placeRecommendTitle: some View {
+        HStack(alignment: .center, spacing: 0) {
+            Text(title)
+                .applySolplyFont(.display_20_sb)
+                .foregroundStyle(.coreBlack)
+            
+            Spacer()
+        }
+        .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
+        .padding(.horizontal, 20.adjustedWidth)
+    }
+    
+    private var todayPlaceRecommendCarousel: some View {
+        TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
+            .customLoading(.todayPlaceRecommendCarouselLoading, isLoading: store.state.isCarouselLoading)
+    }
+    
+    private var filterPlaceGrid: some View {
+        FilterPlaceGrid(store: store, townId: appState.townId)
+            .padding(.horizontal, 16.adjustedWidth)
     }
 }

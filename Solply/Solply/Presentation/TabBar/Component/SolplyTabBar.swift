@@ -27,17 +27,20 @@ struct SolplyTabBar: View {
     // TODO: - 1차 스프린트 이후 클로저 프로퍼티 삭제
     private let bookmarkAction: (() -> Void)?
     private let myPageAction: (() -> Void)?
+    private let scrollToTopAction: ((TabBarState) -> Void)?
     
     // MARK: - Initializer
     
     init(
         selectedTab: Binding<TabBarState>,
         bookmarkAction: (() -> Void)? = nil,
-        myPageAction: (() -> Void)? = nil
+        myPageAction: (() -> Void)? = nil,
+        scrollToTopAction: ((TabBarState) -> Void)? = nil
     ) {
         self._selectedTab = selectedTab
         self.bookmarkAction = bookmarkAction
         self.myPageAction = myPageAction
+        self.scrollToTopAction = scrollToTopAction
     }
     
     // MARK: - Body
@@ -97,7 +100,13 @@ extension SolplyTabBar {
 
 extension SolplyTabBar {
     private func selectTab(_ selectedTab: TabBarState) {
-        self.selectedTab = selectedTab
+        
+        if self.selectedTab == selectedTab {
+            scrollToTopAction?(selectedTab)
+        } else {
+            self.selectedTab = selectedTab
+        }
+        
         capsuleOffsetX = calculateCapsuleOffsetX(for: selectedTab)
     }
     
