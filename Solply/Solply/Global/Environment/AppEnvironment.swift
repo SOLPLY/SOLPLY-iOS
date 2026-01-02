@@ -63,6 +63,16 @@ enum AppEnvironment {
         return url
     }()
     
+    
+    /// 고객센터 URL
+    static let customerCenterURL: URL = {
+        guard let urlString = Bundle.main.object(forInfoDictionaryKey: "CUSTOMER_CENTER_URL") as? String,
+              let url = URL(string: urlString) else {
+            fatalError("Info.plist에 CUSTOMER_CENTER_URL이 없거나 URL 형식이 잘못되었습니다.")
+        }
+        return url
+    }()
+    
     /// solply 앱 버전
     static let appVersion: String = {
         guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {

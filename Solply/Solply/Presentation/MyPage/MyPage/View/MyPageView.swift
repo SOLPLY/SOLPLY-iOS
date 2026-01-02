@@ -38,7 +38,9 @@ struct MyPageView: View {
                     MyPageSettings(
                         loginProvider: store.state.loginInformation,
                         appVersion: AppEnvironment.appVersion,
-                        onTapCustomerCenter: { store.dispatch(.customerCenterTapped) },
+                        onTapCustomerCenter: {
+                            appCoordinator.navigate(to: .customerCenter)
+                        },
                         onTapLogout: { store.dispatch(.logout) },
                         onTapDeleteAccount: { store.dispatch(.deleteAccountTapped)
                             appCoordinator.navigate(to: .withdraw)
@@ -96,6 +98,7 @@ private extension MyPageView {
                         .foregroundColor(.gray600)
                 }
             }
+            .buttonStyle(.plain)
         }
         .frame(maxWidth: .infinity, alignment: .center)
     }
