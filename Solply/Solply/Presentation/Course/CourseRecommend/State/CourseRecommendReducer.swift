@@ -12,12 +12,15 @@ struct CourseRecommendReducer {
         switch action {
             
         case .fetchCourseRecommend:
+            state.isCourseGridLoading = true
             break
             
         case .courseRecommendFetched(let courses):
+            state.isCourseGridLoading = false
             state.courses = courses.map { CourseRecommend(dto: $0) }
             
         case .errorOccurred(error: let error):
+            state.isCourseGridLoading = true
             print(error)
         }
     }

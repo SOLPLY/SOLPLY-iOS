@@ -71,7 +71,7 @@ enum SolplyFont {
         }
     }
     
-    private var adjustedSize: CGFloat {
+    var adjustedSize: CGFloat {
         return defaultSize * SolplyFont.scaleRatio
     }
     

@@ -22,15 +22,15 @@ struct ArchiveEffect {
             let response = try await placeService.fetchPlaceThumbnail()
             
             guard let data = response.data else {
-                return .errorOccured(error: .responseError)
+                return .fetchPlaceThumbnailFailed(error: .responseError)
             }
             
             return .placeThumbnailFetched(placeArchiveThumbnails: data.folderThumbnailList)
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .fetchPlaceThumbnailFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .fetchPlaceThumbnailFailed(error: .unknownError)
         }
     }
     
@@ -39,15 +39,15 @@ struct ArchiveEffect {
             let response = try await courseService.fetchCourseThumbnail()
             
             guard let data = response.data else {
-                return .errorOccured(error: .responseError)
+                return .fetchCourseThumbnailFailed(error: .responseError)
             }
             
             return .courseThumbnailFetched(courseArchiveThumbnails: data.folders)
             
         } catch let error as NetworkError {
-            return .errorOccured(error: error)
+            return .fetchCourseThumbnailFailed(error: error)
         } catch {
-            return .errorOccured(error: .unknownError)
+            return .fetchCourseThumbnailFailed(error: .unknownError)
         }
     }
 }

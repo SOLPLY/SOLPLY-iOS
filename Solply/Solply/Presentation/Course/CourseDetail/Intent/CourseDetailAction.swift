@@ -47,7 +47,7 @@ enum CourseDetailAction {
     case completeEditCourseInformation(courseInformation: CourseInformation)
     
     // api
-    case fetchCourseDetail(courseId: Int)
+    case fetchCourseDetail(courseId: Int, isCourseUpdated: Bool)
     case courseDetailFetched(courseDetail: CourseDetailResponseDTO)
     case fetchCourseDetailFailed(error: NetworkError)
     

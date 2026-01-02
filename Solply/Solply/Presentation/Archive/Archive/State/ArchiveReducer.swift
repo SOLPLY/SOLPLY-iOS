@@ -14,20 +14,30 @@ enum ArchiveReducer {
             state.selectedCategory = archiveCategory
             
         case .fetchPlaceThumbnail:
+            state.isPlaceFolderLoading = true
             break
             
         case .placeThumbnailFetched(let placeArchiveThumbnails):
             state.PlacefolderList = placeArchiveThumbnails
+            state.isPlaceFolderLoading = false
             print(placeArchiveThumbnails)
             
+        case .fetchPlaceThumbnailFailed(let error):
+            state.isPlaceFolderLoading = true
+            print(error)
+            break
+            
         case .fetchCourseThumbnail:
+            state.isCourseFolderLoading = true
             break
             
         case .courseThumbnailFetched(let courseArchiveThumbnails):
             state.CourseFolderList = courseArchiveThumbnails
+            state.isCourseFolderLoading = false
             print(courseArchiveThumbnails)
             
-        case .errorOccured(let error):
+        case .fetchCourseThumbnailFailed(let error):
+            state.isCourseFolderLoading = true
             print(error)
             break
         }

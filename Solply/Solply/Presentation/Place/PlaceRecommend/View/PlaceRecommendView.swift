@@ -17,12 +17,14 @@ struct PlaceRecommendView: View {
     
     private let title: String
     private let townName: String
+    private let isUserInformationLoading: Bool
     
     // MARK: - Initializer
     
-    init(title: String, townName: String) {
+    init(title: String, townName: String, isUserInformationLoading: Bool) {
         self.title = title
         self.townName = townName
+        self.isUserInformationLoading = isUserInformationLoading
     }
     
     // MARK: - Body
@@ -33,11 +35,15 @@ struct PlaceRecommendView: View {
                 HStack(alignment: .center, spacing: 0) {
                     Text(title)
                         .applySolplyFont(.display_20_sb)
+                        .foregroundStyle(.coreBlack)
+                    
                     Spacer()
                 }
+                .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
                 .padding(.horizontal, 20.adjustedWidth)
                 
                 TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
+                    .customLoading(.todayPlaceRecommendCarouselLoading, isLoading: store.state.isCarouselLoading)
                 
                 FilterPlaceGrid(store: store, townId: appState.townId)
                     .padding(.horizontal, 16.adjustedWidth)
@@ -46,15 +52,18 @@ struct PlaceRecommendView: View {
             .frame(maxWidth: .infinity)
             .padding(.bottom, 112.adjustedHeight)
         }
-        .customNavigationBar(.recommend(
-            filterTitle: townName,
-            filterAction: {
-                appCoordinator.navigate(to: .JGD)
-            },
-            settingAction: {
-                appCoordinator.navigate(to: .placeSearch)
-            }
-        ))
+        .customNavigationBar(
+            .recommend(
+                isLoading: isUserInformationLoading,
+                filterTitle: townName,
+                filterAction: {
+                    appCoordinator.navigate(to: .JGD)
+                },
+                settingAction: {
+                    appCoordinator.navigate(to: .placeSearch)
+                }
+            )
+        )
         .background(.gray100)
         .onAppear {
             store.dispatch(.fetchPlaceRecommend(townId: appState.townId))

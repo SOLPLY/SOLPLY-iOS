@@ -69,13 +69,7 @@ struct SolplyMainButton: View {
             .frame(height: 64.adjustedHeight)
             .background(
                 Capsule()
+                    .fill(.gray900)
             )
     }
-}
-
-
-#Preview {
-    SolplyMainButton(title: "확인", isEnabled: true, isLoading: false)
-    SolplyMainButton(title: "확인", isEnabled: false, isLoading: false)
-    SolplyMainButton(title: "확인", isEnabled: true, isLoading: true)
 }
