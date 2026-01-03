@@ -14,15 +14,18 @@ struct SolplyTextEditor: View {
     @State private var text: String = ""
     
     private let placeholder: String
+    private let isTextLimitEnabled: Bool
     private let onTextChanged: ((String) -> Void)?
     
     // MARK: - Initializer
     
     init(
         placeholder: String = "최대 200자 입력 가능",
+        isTextLimitEnabled: Bool = true,
         onTextChanged: ((String) -> Void)? = nil
     ) {
         self.placeholder = placeholder
+        self.isTextLimitEnabled = isTextLimitEnabled
         self.onTextChanged = onTextChanged
     }
     
@@ -37,7 +40,18 @@ struct SolplyTextEditor: View {
                 .padding(.horizontal, 10.adjustedWidth)
                 .padding(.vertical, 7.adjustedHeight)
                 .onChange(of: text) { _, newValue in
-                    onTextChanged?(newValue)
+                    guard isTextLimitEnabled else {
+                        onTextChanged?(newValue)
+                        return
+                    }
+                    
+                    let limitedText = String(newValue.prefix(200))
+                    
+                    if limitedText != newValue {
+                        text = limitedText
+                    }
+                    
+                    onTextChanged?(limitedText)
                 }
             
             if text.isEmpty {
