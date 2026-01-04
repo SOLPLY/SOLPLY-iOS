@@ -19,6 +19,7 @@ struct TabBarView: View {
     @State private var placeRecommendTitle: String = ""
     @State private var courseRecommendTitle: String = ""
     @State private var isUserInformationLoading: Bool = false
+    @State private var scrollToTopTarget: ScrollToTopTarget?
     
     private let userService = UserService()
     
@@ -63,14 +64,16 @@ extension TabBarView {
             PlaceRecommendView(
                 title: placeRecommendTitle,
                 townName: townName,
-                isUserInformationLoading: isUserInformationLoading
+                isUserInformationLoading: isUserInformationLoading,
+                scrollToTopTarget: $scrollToTopTarget
             )
             .visible(appCoordinator.selectedTab == .place)
             
             CourseRecommendView(
                 title: courseRecommendTitle,
                 townName: townName,
-                isUserInformationLoading: isUserInformationLoading
+                isUserInformationLoading: isUserInformationLoading,
+                scrollToTopTarget: $scrollToTopTarget
             )
             .visible(appCoordinator.selectedTab == .course)
         }
@@ -88,6 +91,15 @@ extension TabBarView {
             }, myPageAction: {
                 print("TabBarView - myPageAction")
                 appCoordinator.navigate(to: .myPage)
+            }, scrollToTopAction: { tabBarState in
+                switch tabBarState {
+                case .place:
+                    scrollToTopTarget = .placeTopTarget
+                case .course:
+                    scrollToTopTarget = .courseTopTarget
+                default:
+                    break
+                }
             }
         )
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)
@@ -120,11 +132,4 @@ extension TabBarView {
             throw error
         }
     }
-}
-
-#Preview {
-    TabBarView()
-        .environmentObject(AppState())
-        .environmentObject(AppCoordinator())
-        .environmentObject(ToastManager())
 }

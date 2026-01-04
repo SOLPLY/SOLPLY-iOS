@@ -15,46 +15,52 @@ struct CourseRecommendView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = CourseRecommendStore()
     
+    @Binding private var scrollToTopTarget: ScrollToTopTarget?
+    
     private let title: String
     private let townName: String
     private let isUserInformationLoading: Bool
     
+    private let topId: String = "TOP"
+    
     // MARK: - Initializer
     
-    init(title: String, townName: String, isUserInformationLoading: Bool) {
+    init(
+        title: String,
+        townName: String,
+        isUserInformationLoading: Bool,
+        scrollToTopTarget: Binding<ScrollToTopTarget?>
+    ) {
         self.title = title
         self.townName = townName
         self.isUserInformationLoading = isUserInformationLoading
+        self._scrollToTopTarget = scrollToTopTarget
     }
     
     // MARK: - Body
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .center, spacing: 28.adjustedHeight) {
-                HStack(alignment: .center, spacing: 0) {
-                    Text(title)
-                        .applySolplyFont(.display_20_sb)
-                        .foregroundStyle(.coreBlack)
-                    
-                    Spacer()
-                }
-                .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
-                .padding(.horizontal, 20.adjustedWidth)
+        ScrollViewReader { proxy in
+            ScrollView(.vertical, showsIndicators: false) {
+                scrollToTop
                 
-                CourseRecommendGrid(store: store) { courseId in
-                    appCoordinator.navigate(
-                        to: .courseDetail(
-                            townId: appState.townId,
-                            courseId: courseId,
-                            fromArchive: false
-                        )
-                    )
+                VStack(alignment: .center, spacing: 28.adjustedHeight) {
+                    courseRecommendTitle
+                    
+                    courseRecommendGrid
                 }
-                .customLoading(.courseRecommendGridLoading, isLoading: store.state.isCourseGridLoading)
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, 112.adjustedHeight)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.bottom, 112.adjustedHeight)
+            .onChange(of: scrollToTopTarget) { _, target in
+                guard target == .courseTopTarget else { return }
+                
+                withAnimation(.easeInOut(duration: 0.4)) {
+                    proxy.scrollTo(topId, anchor: .top)
+                }
+                
+                scrollToTopTarget = nil
+            }
         }
         .customNavigationBar(
             .recommend(
@@ -78,3 +84,37 @@ struct CourseRecommendView: View {
     }
 }
 
+// MARK: - SubViews
+
+extension CourseRecommendView {
+    private var scrollToTop: some View {
+        Color.clear
+            .frame(height: 0)
+            .id(topId)
+    }
+    
+    private var courseRecommendTitle: some View {
+        HStack(alignment: .center, spacing: 0) {
+            Text(title)
+                .applySolplyFont(.display_20_sb)
+                .foregroundStyle(.coreBlack)
+            
+            Spacer()
+        }
+        .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
+        .padding(.horizontal, 20.adjustedWidth)
+    }
+    
+    private var courseRecommendGrid: some View {
+        CourseRecommendGrid(store: store) { courseId in
+            appCoordinator.navigate(
+                to: .courseDetail(
+                    townId: appState.townId,
+                    courseId: courseId,
+                    fromArchive: false
+                )
+            )
+        }
+        .customLoading(.courseRecommendGridLoading, isLoading: store.state.isCourseGridLoading)
+    }
+}

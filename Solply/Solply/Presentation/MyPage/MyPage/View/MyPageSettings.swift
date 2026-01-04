@@ -48,14 +48,9 @@ struct MyPageSettings: View {
                 .padding(.bottom, 12.adjustedHeight)
             
             row(title: "고객센터", action: onTapCustomerCenter)
-            
             row(title: "로그인 정보", trailing: loginProvider?.loginInformation ?? "")
             row(title: "앱 버전", trailing: appVersion)
-            
-            row(title: "로그아웃") {
-                showLogoutAlert()
-            }
-            
+            row(title: "로그아웃", action: showLogoutAlert)
             row(title: "탈퇴하기", isLast: true, action: onTapDeleteAccount)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -70,25 +65,31 @@ struct MyPageSettings: View {
         isLast: Bool = false,
         action: (() -> Void)? = nil
     ) -> some View {
-        HStack(spacing: 0) {
-            Text(title)
-                .applySolplyFont(.body_16_r)
-                .foregroundColor(.coreBlack)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            
-            if let trailing {
-                Text(trailing)
+        Button {
+            action?()
+        } label: {
+            HStack(spacing: 0) {
+                Text(title)
                     .applySolplyFont(.body_16_r)
-                    .foregroundColor(.gray600)
+                    .foregroundColor(.coreBlack)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                if let trailing {
+                    Text(trailing)
+                        .applySolplyFont(.body_16_r)
+                        .foregroundColor(.gray600)
+                }
             }
+            .padding(.horizontal, 16.adjustedWidth)
+            .frame(maxWidth: .infinity, minHeight: 48.adjustedHeight, alignment: .leading)
+            .contentShape(Rectangle())
+            .background(
+                Rectangle()
+                    .foregroundColor(.white)
+            )
         }
-        .padding(.horizontal, 16.adjustedWidth)
-        .frame(maxWidth: .infinity, minHeight: 48.adjustedHeight, alignment: .leading)
-        .contentShape(Rectangle())
-        .background(
-            Rectangle()
-                .foregroundColor(.white)
-        )
+        .buttonStyle(.plain)
+        .allowsHitTesting(action != nil)
         .overlay(
             Group {
                 if !isLast {
@@ -97,9 +98,6 @@ struct MyPageSettings: View {
             },
             alignment: .bottom
         )
-        .onTapGesture {
-            action?()
-        }
     }
     
     // MARK: - Alert

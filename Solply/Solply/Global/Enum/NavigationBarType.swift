@@ -23,4 +23,5 @@ enum NavigationBarType {
     case registeredPlace(backAction: () -> Void)
     case register(backAction: () -> Void)
     case withdraw(backAction: () -> Void)
+    case customerCenter(backAction: () -> Void)
 }

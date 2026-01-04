@@ -273,6 +273,7 @@ extension View {
                     centerView: {
                         Text("수집함")
                             .applySolplyFont(.head_16_m)
+                            .foregroundStyle(.coreBlack)
                     },
                     leftView: {
                         Button {
@@ -300,6 +301,7 @@ extension View {
                     centerView: {
                         Text(title)
                             .applySolplyFont(.head_16_m)
+                            .foregroundStyle(.coreBlack)
                     },
                     leftView: {
                         Button {
@@ -327,6 +329,7 @@ extension View {
                     centerView: {
                         Text("동네 설정")
                             .applySolplyFont(.head_16_m)
+                            .foregroundStyle(.coreBlack)
                     },
                     leftView: {
                         Button {
@@ -357,6 +360,7 @@ extension View {
                                 Text(" ")
                             } else {
                                 Text("제보하기")
+                                    .foregroundStyle(.coreBlack)
                             }
                         }
                         .applySolplyFont(.head_16_m)
@@ -394,6 +398,7 @@ extension View {
                     centerView: {
                         Text("검색하기")
                             .applySolplyFont(.head_16_m)
+                            .foregroundStyle(.coreBlack)
                     },
                     leftView: {
                         Button {
@@ -443,6 +448,7 @@ extension View {
                     centerView: {
                         Text("프로필 수정")
                             .applySolplyFont(.head_16_m)
+                            .foregroundStyle(.coreBlack)
                     },
                     leftView: {
                         Button {
@@ -467,6 +473,7 @@ extension View {
                     centerView: {
                         Text("내가 등록한 장소")
                             .applySolplyFont(.head_16_m)
+                            .foregroundStyle(.coreBlack)
                     },
                     leftView: {
                         Button {
@@ -492,6 +499,7 @@ extension View {
                     centerView: {
                         Text("장소 등록하기")
                             .applySolplyFont(.head_16_m)
+                            .foregroundStyle(.coreBlack)
                     },
                     leftView: {
                         Button {
@@ -517,6 +525,33 @@ extension View {
                     centerView: {
                         Text("탈퇴하기")
                             .applySolplyFont(.head_16_m)
+                            .foregroundStyle(.coreBlack)
+                    },
+                    leftView: {
+                        Button {
+                            backAction()
+                        } label: {
+                            Image(.backIconIos)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24.adjusted, height: 24.adjusted)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    rightView: {
+                        EmptyView()
+                    },
+                    backgroundColor: .coreWhite
+                )
+            )
+            
+        case .customerCenter(let backAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        Text("고객센터")
+                            .applySolplyFont(.head_16_m)
+                            .foregroundStyle(.coreBlack)
                     },
                     leftView: {
                         Button {
