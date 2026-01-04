@@ -92,12 +92,13 @@ extension TabBarView {
                 print("TabBarView - myPageAction")
                 appCoordinator.navigate(to: .myPage)
             }, scrollToTopAction: { tabBarState in
-                if tabBarState == .place {
+                switch tabBarState {
+                case .place:
                     scrollToTopTarget = .placeTopTarget
-                }
-                
-                if tabBarState == .course {
+                case .course:
                     scrollToTopTarget = .courseTopTarget
+                default:
+                    break
                 }
             }
         )
