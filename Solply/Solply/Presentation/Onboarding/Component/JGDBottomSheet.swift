@@ -50,7 +50,7 @@ struct JGDBottomSheet: View {
                     if onClose == nil { dismiss() } else { onClose?() }
                 }
                 .padding(.horizontal, 20.adjustedWidth)
-                .padding(.bottom, 16.adjustedHeight)
+                .padding(.bottom, 34.adjustedHeight)
             }
         }
         .onAppear {
@@ -58,6 +58,7 @@ struct JGDBottomSheet: View {
         }
         .background(.coreWhite)
         .cornerRadius(20)
+        .ignoresSafeArea(edges: .bottom)
     }
 }
 
