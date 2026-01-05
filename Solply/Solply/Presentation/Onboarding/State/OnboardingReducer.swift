@@ -44,13 +44,6 @@ enum OnboardingReducer {
                 state.policyList[index].isAgreed = newValue
             }
             
-        case .selectTown(let town):
-            state.selectedTown = town
-            state.selectedSubTown = town.subTowns.first
-        
-        case .selectSubTown(let subTown):
-            state.selectedSubTown = subTown
-            
         case .selectPersona(let persona):
             state.selectedPersona = persona
             
@@ -68,18 +61,6 @@ enum OnboardingReducer {
             
         case .nicknameChecked(let stateType):
             state.nicknameType = stateType
-            
-        case .fetchTowns:
-            state.errorMessage = nil
-            
-        case .fetchTownsSuccess(let townList):
-            state.townList = townList
-
-            state.selectedTown = nil
-            state.selectedSubTown = nil
-
-        case .fetchTownsFailure(let message):
-            state.errorMessage = message
             
         case .fetchPersona:
             state.errorMessage = nil
