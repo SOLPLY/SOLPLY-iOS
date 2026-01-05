@@ -24,8 +24,6 @@ struct OnboardingView: View {
                     switch store.state.step {
                     case .agreement:
                         OnboardingAgreementView(store: store)
-                    case .onboardingJGD:
-                        OnboardingJGDView(store: store)
                     case .personaOption:
                         PersonaOptionView(store: store)
                     case .nickName:
@@ -45,7 +43,7 @@ struct OnboardingView: View {
                     switch store.state.step {
                     case .agreement:
                         appCoordinator.changeRoot(to: .auth)
-                    case .onboardingJGD, .personaOption, .nickName:
+                    case .personaOption, .nickName:
                         store.dispatch(.goBack)
                     case .onboardingComplete:
                         break
