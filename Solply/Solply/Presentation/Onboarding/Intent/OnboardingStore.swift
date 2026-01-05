@@ -12,7 +12,6 @@ final class OnboardingStore: ObservableObject {
     
     @Published private(set) var state = OnboardingState()
     private let effect = OnboardingEffect(
-        townService : TownService(),
         userService : UserService()
     )
     
@@ -53,12 +52,6 @@ final class OnboardingStore: ObservableObject {
                 }
             }
             
-        case .fetchTowns:
-           Task {
-               let result = await effect.fetchTowns()
-               dispatch(result)
-           }
-            
         case .fetchPersona:
             Task {
                 let result = await effect.fetchPersonaList()
@@ -66,15 +59,13 @@ final class OnboardingStore: ObservableObject {
             }
             
         case .onboardingCompleteOnAppear:
-            guard let selectedSubTown = state.selectedSubTown,
-                  let selectedPersona = state.selectedPersona else {
-                print("❗️ 선택된 동네나 페르소나가 없습니다.")
+            guard let selectedPersona = state.selectedPersona else {
+                print("❗️ 선택된 페르소나가 없습니다.")
                 return
             }
 
             Task {
                 let result = await effect.completeOnboarding(
-                    selectedTownId: selectedSubTown.id,
                     persona: selectedPersona.type,
                     nickname: state.nickname,
                     policyAgreementInfos: state.policyAgreementInfos

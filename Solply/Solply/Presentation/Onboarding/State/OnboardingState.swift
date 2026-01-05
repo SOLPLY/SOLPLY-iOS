@@ -15,10 +15,6 @@ struct OnboardingState {
         policyList.map { PolicyAgreementInfo(policyId: $0.id, isAgree: $0.isAgreed) }
     }
     
-    var townList: [Town] = []
-    var selectedTown: Town? = nil
-    var selectedSubTown: SubTown? = nil
-    
     var personaList: [Persona] = []
     var selectedPersona: Persona? = nil
     var errorMessage: String? = nil
