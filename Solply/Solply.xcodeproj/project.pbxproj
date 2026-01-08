@@ -312,7 +312,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱이 위치 정보를 사용하여 위경도를 표시합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱이 위치 정보를 기반으로 현재 위치, 주변 검색, 길찾기 정보를 제공합니다.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앱에서 사진을 보려면 솔플리가 사진 라이브러리에 액세스 할 수 있어야 합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진 설정과 콘텐츠에 이미지를 첨부할 수 있도록 사진 라이브러리에 접근합니다.\n선택한 사진은 프로필 이미지 또는 사용자가 첨부한 콘텐츠에만 사용됩니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -355,7 +355,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱이 위치 정보를 사용하여 위경도를 표시합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱이 위치 정보를 기반으로 현재 위치, 주변 검색, 길찾기 정보를 제공합니다.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앱에서 사진을 보려면 솔플리가 사진 라이브러리에 액세스 할 수 있어야 합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진 설정과 콘텐츠에 이미지를 첨부할 수 있도록 사진 라이브러리에 접근합니다.\n선택한 사진은 프로필 이미지 또는 사용자가 첨부한 콘텐츠에만 사용됩니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
