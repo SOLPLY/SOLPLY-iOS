@@ -24,8 +24,10 @@ struct SplashView: View {
             LottieView(jsonName: "Splash")
                 .frame(width: 122.adjustedHeight, height: 122.adjustedHeight)
         }
-        .task {
-            await decideInitialRoute()
+        .onAppear {
+            Task {
+                await decideInitialRoute()
+            }
         }
     }
 }
