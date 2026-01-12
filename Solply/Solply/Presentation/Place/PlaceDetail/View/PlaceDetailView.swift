@@ -56,7 +56,9 @@ struct PlaceDetailView: View {
         .onAppear {
             store.dispatch(.fetchPlaceDetail)
             store.dispatch(.fetchCourseArchive)
-            store.dispatch(.compareUserTownId(userTownId: appState.townId))
+            if appState.userSession == .authenticated {
+                store.dispatch(.compareUserTownId(userTownId: appState.townId))
+            }
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
