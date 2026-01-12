@@ -34,7 +34,7 @@ struct AuthView: View {
             .customNavigationBar(
                 .auth(
                     exploreAction: {
-                        print("둘러보기 눌림")
+                        appCoordinator.changeRoot(to: .tabBar)
                     }
                 )
             )

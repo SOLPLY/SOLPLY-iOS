@@ -13,6 +13,7 @@ struct TabBarView: View {
     
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var locationManager = LocationManager()
     
     @State private var townName: String = ""
@@ -86,11 +87,21 @@ extension TabBarView {
                 get: { appCoordinator.selectedTab },
                 set: { appCoordinator.switchTab(to: $0) }
             ), bookmarkAction: {
-                print("TabBarView - bookmarkAction")
-                appCoordinator.navigate(to: .archive)
+                switch appState.userSession {
+                case .explore:
+                    showLoginAlert()
+                case .authenticated:
+                    appCoordinator.navigate(to: .archive)
+                }
+
             }, myPageAction: {
-                print("TabBarView - myPageAction")
-                appCoordinator.navigate(to: .myPage)
+                switch appState.userSession {
+                case .explore:
+                    showLoginAlert()
+                case .authenticated:
+                    appCoordinator.navigate(to: .myPage)
+                }
+                    
             }, scrollToTopAction: { tabBarState in
                 switch tabBarState {
                 case .place:
@@ -109,7 +120,7 @@ extension TabBarView {
 // MARK: - Network
 
 extension TabBarView {
-    func fetchUserInformation() async throws -> UserInformation {
+    private func fetchUserInformation() async throws -> UserInformation {
         do {
             isUserInformationLoading = true
             
@@ -130,6 +141,16 @@ extension TabBarView {
         } catch {
             isUserInformationLoading = true
             throw error
+        }
+    }
+}
+
+// MARK: - Functions
+
+extension TabBarView {
+    private func showLoginAlert() {
+        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+            appCoordinator.changeRoot(to: .auth)
         }
     }
 }

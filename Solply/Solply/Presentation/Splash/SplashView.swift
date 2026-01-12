@@ -11,6 +11,7 @@ struct SplashView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     
     // MARK: - Body
@@ -35,7 +36,9 @@ extension SplashView {
     @MainActor
     private func decideInitialRoute() async {
         try? await Task.sleep(nanoseconds: 2_000_000_000)
-
+        
+        appState.updateUserSession()
+        
         if TokenManager.shared.isSessionAvailable {
             appCoordinator.changeRoot(to: .tabBar)
         } else {

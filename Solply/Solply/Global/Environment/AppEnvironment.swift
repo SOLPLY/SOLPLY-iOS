@@ -63,7 +63,6 @@ enum AppEnvironment {
         return url
     }()
     
-    
     /// 고객센터 URL
     static let customerCenterURL: URL = {
         guard let urlString = Bundle.main.object(forInfoDictionaryKey: "CUSTOMER_CENTER_URL") as? String,

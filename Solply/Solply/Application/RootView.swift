@@ -31,6 +31,7 @@ struct RootView: View {
         .environmentObject(appCoordinator)
         .animation(.easeInOut(duration: 0.2), value: appCoordinator.root)
         .onReceive(NotificationCenter.default.publisher(for: .tokenExpired)) { _ in
+            appState.updateUserSession()
             appCoordinator.changeRoot(to: .auth)
             toastManager.showToast(
                 content: ToastContent(

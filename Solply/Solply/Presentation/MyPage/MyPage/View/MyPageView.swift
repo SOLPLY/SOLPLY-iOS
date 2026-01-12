@@ -54,7 +54,7 @@ struct MyPageView: View {
         }
         .onChange(of: store.state.shouldChangeRoot) { _, newValue in
             if newValue {
-                appCoordinator.changeRoot(to: .auth)
+                appCoordinator.changeRoot(to: .splash)
             }
         }
         .background(Color(.gray100).ignoresSafeArea())
