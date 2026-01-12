@@ -99,7 +99,7 @@ extension CourseRecommendView {
             Spacer()
         }
         .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
-        .padding(.horizontal, 20.adjustedWidth)
+        .frame(width: 335.adjustedWidth)
     }
     
     private var courseRecommendGrid: some View {

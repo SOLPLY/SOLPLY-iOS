@@ -129,7 +129,7 @@ extension PlaceRecommendView {
             Spacer()
         }
         .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
-        .padding(.horizontal, 20.adjustedWidth)
+        .frame(width: 335.adjustedWidth)
     }
     
     private var todayPlaceRecommendCarousel: some View {
@@ -150,6 +150,6 @@ extension PlaceRecommendView {
     
     private var filterPlaceGrid: some View {
         FilterPlaceGrid(store: store, townId: appState.townId)
-            .padding(.horizontal, 16.adjustedWidth)
+            .frame(width: 343.adjustedWidth)
     }
 }

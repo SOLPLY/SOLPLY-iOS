@@ -62,6 +62,7 @@ extension CustomNavigationBarModifier {
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.vertical, 16.adjustedHeight)
             .background(backgroundColor)
+            .frame(width: 375.adjustedWidth)
             
             content
             
