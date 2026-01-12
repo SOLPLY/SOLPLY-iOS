@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AuthView: View {
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store: AuthStore = AuthStore()
     
@@ -22,8 +23,13 @@ struct AuthView: View {
                 buttons
             }
             .background(.gray100)
+            .onAppear {
+                appCoordinator.switchTab(to: .place)
+            }
             .onChange(of: store.state.isLoggedIn) { _, newValue in
                 if newValue {
+                    appState.updateUserSession()
+                    
                     if store.state.isNewUser {
                         appCoordinator.changeRoot(to: .onboarding)
                     } else {
