@@ -16,7 +16,6 @@ struct TabBarView: View {
     @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var locationManager = LocationManager()
     
-    @State private var townName: String = ""
     @State private var placeRecommendTitle: String = ""
     @State private var courseRecommendTitle: String = ""
     @State private var isUserInformationLoading: Bool = false
@@ -44,15 +43,22 @@ struct TabBarView: View {
     
     private func loadUserInfo() async {
         print("🌳 [TabBarView] User Information Update")
-        
-        do {
-            let userInfo = try await fetchUserInformation()
-            townName = userInfo.townName
-            appState.townId = userInfo.townId
-            placeRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 추천"
-            courseRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 코스"
-        } catch {
-            print("사용자 정보 가져오기 실패: \(error)")
+
+        switch appState.userSession {
+        case .explore:
+            placeRecommendTitle = "솔플러님을 위한 오늘의 추천"
+            courseRecommendTitle = "솔플러님을 위한 오늘의 코스"
+            
+        case .authenticated:
+            do {
+                let userInfo = try await fetchUserInformation()
+                appState.townName = userInfo.townName
+                appState.townId = userInfo.townId
+                placeRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 추천"
+                courseRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 코스"
+            } catch {
+                print("사용자 정보 가져오기 실패: \(error)")
+            }
         }
     }
 }
@@ -64,7 +70,6 @@ extension TabBarView {
         Group {
             PlaceRecommendView(
                 title: placeRecommendTitle,
-                townName: townName,
                 isUserInformationLoading: isUserInformationLoading,
                 scrollToTopTarget: $scrollToTopTarget
             )
@@ -72,7 +77,6 @@ extension TabBarView {
             
             CourseRecommendView(
                 title: courseRecommendTitle,
-                townName: townName,
                 isUserInformationLoading: isUserInformationLoading,
                 scrollToTopTarget: $scrollToTopTarget
             )
