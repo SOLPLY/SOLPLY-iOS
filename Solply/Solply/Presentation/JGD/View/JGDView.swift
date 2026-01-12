@@ -40,7 +40,14 @@ struct JGDView: View {
                 isEnabled: store.state.selectedSubTown != nil,
                 isLoading: store.state.isCompleteButtonLoading
             ) {
-                store.dispatch(.saveSelection)
+                switch appState.userSession {
+                case .explore:
+                    appState.townId = store.state.currentSelectedSubTown?.id ?? 2
+                    appState.townName = store.state.currentSelectedSubTown?.townName ?? "망원"
+                    appCoordinator.goBack()
+                case .authenticated:
+                    store.dispatch(.saveSelection)
+                }
             }
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.bottom, 16.adjustedHeight)
