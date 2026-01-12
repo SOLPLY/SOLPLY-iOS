@@ -175,6 +175,7 @@ extension View {
                                         .frame(width: 24.adjusted, height: 24.adjusted)
                                 }
                             }
+                            .allowsHitTesting(!isLoading)
                             .buttonStyle(.plain)
                         }
                     },
