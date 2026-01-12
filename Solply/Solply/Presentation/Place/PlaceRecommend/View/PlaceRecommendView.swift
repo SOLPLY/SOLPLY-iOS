@@ -76,7 +76,10 @@ struct PlaceRecommendView: View {
         )
         .background(.gray100)
         .onAppear {
-            store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
+            if appState.userSession == .authenticated {
+                store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
+            }
+            
             store.dispatch(.fetchPlaceList(
                 townId: appState.townId,
                 isBookmarkSearch: false,
