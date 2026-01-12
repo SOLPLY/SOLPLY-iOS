@@ -31,6 +31,14 @@ struct AuthView: View {
                     }
                 }
             }
+            .customNavigationBar(
+                .auth(
+                    exploreAction: {
+                        print("둘러보기 눌림")
+                    }
+                )
+            )
+            .ignoresSafeArea(edges: .bottom)
             
             if store.state.isLoading {
                 loadingView
@@ -71,7 +79,7 @@ extension AuthView {
                 .padding(.top, 8.adjustedHeight)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.top, 108.adjustedHeight)
+        .padding(.top, 54.adjustedHeight)
         .padding(.horizontal, 40.adjustedWidth)
     }
     

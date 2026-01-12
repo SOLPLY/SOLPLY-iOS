@@ -93,6 +93,32 @@ extension View {
     func customNavigationBar(_ navigationBarType: NavigationBarType) -> some View {
         switch navigationBarType {
             
+            
+        // MARK: - Auth
+            
+        case .auth(let exploreAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        EmptyView()
+                    },
+                    leftView: {
+                        EmptyView()
+                    },
+                    rightView: {
+                        Button {
+                            exploreAction()
+                        } label: {
+                            Text("둘러보기")
+                                .applySolplyFont(.body_14_m)
+                                .foregroundStyle(.gray800)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    backgroundColor: .gray100
+                )
+            )
+            
         // MARK: - Onboarding
             
         case .onboarding(let backAction):
