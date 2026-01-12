@@ -9,7 +9,8 @@ import Foundation
 
 final class AppState: ObservableObject {
     @Published private(set) var userSession: UserSession = .explore
-    @Published var townId: Int = 0
+    @Published var townId: Int = 2
+    @Published var townName: String = "망원"
 }
 
 // MARK: - Functions
