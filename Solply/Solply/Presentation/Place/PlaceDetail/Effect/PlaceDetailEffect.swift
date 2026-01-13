@@ -23,13 +23,15 @@ struct PlaceDetailEffect {
 
 extension PlaceDetailEffect {
     func findDirection(
+        with mapRouteType: MapRouteType,
         startLatitude: Double,
         startLongitude: Double,
         destinationLatitude: Double,
         destinationLongitude: Double,
-        destinationName: String
+        destinationName: String?
     ) {
-        NaverMapRouteHelper.findDirection(
+        MapRouteHelper.findDirection(
+            with: mapRouteType,
             startLatitude: startLatitude,
             startLongitude: startLongitude,
             destinationLatitude: destinationLatitude,

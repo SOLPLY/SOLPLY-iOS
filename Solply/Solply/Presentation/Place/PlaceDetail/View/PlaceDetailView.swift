@@ -53,6 +53,17 @@ struct PlaceDetailView: View {
                 addPlaceToCourseButton
             }
         }
+        .findDirectionDialog(
+            isPresented: Binding(
+                get: { store.state.shouldShowFindDirectionDialog },
+                set: { _ in
+                    store.dispatch(.findDirectionFinished)
+                }
+            ),
+            onFindDirectionAction: { mapRouteType in
+                store.dispatch(.findDirection(mapRouteType: mapRouteType))
+            }
+        )
         .onAppear {
             store.dispatch(.fetchPlaceDetail)
             store.dispatch(.fetchCourseArchive)

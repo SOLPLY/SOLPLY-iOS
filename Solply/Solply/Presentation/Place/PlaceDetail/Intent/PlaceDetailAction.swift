@@ -13,7 +13,10 @@ enum PlaceDetailAction {
     
     case toggleAddToCourse
     case toggleBookmarkPlace
+    
     case requestFindDirection
+    case findDirection(mapRouteType: MapRouteType)
+    case findDirectionFinished
     
     case selectCourseToAdd(index: Int)
     

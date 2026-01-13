@@ -26,6 +26,12 @@ enum PlaceDetailReducer {
             state.bookmarkButtonSelected.toggle()
             
         case .requestFindDirection:
+            state.shouldShowFindDirectionDialog = true
+            
+        case .findDirectionFinished:
+            state.shouldShowFindDirectionDialog = false
+            
+        case .findDirection:
             break
             
         case .selectCourseToAdd(let index):

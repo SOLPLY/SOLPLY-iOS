@@ -65,6 +65,17 @@ struct CourseDetailView: View {
             
             toastManager.showToast(content: toastContent)
         }
+        .findDirectionDialog(
+            isPresented: Binding(
+                get: { store.state.shouldShowFindDirectionDialog },
+                set: { _ in
+                    store.dispatch(.findDirectionFinished)
+                }
+            ),
+            onFindDirectionAction: { mapRouteType in
+                store.dispatch(.findDirection(mapRouteType: mapRouteType))
+            }
+        )
         .sheet(
             isPresented: Binding(
                 get: { store.state.isSheetPresented },
@@ -185,11 +196,7 @@ extension CourseDetailView {
                     } detailAction: {
                         appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: store.state.places[index].placeId, fromSearch: false))
                     } findDirectionAction: {
-                        store.dispatch(.requestFindDirection(
-                            destinationLatitude: store.state.places[index].latitude,
-                            destinationLongitude: store.state.places[index].longitude,
-                            destinationName: store.state.places[index].placeName)
-                        )
+                        store.dispatch(.requestFindDirection)
                     } saveAction: {
                         requireLogin {
                             store.dispatch(.toggleBookmarkPlace(index: index))

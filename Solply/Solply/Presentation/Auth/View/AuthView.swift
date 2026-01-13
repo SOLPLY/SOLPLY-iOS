@@ -40,6 +40,7 @@ struct AuthView: View {
             .customNavigationBar(
                 .auth(
                     exploreAction: {
+                        appState.setInitialExploreTown()
                         appCoordinator.changeRoot(to: .tabBar)
                     }
                 )
