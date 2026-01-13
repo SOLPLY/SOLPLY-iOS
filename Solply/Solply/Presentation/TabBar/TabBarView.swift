@@ -46,8 +46,8 @@ struct TabBarView: View {
 
         switch appState.userSession {
         case .explore:
-            placeRecommendTitle = "솔플러님을 위한 오늘의 추천"
-            courseRecommendTitle = "솔플러님을 위한 오늘의 코스"
+            placeRecommendTitle = "로그인하고\n취향에 맞는 추천을 받아보세요"
+            courseRecommendTitle = "로그인하고\n취향에 맞는 추천을 받아보세요"
             
         case .authenticated:
             do {
