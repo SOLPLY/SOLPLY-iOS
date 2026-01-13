@@ -25,6 +25,7 @@
 		<string>kakaolink</string>
 		<string>kakaotalk</string>
 		<string>nmap</string>
+		<string>kakaomap</string>
 	</array>
 	<key>NAVER_SEARCH_CLIENT_ID</key>
 	<string>$(X_Naver_Client_Id)</string>
