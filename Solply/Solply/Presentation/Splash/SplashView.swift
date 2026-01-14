@@ -11,6 +11,7 @@ struct SplashView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     
     // MARK: - Body
@@ -23,8 +24,10 @@ struct SplashView: View {
             LottieView(jsonName: "Splash")
                 .frame(width: 122.adjustedHeight, height: 122.adjustedHeight)
         }
-        .task {
-            await decideInitialRoute()
+        .onAppear {
+            Task {
+                await decideInitialRoute()
+            }
         }
     }
 }
@@ -35,7 +38,9 @@ extension SplashView {
     @MainActor
     private func decideInitialRoute() async {
         try? await Task.sleep(nanoseconds: 2_000_000_000)
-
+        
+        appState.updateUserSession()
+        
         if TokenManager.shared.isSessionAvailable {
             appCoordinator.changeRoot(to: .tabBar)
         } else {

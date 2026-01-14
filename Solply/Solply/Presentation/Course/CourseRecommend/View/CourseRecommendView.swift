@@ -18,7 +18,6 @@ struct CourseRecommendView: View {
     @Binding private var scrollToTopTarget: ScrollToTopTarget?
     
     private let title: String
-    private let townName: String
     private let isUserInformationLoading: Bool
     
     private let topId: String = "TOP"
@@ -27,12 +26,10 @@ struct CourseRecommendView: View {
     
     init(
         title: String,
-        townName: String,
         isUserInformationLoading: Bool,
         scrollToTopTarget: Binding<ScrollToTopTarget?>
     ) {
         self.title = title
-        self.townName = townName
         self.isUserInformationLoading = isUserInformationLoading
         self._scrollToTopTarget = scrollToTopTarget
     }
@@ -65,7 +62,7 @@ struct CourseRecommendView: View {
         .customNavigationBar(
             .recommend(
                 isLoading: isUserInformationLoading,
-                filterTitle: townName,
+                filterTitle: appState.townName,
                 filterAction: {
                     appCoordinator.navigate(to: .JGD)
                 },
@@ -102,7 +99,7 @@ extension CourseRecommendView {
             Spacer()
         }
         .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
-        .padding(.horizontal, 20.adjustedWidth)
+        .frame(width: 335.adjustedWidth)
     }
     
     private var courseRecommendGrid: some View {

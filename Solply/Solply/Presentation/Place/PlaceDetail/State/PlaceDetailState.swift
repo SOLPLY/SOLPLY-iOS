@@ -11,6 +11,7 @@ struct PlaceDetailState {
     var isPlaceInformationLoading: Bool = false
     
     var shouldShowTownToast: Bool = false
+    var shouldShowFindDirectionDialog: Bool = false
     
     var addButtonSelected: Bool = false
     var bookmarkButtonSelected: Bool = false

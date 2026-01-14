@@ -8,6 +8,8 @@
 import Foundation
 
 struct CourseDetailState {
+    var shouldShowFindDirectionDialog: Bool = false
+    
     var isCourseDetailLoading: Bool = false
     
     var dragDropState: DragDropState = .prepared

@@ -13,9 +13,9 @@ struct TabBarView: View {
     
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var locationManager = LocationManager()
     
-    @State private var townName: String = ""
     @State private var placeRecommendTitle: String = ""
     @State private var courseRecommendTitle: String = ""
     @State private var isUserInformationLoading: Bool = false
@@ -43,15 +43,22 @@ struct TabBarView: View {
     
     private func loadUserInfo() async {
         print("🌳 [TabBarView] User Information Update")
-        
-        do {
-            let userInfo = try await fetchUserInformation()
-            townName = userInfo.townName
-            appState.townId = userInfo.townId
-            placeRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 추천"
-            courseRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 코스"
-        } catch {
-            print("사용자 정보 가져오기 실패: \(error)")
+
+        switch appState.userSession {
+        case .explore:
+            placeRecommendTitle = "로그인하고\n취향에 맞는 추천을 받아보세요"
+            courseRecommendTitle = "로그인하고\n취향에 맞는 추천을 받아보세요"
+            
+        case .authenticated:
+            do {
+                let userInfo = try await fetchUserInformation()
+                appState.townName = userInfo.townName
+                appState.townId = userInfo.townId
+                placeRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 추천"
+                courseRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 코스"
+            } catch {
+                print("사용자 정보 가져오기 실패: \(error)")
+            }
         }
     }
 }
@@ -63,7 +70,6 @@ extension TabBarView {
         Group {
             PlaceRecommendView(
                 title: placeRecommendTitle,
-                townName: townName,
                 isUserInformationLoading: isUserInformationLoading,
                 scrollToTopTarget: $scrollToTopTarget
             )
@@ -71,7 +77,6 @@ extension TabBarView {
             
             CourseRecommendView(
                 title: courseRecommendTitle,
-                townName: townName,
                 isUserInformationLoading: isUserInformationLoading,
                 scrollToTopTarget: $scrollToTopTarget
             )
@@ -86,11 +91,21 @@ extension TabBarView {
                 get: { appCoordinator.selectedTab },
                 set: { appCoordinator.switchTab(to: $0) }
             ), bookmarkAction: {
-                print("TabBarView - bookmarkAction")
-                appCoordinator.navigate(to: .archive)
+                switch appState.userSession {
+                case .explore:
+                    showLoginAlert()
+                case .authenticated:
+                    appCoordinator.navigate(to: .archive)
+                }
+
             }, myPageAction: {
-                print("TabBarView - myPageAction")
-                appCoordinator.navigate(to: .myPage)
+                switch appState.userSession {
+                case .explore:
+                    showLoginAlert()
+                case .authenticated:
+                    appCoordinator.navigate(to: .myPage)
+                }
+                    
             }, scrollToTopAction: { tabBarState in
                 switch tabBarState {
                 case .place:
@@ -109,7 +124,7 @@ extension TabBarView {
 // MARK: - Network
 
 extension TabBarView {
-    func fetchUserInformation() async throws -> UserInformation {
+    private func fetchUserInformation() async throws -> UserInformation {
         do {
             isUserInformationLoading = true
             
@@ -130,6 +145,16 @@ extension TabBarView {
         } catch {
             isUserInformationLoading = true
             throw error
+        }
+    }
+}
+
+// MARK: - Functions
+
+extension TabBarView {
+    private func showLoginAlert() {
+        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+            appCoordinator.changeRoot(to: .auth)
         }
     }
 }

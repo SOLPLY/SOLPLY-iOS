@@ -12,13 +12,13 @@ struct PlaceRecommendView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var alertManager: AlertManager
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceRecommendStore()
     
     @Binding private var scrollToTopTarget: ScrollToTopTarget?
     
     private let title: String
-    private let townName: String
     private let isUserInformationLoading: Bool
     
     private let topId: String = "TOP"
@@ -27,12 +27,10 @@ struct PlaceRecommendView: View {
     
     init(
         title: String,
-        townName: String,
         isUserInformationLoading: Bool,
         scrollToTopTarget: Binding<ScrollToTopTarget?>
     ) {
         self.title = title
-        self.townName = townName
         self.isUserInformationLoading = isUserInformationLoading
         self._scrollToTopTarget = scrollToTopTarget
     }
@@ -67,7 +65,7 @@ struct PlaceRecommendView: View {
         .customNavigationBar(
             .recommend(
                 isLoading: isUserInformationLoading,
-                filterTitle: townName,
+                filterTitle: appState.townName,
                 filterAction: {
                     appCoordinator.navigate(to: .JGD)
                 },
@@ -78,7 +76,10 @@ struct PlaceRecommendView: View {
         )
         .background(.gray100)
         .onAppear {
-            store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
+            if appState.userSession == .authenticated {
+                store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
+            }
+            
             store.dispatch(.fetchPlaceList(
                 townId: appState.townId,
                 isBookmarkSearch: false,
@@ -128,16 +129,27 @@ extension PlaceRecommendView {
             Spacer()
         }
         .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
-        .padding(.horizontal, 20.adjustedWidth)
+        .frame(width: 335.adjustedWidth)
     }
     
     private var todayPlaceRecommendCarousel: some View {
-        TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
-            .customLoading(.todayPlaceRecommendCarouselLoading, isLoading: store.state.isCarouselLoading)
+        Group {
+            switch appState.userSession {
+            case .explore:
+                ExplorePlaceRecommendCarousel() {
+                    alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+                        appCoordinator.changeRoot(to: .auth)
+                    }
+                }
+            case .authenticated:
+                TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
+                    .customLoading(.todayPlaceRecommendCarouselLoading, isLoading: store.state.isCarouselLoading)
+            }
+        }
     }
     
     private var filterPlaceGrid: some View {
         FilterPlaceGrid(store: store, townId: appState.townId)
-            .padding(.horizontal, 16.adjustedWidth)
+            .frame(width: 343.adjustedWidth)
     }
 }

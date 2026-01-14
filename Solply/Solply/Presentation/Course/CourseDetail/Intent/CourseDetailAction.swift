@@ -36,11 +36,10 @@ enum CourseDetailAction {
     case saveCourseAsNew
     case saveCourseCancel
     
-    case requestFindDirection(
-        destinationLatitude: Double,
-        destinationLongitude: Double,
-        destinationName: String
-    )
+    case requestFindDirection
+    case findDirectionFinished
+    case findDirection(mapRouteType: MapRouteType)
+    
     case updateUserCoordinate(latitude: Double, longitude: Double)
     
     case showSheet(isSheetPresented: Bool)

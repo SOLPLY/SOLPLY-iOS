@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AuthView: View {
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store: AuthStore = AuthStore()
     
@@ -22,8 +23,13 @@ struct AuthView: View {
                 buttons
             }
             .background(.gray100)
+            .onAppear {
+                appCoordinator.switchTab(to: .place)
+            }
             .onChange(of: store.state.isLoggedIn) { _, newValue in
                 if newValue {
+                    appState.updateUserSession()
+                    
                     if store.state.isNewUser {
                         appCoordinator.changeRoot(to: .onboarding)
                     } else {
@@ -31,6 +37,15 @@ struct AuthView: View {
                     }
                 }
             }
+            .customNavigationBar(
+                .auth(
+                    exploreAction: {
+                        appState.setInitialExploreTown()
+                        appCoordinator.changeRoot(to: .tabBar)
+                    }
+                )
+            )
+            .ignoresSafeArea(edges: .bottom)
             
             if store.state.isLoading {
                 loadingView
@@ -71,7 +86,7 @@ extension AuthView {
                 .padding(.top, 8.adjustedHeight)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.top, 108.adjustedHeight)
+        .padding(.top, 54.adjustedHeight)
         .padding(.horizontal, 40.adjustedWidth)
     }
     

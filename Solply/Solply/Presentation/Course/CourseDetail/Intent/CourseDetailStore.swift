@@ -20,19 +20,39 @@ final class CourseDetailStore: ObservableObject {
         
         switch action {
             
-        case .requestFindDirection(
-            let destinationLatitude,
-            let destinationLongitude,
-            let destinationName
-        ):
-            effect.findDirection(
-                startLatitude: state.userLatitude,
-                startLongitude: state.userLongitude,
-                destinationLatitude: destinationLatitude,
-                destinationLongitude: destinationLongitude,
-                destinationName: destinationName
-            )
+        case .findDirection(let mapRouteType):
+            let focusedPlaceIndex = state.focusedPlaceIndex
             
+            switch mapRouteType {
+            case .naver:
+                effect.findDirection(
+                    with: .naver,
+                    startLatitude: state.userLatitude,
+                    startLongitude: state.userLongitude,
+                    destinationLatitude: state.places[focusedPlaceIndex].latitude,
+                    destinationLongitude: state.places[focusedPlaceIndex].longitude,
+                    destinationName: state.places[focusedPlaceIndex].placeName
+                )
+            case .apple:
+                effect.findDirection(
+                    with: .apple,
+                    startLatitude: state.userLatitude,
+                    startLongitude: state.userLongitude,
+                    destinationLatitude: state.places[focusedPlaceIndex].latitude,
+                    destinationLongitude: state.places[focusedPlaceIndex].longitude,
+                    destinationName: nil
+                )
+            case .kakao:
+                effect.findDirection(
+                    with: .kakao,
+                    startLatitude: state.userLatitude,
+                    startLongitude: state.userLongitude,
+                    destinationLatitude: state.places[focusedPlaceIndex].latitude,
+                    destinationLongitude: state.places[focusedPlaceIndex].longitude,
+                    destinationName: nil
+                )
+            }
+        
         case .droppedInDeleteZone:
             if state.places.count > 2 {
                 self.dispatch(.deletePlace)

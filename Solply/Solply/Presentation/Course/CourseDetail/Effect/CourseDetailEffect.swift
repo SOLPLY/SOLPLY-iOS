@@ -15,22 +15,6 @@ struct CourseDetailEffect {
         self.courseService = courseService
         self.placeService = placeService
     }
-    
-    func findDirection(
-        startLatitude: Double,
-        startLongitude: Double,
-        destinationLatitude: Double,
-        destinationLongitude: Double,
-        destinationName: String
-    ) {
-        NaverMapRouteHelper.findDirection(
-            startLatitude: startLatitude,
-            startLongitude: startLongitude,
-            destinationLatitude: destinationLatitude,
-            destinationLongitude: destinationLongitude,
-            destinationName: destinationName
-        )
-    }
 }
 
 // MARK: - Functions
@@ -39,6 +23,24 @@ extension CourseDetailEffect {
     func delayEditing() async -> CourseDetailAction {
         try? await Task.sleep(nanoseconds: 150_000_000)
         return .delayEditing
+    }
+    
+    func findDirection(
+        with mapRouteType: MapRouteType,
+        startLatitude: Double,
+        startLongitude: Double,
+        destinationLatitude: Double,
+        destinationLongitude: Double,
+        destinationName: String?
+    ) {
+        MapRouteHelper.findDirection(
+            with: mapRouteType,
+            startLatitude: startLatitude,
+            startLongitude: startLongitude,
+            destinationLatitude: destinationLatitude,
+            destinationLongitude: destinationLongitude,
+            destinationName: destinationName
+        )
     }
 }
 

@@ -9,6 +9,7 @@ import Foundation
 
 /// 네비게이션 바 타입입니다.
 enum NavigationBarType {
+    case auth(exploreAction: (() -> Void))
     case onboarding(backAction: () -> Void)
     case recommend(isLoading: Bool, filterTitle: String, filterAction: () -> Void, settingAction: () -> Void)
     case placeDetail(backAction: () -> Void, homeAction: () -> Void)

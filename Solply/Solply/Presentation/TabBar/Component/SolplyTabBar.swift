@@ -58,6 +58,9 @@ struct SolplyTabBar: View {
         .onChange(of: selectedTab) {
             capsuleOffsetX = calculateCapsuleOffsetX(for: selectedTab)
         }
+        .onAppear {
+            capsuleOffsetX = calculateCapsuleOffsetX(for: selectedTab)
+        }
     }
 }
 

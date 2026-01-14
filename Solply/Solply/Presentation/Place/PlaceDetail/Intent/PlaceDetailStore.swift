@@ -48,14 +48,36 @@ final class PlaceDetailStore: ObservableObject {
                 dispatch(.showTownToast)
             }
             
-        case .requestFindDirection:
-            effect.findDirection(
-                startLatitude: state.userLatitude,
-                startLongitude: state.userLongitude,
-                destinationLatitude: state.latitude,
-                destinationLongitude: state.longitude,
-                destinationName: state.placeName
-            )
+        case .findDirection(let mapRouteType):
+            switch mapRouteType {
+            case .naver:
+                effect.findDirection(
+                    with: .naver,
+                    startLatitude: state.userLatitude,
+                    startLongitude: state.userLongitude,
+                    destinationLatitude: state.latitude,
+                    destinationLongitude: state.longitude,
+                    destinationName: state.placeName
+                )
+            case .apple:
+                effect.findDirection(
+                    with: .apple,
+                    startLatitude: state.userLatitude,
+                    startLongitude: state.userLongitude,
+                    destinationLatitude: state.latitude,
+                    destinationLongitude: state.longitude,
+                    destinationName: nil
+                )
+            case .kakao:
+                effect.findDirection(
+                    with: .kakao,
+                    startLatitude: state.userLatitude,
+                    startLongitude: state.userLongitude,
+                    destinationLatitude: state.latitude,
+                    destinationLongitude: state.longitude,
+                    destinationName: nil
+                )
+            }
             
         case .fetchCourseArchive:
             Task {

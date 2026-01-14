@@ -17,8 +17,8 @@ struct FilterPlaceGrid: View {
     private let townId: Int
         
     private let columns = [
-        GridItem(.fixed(145.adjustedWidth), spacing: 12.5.adjustedWidth),
-        GridItem(.fixed(145.adjustedWidth))
+        GridItem(.fixed(145.adjusted), spacing: 12.5.adjusted),
+        GridItem(.fixed(145.adjusted))
     ]
     
     private var filteredCount: Int {

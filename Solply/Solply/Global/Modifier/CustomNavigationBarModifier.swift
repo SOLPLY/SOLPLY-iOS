@@ -62,6 +62,7 @@ extension CustomNavigationBarModifier {
             .padding(.horizontal, 16.adjustedWidth)
             .padding(.vertical, 16.adjustedHeight)
             .background(backgroundColor)
+            .frame(width: 375.adjustedWidth)
             
             content
             
@@ -92,6 +93,32 @@ extension View {
     @ViewBuilder
     func customNavigationBar(_ navigationBarType: NavigationBarType) -> some View {
         switch navigationBarType {
+            
+            
+        // MARK: - Auth
+            
+        case .auth(let exploreAction):
+            self.modifier(
+                CustomNavigationBarModifier(
+                    centerView: {
+                        EmptyView()
+                    },
+                    leftView: {
+                        EmptyView()
+                    },
+                    rightView: {
+                        Button {
+                            exploreAction()
+                        } label: {
+                            Text("둘러보기")
+                                .applySolplyFont(.body_14_m)
+                                .foregroundStyle(.gray800)
+                        }
+                        .buttonStyle(.plain)
+                    },
+                    backgroundColor: .gray100
+                )
+            )
             
         // MARK: - Onboarding
             
@@ -149,6 +176,7 @@ extension View {
                                         .frame(width: 24.adjusted, height: 24.adjusted)
                                 }
                             }
+                            .allowsHitTesting(!isLoading)
                             .buttonStyle(.plain)
                         }
                     },

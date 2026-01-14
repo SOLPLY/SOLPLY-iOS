@@ -34,7 +34,7 @@ struct WithdrawView: View {
         )
         .onChange(of: store.state.shouldChangeRoot) { _, newValue in
             if newValue {
-                appCoordinator.changeRoot(to: .auth)
+                appCoordinator.changeRoot(to: .splash)
             }
         }
         .ignoresSafeArea(.keyboard)

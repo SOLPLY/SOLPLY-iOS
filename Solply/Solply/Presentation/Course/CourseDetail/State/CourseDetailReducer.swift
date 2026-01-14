@@ -27,6 +27,12 @@ enum CourseDetailReducer {
             state.places[index].isBookmarked.toggle()
             
         case .requestFindDirection:
+            state.shouldShowFindDirectionDialog = true
+            
+        case .findDirectionFinished:
+            state.shouldShowFindDirectionDialog = false
+            
+        case .findDirection:
             break
             
         case .startEditing:

@@ -65,6 +65,7 @@ struct NicknameTextField: View {
                     }
                     
                     TextField("", text: $text)
+                        .configureDefaultTextField()
                         .applySolplyFont(.body_16_m)
                         .foregroundColor(.gray800)
                         .submitLabel(.done)

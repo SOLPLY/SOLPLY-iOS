@@ -10,7 +10,7 @@ import SwiftUI
 struct CourseDetailView: View {
     
     // MARK: - Properties
-    
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager
     @EnvironmentObject private var alertManager: AlertManager
@@ -65,6 +65,17 @@ struct CourseDetailView: View {
             
             toastManager.showToast(content: toastContent)
         }
+        .findDirectionDialog(
+            isPresented: Binding(
+                get: { store.state.shouldShowFindDirectionDialog },
+                set: { _ in
+                    store.dispatch(.findDirectionFinished)
+                }
+            ),
+            onFindDirectionAction: { mapRouteType in
+                store.dispatch(.findDirection(mapRouteType: mapRouteType))
+            }
+        )
         .sheet(
             isPresented: Binding(
                 get: { store.state.isSheetPresented },
@@ -93,7 +104,7 @@ extension CourseDetailView {
         CourseDetailMapView(places: store.state.places)
             .customNavigationBar(.courseDetail(
                 backAction: {
-                    store.state.isEditing ? showAlert() : appCoordinator.goBack()
+                    store.state.isEditing ? showChangesNotSavedAlert() : appCoordinator.goBack()
                 }, homeAction: {
                     appCoordinator.goToRoot()
                 }
@@ -137,9 +148,12 @@ extension CourseDetailView {
                             .frame(width: 307.adjustedWidth, alignment: .leading)
                         
                         Spacer()
+                        
                         if !fromArchive {
                             Button {
-                                bookmarkCourse()
+                                requireLogin {
+                                    bookmarkCourse()
+                                }
                             } label: {
                                 Image(store.state.courseBookmarkSelected ? .bookmarkSavedIcon : .bookmarkIcon)
                                     .resizable()
@@ -182,36 +196,34 @@ extension CourseDetailView {
                     } detailAction: {
                         appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: store.state.places[index].placeId, fromSearch: false))
                     } findDirectionAction: {
-                        store.dispatch(.requestFindDirection(
-                            destinationLatitude: store.state.places[index].latitude,
-                            destinationLongitude: store.state.places[index].longitude,
-                            destinationName: store.state.places[index].placeName)
-                        )
+                        store.dispatch(.requestFindDirection)
                     } saveAction: {
-                        store.dispatch(.toggleBookmarkPlace(index: index))
-                        
-                        if store.state.places[index].isBookmarked {
-                            store.dispatch(.submitPlaceBookmark(placeId: store.state.places[index].placeId))
+                        requireLogin {
+                            store.dispatch(.toggleBookmarkPlace(index: index))
                             
-                            store.dispatch(
-                                .showToastView(
-                                    ToastContent(
-                                        toastType: .defaultToast,
-                                        message: "'\(place.placeName.truncated(length: 9))'가 수집함에 저장되었어요."
+                            if store.state.places[index].isBookmarked {
+                                store.dispatch(.submitPlaceBookmark(placeId: store.state.places[index].placeId))
+                                
+                                store.dispatch(
+                                    .showToastView(
+                                        ToastContent(
+                                            toastType: .defaultToast,
+                                            message: "'\(place.placeName.truncated(length: 9))'가 수집함에 저장되었어요."
+                                        )
                                     )
                                 )
-                            )
-                        } else {
-                            store.dispatch(.removePlaceBookmark(placeId: store.state.places[index].placeId))
-                            
-                            store.dispatch(
-                                .showToastView(
-                                    ToastContent(
-                                        toastType: .defaultToast,
-                                        message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요."
+                            } else {
+                                store.dispatch(.removePlaceBookmark(placeId: store.state.places[index].placeId))
+                                
+                                store.dispatch(
+                                    .showToastView(
+                                        ToastContent(
+                                            toastType: .defaultToast,
+                                            message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요."
+                                        )
                                     )
                                 )
-                            )
+                            }
                         }
                     }
                     .animation(.easeInOut(duration: 0.2), value: store.state.isEditing)
@@ -405,14 +417,24 @@ extension CourseDetailView {
         }
     }
     
-    private func showAlert() {
+    private func requireLogin(_ action: (() -> Void)) {
+        switch appState.userSession {
+        case .explore:
+            showLoginAlert()
+        case .authenticated:
+            action()
+        }
+    }
+    
+    private func showLoginAlert() {
+        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+            appCoordinator.changeRoot(to: .auth)
+        }
+    }
+    
+    private func showChangesNotSavedAlert() {
         alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
             appCoordinator.goBack()
         }
     }
-}
-
-#Preview {
-    CourseDetailView(townId: 1, courseId: 1, fromArchive: true)
-        .environmentObject(AppCoordinator())
 }

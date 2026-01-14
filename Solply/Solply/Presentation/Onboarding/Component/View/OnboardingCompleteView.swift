@@ -11,6 +11,7 @@ struct OnboardingCompleteView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @ObservedObject private var store: OnboardingStore
     
@@ -47,6 +48,7 @@ struct OnboardingCompleteView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         }
         .onAppear {
+            appState.updateUserSession()
             store.dispatch(.onboardingCompleteOnAppear)
         }
         .onChange(of: store.state.isLottieFinished) { _, newValue in
