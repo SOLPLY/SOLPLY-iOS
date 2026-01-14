@@ -29,9 +29,7 @@ enum AlertType {
     }
     
     var cancelText: String {
-        switch self {
-        default: return "취소"
-        }
+        return "취소"
     }
     
     var confirmText: String {
