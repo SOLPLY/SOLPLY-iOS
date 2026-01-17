@@ -8,16 +8,16 @@
 import Foundation
 
 struct CourseDetailState {
-    var shouldShowFindDirectionDialog: Bool = false
-    
     var isCourseDetailLoading: Bool = false
     
+    var isFindDirectionDialogPresented: Bool = false
+    var isSaveOptionPresented: Bool = false
+    var isEditCourseNameSheetPresented: Bool = false
+    
+    var draggedPlace: PlaceDetailInCourse?
     var dragDropState: DragDropState = .prepared
     
     var updatedCourseId: Int = -1
-    
-    var isLoading: Bool = false
-    var isSheetPresented: Bool = false
     
     var courseName: String = ""
     var courseDescription: String = ""
@@ -28,18 +28,14 @@ struct CourseDetailState {
     var oldPlaces: [PlaceDetailInCourse] = []
     
     var focusedPlaceIndex: Int = -1
-    var courseBookmarkSelected: Bool = false
+    var isCourseBookmarkSelected: Bool = false
     var isCourseBookmarked: Bool = false
-    var isEditing: Bool = false
-    var canDelete: Bool = false
-    var isInDeleteZone: Bool = false
+    var isCourseEditing: Bool = false
+    var canDeletePlace: Bool = false
+    var isPlaceInDeleteZone: Bool = false
     
     var userLatitude: Double = 0.0
     var userLongitude: Double = 0.0
     
     var toastContent: ToastContent?
-    
-    var isSaveOptionPresented: Bool = false
-    
-    var draggedPlace: PlaceDetailInCourse?
 }

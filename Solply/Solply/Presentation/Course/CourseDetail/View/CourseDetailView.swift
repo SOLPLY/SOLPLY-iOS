@@ -35,11 +35,11 @@ struct CourseDetailView: View {
         ZStack(alignment: .bottom) {
             courseMapView
                 
-            if fromArchive && !store.state.isEditing {
+            if fromArchive && !store.state.isCourseEditing {
                 editButton
             }
             
-            if store.state.isEditing {
+            if store.state.isCourseEditing {
                 editingArea
             }
             
@@ -67,7 +67,7 @@ struct CourseDetailView: View {
         }
         .findDirectionDialog(
             isPresented: Binding(
-                get: { store.state.shouldShowFindDirectionDialog },
+                get: { store.state.isFindDirectionDialogPresented },
                 set: { _ in
                     store.dispatch(.findDirectionFinished)
                 }
@@ -78,17 +78,17 @@ struct CourseDetailView: View {
         )
         .sheet(
             isPresented: Binding(
-                get: { store.state.isSheetPresented },
-                set: { store.dispatch(.showSheet(isSheetPresented: $0)) }
+                get: { store.state.isEditCourseNameSheetPresented },
+                set: { store.dispatch(.showEditCourseNameSheet(isSheetPresented: $0)) }
             )
         ) {
             CourseInformationEditBottomSheet(
                 courseName: store.state.courseName,
                 courseDescription: store.state.courseDescription
             ) {
-                store.dispatch(.showSheet(isSheetPresented: false))
+                store.dispatch(.showEditCourseNameSheet(isSheetPresented: false))
             } completeAction: { courseInformation in
-                store.dispatch(.showSheet(isSheetPresented: false))
+                store.dispatch(.showEditCourseNameSheet(isSheetPresented: false))
                 store.dispatch(.completeEditCourseInformation(courseInformation: courseInformation))
             }
             .presentationDetents([.height(640.adjustedHeight)])
@@ -104,7 +104,7 @@ extension CourseDetailView {
         CourseDetailMapView(places: store.state.places)
             .customNavigationBar(.courseDetail(
                 backAction: {
-                    store.state.isEditing ? showChangesNotSavedAlert() : appCoordinator.goBack()
+                    store.state.isCourseEditing ? showChangesNotSavedAlert() : appCoordinator.goBack()
                 }, homeAction: {
                     appCoordinator.goToRoot()
                 }
@@ -122,14 +122,14 @@ extension CourseDetailView {
     private var title: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             Group {
-                if fromArchive && store.state.isEditing {
+                if fromArchive && store.state.isCourseEditing {
                     HStack(alignment: .center, spacing: 4.adjustedWidth) {
                         Text(store.state.courseName)
                             .applySolplyFont(.display_20_sb)
                             .frame(width: 307.adjustedWidth, alignment: .leading)
                         
                         Button {
-                            store.dispatch(.showSheet(isSheetPresented: true))
+                            store.dispatch(.showEditCourseNameSheet(isSheetPresented: true))
                             
                         } label: {
                             Image(.editingIcon)
@@ -155,7 +155,7 @@ extension CourseDetailView {
                                     bookmarkCourse()
                                 }
                             } label: {
-                                Image(store.state.courseBookmarkSelected ? .bookmarkSavedIcon : .bookmarkIcon)
+                                Image(store.state.isCourseBookmarkSelected ? .bookmarkSavedIcon : .bookmarkIcon)
                                     .resizable()
                                     .renderingMode(.template)
                                     .foregroundStyle(.gray900)
@@ -190,7 +190,7 @@ extension CourseDetailView {
                         address: place.address,
                         isSaved: place.isBookmarked,
                         isFocused: (store.state.focusedPlaceIndex == index),
-                        isEditing: store.state.isEditing
+                        isEditing: store.state.isCourseEditing
                     ) {
                         store.dispatch(.focusPlace(index: index))
                     } detailAction: {
@@ -226,12 +226,12 @@ extension CourseDetailView {
                             }
                         }
                     }
-                    .animation(.easeInOut(duration: 0.2), value: store.state.isEditing)
+                    .animation(.easeInOut(duration: 0.2), value: store.state.isCourseEditing)
                     .cornerRadius(20, corners: .allCorners)
                     .frame(maxWidth: .infinity)
                     .opacity(store.state.draggedPlace == store.state.places[index] ? 0.5 : 1)
                     .dragDrop(
-                        isEditing: store.state.isEditing,
+                        isEditing: store.state.isCourseEditing,
                         startDragging: {
                             store.dispatch(.startDragging(draggedPlace: place))
                             
@@ -258,7 +258,7 @@ extension CourseDetailView {
             .padding(.horizontal, 20.adjustedWidth)
             
             Color(.clear)
-                .frame(height: store.state.isEditing ? 104.adjustedHeight : 44.adjustedHeight)
+                .frame(height: store.state.isCourseEditing ? 104.adjustedHeight : 44.adjustedHeight)
         }
         .frame(maxHeight: .infinity)
     }
@@ -284,7 +284,7 @@ extension CourseDetailView {
     }
     
     private var deleteArea: some View {
-        Image(store.state.isInDeleteZone ? .deleteTrueIcon : .deleteFalseIcon)
+        Image(store.state.isPlaceInDeleteZone ? .deleteTrueIcon : .deleteFalseIcon)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 60.adjusted, height: 60.adjusted)
@@ -305,7 +305,7 @@ extension CourseDetailView {
     
     private var editingArea: some View {
         VStack(alignment: .center, spacing: 16.adjustedHeight) {
-            if fromArchive && store.state.canDelete {
+            if fromArchive && store.state.canDeletePlace {
                 deleteArea
             }
             
@@ -387,7 +387,7 @@ extension CourseDetailView {
 
 extension CourseDetailView {
     private func bookmarkCourse() {
-        if store.state.courseBookmarkSelected {
+        if store.state.isCourseBookmarkSelected {
             store.dispatch(.removeCourseBookmark(courseId: courseId))
             store.dispatch(.toggleBookmarkCourse)
         } else {

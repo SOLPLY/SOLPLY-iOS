@@ -14,7 +14,7 @@ enum CourseDetailReducer {
             state.dragDropState = dragDropState
             
         case .toggleBookmarkCourse:
-            state.courseBookmarkSelected.toggle()
+            state.isCourseBookmarkSelected.toggle()
             
         case .focusPlace(let index):
             state.focusedPlaceIndex = state.focusedPlaceIndex == index ? -1 : index
@@ -27,10 +27,10 @@ enum CourseDetailReducer {
             state.places[index].isBookmarked.toggle()
             
         case .requestFindDirection:
-            state.shouldShowFindDirectionDialog = true
+            state.isFindDirectionDialogPresented = true
             
         case .findDirectionFinished:
-            state.shouldShowFindDirectionDialog = false
+            state.isFindDirectionDialogPresented = false
             
         case .findDirection:
             break
@@ -43,7 +43,7 @@ enum CourseDetailReducer {
             state.oldPlaces = state.places
             state.oldCourseName = state.courseName
             state.oldCourseDescription = state.courseDescription
-            state.isEditing = true
+            state.isCourseEditing = true
             
         case .endEditing:
             if state.oldPlaces != state.places
@@ -52,14 +52,14 @@ enum CourseDetailReducer {
             {
                 state.isSaveOptionPresented = true
             } else {
-                state.isEditing = false
+                state.isCourseEditing = false
             }
             
         case .startDragging(draggedPlace: let draggedPlace):
             switch state.dragDropState {
             case .prepared:
                 state.draggedPlace = draggedPlace
-                state.canDelete = true
+                state.canDeletePlace = true
                 state.dragDropState = .dragging
             case .dragging, .completed:
                 state.dragDropState = .prepared
@@ -77,14 +77,14 @@ enum CourseDetailReducer {
         case .endDragging:
             state.dragDropState = .completed
             state.draggedPlace = nil
-            state.canDelete = false
-            state.isInDeleteZone = false
+            state.canDeletePlace = false
+            state.isPlaceInDeleteZone = false
             
         case .endWithoutDragging:
             state.dragDropState = .prepared
             state.draggedPlace = nil
-            state.canDelete = false
-            state.isInDeleteZone = false
+            state.canDeletePlace = false
+            state.isPlaceInDeleteZone = false
             
         case .deletePlace:
             guard let draggedPlace = state.draggedPlace else { return }
@@ -95,38 +95,38 @@ enum CourseDetailReducer {
             }
             
             state.draggedPlace = nil
-            state.canDelete = false
-            state.isInDeleteZone = false
+            state.canDeletePlace = false
+            state.isPlaceInDeleteZone = false
             
         case .deletePlaceFailed:
             state.dragDropState = .completed
             state.draggedPlace = nil
-            state.canDelete = false
-            state.isInDeleteZone = false
+            state.canDeletePlace = false
+            state.isPlaceInDeleteZone = false
             
         case .droppedInDeleteZone:
             break
             
         case .draggedInDeleteZone:
-            state.isInDeleteZone = true
+            state.isPlaceInDeleteZone = true
             
         case .draggedOutDeleteZone:
-            state.isInDeleteZone = false
+            state.isPlaceInDeleteZone = false
             
         case .showToastView(let toastContent):
             state.toastContent = toastContent
             state.draggedPlace = nil
-            state.canDelete = false
-            state.isInDeleteZone = false
+            state.canDeletePlace = false
+            state.isPlaceInDeleteZone = false
             
         case .saveCourseToCurrent:
             state.isSaveOptionPresented = false
-            state.isEditing = false
+            state.isCourseEditing = false
             state.oldPlaces.removeAll()
             
         case .saveCourseAsNew:
             state.isSaveOptionPresented = false
-            state.isEditing = false
+            state.isCourseEditing = false
             state.oldPlaces.removeAll()
             
         case .saveCourseCancel:
@@ -136,8 +136,8 @@ enum CourseDetailReducer {
             state.userLatitude = latitude
             state.userLongitude = longitude
             
-        case .showSheet(let isSheetPresented):
-            state.isSheetPresented = isSheetPresented
+        case .showEditCourseNameSheet(let isSheetPresented):
+            state.isEditCourseNameSheetPresented = isSheetPresented
             
         case .completeEditCourseInformation(let courseInformation):
             state.courseName = courseInformation.courseName
@@ -159,7 +159,7 @@ enum CourseDetailReducer {
             state.places = placeEntities
 
             state.isCourseBookmarked = courseDetails.isBookmarked
-            state.courseBookmarkSelected = courseDetails.isBookmarked
+            state.isCourseBookmarkSelected = courseDetails.isBookmarked
             
         case .submitCourseBookmark:
             break
