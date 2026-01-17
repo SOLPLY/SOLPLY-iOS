@@ -84,13 +84,15 @@ struct CourseDetailView: View {
         ) {
             CourseInformationEditBottomSheet(
                 courseName: store.state.courseName,
-                courseDescription: store.state.courseDescription
-            ) {
-                store.dispatch(.showEditCourseNameSheet(isSheetPresented: false))
-            } completeAction: { courseInformation in
-                store.dispatch(.showEditCourseNameSheet(isSheetPresented: false))
-                store.dispatch(.completeEditCourseInformation(courseInformation: courseInformation))
-            }
+                courseDescription: store.state.courseDescription,
+                dismissAction: {
+                    store.dispatch(.showEditCourseNameSheet(isSheetPresented: false))
+                },
+                completeAction: { courseInformation in
+                    store.dispatch(.showEditCourseNameSheet(isSheetPresented: false))
+                    store.dispatch(.completeEditCourseInformation(courseInformation: courseInformation))
+                }
+            )
             .presentationDetents([.height(640.adjustedHeight)])
             .presentationCornerRadius(20)
         }
