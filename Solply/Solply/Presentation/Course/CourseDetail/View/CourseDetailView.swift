@@ -362,7 +362,8 @@ extension CourseDetailView {
                                         placeId: place.placeId,
                                         placeOrder: index + 1
                                     )
-                                }
+                                },
+                                isCourseNameUniqueRequired: store.state.isCourseNameUniqueRequired
                             )
                         )
                     )

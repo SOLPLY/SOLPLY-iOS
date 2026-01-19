@@ -11,4 +11,5 @@ struct CourseCreateRequestDTO: RequestModelType {
     let courseName: String
     let courseDescription: String
     let places: [PlaceOrderDTO]
+    let isCourseNameUniqueRequired: Bool
 }

@@ -38,4 +38,8 @@ struct CourseDetailState {
     var userLongitude: Double = 0.0
     
     var toastContent: ToastContent?
+    
+    var isCourseNameUniqueRequired: Bool {
+        return oldCourseName == courseName
+    }
 }
