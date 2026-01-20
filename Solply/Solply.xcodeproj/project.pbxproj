@@ -12,6 +12,7 @@
 		E3430A9F2E2643C900EA1CE5 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E3430A9E2E2643C900EA1CE5 /* KakaoSDKAuth */; };
 		E3430AA12E2643C900EA1CE5 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = E3430AA02E2643C900EA1CE5 /* KakaoSDKCommon */; };
 		E3430AA32E2643C900EA1CE5 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = E3430AA22E2643C900EA1CE5 /* KakaoSDKUser */; };
+		E3475AE72F1F958200D530DB /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E3475AE62F1F958200D530DB /* AmplitudeSwift */; };
 		E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E36882822E0DD8AF008A7288 /* Kingfisher */; };
 		E36882862E0DD935008A7288 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = E36882852E0DD935008A7288 /* Moya */; };
 /* End PBXBuildFile section */
@@ -46,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3475AE72F1F958200D530DB /* AmplitudeSwift in Frameworks */,
 				E36882862E0DD935008A7288 /* Moya in Frameworks */,
 				E34011482E151709008944E7 /* NMapsMap in Frameworks */,
 				E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */,
@@ -102,6 +104,7 @@
 				E3430A9E2E2643C900EA1CE5 /* KakaoSDKAuth */,
 				E3430AA02E2643C900EA1CE5 /* KakaoSDKCommon */,
 				E3430AA22E2643C900EA1CE5 /* KakaoSDKUser */,
+				E3475AE62F1F958200D530DB /* AmplitudeSwift */,
 			);
 			productName = Solply;
 			productReference = E36882732E0DD865008A7288 /* Solply.app */;
@@ -137,6 +140,7 @@
 				E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */,
 				985476612E255FA5005164CF /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				E3430A9D2E2643C900EA1CE5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				E3475AE52F1F958200D530DB /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E36882742E0DD865008A7288 /* Products */;
@@ -428,6 +432,14 @@
 				minimumVersion = 2.24.5;
 			};
 		};
+		E3475AE52F1F958200D530DB /* XCRemoteSwiftPackageReference "Amplitude-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amplitude/Amplitude-Swift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		E36882812E0DD8AF008A7288 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -471,6 +483,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E3430A9D2E2643C900EA1CE5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKUser;
+		};
+		E3475AE62F1F958200D530DB /* AmplitudeSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3475AE52F1F958200D530DB /* XCRemoteSwiftPackageReference "Amplitude-Swift" */;
+			productName = AmplitudeSwift;
 		};
 		E36882822E0DD8AF008A7288 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
