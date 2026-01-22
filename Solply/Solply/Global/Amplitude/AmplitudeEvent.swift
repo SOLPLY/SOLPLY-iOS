@@ -14,6 +14,7 @@ enum AmplitudeEvent {
     case clickLogin(loginMethod: AmplitudeLoginMethod, loginEntryType: AmplitudeLoginEntryType)
     case completeTerms(loginEntryType: AmplitudeLoginEntryType)
     case completePersona(personaType: AmplitudePersonaType, loginEntryType: AmplitudeLoginEntryType)
+    case completeNickname(entryMode: AmplitudeEntryMode, personaType: AmplitudePersonaType, loginEntryType: AmplitudeLoginEntryType)
 }
 
 extension AmplitudeEvent {
@@ -25,6 +26,7 @@ extension AmplitudeEvent {
         case .clickLogin: return "click_login"
         case .completeTerms: return "complete_terms"
         case .completePersona: return "complete_persona"
+        case .completeNickname: return "complete_nickname"
         }
     }
     
@@ -61,6 +63,13 @@ extension AmplitudeEvent {
         case .completePersona(let personaType, let loginEntryType):
             return [
                 AmplitudePropertyKey.personaType.rawValue: personaType.rawValue,
+                AmplitudePropertyKey.loginEntryType.rawValue: loginEntryType.rawValue
+            ]
+            
+        case .completeNickname(let entryMode, let personatype, let loginEntryType):
+            return [
+                AmplitudePropertyKey.entryMode.rawValue: entryMode.rawValue,
+                AmplitudePropertyKey.personaType.rawValue: personatype.rawValue,
                 AmplitudePropertyKey.loginEntryType.rawValue: loginEntryType.rawValue
             ]
         }
