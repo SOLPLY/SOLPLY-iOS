@@ -255,3 +255,22 @@ enum AmplitudeWithdrawType: String {
     case useOtherService = "use_other_service"
     case others = "others"
 }
+
+// MARK: - From
+
+extension AmplitudePersonaType {
+    static func from(_ persona: Persona) -> AmplitudePersonaType {
+        switch persona.type.uppercased() {
+        case "REST":
+            return .rest
+        case "EXPLORER":
+            return .explorer
+        case "MOODING":
+            return .mooding
+        case "NATURAL":
+            return .natural
+        default:
+            return .rest
+        }
+    }
+}
