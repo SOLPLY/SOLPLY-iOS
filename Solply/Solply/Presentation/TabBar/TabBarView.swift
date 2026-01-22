@@ -94,7 +94,7 @@ extension TabBarView {
                 switch appState.userSession {
                 case .explore:
                     AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .openCollectionTab))
-                    showLoginAlert()
+                    showLoginAlert(amplitudeBlockedAction: .openCollectionTab)
                 case .authenticated:
                     appCoordinator.navigate(to: .archive)
                 }
@@ -103,7 +103,7 @@ extension TabBarView {
                 switch appState.userSession {
                 case .explore:
                     AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .openMyPageTab))
-                    showLoginAlert()
+                    showLoginAlert(amplitudeBlockedAction: .openMyPageTab)
                 case .authenticated:
                     appCoordinator.navigate(to: .myPage)
                 }
@@ -154,8 +154,10 @@ extension TabBarView {
 // MARK: - Functions
 
 extension TabBarView {
-    private func showLoginAlert() {
-        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+    private func showLoginAlert(amplitudeBlockedAction: AmplitudeBlockedAction) {
+        alertManager.showAlert(alertType: .authenticationRequired) {
+            AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: amplitudeBlockedAction))
+        } onConfirm: {
             appCoordinator.changeRoot(to: .auth)
         }
     }

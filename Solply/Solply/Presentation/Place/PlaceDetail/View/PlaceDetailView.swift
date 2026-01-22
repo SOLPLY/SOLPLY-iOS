@@ -150,6 +150,7 @@ extension PlaceDetailView {
                 bookmarkPlace()
             } exploreAction: {
                 AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .savePlace))
+                showLoginAlert(amplitudeBlockedAction: .savePlace)
             }
         } findDirectionAction: {
             store.dispatch(.requestFindDirection)
@@ -162,9 +163,8 @@ extension PlaceDetailView {
                     store.dispatch(.selectCourseToAdd(index: -1))
                 }
             } exploreAction: {
-                AmplitudeManager.shared.track(
-                    .viewLoginRequiredAlert(entryMode: .guest, blockedAction: .addToCourse)
-                )
+                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .addToCourse))
+                showLoginAlert(amplitudeBlockedAction: .addToCourse)
             }
         } copyAction: { text in
             store.dispatch(.copyToClipboard(text: text))
@@ -181,6 +181,7 @@ extension PlaceDetailView {
                 appCoordinator.navigate(to: .reports(placeId: store.placeId))
             } exploreAction: {
                 AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .reportError))
+                showLoginAlert(amplitudeBlockedAction: .reportError)
             }
         }
     }
@@ -273,15 +274,16 @@ extension PlaceDetailView {
     private func requireLogin(_ authenticatedAction: (() -> Void), exploreAction: (() -> Void)) {
         switch appState.userSession {
         case .explore:
-            showLoginAlert()
             exploreAction()
         case .authenticated:
             authenticatedAction()
         }
     }
     
-    private func showLoginAlert() {
-        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+    private func showLoginAlert(amplitudeBlockedAction: AmplitudeBlockedAction) {
+        alertManager.showAlert(alertType: .authenticationRequired) {
+            AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: amplitudeBlockedAction))
+        } onConfirm: {
             appCoordinator.changeRoot(to: .auth)
         }
     }

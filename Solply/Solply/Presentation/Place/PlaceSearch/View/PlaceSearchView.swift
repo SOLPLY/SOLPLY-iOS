@@ -42,6 +42,7 @@ struct PlaceSearchView: View {
                                 appCoordinator.navigate(to: .register)
                             } exploreAction: {
                                 AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .requestPlaceRegister))
+                                showLoginAlert(amplitudeBlockedAction: .requestPlaceRegister)
                             }
                         }
                     } else {
@@ -60,6 +61,7 @@ struct PlaceSearchView: View {
                                 appCoordinator.navigate(to: .register)
                             } exploreAction: {
                                 AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .requestPlaceRegister))
+                                showLoginAlert(amplitudeBlockedAction: .requestPlaceRegister)
                             }
                         }
                     }
@@ -87,15 +89,16 @@ extension PlaceSearchView {
     private func requireLogin(_ authenticatedAction: (() -> Void), exploreAction: (() -> Void)) {
         switch appState.userSession {
         case .explore:
-            showLoginAlert()
             exploreAction()
         case .authenticated:
             authenticatedAction()
         }
     }
-    
-    private func showLoginAlert() {
-        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+
+    private func showLoginAlert(amplitudeBlockedAction: AmplitudeBlockedAction) {
+        alertManager.showAlert(alertType: .authenticationRequired) {
+            AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: amplitudeBlockedAction))
+        } onConfirm: {
             appCoordinator.changeRoot(to: .auth)
         }
     }

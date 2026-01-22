@@ -108,7 +108,7 @@ enum AmplitudeBlockedAction: String {
     case saveCourse = "save_course"
     case saveCoursePlace = "save_course_place"
     case openCollectionTab = "open_collection_tab"
-    case openMyPageTab = "open_my_tab"
+    case openMyPageTab = "open_my_page_tab"
     case requestPlaceRegister = "request_place_register"
     case todayRecommend = "today_reco"
 }
