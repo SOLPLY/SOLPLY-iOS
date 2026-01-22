@@ -49,7 +49,7 @@ final class AmplitudeManager {
     
     // MARK: - Track
     
-    func track(_ event: AmplitudeTrackable) {
+    func track(_ event: AmplitudeEvent) {
         queue.async { [weak self] in
             guard let self,
                   let client = self.client else { return }
@@ -98,8 +98,7 @@ extension AmplitudeManager {
     ) {
         #if DEBUG
         if let properties {
-            print("📊 [Amplitude] Event: \(name)")
-            print("               Properties: \(properties)")
+            print("📊 [Amplitude] Event: \(name), Properties: \(properties)")
         } else {
             print("📊 [Amplitude] Event: \(name)")
         }
