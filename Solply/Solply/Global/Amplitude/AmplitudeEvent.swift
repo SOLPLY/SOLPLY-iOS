@@ -11,6 +11,7 @@ enum AmplitudeEvent {
     case clickBrowseMode(entryMode: AmplitudeEntryMode)
     case viewLoginRequiredAlert(entryMode: AmplitudeEntryMode, blockedAction: AmplitudeBlockedAction)
     case clickLoginCancel(entryMode: AmplitudeEntryMode, blockedAction: AmplitudeBlockedAction)
+    case clickLogin(loginMethod: AmplitudeLoginMethod, loginEntryType: AmplitudeLoginEntryType)
 }
 
 extension AmplitudeEvent {
@@ -19,6 +20,7 @@ extension AmplitudeEvent {
         case .clickBrowseMode: return "click_browse_mode"
         case .viewLoginRequiredAlert: return "view_login_required_alert"
         case .clickLoginCancel: return "click_login_cancel"
+        case .clickLogin: return "click_login"
         }
     }
     
@@ -37,6 +39,12 @@ extension AmplitudeEvent {
             return [
                 AmplitudePropertyKey.entryMode.rawValue: entryMode.rawValue,
                 AmplitudePropertyKey.blockedAction.rawValue: blockedAction.rawValue
+            ]
+            
+        case .clickLogin(let loginMethod, let loginEntryType):
+            return [
+                AmplitudePropertyKey.loginMethod.rawValue: loginMethod.rawValue,
+                AmplitudePropertyKey.loginEntryType.rawValue: loginEntryType.rawValue
             ]
         }
     }
