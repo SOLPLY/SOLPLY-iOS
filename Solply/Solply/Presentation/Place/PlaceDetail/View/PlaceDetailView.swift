@@ -148,6 +148,8 @@ extension PlaceDetailView {
         ) {
             requireLogin {
                 bookmarkPlace()
+            } exploreAction: {
+                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .savePlace))
             }
         } findDirectionAction: {
             store.dispatch(.requestFindDirection)
@@ -159,6 +161,10 @@ extension PlaceDetailView {
                 if store.state.selectedCourseIndex != -1 {
                     store.dispatch(.selectCourseToAdd(index: -1))
                 }
+            } exploreAction: {
+                AmplitudeManager.shared.track(
+                    .viewLoginRequiredAlert(entryMode: .guest, blockedAction: .addToCourse)
+                )
             }
         } copyAction: { text in
             store.dispatch(.copyToClipboard(text: text))
@@ -173,6 +179,8 @@ extension PlaceDetailView {
         } reportsAction: {
             requireLogin {
                 appCoordinator.navigate(to: .reports(placeId: store.placeId))
+            } exploreAction: {
+                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .reportError))
             }
         }
     }
@@ -262,12 +270,13 @@ extension PlaceDetailView {
         }
     }
     
-    private func requireLogin(_ action: (() -> Void)) {
+    private func requireLogin(_ authenticatedAction: (() -> Void), exploreAction: (() -> Void)) {
         switch appState.userSession {
         case .explore:
             showLoginAlert()
+            exploreAction()
         case .authenticated:
-            action()
+            authenticatedAction()
         }
     }
     

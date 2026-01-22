@@ -40,6 +40,8 @@ struct PlaceSearchView: View {
                         PlaceEmptyView() {
                             requireLogin {
                                 appCoordinator.navigate(to: .register)
+                            } exploreAction: {
+                                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .requestPlaceRegister))
                             }
                         }
                     } else {
@@ -56,6 +58,8 @@ struct PlaceSearchView: View {
                         } registerAction: {
                             requireLogin {
                                 appCoordinator.navigate(to: .register)
+                            } exploreAction: {
+                                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .requestPlaceRegister))
                             }
                         }
                     }
@@ -80,12 +84,13 @@ struct PlaceSearchView: View {
 // MARK: - Functions
 
 extension PlaceSearchView {
-    private func requireLogin(_ action: (() -> Void)) {
+    private func requireLogin(_ authenticatedAction: (() -> Void), exploreAction: (() -> Void)) {
         switch appState.userSession {
         case .explore:
             showLoginAlert()
+            exploreAction()
         case .authenticated:
-            action()
+            authenticatedAction()
         }
     }
     

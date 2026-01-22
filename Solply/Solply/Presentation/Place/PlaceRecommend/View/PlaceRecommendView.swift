@@ -137,6 +137,8 @@ extension PlaceRecommendView {
             switch appState.userSession {
             case .explore:
                 ExplorePlaceRecommendCarousel() {
+                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .todayRecommend))
+                    
                     alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
                         appCoordinator.changeRoot(to: .auth)
                     }

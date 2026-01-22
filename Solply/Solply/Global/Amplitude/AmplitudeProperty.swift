@@ -110,7 +110,7 @@ enum AmplitudeBlockedAction: String {
     case openCollectionTab = "open_collection_tab"
     case openMyPageTab = "open_my_tab"
     case requestPlaceRegister = "request_place_register"
-    case todayReco = "today_reco"
+    case todayRecommend = "today_reco"
 }
 
 /// [Amplitude] - 사용자 페르소나 유형 Property, 변경 전, 변경 후 공통 사용
@@ -123,7 +123,7 @@ enum AmplitudePersonaType: String {
 
 /// [Amplitude] - 직전 화면/기능(진입경로) Property
 enum AmplitudeFromContext: String {
-    case todayReco = "today_reco"
+    case todayRecommend = "today_reco"
     case placeList = "place_list"
     case searchResult = "search_result"
     case collection = "collection"

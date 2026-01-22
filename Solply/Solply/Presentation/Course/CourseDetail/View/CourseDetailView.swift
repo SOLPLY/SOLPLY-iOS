@@ -155,6 +155,8 @@ extension CourseDetailView {
                             Button {
                                 requireLogin {
                                     bookmarkCourse()
+                                } exploreAction: {
+                                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .saveCourse))
                                 }
                             } label: {
                                 Image(store.state.isCourseBookmarkSelected ? .bookmarkSavedIcon : .bookmarkIcon)
@@ -226,6 +228,8 @@ extension CourseDetailView {
                                     )
                                 )
                             }
+                        } exploreAction: {
+                            AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .saveCoursePlace))
                         }
                     }
                     .animation(.easeInOut(duration: 0.2), value: store.state.isCourseEditing)
@@ -420,12 +424,13 @@ extension CourseDetailView {
         }
     }
     
-    private func requireLogin(_ action: (() -> Void)) {
+    private func requireLogin(_ authenticatedAction: (() -> Void), exploreAction: (() -> Void)) {
         switch appState.userSession {
         case .explore:
             showLoginAlert()
+            exploreAction()
         case .authenticated:
-            action()
+            authenticatedAction()
         }
     }
     

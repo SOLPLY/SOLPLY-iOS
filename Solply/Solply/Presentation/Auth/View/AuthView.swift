@@ -40,6 +40,7 @@ struct AuthView: View {
             .customNavigationBar(
                 .auth(
                     exploreAction: {
+                        AmplitudeManager.shared.track(.clickBrowseMode(entryMode: .guest))
                         appState.setInitialExploreTown()
                         appCoordinator.changeRoot(to: .tabBar)
                     }

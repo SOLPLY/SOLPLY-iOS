@@ -93,6 +93,7 @@ extension TabBarView {
             ), bookmarkAction: {
                 switch appState.userSession {
                 case .explore:
+                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .openCollectionTab))
                     showLoginAlert()
                 case .authenticated:
                     appCoordinator.navigate(to: .archive)
@@ -101,6 +102,7 @@ extension TabBarView {
             }, myPageAction: {
                 switch appState.userSession {
                 case .explore:
+                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .openMyPageTab))
                     showLoginAlert()
                 case .authenticated:
                     appCoordinator.navigate(to: .myPage)
