@@ -32,6 +32,7 @@ enum AmplitudePropertyKey: String {
     
     // 장소 리스트, 필터
     case mainTag = "main_tag"
+    case selectedMainTag = "selected_maintag"
     case selectedOptionTags = "selected_option_tags"
     case resultCount = "result_count"
     case optionTag = "option_tag"
@@ -233,11 +234,16 @@ enum AmplitudeSaveMode: String {
 }
 
 /// [Amplitude] - 수정된 필드 목록
-enum AmplitudeChangedFields: String {
+enum AmplitudeChangedField: String {
     case title = "title"
     case intro = "intro"
     case order = "order"
     case removePlace = "remove_place"
+}
+
+enum AmplitudeCollectionType: String {
+    case place
+    case course
 }
 
 /// [Amplitude] - 코스 수정 이탈 모달 사용자 선택
