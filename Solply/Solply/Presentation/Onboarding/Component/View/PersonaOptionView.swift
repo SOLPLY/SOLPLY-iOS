@@ -45,7 +45,7 @@ struct PersonaOptionView: View {
                 
                 let selected = selectedPersona.description
                 print("➡️ [다음 버튼] 눌림 - 선택된 페르소나: \(selected)")
-                AmplitudeManager.shared.track(.completePersona(personaType: AmplitudePersonaType.from(selectedPersona), loginEntryType: .direct))
+                AmplitudeManager.shared.track(.completePersona(personaType: AmplitudePersonaType.from(selectedPersona)))
                 store.dispatch(.next)
             }
             .frame(width: 335.adjustedWidth)

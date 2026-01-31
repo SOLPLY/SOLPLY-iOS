@@ -95,14 +95,12 @@ extension AuthView {
         VStack(alignment: .center, spacing: 12.adjustedHeight) {
             SocialLoginButton(.kakao) {
                 store.dispatch(.loginWithKakao)
-                // TODO: -  login_entry_type 논의 필요
-                AmplitudeManager.shared.track(.clickLogin(loginMethod: .kakao, loginEntryType: .direct))
+                AmplitudeManager.shared.track(.clickLogin(loginMethod: .kakao))
             }
 
             SocialLoginButton(.apple) {
                 store.dispatch(.loginWithApple)
-                // TODO: -  login_entry_type 논의 필요
-                AmplitudeManager.shared.track(.clickLogin(loginMethod: .apple, loginEntryType: .direct))
+                AmplitudeManager.shared.track(.clickLogin(loginMethod: .apple))
             }
         }
         .padding(.horizontal, 20.adjustedWidth)

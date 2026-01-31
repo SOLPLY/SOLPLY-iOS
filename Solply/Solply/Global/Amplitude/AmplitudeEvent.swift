@@ -13,9 +13,9 @@ enum AmplitudeEvent {
     case clickBrowseMode(entryMode: AmplitudeEntryMode)
     case viewLoginRequiredAlert(entryMode: AmplitudeEntryMode, blockedAction: AmplitudeBlockedAction)
     case clickLoginCancel(entryMode: AmplitudeEntryMode, blockedAction: AmplitudeBlockedAction)
-    case clickLogin(loginMethod: AmplitudeLoginMethod, loginEntryType: AmplitudeLoginEntryType)
-    case completeTerms(loginEntryType: AmplitudeLoginEntryType)
-    case completePersona(personaType: AmplitudePersonaType, loginEntryType: AmplitudeLoginEntryType)
+    case clickLogin(loginMethod: AmplitudeLoginMethod)
+    case completeTerms
+    case completePersona(personaType: AmplitudePersonaType)
     case completeNickname(entryMode: AmplitudeEntryMode, personaType: AmplitudePersonaType, loginEntryType: AmplitudeLoginEntryType)
     case successLogin(isNewUser: Bool)
     
@@ -135,21 +135,17 @@ extension AmplitudeEvent {
                 AmplitudePropertyKey.blockedAction.rawValue: blockedAction.rawValue
             ]
             
-        case .clickLogin(let loginMethod, let loginEntryType):
+        case .clickLogin(let loginMethod):
             return [
-                AmplitudePropertyKey.loginMethod.rawValue: loginMethod.rawValue,
-                AmplitudePropertyKey.loginEntryType.rawValue: loginEntryType.rawValue
+                AmplitudePropertyKey.loginMethod.rawValue: loginMethod.rawValue
             ]
             
-        case .completeTerms(let loginEntryType):
-            return [
-                AmplitudePropertyKey.loginEntryType.rawValue: loginEntryType.rawValue
-            ]
+        case .completeTerms:
+            return [:]
             
-        case .completePersona(let personaType, let loginEntryType):
+        case .completePersona(let personaType):
             return [
-                AmplitudePropertyKey.personaType.rawValue: personaType.rawValue,
-                AmplitudePropertyKey.loginEntryType.rawValue: loginEntryType.rawValue
+                AmplitudePropertyKey.personaType.rawValue: personaType.rawValue
             ]
             
         case .completeNickname(let entryMode, let personatype, let loginEntryType):
