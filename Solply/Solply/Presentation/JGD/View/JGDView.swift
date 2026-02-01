@@ -76,6 +76,14 @@ private extension JGDView {
                         isSelected: store.state.selectedTown?.id == town.id
                     ) {
                         store.dispatch(.selectTown(town))
+                        
+                        AmplitudeManager.shared.track(
+                            .selectTown(
+                                townId: town.id,
+                                townName: town.townName,
+                                prevTownId: appState.townId
+                            )
+                        )
                     }
                 }
             }
@@ -95,6 +103,14 @@ private extension JGDView {
                     onTap: {
                         store.dispatch(.selectSubTown(subTown))
                         print("🏡 subTown → id:\(subTown.id), name:\(subTown.townName)")
+                        
+                        AmplitudeManager.shared.track(
+                            .selectTown(
+                                townId: subTown.id,
+                                townName: subTown.townName,
+                                prevTownId: appState.townId
+                            )
+                        )
                     }
                 )
             }
