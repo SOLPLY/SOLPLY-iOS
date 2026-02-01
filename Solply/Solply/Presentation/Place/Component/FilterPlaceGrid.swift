@@ -54,6 +54,7 @@ struct FilterPlaceGrid: View {
                     FilterButton(title: mainTag.title) {
                         store.dispatch(.updateMainTag)
                         store.dispatch(.toggleMainTagBottomSheet)
+                        AmplitudeManager.shared.track(.viewPlaceFilter(townId: townId))
                     }
                     .sheet(
                         isPresented: Binding(
