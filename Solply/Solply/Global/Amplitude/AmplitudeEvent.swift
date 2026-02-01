@@ -24,7 +24,7 @@ enum AmplitudeEvent {
     case selectTown(townId: Int, townName: String, prevTownId: Int)
     
     // 장소 추천 홈
-    case viewPlaceList(townId: Int)
+    case viewPlaceList(townId: Int, townName: String)
     case viewPlaceFilter(townId: Int)
     case selectPlaceMainTag(mainTag: AmplitudeSelectedMainTag, townId: Int, townName: String)
     case viewPlaceOptionPanel(townId: Int, townName: String, selectedMainTag: AmplitudeSelectedMainTag)
@@ -173,9 +173,10 @@ extension AmplitudeEvent {
                 AmplitudePropertyKey.prevTownId.rawValue: prevTownId
             ]
             
-        case .viewPlaceList(let townId):
+        case .viewPlaceList(let townId, let townName):
             return [
-                AmplitudePropertyKey.townId.rawValue: townId
+                AmplitudePropertyKey.townId.rawValue: townId,
+                AmplitudePropertyKey.townName.rawValue: townName
             ]
             
         case .viewPlaceFilter(let townId):
