@@ -267,16 +267,20 @@ enum AmplitudeWithdrawType: String {
 extension AmplitudePersonaType {
     static func from(_ persona: Persona) -> AmplitudePersonaType {
         switch persona.type.uppercased() {
-        case "REST":
-            return .rest
-        case "EXPLORER":
-            return .explorer
-        case "MOODING":
-            return .mooding
-        case "NATURAL":
-            return .natural
-        default:
-            return .rest
+        case "REST": return .rest
+        case "EXPLORER": return .explorer
+        case "MOODING": return .mooding
+        case "NATURAL": return .natural
+        default: return .rest
+        }
+    }
+}
+
+extension AmplitudeEntryMode {
+    static func from(_ userSession: UserSession) -> AmplitudeEntryMode {
+        switch userSession {
+        case .explore: return .guest
+        case .authenticated: return .member
         }
     }
 }

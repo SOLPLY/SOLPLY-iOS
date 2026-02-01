@@ -67,6 +67,14 @@ struct PlaceRecommendView: View {
                 isLoading: isUserInformationLoading,
                 filterTitle: appState.townName,
                 filterAction: {
+                    
+                    AmplitudeManager.shared.track(
+                        .viewTownList(
+                            entryMode: AmplitudeEntryMode.from(appState.userSession),
+                            fromContext: .placeList
+                        )
+                    )
+                    
                     appCoordinator.navigate(to: .JGD)
                 },
                 settingAction: {
