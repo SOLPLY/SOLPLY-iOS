@@ -142,6 +142,7 @@ extension AmplitudeSelectedOptionTag: AmplitudeTag {}
 
 /// [Amplitude] - 선택된 메인 태그
 enum AmplitudeSelectedMainTag: String {
+    case all = "all"
     case cafe = "cafe"
     case food = "food"
     case shopping = "shopping"
@@ -281,6 +282,21 @@ extension AmplitudeEntryMode {
         switch userSession {
         case .explore: return .guest
         case .authenticated: return .member
+        }
+    }
+}
+
+
+extension AmplitudeSelectedMainTag {
+    static func from(_ mainTagType: MainTagType) -> AmplitudeSelectedMainTag {
+        switch mainTagType {
+        case .all: return .all
+        case .cafe: return .cafe
+        case .food: return .food
+        case .shopping: return .shopping
+        case .book: return .bookstore
+        case .unique: return .uniqueSpace
+        case .walk: return .walking
         }
     }
 }

@@ -11,6 +11,7 @@ struct FilterPlaceGrid: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store: PlaceRecommendStore
     
@@ -63,6 +64,14 @@ struct FilterPlaceGrid: View {
                                 if !isPresented {
                                     let current = store.state.selectedMainTag
                                     let previous = store.state.previousMainTag
+                                    
+                                    AmplitudeManager.shared.track(
+                                        .selectPlaceMainTag(
+                                            mainTag: AmplitudeSelectedMainTag.from(current),
+                                            townId: appState.townId,
+                                            townName: appState.townName
+                                        )
+                                    )
                                     
                                     if current != previous {
                                         store.dispatch(.resetSubTags)
