@@ -11,7 +11,7 @@ import Moya
 
 enum TagsTargetType {
     case fetchMainTags
-    case fetchSubTags(parentId: Int)
+    case fetchSubTags(tagUsage: String, parentId: Int)
 }
 
 extension TagsTargetType: BaseTargetType {
@@ -40,8 +40,11 @@ extension TagsTargetType: BaseTargetType {
         case .fetchMainTags:
             return .requestPlain
             
-        case .fetchSubTags(let parentId):
-            let params: [String: Any] = ["parentId": parentId]
+        case .fetchSubTags(let tagUsage, let parentId):
+            let params: [String: Any] = [
+                "tagUsage": tagUsage,
+                "parentId": parentId
+            ]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }

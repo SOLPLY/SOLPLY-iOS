@@ -16,7 +16,7 @@ extension TagsService: TagsAPI {
         return try await self.request(with: .fetchMainTags)
     }
     
-    func fetchSubTags(parentId: Int) async throws -> BaseResponseBody<SubTagsResponseDTO> {
-        return try await self.request(with: .fetchSubTags(parentId: parentId))
+    func fetchSubTags(tagUsage: String, parentId: Int) async throws -> BaseResponseBody<SubTagsResponseDTO> {
+        return try await self.request(with: .fetchSubTags(tagUsage: tagUsage, parentId: parentId))
     }
 }

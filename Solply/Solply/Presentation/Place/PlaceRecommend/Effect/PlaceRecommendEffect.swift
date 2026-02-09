@@ -53,7 +53,7 @@ struct PlaceRecommendEffect {
     
     func fetchSubTags(parentId: Int) async -> PlaceRecommendAction {
         do {
-            let response = try await tagsService.fetchSubTags(parentId: parentId)
+            let response = try await tagsService.fetchSubTags(tagUsage: SolplyContentType.place.apiValue, parentId: parentId)
             
             guard let data = response.data else {
                 return .errorOccurred(error: .responseError)
