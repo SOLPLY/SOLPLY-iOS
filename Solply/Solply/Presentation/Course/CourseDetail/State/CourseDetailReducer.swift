@@ -145,7 +145,7 @@ enum CourseDetailReducer {
             
         // api
             
-        case .fetchCourseDetail(_, let isCourseUpdated):
+        case .fetchCourseDetail(let isCourseUpdated):
             if !isCourseUpdated {
                 state.isCourseDetailLoading = true
             }
@@ -154,6 +154,7 @@ enum CourseDetailReducer {
             state.isCourseDetailLoading = false
             state.courseName = courseDetails.courseName
             state.courseDescription = courseDetails.introduction
+            state.courseTag = CourseTagType.init(rawValue: courseDetails.courseTagName) ?? .daily
             
             let placeEntities: [PlaceDetailInCourse] = courseDetails.places.map { PlaceDetailInCourse(dto: $0) }
             state.places = placeEntities

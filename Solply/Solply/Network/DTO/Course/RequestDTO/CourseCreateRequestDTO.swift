@@ -10,6 +10,7 @@ import Foundation
 struct CourseCreateRequestDTO: RequestModelType {
     let courseName: String
     let courseDescription: String
+    let courseTagId: Int
     let places: [PlaceOrderDTO]
     let isCourseNameUniqueRequired: Bool
 }
