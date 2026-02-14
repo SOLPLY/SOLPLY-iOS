@@ -38,7 +38,7 @@ struct CourseRecommendGrid: View {
                         isSaved: course.isBookmarked,
                         courseName: course.courseName,
                         imageUrl: course.imageUrl,
-                        courseCategory: course.courseCategory,
+                        courseTagType: CourseTagType.init(rawValue: course.courseTagName) ?? .daily,
                         isSelected: true
                     ) {
                         courseDetailAction?(course.id)

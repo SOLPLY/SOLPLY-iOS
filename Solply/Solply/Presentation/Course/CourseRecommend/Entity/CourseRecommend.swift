@@ -11,7 +11,7 @@ struct CourseRecommend: Identifiable, Equatable {
     let id: Int
     let courseName: String
     let imageUrl: String
-    let courseCategory: [MainTagType]
+    let courseTagName: String
     let isBookmarked: Bool
 }
 
@@ -20,7 +20,7 @@ extension CourseRecommend {
         self.id = dto.courseId
         self.courseName = dto.courseName
         self.imageUrl = dto.thumbnailImage
-        self.courseCategory = dto.mainTags
+        self.courseTagName = dto.courseTagName
         self.isBookmarked = dto.isBookmarked
     }
 }
