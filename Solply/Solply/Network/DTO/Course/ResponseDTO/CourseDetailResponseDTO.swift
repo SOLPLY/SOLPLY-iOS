@@ -11,6 +11,7 @@ struct CourseDetailResponseDTO: ResponseModelType {
     let courseId: Int
     let courseName: String
     let introduction: String
+    let courseTagName: String
     let isBookmarked: Bool
     let places: [CourseDetailPlaceDTO]
 }
