@@ -48,11 +48,13 @@ extension PlaceDetailEffect {
         do {
             let response = try await courseService.fetchCourseArchive(townId: nil, placeId: placeId)
             
-            guard let courses = response.data?.courses else {
+            guard let courses = response.data else {
                 return .fetchCourseArchiveFailed(error: .responseError)
             }
             
-            return .courseArchiveFetched(courses)
+            let addToCourseArchive = courses.toEntity()
+            
+            return .courseArchiveFetched(addToCourseArchive: addToCourseArchive)
         } catch let error as NetworkError {
             return .fetchCourseArchiveFailed(error: error)
             

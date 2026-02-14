@@ -16,7 +16,7 @@ struct AddPlaceToCourseView: View {
         GridItem(.fixed(165.adjustedWidth))
     ]
     
-    private let courses: [CourseArchiveDTO]
+    private let courses: [AddToCourseArchive]
     
     private let selectedIndex: Int
     private let cardAction: ((Int) -> Void)?
@@ -26,7 +26,7 @@ struct AddPlaceToCourseView: View {
     // MARK: - Initializer
     
     init(
-        courses: [CourseArchiveDTO],
+        courses: [AddToCourseArchive],
         selectedIndex: Int,
         cardAction: ((Int) -> Void)? = nil,
         backAction: (() -> Void)? = nil,
@@ -111,7 +111,7 @@ extension AddPlaceToCourseView {
                                         isSaved: course.isBookmarked ?? false,
                                         courseName: course.courseName,
                                         imageUrl: course.thumbnailImage,
-                                        courseCategory: course.mainTags,
+                                        courseTagType: course.courseTag,
                                         isSelected: true
                                     ) {
                                         withAnimation(.easeInOut(duration: 0.2)) {

@@ -29,7 +29,7 @@ enum PlaceDetailAction {
     // api
     
     case fetchCourseArchive
-    case courseArchiveFetched([CourseArchiveDTO])
+    case courseArchiveFetched(addToCourseArchive: [AddToCourseArchive])
     case fetchCourseArchiveFailed(error: NetworkError)
     
     case fetchPlaceDetail
