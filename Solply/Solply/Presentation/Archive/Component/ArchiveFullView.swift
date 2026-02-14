@@ -97,9 +97,7 @@ extension ArchiveFullView {
                     isSaved: true,
                     courseName: courseItem.courseName ?? "",
                     imageUrl: courseItem.thumbnailUrl ?? "",
-                    courseCategory: courseItem.primaryTags?.compactMap {
-                        MainTagType(rawValue: $0)
-                    } ?? [],
+                    courseTagType: CourseTagType(rawValue: courseItem.courseTagName ?? "") ?? .daily,
                     isSelected: false
                 )
                 .frame(width: 165.adjusted, height: 165.adjusted)
