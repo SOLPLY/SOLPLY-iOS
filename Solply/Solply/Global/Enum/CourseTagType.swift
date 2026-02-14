@@ -13,15 +13,6 @@ enum CourseTagType: String {
     case healing = "산책, 힐링"
     case daily = "데일리"
     
-    var id: Int {
-        switch self {
-        case .food: return 1
-        case .discovery: return 2
-        case .healing: return 3
-        case .daily: return 4
-        }
-    }
-    
     var title: String {
         switch self {
         case .food: return "맛집·디저트"

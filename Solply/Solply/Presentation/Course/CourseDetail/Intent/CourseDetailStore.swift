@@ -142,8 +142,7 @@ final class CourseDetailStore: ObservableObject {
             let request = CourseUpdateRequestDTO(
                 courseName: state.courseName,
                 courseDescription: state.courseDescription,
-                // TODO: - 코스 태그를 수정하는 기능이 생기면 courseTagId 수정 필요 지금은 기존 태그 그대로 호출
-                courseTagId: state.courseTag?.id ?? 1,
+                courseTagId: courseId,
                 places: state.places.enumerated().map { index, place in
                     PlaceOrderDTO(
                         placeId: place.placeId,
@@ -161,7 +160,7 @@ final class CourseDetailStore: ObservableObject {
             let request = CourseCreateRequestDTO(
                 courseName: state.courseName.truncated(excludeEndRange: " ("),
                 courseDescription: state.courseDescription,
-                courseTagId: state.courseTag?.id ?? 1,
+                courseTagId: courseId,
                 places: state.places.enumerated().map { index, place in
                     PlaceOrderDTO(placeId: place.placeId, placeOrder: index + 1)
                 },
