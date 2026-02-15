@@ -28,7 +28,7 @@ struct CourseCategoryTag: View {
             .foregroundStyle(courseTagType.titleColor)
             .padding(.horizontal, 8.adjustedWidth)
             .padding(.vertical, 1.adjustedHeight)
-            .background(courseTagType.backgroundColor)
+            .background(courseTagType.tagBackgroundColor)
             .capsuleClipped()
     }
 }

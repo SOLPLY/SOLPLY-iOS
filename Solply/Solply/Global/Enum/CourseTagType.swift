@@ -8,9 +8,9 @@
 import SwiftUI
 
 enum CourseTagType: String {
-    case food = "맛집, 디저트"
-    case discovery = "취향, 발견"
-    case healing = "산책, 힐링"
+    case food = "맛집·디저트"
+    case discovery = "취향·발견"
+    case healing = "산책·힐링"
     case daily = "데일리"
     
     var title: String {
@@ -22,20 +22,29 @@ enum CourseTagType: String {
         }
     }
     
-    var backgroundColor: Color {
+    var tagBackgroundColor: Color {
         switch self {
         case .food: return .red100
-        case .discovery: return .yellow100
-        case .healing: return .purple100
+        case .discovery: return .purple100
+        case .healing: return .yellow100
         case .daily: return .green100
+        }
+    }
+    
+    var backgroundColor: Color {
+        switch self {
+        case .food: return .red300
+        case .discovery: return .purple300
+        case .healing: return .yellow200
+        case .daily: return .green300
         }
     }
     
     var titleColor: Color {
         switch self {
         case .food: return .red500
-        case .discovery: return .yellow500
-        case .healing: return .purple600
+        case .discovery: return .purple600
+        case .healing: return .yellow500
         case .daily: return .green500
         }
     }
@@ -43,8 +52,8 @@ enum CourseTagType: String {
     var savedBadge: ImageResource {
         switch self {
         case .food: return .saveIconRed
-        case .discovery: return .saveIconYellow
-        case .healing: return .saveIconPurple
+        case .discovery: return .saveIconPurple
+        case .healing: return .saveIconYellow
         case .daily: return .saveIconGreen
         }
     }
