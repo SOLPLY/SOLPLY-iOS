@@ -46,7 +46,7 @@ enum CourseDetailAction {
     case completeEditCourseInformation(courseInformation: CourseInformation)
     
     // api
-    case fetchCourseDetail(isCourseUpdated: Bool)
+    case fetchCourseDetail(courseId: Int, isCourseUpdated: Bool)
     case courseDetailFetched(courseDetail: CourseDetailResponseDTO)
     case fetchCourseDetailFailed(error: NetworkError)
     
@@ -67,10 +67,8 @@ enum CourseDetailAction {
     case removePlaceBookmarkFailed(error: NetworkError)
     
     case updateCourseDetail
-    case courseDetailUpdated(updatedCourseId: Int)
     case updateCourseDetailFailed(error: NetworkError)
     
     case submitCreateCourseDetail
-    case createCourseDetailSubmitted(createdCourseId: Int)
     case submitCreateCourseDetailFailed(error: NetworkError)
 }

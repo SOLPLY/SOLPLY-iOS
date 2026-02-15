@@ -142,7 +142,7 @@ final class CourseDetailStore: ObservableObject {
             let request = CourseUpdateRequestDTO(
                 courseName: state.courseName,
                 courseDescription: state.courseDescription,
-                courseTagId: courseId,
+                courseTagId: state.courseTag?.id ?? 31,
                 places: state.places.enumerated().map { index, place in
                     PlaceOrderDTO(
                         placeId: place.placeId,
@@ -160,7 +160,7 @@ final class CourseDetailStore: ObservableObject {
             let request = CourseCreateRequestDTO(
                 courseName: state.courseName.truncated(excludeEndRange: " ("),
                 courseDescription: state.courseDescription,
-                courseTagId: courseId,
+                courseTagId: state.courseTag?.id ?? 31,
                 places: state.places.enumerated().map { index, place in
                     PlaceOrderDTO(placeId: place.placeId, placeOrder: index + 1)
                 },

@@ -8,9 +8,9 @@
 import SwiftUI
 
 enum CourseTagType: String {
-    case food = "맛집·디저트"
-    case discovery = "취향·발견"
-    case healing = "산책·힐링"
+    case food = "맛집 · 디저트"
+    case discovery = "취향 · 발견"
+    case healing = "산책 · 힐링"
     case daily = "데일리"
     
     var title: String {
@@ -55,6 +55,15 @@ enum CourseTagType: String {
         case .discovery: return .saveIconPurple
         case .healing: return .saveIconYellow
         case .daily: return .saveIconGreen
+        }
+    }
+    
+    var id: Int {
+        switch self {
+        case .food: return 31
+        case .discovery: return 34
+        case .healing: return 32
+        case .daily: return 33
         }
     }
 }

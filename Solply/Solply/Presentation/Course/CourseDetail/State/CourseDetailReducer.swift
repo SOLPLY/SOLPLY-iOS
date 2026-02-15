@@ -145,7 +145,7 @@ enum CourseDetailReducer {
             
         // api
             
-        case .fetchCourseDetail(let isCourseUpdated):
+        case .fetchCourseDetail(_, let isCourseUpdated):
             if !isCourseUpdated {
                 state.isCourseDetailLoading = true
             }
@@ -193,15 +193,8 @@ enum CourseDetailReducer {
         case .updateCourseDetail:
             break
             
-        case .courseDetailUpdated(let updatedCourseId):
-            state.updatedCourseId = updatedCourseId
-            break
-            
         case .submitCreateCourseDetail:
             break
-            
-        case .createCourseDetailSubmitted(let createdCourseId):
-            state.updatedCourseId = createdCourseId
             
         // errors
             

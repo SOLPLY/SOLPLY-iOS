@@ -52,13 +52,10 @@ struct CourseDetailView: View {
             store.dispatch(.endDragging)
         }
         .onAppear {
-            store.dispatch(.fetchCourseDetail(isCourseUpdated: false))
+            store.dispatch(.fetchCourseDetail(courseId: store.courseId, isCourseUpdated: false))
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
-        }
-        .onChange(of: store.state.updatedCourseId) { _, newValue in
-            store.dispatch(.fetchCourseDetail(isCourseUpdated: true))
         }
         .onChange(of: store.state.toastContent) { _, toastContent in
             guard let toastContent else { return }

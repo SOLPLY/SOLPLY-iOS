@@ -17,8 +17,6 @@ struct CourseDetailState {
     var draggedPlace: PlaceDetailInCourse?
     var dragDropState: DragDropState = .prepared
     
-    var updatedCourseId: Int = -1 
-    
     var courseName: String = ""
     var courseDescription: String = ""
     var oldCourseName: String = ""
