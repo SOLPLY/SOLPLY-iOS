@@ -50,27 +50,25 @@ enum CourseDetailAction {
     case courseDetailFetched(courseDetail: CourseDetailResponseDTO)
     case fetchCourseDetailFailed(error: NetworkError)
     
-    case submitCourseBookmark(courseId: Int)
+    case submitCourseBookmark
     case courseBookmarkSubmitted
     case submitCourseBookmarkFailed(error: NetworkError)
     
-    case removeCourseBookmark(courseId: Int)
+    case removeCourseBookmark
     case courseBookmarkRemoved
     case removeCourseBookmarkFailed(error: NetworkError)
     
-    case submitPlaceBookmark(placeId: Int)
+    case submitPlaceBookmark(index: Int)
     case placeBookmarkSubmitted
     case submitPlaceBookmarkFailed(error: NetworkError)
     
-    case removePlaceBookmark(placeId: Int)
+    case removePlaceBookmark(index: Int)
     case placeBookmarkRemoved
     case removePlaceBookmarkFailed(error: NetworkError)
     
-    case updateCourseDetail(courseId: Int, request: CourseUpdateRequestDTO)
-    case courseDetailUpdated(updatedCourseId: Int)
+    case updateCourseDetail
     case updateCourseDetailFailed(error: NetworkError)
     
-    case submitCreateCourseDetail(request: CourseCreateRequestDTO)
-    case createCourseDetailSubmitted(createdCourseId: Int)
+    case submitCreateCourseDetail
     case submitCreateCourseDetailFailed(error: NetworkError)
 }

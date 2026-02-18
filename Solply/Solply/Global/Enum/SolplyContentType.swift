@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SolplyContentType: CaseIterable{
+enum SolplyContentType: String, CaseIterable, Codable{
     case place
     case course
     
@@ -16,5 +16,9 @@ enum SolplyContentType: CaseIterable{
         case .place: return "장소"
         case .course: return "코스"
         }
+    }
+    
+    var apiValue: String {
+        rawValue.uppercased()
     }
 }

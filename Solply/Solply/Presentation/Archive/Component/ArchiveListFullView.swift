@@ -93,7 +93,7 @@ extension ArchiveListFullView {
                     isSaved: true,
                     courseName: item.courseName,
                     imageUrl: item.thumbnailImage,
-                    courseCategory: item.mainTags,
+                    courseTagType: CourseTagType(rawValue: item.courseTagName) ?? .daily,
                     isSelected: store.state.selectedCourseIds.contains(item.courseId)
                 ) {
                     if store.state.activeDelete {
@@ -105,7 +105,7 @@ extension ArchiveListFullView {
                                 courseId: item.courseId,
                                 fromArchive: true
                             )
-                        ) 
+                        )
                     }
                     
                     if store.state.activeCancel {
