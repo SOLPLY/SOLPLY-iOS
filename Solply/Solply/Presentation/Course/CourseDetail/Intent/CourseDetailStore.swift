@@ -9,11 +9,34 @@ import Foundation
 
 @MainActor
 final class CourseDetailStore: ObservableObject {
+    
+    // MARK: - Properties
+    
     @Published private(set) var state = CourseDetailState()
-    private let effect: CourseDetailEffect = CourseDetailEffect(
-        courseService: CourseService(),
-        placeService: PlaceService()
-    )
+    private let effect: CourseDetailEffect
+    
+    let townId: Int
+    let courseId: Int
+    let fromArchive: Bool
+    
+    // MARK: - Initializer
+    
+    init(
+        effect: CourseDetailEffect = CourseDetailEffect(
+            courseService: CourseService(),
+            placeService: PlaceService()
+        ),
+        townId: Int,
+        courseId: Int,
+        fromArchive: Bool
+    ) {
+        self.effect = effect
+        self.townId = townId
+        self.courseId = courseId
+        self.fromArchive = fromArchive
+    }
+    
+    // MARK: - dispatch
     
     func dispatch(_ action: CourseDetailAction) {
         CourseDetailReducer.reduce(state: &state, action: action)
@@ -85,43 +108,65 @@ final class CourseDetailStore: ObservableObject {
                 self.dispatch(.delayEditing)
             }
             
-        case .fetchCourseDetail(let courseId, _):
+        case .fetchCourseDetail:
             Task {
                 let result = await effect.fetchCourseDetail(courseId: courseId)
                 self.dispatch(result)
             }
             
-        case .submitCourseBookmark(let courseId):
+        case .submitCourseBookmark:
             Task {
                 let result = await effect.submitCourseBookmark(courseId: courseId)
                 self.dispatch(result)
             }
             
-        case .removeCourseBookmark(let courseId):
+        case .removeCourseBookmark:
             Task {
                 let result = await effect.removeCourseBookmark(courseId: courseId)
                 self.dispatch(result)
             }
             
-        case .submitPlaceBookmark(let placeId):
+        case .submitPlaceBookmark(let index):
             Task {
-                let result = await effect.submitPlaceBookmark(placeId: placeId)
+                let result = await effect.submitPlaceBookmark(placeId: state.places[index].placeId)
                 self.dispatch(result)
             }
             
-        case .removePlaceBookmark(let placeId):
+        case .removePlaceBookmark(let index):
             Task {
-                let result = await effect.removePlaceBookmark(placeId: placeId)
+                let result = await effect.removePlaceBookmark(placeId: state.places[index].placeId)
                 self.dispatch(result)
             }
             
-        case .updateCourseDetail(let courseId, let request):
+        case .updateCourseDetail:
+            let request = CourseUpdateRequestDTO(
+                courseName: state.courseName,
+                courseDescription: state.courseDescription,
+                courseTagId: state.courseTag?.id ?? 31,
+                places: state.places.enumerated().map { index, place in
+                    PlaceOrderDTO(
+                        placeId: place.placeId,
+                        placeOrder: index + 1
+                    )
+                }
+            )
+            
             Task {
                 let result = await effect.updateCourseDetail(courseId: courseId, request: request)
                 self.dispatch(result)
             }
             
-        case .submitCreateCourseDetail(let request):
+        case .submitCreateCourseDetail:
+            let request = CourseCreateRequestDTO(
+                courseName: state.courseName.truncated(excludeEndRange: " ("),
+                courseDescription: state.courseDescription,
+                courseTagId: state.courseTag?.id ?? 31,
+                places: state.places.enumerated().map { index, place in
+                    PlaceOrderDTO(placeId: place.placeId, placeOrder: index + 1)
+                },
+                isCourseNameUniqueRequired: state.isCourseNameUniqueRequired
+            )
+            
             Task {
                 let result = await effect.submitCreateCourseDetail(request: request)
                 self.dispatch(result)

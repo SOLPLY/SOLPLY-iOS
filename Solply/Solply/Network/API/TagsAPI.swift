@@ -9,5 +9,5 @@ import Foundation
 
 protocol TagsAPI {
     func fetchMainTags() async throws -> BaseResponseBody<MainTagsResponseDTO>
-    func fetchSubTags(parentId: Int) async throws -> BaseResponseBody<SubTagsResponseDTO>
+    func fetchSubTags(tagUsage: String, parentId: Int) async throws -> BaseResponseBody<SubTagsResponseDTO>
 }

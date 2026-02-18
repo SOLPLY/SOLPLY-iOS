@@ -21,7 +21,7 @@ struct PlaceDetailState {
     var userLongitude: Double = 0.0
     var addPlaceCourseInformation: AddPlaceCourseInformation?
     
-    var courses: [CourseArchiveDTO] = []
+    var courses: [AddToCourseArchive] = []
     
     var selectedCourseIndex: Int = -1
     

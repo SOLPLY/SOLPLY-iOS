@@ -14,19 +14,19 @@ struct CourseDetailView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager
     @EnvironmentObject private var alertManager: AlertManager
-    @StateObject private var store = CourseDetailStore()
+    @StateObject private var store: CourseDetailStore
     @StateObject private var locationManager = LocationManager()
-    
-    private var townId: Int
-    private var courseId: Int
-    private let fromArchive: Bool
     
     // MARK: - Initializer
     
     init(townId: Int, courseId: Int, fromArchive: Bool) {
-        self.townId = townId
-        self.courseId = courseId
-        self.fromArchive = fromArchive
+        self._store = StateObject(
+            wrappedValue: CourseDetailStore(
+                townId: townId,
+                courseId: courseId,
+                fromArchive: fromArchive
+            )
+        )
     }
     
     // MARK: - Body
@@ -35,7 +35,7 @@ struct CourseDetailView: View {
         ZStack(alignment: .bottom) {
             courseMapView
                 
-            if fromArchive && !store.state.isCourseEditing {
+            if store.fromArchive && !store.state.isCourseEditing {
                 editButton
             }
             
@@ -52,13 +52,10 @@ struct CourseDetailView: View {
             store.dispatch(.endDragging)
         }
         .onAppear {
-            store.dispatch(.fetchCourseDetail(courseId: courseId, isCourseUpdated: false))
+            store.dispatch(.fetchCourseDetail(courseId: store.courseId, isCourseUpdated: false))
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
-        }
-        .onChange(of: store.state.updatedCourseId) { _, newValue in
-            store.dispatch(.fetchCourseDetail(courseId: newValue, isCourseUpdated: true))
         }
         .onChange(of: store.state.toastContent) { _, toastContent in
             guard let toastContent else { return }
@@ -111,7 +108,7 @@ extension CourseDetailView {
                     appCoordinator.goToRoot()
                 }
             ))
-            .customBottomSheet(.courseDetail(fromArchive: fromArchive)) {
+            .customBottomSheet(.courseDetail(fromArchive: store.fromArchive)) {
                 VStack(alignment: .center, spacing: 20.adjustedHeight) {
                     title
                     
@@ -124,7 +121,7 @@ extension CourseDetailView {
     private var title: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             Group {
-                if fromArchive && store.state.isCourseEditing {
+                if store.fromArchive && store.state.isCourseEditing {
                     HStack(alignment: .center, spacing: 4.adjustedWidth) {
                         Text(store.state.courseName)
                             .applySolplyFont(.display_20_sb)
@@ -151,7 +148,7 @@ extension CourseDetailView {
                         
                         Spacer()
                         
-                        if !fromArchive {
+                        if !store.fromArchive {
                             Button {
                                 requireLogin {
                                     bookmarkCourse()
@@ -196,7 +193,7 @@ extension CourseDetailView {
                     ) {
                         store.dispatch(.focusPlace(index: index))
                     } detailAction: {
-                        appCoordinator.navigate(to: .placeDetail(townId: townId, placeId: store.state.places[index].placeId, fromSearch: false))
+                        appCoordinator.navigate(to: .placeDetail(townId: store.townId, placeId: store.state.places[index].placeId, fromSearch: false))
                     } findDirectionAction: {
                         store.dispatch(.requestFindDirection)
                     } saveAction: {
@@ -204,7 +201,7 @@ extension CourseDetailView {
                             store.dispatch(.toggleBookmarkPlace(index: index))
                             
                             if store.state.places[index].isBookmarked {
-                                store.dispatch(.submitPlaceBookmark(placeId: store.state.places[index].placeId))
+                                store.dispatch(.submitPlaceBookmark(index: index))
                                 
                                 store.dispatch(
                                     .showToastView(
@@ -215,7 +212,7 @@ extension CourseDetailView {
                                     )
                                 )
                             } else {
-                                store.dispatch(.removePlaceBookmark(placeId: store.state.places[index].placeId))
+                                store.dispatch(.removePlaceBookmark(index: index))
                                 
                                 store.dispatch(
                                     .showToastView(
@@ -307,7 +304,7 @@ extension CourseDetailView {
     
     private var editingArea: some View {
         VStack(alignment: .center, spacing: 16.adjustedHeight) {
-            if fromArchive && store.state.canDeletePlace {
+            if store.fromArchive && store.state.canDeletePlace {
                 deleteArea
             }
             
@@ -333,40 +330,12 @@ extension CourseDetailView {
             
             VStack(alignment: .center, spacing: 12.adjustedHeight) {
                 CourseSaveButton(title: "지금 코스에 저장") {
-                    store.dispatch(
-                        .updateCourseDetail(
-                            courseId: courseId,
-                            request: CourseUpdateRequestDTO(
-                                courseName: store.state.courseName,
-                                courseDescription: store.state.courseDescription,
-                                places: store.state.places.enumerated().map { index, place in
-                                    PlaceOrderDTO(
-                                        placeId: place.placeId,
-                                        placeOrder: index + 1
-                                    )
-                                }
-                            )
-                        )
-                    )
+                    store.dispatch(.updateCourseDetail)
                     store.dispatch(.saveCourseToCurrent)
                 }
                 
                 CourseSaveButton(title: "새 코스로 저장") {
-                    store.dispatch(
-                        .submitCreateCourseDetail(
-                            request: CourseCreateRequestDTO(
-                                courseName: store.state.courseName.truncated(excludeEndRange: " ("),
-                                courseDescription: store.state.courseDescription,
-                                places: store.state.places.enumerated().map { index, place in
-                                    PlaceOrderDTO(
-                                        placeId: place.placeId,
-                                        placeOrder: index + 1
-                                    )
-                                },
-                                isCourseNameUniqueRequired: store.state.isCourseNameUniqueRequired
-                            )
-                        )
-                    )
+                    store.dispatch(.submitCreateCourseDetail)
                     store.dispatch(.saveCourseAsNew)
                     
                     store.dispatch(
@@ -391,10 +360,10 @@ extension CourseDetailView {
 extension CourseDetailView {
     private func bookmarkCourse() {
         if store.state.isCourseBookmarkSelected {
-            store.dispatch(.removeCourseBookmark(courseId: courseId))
+            store.dispatch(.removeCourseBookmark)
             store.dispatch(.toggleBookmarkCourse)
         } else {
-            store.dispatch(.submitCourseBookmark(courseId: courseId))
+            store.dispatch(.submitCourseBookmark)
             store.dispatch(.toggleBookmarkCourse)
             
             store.dispatch(
@@ -407,8 +376,8 @@ extension CourseDetailView {
                             action: {
                                 appCoordinator.navigate(
                                     to: .courseDetail(
-                                        townId: townId,
-                                        courseId: courseId,
+                                        townId: store.townId,
+                                        courseId: store.courseId,
                                         fromArchive: true
                                     )
                                 )

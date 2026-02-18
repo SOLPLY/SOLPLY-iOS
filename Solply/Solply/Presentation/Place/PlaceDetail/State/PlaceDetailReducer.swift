@@ -57,8 +57,8 @@ enum PlaceDetailReducer {
         case .fetchCourseArchive:
             break
             
-        case .courseArchiveFetched(let courseArchive):
-            state.courses = courseArchive
+        case .courseArchiveFetched(let addToCourseArchive):
+            state.courses = addToCourseArchive
             break
             
         case .fetchPlaceDetail:

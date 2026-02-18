@@ -34,7 +34,10 @@ struct RegisterEffect {
 extension RegisterEffect {
     func fetchSubTags(parentId: Int) async -> RegisterAction {
         do {
-            let response = try await tagsService.fetchSubTags(parentId: parentId)
+            let response = try await tagsService.fetchSubTags(
+                tagUsage: SolplyContentType.place.apiValue,
+                parentId: parentId
+            )
             
             guard let data = response.data?.tags else {
                 return .errorOccured(error: .responseError)

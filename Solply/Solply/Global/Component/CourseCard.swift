@@ -16,7 +16,7 @@ struct CourseCard: View {
     private let isSaved: Bool
     private let courseName: String
     private let imageUrl: String
-    private let courseCategory: [MainTagType]
+    private let courseTagType: CourseTagType
     private let isSelected: Bool
     private let action: (() -> Void)?
     
@@ -26,14 +26,14 @@ struct CourseCard: View {
         isSaved: Bool,
         courseName: String,
         imageUrl: String,
-        courseCategory: [MainTagType],
+        courseTagType: CourseTagType,
         isSelected: Bool,
         action: (() -> Void)? = nil
     ) {
         self.isSaved = isSaved
         self.courseName = courseName
         self.imageUrl = imageUrl
-        self.courseCategory = courseCategory
+        self.courseTagType = courseTagType
         self.isSelected = isSelected
         self.action = action
     }
@@ -90,8 +90,8 @@ extension CourseCard {
                 
                 Spacer()
                 
-                if isSaved, let isSavedBadge = courseCategory.first?.savedBadge {
-                    Image(isSavedBadge)
+                if isSaved {
+                    Image(courseTagType.savedBadge)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24.adjusted, height: 32.adjusted)
@@ -102,18 +102,13 @@ extension CourseCard {
             cardShellMainTags
         }
         .frame(width: 165.adjusted, height: 88.adjusted)
-        .background(courseCategory.first?.courseBackgroundColor)
+        .background(courseTagType.backgroundColor)
         .cornerRadius(4, corners: [.topLeft, .topRight])
     }
     
     private var cardShellMainTags: some View {
-        HStack(alignment: .center, spacing: 4.adjusted) {
-            ForEach(Array(courseCategory.prefix(2).enumerated()), id: \.offset) { _, category in
-                PlaceCategoryTag(placeCategory: category)
-                    .frame(height: 20.adjusted)
-            }
-        }
-        .padding(.bottom, 12.adjusted)
-        .padding(.leading, 12.adjusted)
+        CourseCategoryTag(courseTagType: courseTagType)
+            .padding(.bottom, 12.adjusted)
+            .padding(.leading, 12.adjusted)
     }
 }

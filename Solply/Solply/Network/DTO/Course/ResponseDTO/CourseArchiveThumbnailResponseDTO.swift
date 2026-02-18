@@ -15,6 +15,6 @@ struct CourseArchiveThumbnailDTO: ResponseModelType {
     let townId: Int?
     let townName: String?
     let courseName: String?
-    let primaryTags: [String]?
+    let courseTagName: String?
     let thumbnailUrl: String?
 }

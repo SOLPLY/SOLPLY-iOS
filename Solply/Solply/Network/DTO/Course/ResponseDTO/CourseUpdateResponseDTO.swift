@@ -11,5 +11,6 @@ struct CourseUpdateResponseDTO: ResponseModelType {
     let updatedCourseId: Int
     let updatedCourseName: String
     let updatedCourseDescription: String
+    let updatedCourseTagName: String
     let isNewCourse: Bool
 }

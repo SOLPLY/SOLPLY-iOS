@@ -154,6 +154,7 @@ enum CourseDetailReducer {
             state.isCourseDetailLoading = false
             state.courseName = courseDetails.courseName
             state.courseDescription = courseDetails.introduction
+            state.courseTag = CourseTagType.init(rawValue: courseDetails.courseTagName) ?? .daily
             
             let placeEntities: [PlaceDetailInCourse] = courseDetails.places.map { PlaceDetailInCourse(dto: $0) }
             state.places = placeEntities
@@ -192,15 +193,8 @@ enum CourseDetailReducer {
         case .updateCourseDetail:
             break
             
-        case .courseDetailUpdated(let updatedCourseId):
-            state.updatedCourseId = updatedCourseId
-            break
-            
         case .submitCreateCourseDetail:
             break
-            
-        case .createCourseDetailSubmitted(let createdCourseId):
-            state.updatedCourseId = createdCourseId
             
         // errors
             
