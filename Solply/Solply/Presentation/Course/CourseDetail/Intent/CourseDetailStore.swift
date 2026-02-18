@@ -108,7 +108,7 @@ final class CourseDetailStore: ObservableObject {
                 self.dispatch(.delayEditing)
             }
             
-        case .fetchCourseDetail:
+        case .fetchCourseDetail(let courseId, _):
             Task {
                 let result = await effect.fetchCourseDetail(courseId: courseId)
                 self.dispatch(result)
