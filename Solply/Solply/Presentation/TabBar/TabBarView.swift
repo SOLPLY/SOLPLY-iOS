@@ -14,12 +14,13 @@ struct TabBarView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var alertManager: AlertManager
+    @EnvironmentObject private var scrollToTopManager: ScrollToTopManager
     @StateObject private var locationManager = LocationManager()
     
+    @State private var visitedTabs: Set<TabBarState> = [.place]
     @State private var placeRecommendTitle: String = ""
     @State private var courseRecommendTitle: String = ""
     @State private var isUserInformationLoading: Bool = false
-    @State private var scrollToTopTarget: ScrollToTopTarget?
     
     private let userService = UserService()
     
@@ -67,22 +68,37 @@ struct TabBarView: View {
 
 extension TabBarView {
     private var tabContent: some View {
-        Group {
-            PlaceRecommendView(
-                title: placeRecommendTitle,
-                isUserInformationLoading: isUserInformationLoading,
-                scrollToTopTarget: $scrollToTopTarget
-            )
-            .visible(appCoordinator.selectedTab == .place)
+        ZStack {
+            if visitedTabs.contains(.place) {
+                PlaceRecommendView(
+                    title: placeRecommendTitle,
+                    isUserInformationLoading: isUserInformationLoading
+                )
+                .visible(appCoordinator.selectedTab == .place)
+            }
             
-            CourseRecommendView(
-                title: courseRecommendTitle,
-                isUserInformationLoading: isUserInformationLoading,
-                scrollToTopTarget: $scrollToTopTarget
-            )
-            .visible(appCoordinator.selectedTab == .course)
+            if visitedTabs.contains(.course) {
+                CourseRecommendView(
+                    title: courseRecommendTitle,
+                    isUserInformationLoading: isUserInformationLoading
+                )
+                .visible(appCoordinator.selectedTab == .course)
+            }
+            
+            if visitedTabs.contains(.bookmark) {
+                ArchiveView()
+                    .visible(appCoordinator.selectedTab == .bookmark)
+            }
+            
+            if visitedTabs.contains(.myPage) {
+                MyPageView()
+                    .visible(appCoordinator.selectedTab == .myPage)
+            }
         }
         .ignoresSafeArea(edges: .bottom)
+        .onChange(of: appCoordinator.selectedTab) { _, newValue in
+            visitedTabs.insert(newValue)
+        }
     }
     
     private var tabBar: some View {
@@ -91,7 +107,7 @@ extension TabBarView {
                 get: { appCoordinator.selectedTab },
                 set: { appCoordinator.switchTab(to: $0) }
             ), scrollToTopAction: { tabBarState in
-                scrollToTopTarget = ScrollToTopTarget.from(tabBarState)
+                scrollToTopManager.trigger(tabBarState)
             }
         )
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)
