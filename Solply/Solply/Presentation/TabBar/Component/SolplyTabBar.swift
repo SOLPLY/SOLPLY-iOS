@@ -23,6 +23,10 @@ struct SolplyTabBar: View {
     private let tabIconHeight: CGFloat = 36.adjusted
     private let tabItemCapsuleWidth: CGFloat = 48.adjusted
     private let tabItemCapsuleHeight: CGFloat = 48.adjusted
+    private let tabItemCapsuleSpacing: CGFloat = 20.adjustedWidth
+    private let capsuleBackgroundColor: Color = .green100
+    private let tabBarBackgroundColor: Color = .gray900
+    
     
     // TODO: - 1차 스프린트 이후 클로저 프로퍼티 삭제
     private let bookmarkAction: (() -> Void)?
@@ -49,11 +53,10 @@ struct SolplyTabBar: View {
         ZStack(alignment: .leading) {
             tabCapsule
             
-            tabButton
+            tabButtons
         }
-        .padding(.horizontal, 8.adjusted)
-        .padding(.vertical, 6.adjusted)
-        .background(.gray900)
+        .padding(8.adjusted)
+        .background(tabBarBackgroundColor)
         .capsuleClipped()
         .onChange(of: selectedTab) {
             capsuleOffsetX = calculateCapsuleOffsetX(for: selectedTab)
@@ -69,14 +72,14 @@ struct SolplyTabBar: View {
 extension SolplyTabBar {
     private var tabCapsule: some View {
         Capsule()
-            .fill(.green200)
+            .fill(capsuleBackgroundColor)
             .frame(width: tabItemCapsuleWidth, height: tabItemCapsuleHeight)
             .offset(x: capsuleOffsetX)
-            .animation(.easeInOut(duration: 0.2), value: capsuleOffsetX)
+            .animation(.easeInOut(duration: 0.25), value: capsuleOffsetX)
     }
     
-    private var tabButton: some View {
-        HStack(alignment: .center, spacing: 16.adjustedWidth) {
+    private var tabButtons: some View {
+        HStack(alignment: .center, spacing: tabItemCapsuleSpacing) {
             ForEach(TabBarState.allCases, id: \.self) { tab in
                 TabItem(
                     selectedTab: selectedTab,
@@ -95,7 +98,6 @@ extension SolplyTabBar {
                 }
             }
         }
-        .padding(.horizontal, 6.adjustedWidth)
     }
 }
 
@@ -115,6 +117,6 @@ extension SolplyTabBar {
     
     private func calculateCapsuleOffsetX(for tab: TabBarState) -> CGFloat {
         let index = TabBarState.allCases.firstIndex(of: tab) ?? 0
-        return CGFloat(index) * (tabItemCapsuleWidth + 4.adjustedWidth)
+        return CGFloat(index) * (tabItemCapsuleWidth + tabItemCapsuleSpacing)
     }
 }
