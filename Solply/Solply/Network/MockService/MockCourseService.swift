@@ -115,7 +115,6 @@ extension MockCourseService: CourseAPI {
                     placeOrder: 1,
                     latitude: "37.49821",
                     longitude: "127.02794",
-                    placeType: "FOOD",
                     placeDefaultId: 1005
                 ),
                 CourseDetailPlaceDTO(
@@ -128,7 +127,6 @@ extension MockCourseService: CourseAPI {
                     placeOrder: 1,
                     latitude: "37.49763",
                     longitude: "127.02688",
-                    placeType: "CAFE",
                     placeDefaultId: 1006
                 )
             ]
