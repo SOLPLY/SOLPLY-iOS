@@ -32,7 +32,7 @@ struct JGDSubTownRow: View {
                         Image(.selectIcon)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
+                            .frame(width: 20.adjustedWidth, height: 20.adjustedHeight)
                             .padding(.trailing, 2.adjustedWidth)
                     }
                 }
