@@ -10,4 +10,17 @@ import Foundation
 enum ScrollToTopTarget: Equatable {
     case placeTopTarget
     case courseTopTarget
+    case bookmarkTopTarget
+    case myPageTopTarget
+}
+
+extension ScrollToTopTarget {
+    static func from(_ tabBarState: TabBarState) -> ScrollToTopTarget {
+        switch tabBarState {
+        case .place: return .placeTopTarget
+        case .course: return .courseTopTarget
+        case .bookmark: return .bookmarkTopTarget
+        case .myPage: return .myPageTopTarget
+        }
+    }
 }

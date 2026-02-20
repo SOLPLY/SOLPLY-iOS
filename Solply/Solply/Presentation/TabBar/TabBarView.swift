@@ -90,31 +90,8 @@ extension TabBarView {
             selectedTab: Binding(
                 get: { appCoordinator.selectedTab },
                 set: { appCoordinator.switchTab(to: $0) }
-            ), bookmarkAction: {
-                switch appState.userSession {
-                case .explore:
-                    showLoginAlert()
-                case .authenticated:
-                    appCoordinator.navigate(to: .archive)
-                }
-
-            }, myPageAction: {
-                switch appState.userSession {
-                case .explore:
-                    showLoginAlert()
-                case .authenticated:
-                    appCoordinator.navigate(to: .myPage)
-                }
-                    
-            }, scrollToTopAction: { tabBarState in
-                switch tabBarState {
-                case .place:
-                    scrollToTopTarget = .placeTopTarget
-                case .course:
-                    scrollToTopTarget = .courseTopTarget
-                default:
-                    break
-                }
+            ), scrollToTopAction: { tabBarState in
+                scrollToTopTarget = ScrollToTopTarget.from(tabBarState)
             }
         )
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)

@@ -27,23 +27,15 @@ struct SolplyTabBar: View {
     private let capsuleBackgroundColor: Color = .green100
     private let tabBarBackgroundColor: Color = .gray900
     
-    
-    // TODO: - 1차 스프린트 이후 클로저 프로퍼티 삭제
-    private let bookmarkAction: (() -> Void)?
-    private let myPageAction: (() -> Void)?
     private let scrollToTopAction: ((TabBarState) -> Void)?
     
     // MARK: - Initializer
     
     init(
         selectedTab: Binding<TabBarState>,
-        bookmarkAction: (() -> Void)? = nil,
-        myPageAction: (() -> Void)? = nil,
         scrollToTopAction: ((TabBarState) -> Void)? = nil
     ) {
         self._selectedTab = selectedTab
-        self.bookmarkAction = bookmarkAction
-        self.myPageAction = myPageAction
         self.scrollToTopAction = scrollToTopAction
     }
     
@@ -87,14 +79,7 @@ extension SolplyTabBar {
                     width: tabIconWidth,
                     height: tabIconHeight
                 ) {
-                    // TODO: - 1차 스프린트 이후 분기처리 삭제
-                    switch tab {
-                    case .place, .course: selectTab(tab)
-                    case .bookmark: bookmarkAction?()
-                    case .myPage: myPageAction?()
-                    }
-                    
-                    // selectTab(tab)
+                    selectTab(tab)
                 }
             }
         }
