@@ -15,6 +15,7 @@ struct RootView: View {
     @StateObject private var appCoordinator = AppCoordinator()
     @StateObject private var toastManager = ToastManager()
     @StateObject private var alertManager = AlertManager()
+    @StateObject private var scrollToTopManager = ScrollToTopManager()
     
     // MARK: - Body
     
@@ -29,6 +30,7 @@ struct RootView: View {
         .environmentObject(alertManager)
         .environmentObject(toastManager)
         .environmentObject(appCoordinator)
+        .environmentObject(scrollToTopManager)
         .animation(.easeInOut(duration: 0.2), value: appCoordinator.root)
         .onReceive(NotificationCenter.default.publisher(for: .tokenExpired)) { _ in
             appState.updateUserSession()

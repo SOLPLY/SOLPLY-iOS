@@ -26,6 +26,5 @@ struct CourseDetailPlaceDTO: ResponseModelType {
     let placeOrder: Int
     let latitude: String
     let longitude: String
-    let placeType: String
-    let placeDefaultId: Int
+    let placeDefaultId: Int?
 }
