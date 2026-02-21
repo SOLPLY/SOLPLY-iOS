@@ -96,13 +96,13 @@ extension CustomToastModifier {
             HStack(alignment: .center, spacing: 0) {
                 Text(buttonTitle)
                     .applySolplyFont(.body_14_m)
-                    .foregroundStyle(.purple300)
+                    .foregroundStyle(.purple200)
                 
                 Image(.arrowRightIcon)
                     .resizable()
                     .renderingMode(.template)
                     .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(.purple300)
+                    .foregroundStyle(.purple200)
                     .frame(width: 24.adjusted, height: 24.adjusted)
             }
         }
