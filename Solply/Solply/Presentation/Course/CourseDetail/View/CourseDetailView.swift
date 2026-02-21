@@ -10,6 +10,7 @@ import SwiftUI
 struct CourseDetailView: View {
     
     // MARK: - Properties
+    
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager

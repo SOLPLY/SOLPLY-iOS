@@ -106,8 +106,13 @@ extension TabBarView {
             selectedTab: Binding(
                 get: { appCoordinator.selectedTab },
                 set: { appCoordinator.switchTab(to: $0) }
-            ), scrollToTopAction: { tabBarState in
+            ),
+            isAuthenticated: appState.userSession == .authenticated,
+            scrollToTopAction: { tabBarState in
                 scrollToTopManager.trigger(tabBarState)
+            },
+            loginAction: {
+                showLoginAlert()
             }
         )
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)
