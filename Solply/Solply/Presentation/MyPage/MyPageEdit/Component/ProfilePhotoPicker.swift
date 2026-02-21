@@ -14,7 +14,6 @@ struct ProfilePhotoPicker: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject private var alertManager: AlertManager
     @State private var isPickerPresented: Bool = false
     @State private var isDialogPresented: Bool = false
     @State private var selectedItem: PhotosPickerItem?
@@ -166,7 +165,7 @@ extension ProfilePhotoPicker {
     }
     
     private func showAlert() {
-        alertManager.showAlert(alertType: .photoPermissionDenied, onCancel: nil) {
+        AlertManager.shared.showAlert(alertType: .photoPermissionDenied, onCancel: nil) {
             guard let url = URL(string: UIApplication.openSettingsURLString),
                   UIApplication.shared.canOpenURL(url) else { return }
             

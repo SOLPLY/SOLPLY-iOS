@@ -13,7 +13,6 @@ struct TabBarView: View {
     
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @EnvironmentObject private var alertManager: AlertManager
     @EnvironmentObject private var scrollToTopManager: ScrollToTopManager
     @StateObject private var locationManager = LocationManager()
     
@@ -112,7 +111,9 @@ extension TabBarView {
                 scrollToTopManager.trigger(tabBarState)
             },
             loginAction: {
-                showLoginAlert()
+                AlertManager.shared.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+                    appCoordinator.changeRoot(to: .auth)
+                }
             }
         )
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)
@@ -143,16 +144,6 @@ extension TabBarView {
         } catch {
             isUserInformationLoading = true
             throw error
-        }
-    }
-}
-
-// MARK: - Functions
-
-extension TabBarView {
-    private func showLoginAlert() {
-        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
-            appCoordinator.changeRoot(to: .auth)
         }
     }
 }

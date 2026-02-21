@@ -14,7 +14,6 @@ struct PlaceDetailView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager
-    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store: PlaceDetailStore
     @StateObject private var locationManager = LocationManager()
     
@@ -146,19 +145,23 @@ extension PlaceDetailView {
             openingHours: store.state.openingHours,
             snsLink: store.state.snsLink
         ) {
-            requireLogin {
+            appState.requireLoginWithAlert {
                 bookmarkPlace()
+            } onExplore: {
+                appCoordinator.changeRoot(to: .auth)
             }
         } findDirectionAction: {
             store.dispatch(.requestFindDirection)
         } addPlaceToCourseAction: {
-            requireLogin {
+            appState.requireLoginWithAlert {
                 store.dispatch(.fetchCourseArchive)
                 store.dispatch(.toggleAddToCourse)
                 
                 if store.state.selectedCourseIndex != -1 {
                     store.dispatch(.selectCourseToAdd(index: -1))
                 }
+            } onExplore: {
+                appCoordinator.changeRoot(to: .auth)
             }
         } copyAction: { text in
             store.dispatch(.copyToClipboard(text: text))
@@ -171,8 +174,10 @@ extension PlaceDetailView {
                 )
             )
         } reportsAction: {
-            requireLogin {
+            appState.requireLoginWithAlert {
                 appCoordinator.navigate(to: .reports(placeId: store.placeId))
+            } onExplore: {
+                appCoordinator.changeRoot(to: .auth)
             }
         }
     }
@@ -259,21 +264,6 @@ extension PlaceDetailView {
                     )
                 )
             )
-        }
-    }
-    
-    private func requireLogin(_ action: (() -> Void)) {
-        switch appState.userSession {
-        case .explore:
-            showLoginAlert()
-        case .authenticated:
-            action()
-        }
-    }
-    
-    private func showLoginAlert() {
-        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
-            appCoordinator.changeRoot(to: .auth)
         }
     }
 }

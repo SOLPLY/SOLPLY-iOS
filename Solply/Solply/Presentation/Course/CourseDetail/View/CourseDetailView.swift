@@ -14,7 +14,6 @@ struct CourseDetailView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager
-    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store: CourseDetailStore
     @StateObject private var locationManager = LocationManager()
     
@@ -151,8 +150,10 @@ extension CourseDetailView {
                         
                         if !store.fromArchive {
                             Button {
-                                requireLogin {
+                                appState.requireLoginWithAlert {
                                     bookmarkCourse()
+                                } onExplore: {
+                                    appCoordinator.changeRoot(to: .auth)
                                 }
                             } label: {
                                 Image(store.state.isCourseBookmarkSelected ? .bookmarkSavedIcon : .bookmarkIcon)
@@ -198,7 +199,7 @@ extension CourseDetailView {
                     } findDirectionAction: {
                         store.dispatch(.requestFindDirection)
                     } saveAction: {
-                        requireLogin {
+                        appState.requireLoginWithAlert {
                             store.dispatch(.toggleBookmarkPlace(index: index))
                             
                             if store.state.places[index].isBookmarked {
@@ -224,6 +225,8 @@ extension CourseDetailView {
                                     )
                                 )
                             }
+                        } onExplore: {
+                            appCoordinator.changeRoot(to: .auth)
                         }
                     }
                     .animation(.easeInOut(duration: 0.2), value: store.state.isCourseEditing)
@@ -389,24 +392,9 @@ extension CourseDetailView {
             )
         }
     }
-    
-    private func requireLogin(_ action: (() -> Void)) {
-        switch appState.userSession {
-        case .explore:
-            showLoginAlert()
-        case .authenticated:
-            action()
-        }
-    }
-    
-    private func showLoginAlert() {
-        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
-            appCoordinator.changeRoot(to: .auth)
-        }
-    }
-    
+
     private func showChangesNotSavedAlert() {
-        alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
+        AlertManager.shared.showAlert(alertType: .changesNotSaved, onCancel: nil) {
             appCoordinator.goBack()
         }
     }

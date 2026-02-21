@@ -14,7 +14,6 @@ struct RootView: View {
     @StateObject private var appState = AppState()
     @StateObject private var appCoordinator = AppCoordinator()
     @StateObject private var toastManager = ToastManager()
-    @StateObject private var alertManager = AlertManager()
     @StateObject private var scrollToTopManager = ScrollToTopManager()
     
     // MARK: - Body
@@ -24,10 +23,9 @@ struct RootView: View {
             appCoordinator.root.build()
                 .navigationDestination(for: AppDestination.self) { $0.build() }
         }
-        .customAlert(alertManager: alertManager)
+        .customAlert()
         .customToast(toastManager: toastManager)
         .environmentObject(appState)
-        .environmentObject(alertManager)
         .environmentObject(toastManager)
         .environmentObject(appCoordinator)
         .environmentObject(scrollToTopManager)
