@@ -96,32 +96,20 @@ final class PlaceDetailStore: ObservableObject {
             
             let townName = placeDetailInformation.townName
             
-            self.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .withActionToast,
-                        message: "이 장소는 \(townName)에 위치해있어요.",
-                        toastAction: ToastAction(
-                            buttonTitle: "동네 변경",
-                            action: { [weak self] in
-                                guard let self else { return }
-                                
-                                self.dispatch(.updateUserTowns(newTownId: self.townId))
-                            }
-                        )
-                    )
-                )
+            ToastManager.shared.showToast(
+                .withActionToast(
+                    buttonTitle: "동네 변경",
+                    action: { [weak self] in
+                        guard let self else { return }
+                        
+                        self.dispatch(.updateUserTowns(newTownId: self.townId))
+                    }
+                ),
+                message: "이 장소는 \(townName)에 위치해있어요."
             )
             
         case .userTownsUpdated(let townName):
-            self.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .defaultToast,
-                        message: "동네가 \(townName)으로 변경되었어요."
-                    )
-                )
-            )
+            ToastManager.shared.showToast(.defaultToast, message: "동네가 \(townName)으로 변경되었어요.")
             
         case .submitPlaceBookmark:
             Task {

@@ -19,9 +19,7 @@ enum PlaceDetailAction {
     case findDirectionFinished
     
     case selectCourseToAdd(index: Int)
-    
-    case showToastView(ToastContent)
-    
+
     case copyToClipboard(text: String)
     
     case updateUserCoordinate(latitude: Double, longitude: Double)

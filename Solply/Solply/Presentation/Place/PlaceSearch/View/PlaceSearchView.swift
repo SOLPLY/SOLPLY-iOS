@@ -72,10 +72,5 @@ struct PlaceSearchView: View {
         .onTapGesture {
             hideKeyboard()
         }
-        .onChange(of: store.state.toastContent) { _, newValue in
-            guard let toastContent = newValue else { return }
-            
-            toastManager.showToast(content: toastContent)
-        }
     }
 }

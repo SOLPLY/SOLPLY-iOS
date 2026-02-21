@@ -13,7 +13,6 @@ struct RootView: View {
     
     @StateObject private var appState = AppState()
     @StateObject private var appCoordinator = AppCoordinator()
-    @StateObject private var toastManager = ToastManager()
     @StateObject private var scrollToTopManager = ScrollToTopManager()
     
     // MARK: - Body
@@ -24,21 +23,18 @@ struct RootView: View {
                 .navigationDestination(for: AppDestination.self) { $0.build() }
         }
         .customAlert()
-        .customToast(toastManager: toastManager)
+        .customToast()
         .environmentObject(appState)
-        .environmentObject(toastManager)
         .environmentObject(appCoordinator)
         .environmentObject(scrollToTopManager)
         .animation(.easeInOut(duration: 0.2), value: appCoordinator.root)
         .onReceive(NotificationCenter.default.publisher(for: .tokenExpired)) { _ in
             appState.updateUserSession()
             appCoordinator.changeRoot(to: .auth)
-            toastManager.showToast(
-                content: ToastContent(
-                    toastType: .defaultToast,
-                    message: "세션이 만료되었습니다. 다시 로그인해주세요.",
-                    bottomPadding: 16.adjustedHeight
-                )
+            ToastManager.shared.showToast(
+                .defaultToast,
+                message: "세션이 만료되었습니다. 다시 로그인해주세요.",
+                bottomPadding: 16.adjustedHeight
             )
         }
     }

@@ -28,10 +28,6 @@ enum PlaceSearchReducer {
             
         case .searchQueryLengthInvalid:
             state.isSearchLoading = false
-            state.toastContent = ToastContent(
-                toastType: .defaultToast,
-                message: "검색어는 최소 2자 이상이어야 해요"
-            )
         }
     }
 }

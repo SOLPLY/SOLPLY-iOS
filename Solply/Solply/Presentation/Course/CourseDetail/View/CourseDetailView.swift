@@ -57,11 +57,6 @@ struct CourseDetailView: View {
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
         }
-        .onChange(of: store.state.toastContent) { _, toastContent in
-            guard let toastContent else { return }
-            
-            toastManager.showToast(content: toastContent)
-        }
         .findDirectionDialog(
             isPresented: Binding(
                 get: { store.state.isFindDirectionDialogPresented },
@@ -204,26 +199,10 @@ extension CourseDetailView {
                             
                             if store.state.places[index].isBookmarked {
                                 store.dispatch(.submitPlaceBookmark(index: index))
-                                
-                                store.dispatch(
-                                    .showToastView(
-                                        ToastContent(
-                                            toastType: .defaultToast,
-                                            message: "'\(place.placeName.truncated(length: 9))'가 수집함에 저장되었어요."
-                                        )
-                                    )
-                                )
+                                ToastManager.shared.showToast(.defaultToast, message: "'\(place.placeName.truncated(length: 9))'가 수집함에 저장되었어요.")
                             } else {
                                 store.dispatch(.removePlaceBookmark(index: index))
-                                
-                                store.dispatch(
-                                    .showToastView(
-                                        ToastContent(
-                                            toastType: .defaultToast,
-                                            message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요."
-                                        )
-                                    )
-                                )
+                                ToastManager.shared.showToast(.defaultToast, message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요.")
                             }
                         } onExplore: {
                             appCoordinator.changeRoot(to: .auth)
@@ -341,15 +320,7 @@ extension CourseDetailView {
                 CourseSaveButton(title: "새 코스로 저장") {
                     store.dispatch(.submitCreateCourseDetail)
                     store.dispatch(.saveCourseAsNew)
-                    
-                    store.dispatch(
-                        .showToastView(
-                            ToastContent(
-                                toastType: .defaultToast,
-                                message: "새 코스로 저장되었어요."
-                            )
-                        )
-                    )
+                    ToastManager.shared.showToast(.defaultToast, message: "새 코스로 저장되었어요.")
                 }
             }
             .padding(.bottom, 16.adjustedHeight)
@@ -369,26 +340,18 @@ extension CourseDetailView {
         } else {
             store.dispatch(.submitCourseBookmark)
             store.dispatch(.toggleBookmarkCourse)
-            
-            store.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .withActionToast,
-                        message: "코스가 수집함에 저장되었어요.",
-                        toastAction: ToastAction(
-                            buttonTitle: "코스 수정하기",
-                            action: {
-                                appCoordinator.navigate(
-                                    to: .courseDetail(
-                                        townId: store.townId,
-                                        courseId: store.courseId,
-                                        fromArchive: true
-                                    )
-                                )
-                            }
-                        )
-                    )
-                )
+            ToastManager.shared.showToast(
+                .withActionToast(
+                    buttonTitle: "코스 수정하기",
+                    action: {
+                        appCoordinator.navigate(to: .courseDetail(
+                                townId: store.townId,
+                                courseId: store.courseId,
+                                fromArchive: true
+                        ))
+                    }
+                ),
+                message: "코스가 수집함에 저장되었어요."
             )
         }
     }
