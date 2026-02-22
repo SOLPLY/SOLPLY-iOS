@@ -57,8 +57,13 @@ struct MyPageView: View {
                 appCoordinator.changeRoot(to: .splash)
             }
         }
-        .background(Color(.gray100).ignoresSafeArea())
-        .customNavigationBar(.myPage(backAction: appCoordinator.goBack))
+        .customNavigationBar(
+            .titleWithNotification(
+                title: "마이페이지",
+                notificationAction: { print("알림") }
+            )
+        )
+        .background(.gray100)
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchUser)

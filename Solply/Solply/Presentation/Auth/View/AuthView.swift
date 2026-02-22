@@ -37,14 +37,10 @@ struct AuthView: View {
                     }
                 }
             }
-            .customNavigationBar(
-                .auth(
-                    exploreAction: {
-                        appState.setInitialExploreTown()
-                        appCoordinator.changeRoot(to: .tabBar)
-                    }
-                )
-            )
+            .customNavigationBar(.auth(exploreAction: {
+                appState.setInitialExploreTown()
+                appCoordinator.changeRoot(to: .tabBar)
+            }))
             .ignoresSafeArea(edges: .bottom)
             
             if store.state.isLoading {

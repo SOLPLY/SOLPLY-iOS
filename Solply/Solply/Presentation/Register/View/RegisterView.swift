@@ -52,9 +52,10 @@ struct RegisterView: View {
             }
         }
         .customNavigationBar(
-            .register(backAction: {
-                appCoordinator.goBack()
-            })
+            .backWithTitle(
+                title: "장소 등록하기",
+                backAction: { appCoordinator.goBack() }
+            )
         )
         .ignoresSafeArea(edges: .bottom)
         .background(.coreWhite)
@@ -257,8 +258,3 @@ extension RegisterView {
         .padding(.horizontal, 20.adjustedWidth)
     }
 }
-
-//#Preview {
-//    RegisterView()
-//        .environmentObject(AppCoordinator())
-//}

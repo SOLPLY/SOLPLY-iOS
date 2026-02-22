@@ -64,7 +64,12 @@ struct PlaceSearchView: View {
             .customLoading(.searchLoading, isLoading: store.state.isSearchLoading)
         }
         .frame(maxWidth: .infinity)
-        .customNavigationBar(.placeSearch(backAction: appCoordinator.goBack))
+        .customNavigationBar(
+            .backWithTitle(
+                title: "검색하기",
+                backAction: { appCoordinator.goBack() }
+            )
+        )
         .background(.coreWhite)
         .onTapGesture {
             hideKeyboard()

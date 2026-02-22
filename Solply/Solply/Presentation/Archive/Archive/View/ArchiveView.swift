@@ -22,7 +22,12 @@ struct ArchiveView: View {
             
             archiveGrid
         }
-        .customNavigationBar(.archive(backAction: appCoordinator.goBack))
+        .customNavigationBar(
+            .titleWithNotification(
+                title: "수집함",
+                notificationAction: { print("알림") }
+            )
+        )
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchPlaceThumbnail)

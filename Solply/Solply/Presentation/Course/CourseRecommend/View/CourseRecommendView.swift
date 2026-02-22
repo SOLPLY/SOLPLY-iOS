@@ -55,15 +55,11 @@ struct CourseRecommendView: View {
             }
         }
         .customNavigationBar(
-            .recommend(
-                isLoading: isUserInformationLoading,
+            .townFilterWithSearch(
                 filterTitle: appState.townName,
-                filterAction: {
-                    appCoordinator.navigate(to: .JGD)
-                },
-                settingAction: {
-                    appCoordinator.navigate(to: .placeSearch)
-                }
+                isLoading: isUserInformationLoading,
+                filterAction: { appCoordinator.navigate(to: .JGD) },
+                searchAction: { appCoordinator.navigate(to: .placeSearch) }
             )
         )
         .onChange(of: appState.townId) { _, townId in

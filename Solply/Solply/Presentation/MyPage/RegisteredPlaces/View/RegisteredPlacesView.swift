@@ -49,7 +49,12 @@ struct RegisteredPlacesView: View {
                 }
             }
         }
-        .customNavigationBar(.registeredPlace(backAction: appCoordinator.goBack))
+        .customNavigationBar(
+            .backWithTitle(
+                title: "내가 등록하 장소",
+                backAction: { appCoordinator.goBack() }
+            )
+        )
         .onAppear {
             store.dispatch(.fetchRegisteredPlaces(
                 userId: userId,
