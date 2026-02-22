@@ -12,7 +12,6 @@ struct ArchiveListView: View {
     // MARK: - Properties
     
     @EnvironmentObject var appCoordinator: AppCoordinator
-    @EnvironmentObject var alertManager: AlertManager
     @StateObject var store = ArchiveListStore()
     
     private let archiveCategory: SolplyContentType
@@ -102,7 +101,7 @@ struct ArchiveListView: View {
 
 extension ArchiveListView {
     private func showAlert() {
-        alertManager.showAlert(
+        AlertManager.shared.showAlert(
             alertType: archiveCategory == .place ? .deletePlace : .deleteCourse,
             onCancel: nil
         ) {

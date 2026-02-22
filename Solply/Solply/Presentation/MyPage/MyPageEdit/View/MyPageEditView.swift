@@ -12,7 +12,6 @@ struct MyPageEditView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store: MyPageEditStore
     @FocusState private var isNicknameTextFieldFocused: Bool
     
@@ -48,7 +47,7 @@ struct MyPageEditView: View {
                 title: "프로필 수정",
                 backAction: {
                     if store.state.isUserInformationChanged {
-                        alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
+                        AlertManager.shared.showAlert(alertType: .changesNotSaved, onCancel: nil) {
                             appCoordinator.goBack()
                         }
                     } else {

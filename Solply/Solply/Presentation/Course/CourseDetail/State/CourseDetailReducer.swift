@@ -112,13 +112,7 @@ enum CourseDetailReducer {
             
         case .draggedOutDeleteZone:
             state.isPlaceInDeleteZone = false
-            
-        case .showToastView(let toastContent):
-            state.toastContent = toastContent
-            state.draggedPlace = nil
-            state.canDeletePlace = false
-            state.isPlaceInDeleteZone = false
-            
+
         case .saveCourseToCurrent:
             state.isSaveOptionPresented = false
             state.isCourseEditing = false

@@ -12,7 +12,6 @@ struct PlaceRecommendView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appState: AppState
-    @EnvironmentObject private var alertManager: AlertManager
     @EnvironmentObject private var scrollToTopManager: ScrollToTopManager
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceRecommendStore()
@@ -128,7 +127,7 @@ extension PlaceRecommendView {
             switch appState.userSession {
             case .explore:
                 ExplorePlaceRecommendCarousel() {
-                    alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+                    AlertManager.shared.showAlert(alertType: .authenticationRequired, onCancel: nil) {
                         appCoordinator.changeRoot(to: .auth)
                     }
                 }

@@ -13,12 +13,14 @@ struct SolplyTabBar: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject private var appCoordinator: AppCoordinator
     @Binding private var selectedTab: TabBarState
     @State private var capsuleOffsetX: CGFloat = 0
     @State private var isDragging: Bool = false
     @State private var dragStartOffset: CGFloat = 0
     
+    private let isAuthenticated: Bool
+    
+    private let loginRequiredTabs: [TabBarState] = [.bookmark, .myPage]
     private let tabIconWidth: CGFloat = 36.adjusted
     private let tabIconHeight: CGFloat = 36.adjusted
     private let tabItemCapsuleWidth: CGFloat = 48.adjusted
@@ -28,15 +30,20 @@ struct SolplyTabBar: View {
     private let tabBarBackgroundColor: Color = .gray900
     
     private let scrollToTopAction: ((TabBarState) -> Void)?
+    private let loginAction: (() -> Void)?
     
     // MARK: - Initializer
     
     init(
         selectedTab: Binding<TabBarState>,
-        scrollToTopAction: ((TabBarState) -> Void)? = nil
+        isAuthenticated: Bool,
+        scrollToTopAction: ((TabBarState) -> Void)? = nil,
+        loginAction: (() -> Void)? = nil
     ) {
         self._selectedTab = selectedTab
+        self.isAuthenticated = isAuthenticated
         self.scrollToTopAction = scrollToTopAction
+        self.loginAction = loginAction
     }
     
     // MARK: - Body
@@ -90,6 +97,10 @@ extension SolplyTabBar {
 
 extension SolplyTabBar {
     private func selectTab(_ selectedTab: TabBarState) {
+        if !isAuthenticated && loginRequiredTabs.contains(selectedTab) {
+            loginAction?()
+            return
+        }
         
         if self.selectedTab == selectedTab {
             scrollToTopAction?(selectedTab)

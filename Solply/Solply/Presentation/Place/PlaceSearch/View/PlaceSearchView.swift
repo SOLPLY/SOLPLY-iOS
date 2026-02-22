@@ -14,7 +14,6 @@ struct PlaceSearchView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager
-    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store = PlaceSearchStore()
     
     private let onSubmit: ((String) -> Void)?
@@ -38,8 +37,10 @@ struct PlaceSearchView: View {
                 if store.state.isSearchCompleted {
                     if store.state.searchedPlaces.isEmpty {
                         PlaceEmptyView() {
-                            requireLogin {
+                            appState.requireLoginWithAlert {
                                 appCoordinator.navigate(to: .register)
+                            } onExplore: {
+                                appCoordinator.changeRoot(to: .auth)
                             }
                         }
                     } else {
@@ -54,8 +55,10 @@ struct PlaceSearchView: View {
                             
                             hideKeyboard()
                         } registerAction: {
-                            requireLogin {
+                            appState.requireLoginWithAlert {
                                 appCoordinator.navigate(to: .register)
+                            } onExplore: {
+                                appCoordinator.changeRoot(to: .auth)
                             }
                         }
                     }
@@ -73,30 +76,6 @@ struct PlaceSearchView: View {
         .background(.coreWhite)
         .onTapGesture {
             hideKeyboard()
-        }
-        .onChange(of: store.state.toastContent) { _, newValue in
-            guard let toastContent = newValue else { return }
-            
-            toastManager.showToast(content: toastContent)
-        }
-    }
-}
-
-// MARK: - Functions
-
-extension PlaceSearchView {
-    private func requireLogin(_ action: (() -> Void)) {
-        switch appState.userSession {
-        case .explore:
-            showLoginAlert()
-        case .authenticated:
-            action()
-        }
-    }
-    
-    private func showLoginAlert() {
-        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
-            appCoordinator.changeRoot(to: .auth)
         }
     }
 }

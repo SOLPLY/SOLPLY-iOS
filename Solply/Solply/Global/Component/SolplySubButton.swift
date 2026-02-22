@@ -45,7 +45,7 @@ struct SolplySubButton: View {
             .applySolplyFont(.button_16_m)
             .foregroundStyle(type.foregroundColor)
             .frame(maxWidth: .infinity)
-            .frame(height: 64.adjustedHeight)
+            .frame(height: 56.adjustedHeight)
             .background(
                 Capsule()
                     .fill(type.backgroundColor)

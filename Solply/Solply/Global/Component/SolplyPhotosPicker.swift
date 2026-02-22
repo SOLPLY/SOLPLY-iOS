@@ -12,7 +12,6 @@ struct SolplyPhotosPicker: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject private var alertManager: AlertManager
     @State private var isPickerPresented: Bool = false
     @State private var selectedItems: [PhotosPickerItem] = []
     @State private var selectedImages: [UIImage] = []
@@ -138,7 +137,7 @@ extension SolplyPhotosPicker {
     }
     
     private func showAlert() {
-        alertManager.showAlert(alertType: .photoPermissionDenied, onCancel: nil) {
+        AlertManager.shared.showAlert(alertType: .photoPermissionDenied, onCancel: nil) {
             guard let url = URL(string: UIApplication.openSettingsURLString),
                   UIApplication.shared.canOpenURL(url) else { return }
             
