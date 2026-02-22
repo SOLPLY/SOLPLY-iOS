@@ -259,26 +259,3 @@ extension CustomNavigationBarModifier {
         .padding(.horizontal, 16.adjustedWidth)
     }
 }
-
-#Preview {
-    Text("")
-        .customNavigationBar(.auth(exploreAction: {}))
-    
-    Text("")
-        .customNavigationBar(.backOnly(backAction: {}))
-    
-    Text("")
-        .customNavigationBar(.backWithTitle(title: "제보하기", backAction: {}))
-    
-    Text("")
-        .customNavigationBar(.backWithTitleAndHome(title: "제보하기", backAction: {}, homeAction: {}))
-    
-    Text("")
-        .customNavigationBar(.floating(backAction: {}, homeAction: {}))
-    
-    Text("")
-        .customNavigationBar(.titleWithNotification(title: "수집함", notificationAction: {}))
-    
-    Text("")
-        .customNavigationBar(.townFilterWithSearch(filterTitle: "망원", isLoading: false, filterAction: {}, searchAction: {}))
-}
