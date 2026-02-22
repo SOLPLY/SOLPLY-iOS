@@ -42,7 +42,7 @@ struct ArchiveEmptyView: View {
                     .foregroundStyle(archiveCategory.title == "장소" ? .purple800 : .green800)
                     .applySolplyFont(.button_16_m)
                     .padding(.horizontal, 34.adjustedWidth)
-                    .padding(.vertical, 21.5.adjustedHeight)
+                    .padding(.vertical, 17.5.adjustedHeight)
                     .background(archiveCategory.title == "장소" ? .purple200 : .green200)
                     .capsuleClipped()
             }

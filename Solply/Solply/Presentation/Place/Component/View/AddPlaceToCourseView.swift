@@ -95,7 +95,7 @@ extension AddPlaceToCourseView {
                             .foregroundStyle(.green800)
                             .applySolplyFont(.button_16_m)
                             .padding(.horizontal, 34.adjustedWidth)
-                            .padding(.vertical, 21.5.adjustedHeight)
+                            .padding(.vertical, 17.5.adjustedHeight)
                             .background(.green300)
                             .capsuleClipped()
                     }
