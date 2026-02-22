@@ -39,11 +39,11 @@ struct ArchiveEmptyView: View {
                 }
             } label: {
                 Text("나만의 \(archiveCategory.title) 수집하러 가기")
-                    .foregroundStyle(archiveCategory.title == "장소" ? .purple700 : .green800)
+                    .foregroundStyle(archiveCategory.title == "장소" ? .purple800 : .green800)
                     .applySolplyFont(.button_16_m)
                     .padding(.horizontal, 34.adjustedWidth)
-                    .padding(.vertical, 21.5.adjustedHeight)
-                    .background(archiveCategory.title == "장소" ? .purple300 : .green300)
+                    .padding(.vertical, 17.5.adjustedHeight)
+                    .background(archiveCategory.title == "장소" ? .purple200 : .green200)
                     .capsuleClipped()
             }
             .buttonStyle(.plain)

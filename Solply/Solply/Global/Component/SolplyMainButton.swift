@@ -53,7 +53,7 @@ struct SolplyMainButton: View {
             .applySolplyFont(.button_16_m)
             .foregroundStyle(isEnabled ? .coreWhite : .gray800)
             .frame(maxWidth: .infinity)
-            .frame(height: 64.adjustedHeight)
+            .frame(height: 56.adjustedHeight)
             .background(
                 Capsule()
                     .fill(isEnabled ? .gray900 : .gray300)
@@ -66,7 +66,7 @@ struct SolplyMainButton: View {
             .tint(.coreWhite)
             .progressViewStyle(.circular)
             .frame(maxWidth: .infinity)
-            .frame(height: 64.adjustedHeight)
+            .frame(height: 56.adjustedHeight)
             .background(
                 Capsule()
                     .fill(.gray900)

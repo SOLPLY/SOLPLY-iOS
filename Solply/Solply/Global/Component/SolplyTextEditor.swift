@@ -35,7 +35,7 @@ struct SolplyTextEditor: View {
         ZStack(alignment: .topLeading) {
             TextEditor(text: $text)
                 .configureDefaultTextEditor()
-                .applySolplyFont(.body_14_r)
+                .applySolplyFont(.body_16_r)
                 .foregroundStyle(.coreBlack)
                 .padding(.horizontal, 10.adjustedWidth)
                 .padding(.vertical, 7.adjustedHeight)
