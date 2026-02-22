@@ -11,7 +11,7 @@ struct CustomAlertModifier: ViewModifier {
     
     // MARK: - Properties
     
-    @ObservedObject var alertManager: AlertManager
+    @ObservedObject private var alertManager = AlertManager.shared
     
     // MARK: - Body
     
@@ -67,7 +67,7 @@ struct CustomAlertModifier: ViewModifier {
 }
 
 extension View {
-    func customAlert(alertManager: AlertManager) -> some View {
-        self.modifier(CustomAlertModifier(alertManager: alertManager))
+    func customAlert() -> some View {
+        self.modifier(CustomAlertModifier())
     }
 }

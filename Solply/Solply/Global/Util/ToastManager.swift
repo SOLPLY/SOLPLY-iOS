@@ -9,18 +9,29 @@ import SwiftUI
 
 class ToastManager: ObservableObject {
     
+    // MARK: - Singleton
+    
+    static let shared: ToastManager = ToastManager()
+    private init() {}
+    
     // MARK: - Properties
     
     @Published var isShowing: Bool = false
-    @Published var toastContent: ToastContent?
+    
+    private(set) var toastId: UUID = UUID()
+    private(set) var toastType: ToastType = .defaultToast
+    private(set) var message: String = ""
+    private(set) var bottomPadding: CGFloat = 28.adjustedHeight
     
     private var workItem: DispatchWorkItem?
+    private let duration: TimeInterval = 2.0
     
     // MARK: - Functions
     
     func showToast(
-        content: ToastContent,
-        duration: TimeInterval = 2.0
+        _ toastType: ToastType,
+        message: String,
+        bottomPadding: CGFloat = 28.adjustedHeight
     ) {
         workItem?.cancel()
         
@@ -28,19 +39,32 @@ class ToastManager: ObservableObject {
             withAnimation(.easeInOut(duration: 0.2)) {
                 isShowing = false
             }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.displayToast(
+                    toastType: toastType,
+                    message: message,
+                    bottomPadding: bottomPadding
+                )
+            }
+        } else {
+            displayToast(
+                toastType: toastType,
+                message: message,
+                bottomPadding: bottomPadding
+            )
         }
-        
-        self.displayToast(
-            content: content,
-            duration: duration
-        )
     }
     
     private func displayToast(
-        content: ToastContent,
-        duration: TimeInterval = 2.0
+        toastType: ToastType,
+        message: String,
+        bottomPadding: CGFloat
     ) {
-        self.toastContent = content
+        self.toastType = toastType
+        self.message = message
+        self.bottomPadding = bottomPadding
+        self.toastId = UUID()
         
         withAnimation(.easeInOut(duration: 0.3)) {
             isShowing = true
@@ -62,35 +86,4 @@ class ToastManager: ObservableObject {
             isShowing = false
         }
     }
-}
-
-// MARK: - ToastContent
-
-struct ToastContent: Equatable {
-    let id: UUID = UUID()
-    let toastType: ToastType
-    let message: String
-    let toastAction: ToastAction?
-    let bottomPadding: CGFloat
-    
-    static func == (lhs: ToastContent, rhs: ToastContent) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    init(
-        toastType: ToastType,
-        message: String,
-        toastAction: ToastAction? = nil,
-        bottomPadding: CGFloat = 28.adjustedHeight
-    ) {
-        self.toastType = toastType
-        self.message = message
-        self.toastAction = toastAction
-        self.bottomPadding = bottomPadding
-    }
-}
-
-struct ToastAction {
-    let buttonTitle: String
-    let action: (() -> Void)
 }

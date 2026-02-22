@@ -25,8 +25,6 @@ struct PlaceDetailState {
     
     var selectedCourseIndex: Int = -1
     
-    var toastContent: ToastContent?
-    
     var isBookmarked: Bool = false
     var primaryTag: MainTagType = .all
     var placeName: String = ""
