@@ -80,16 +80,11 @@ final class CourseDetailStore: ObservableObject {
             if state.places.count > 2 {
                 self.dispatch(.deletePlace)
             } else {
-                self.dispatch(
-                    .showToastView(
-                        ToastContent(
-                            toastType: .withIconToast,
-                            message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
-                            bottomPadding: 96.adjustedHeight
-                        )
-                    )
+                ToastManager.shared.showToast(
+                    .withIconToast,
+                    message: "코스 안에 2개 이상의 장소가 남아있어야 해요.",
+                    bottomPadding: 96.adjustedHeight
                 )
-                
                 self.dispatch(.deletePlaceFailed)
             }
             

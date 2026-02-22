@@ -13,34 +13,37 @@ struct SolplyTabBar: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject private var appCoordinator: AppCoordinator
     @Binding private var selectedTab: TabBarState
     @State private var capsuleOffsetX: CGFloat = 0
     @State private var isDragging: Bool = false
     @State private var dragStartOffset: CGFloat = 0
     
+    private let isAuthenticated: Bool
+    
+    private let loginRequiredTabs: [TabBarState] = [.bookmark, .myPage]
     private let tabIconWidth: CGFloat = 36.adjusted
     private let tabIconHeight: CGFloat = 36.adjusted
     private let tabItemCapsuleWidth: CGFloat = 48.adjusted
     private let tabItemCapsuleHeight: CGFloat = 48.adjusted
+    private let tabItemCapsuleSpacing: CGFloat = 20.adjustedWidth
+    private let capsuleBackgroundColor: Color = .green100
+    private let tabBarBackgroundColor: Color = .gray900
     
-    // TODO: - 1차 스프린트 이후 클로저 프로퍼티 삭제
-    private let bookmarkAction: (() -> Void)?
-    private let myPageAction: (() -> Void)?
     private let scrollToTopAction: ((TabBarState) -> Void)?
+    private let loginAction: (() -> Void)?
     
     // MARK: - Initializer
     
     init(
         selectedTab: Binding<TabBarState>,
-        bookmarkAction: (() -> Void)? = nil,
-        myPageAction: (() -> Void)? = nil,
-        scrollToTopAction: ((TabBarState) -> Void)? = nil
+        isAuthenticated: Bool,
+        scrollToTopAction: ((TabBarState) -> Void)? = nil,
+        loginAction: (() -> Void)? = nil
     ) {
         self._selectedTab = selectedTab
-        self.bookmarkAction = bookmarkAction
-        self.myPageAction = myPageAction
+        self.isAuthenticated = isAuthenticated
         self.scrollToTopAction = scrollToTopAction
+        self.loginAction = loginAction
     }
     
     // MARK: - Body
@@ -49,11 +52,10 @@ struct SolplyTabBar: View {
         ZStack(alignment: .leading) {
             tabCapsule
             
-            tabButton
+            tabButtons
         }
-        .padding(.horizontal, 8.adjusted)
-        .padding(.vertical, 6.adjusted)
-        .background(.gray900)
+        .padding(8.adjusted)
+        .background(tabBarBackgroundColor)
         .capsuleClipped()
         .onChange(of: selectedTab) {
             capsuleOffsetX = calculateCapsuleOffsetX(for: selectedTab)
@@ -69,14 +71,14 @@ struct SolplyTabBar: View {
 extension SolplyTabBar {
     private var tabCapsule: some View {
         Capsule()
-            .fill(.green200)
+            .fill(capsuleBackgroundColor)
             .frame(width: tabItemCapsuleWidth, height: tabItemCapsuleHeight)
             .offset(x: capsuleOffsetX)
-            .animation(.easeInOut(duration: 0.2), value: capsuleOffsetX)
+            .animation(.easeInOut(duration: 0.25), value: capsuleOffsetX)
     }
     
-    private var tabButton: some View {
-        HStack(alignment: .center, spacing: 16.adjustedWidth) {
+    private var tabButtons: some View {
+        HStack(alignment: .center, spacing: tabItemCapsuleSpacing) {
             ForEach(TabBarState.allCases, id: \.self) { tab in
                 TabItem(
                     selectedTab: selectedTab,
@@ -84,18 +86,10 @@ extension SolplyTabBar {
                     width: tabIconWidth,
                     height: tabIconHeight
                 ) {
-                    // TODO: - 1차 스프린트 이후 분기처리 삭제
-                    switch tab {
-                    case .place, .course: selectTab(tab)
-                    case .bookmark: bookmarkAction?()
-                    case .myPage: myPageAction?()
-                    }
-                    
-                    // selectTab(tab)
+                    selectTab(tab)
                 }
             }
         }
-        .padding(.horizontal, 6.adjustedWidth)
     }
 }
 
@@ -103,6 +97,10 @@ extension SolplyTabBar {
 
 extension SolplyTabBar {
     private func selectTab(_ selectedTab: TabBarState) {
+        if !isAuthenticated && loginRequiredTabs.contains(selectedTab) {
+            loginAction?()
+            return
+        }
         
         if self.selectedTab == selectedTab {
             scrollToTopAction?(selectedTab)
@@ -115,6 +113,6 @@ extension SolplyTabBar {
     
     private func calculateCapsuleOffsetX(for tab: TabBarState) -> CGFloat {
         let index = TabBarState.allCases.firstIndex(of: tab) ?? 0
-        return CGFloat(index) * (tabItemCapsuleWidth + 4.adjustedWidth)
+        return CGFloat(index) * (tabItemCapsuleWidth + tabItemCapsuleSpacing)
     }
 }

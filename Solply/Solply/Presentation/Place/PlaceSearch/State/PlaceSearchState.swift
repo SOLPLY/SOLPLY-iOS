@@ -12,6 +12,4 @@ struct PlaceSearchState {
     var searchedPlaces: [PlaceSearchDTO] = []
     var isSearchCompleted: Bool = false
     var isSearchLoading: Bool = false
-    
-    var toastContent: ToastContent?
 }

@@ -12,10 +12,9 @@ struct CourseRecommendView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var scrollToTopManager: ScrollToTopManager
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = CourseRecommendStore()
-    
-    @Binding private var scrollToTopTarget: ScrollToTopTarget?
     
     private let title: String
     private let isUserInformationLoading: Bool
@@ -27,11 +26,9 @@ struct CourseRecommendView: View {
     init(
         title: String,
         isUserInformationLoading: Bool,
-        scrollToTopTarget: Binding<ScrollToTopTarget?>
     ) {
         self.title = title
         self.isUserInformationLoading = isUserInformationLoading
-        self._scrollToTopTarget = scrollToTopTarget
     }
     
     // MARK: - Body
@@ -49,14 +46,12 @@ struct CourseRecommendView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.bottom, 112.adjustedHeight)
             }
-            .onChange(of: scrollToTopTarget) { _, target in
-                guard target == .courseTopTarget else { return }
+            .onChange(of: scrollToTopManager.target) { _, target in
+                guard target == .course else { return }
                 
                 withAnimation(.easeInOut(duration: 0.4)) {
                     proxy.scrollTo(topId, anchor: .top)
                 }
-                
-                scrollToTopTarget = nil
             }
         }
         .customNavigationBar(

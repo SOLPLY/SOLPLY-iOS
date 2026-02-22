@@ -24,4 +24,14 @@ extension AppState {
         self.townId = 2
         self.townName = "망원"
     }
+
+    func requireLoginWithAlert(onAuthenticated: (() -> Void)? = nil, onExplore: (() -> Void)? = nil) {
+        guard userSession == .authenticated else {
+            AlertManager.shared.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+                onExplore?()
+            }
+            return
+        }
+        onAuthenticated?()
+    }
 }

@@ -12,11 +12,9 @@ struct PlaceRecommendView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appState: AppState
-    @EnvironmentObject private var alertManager: AlertManager
+    @EnvironmentObject private var scrollToTopManager: ScrollToTopManager
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceRecommendStore()
-    
-    @Binding private var scrollToTopTarget: ScrollToTopTarget?
     
     private let title: String
     private let isUserInformationLoading: Bool
@@ -28,11 +26,9 @@ struct PlaceRecommendView: View {
     init(
         title: String,
         isUserInformationLoading: Bool,
-        scrollToTopTarget: Binding<ScrollToTopTarget?>
     ) {
         self.title = title
         self.isUserInformationLoading = isUserInformationLoading
-        self._scrollToTopTarget = scrollToTopTarget
     }
     
     // MARK: - Body
@@ -52,14 +48,12 @@ struct PlaceRecommendView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.bottom, 112.adjustedHeight)
             }
-            .onChange(of: scrollToTopTarget) { _, target in
-                guard target == .placeTopTarget else { return }
+            .onChange(of: scrollToTopManager.target) { _, target in
+                guard target == .place else { return }
                 
                 withAnimation(.easeInOut(duration: 0.4)) {
                     proxy.scrollTo(topId, anchor: .top)
                 }
-                
-                scrollToTopTarget = nil
             }
         }
         .customNavigationBar(
@@ -137,7 +131,7 @@ extension PlaceRecommendView {
             switch appState.userSession {
             case .explore:
                 ExplorePlaceRecommendCarousel() {
-                    alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+                    AlertManager.shared.showAlert(alertType: .authenticationRequired, onCancel: nil) {
                         appCoordinator.changeRoot(to: .auth)
                     }
                 }

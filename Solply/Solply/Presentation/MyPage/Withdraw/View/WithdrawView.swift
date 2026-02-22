@@ -13,7 +13,8 @@ struct WithdrawView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store = WithdrawStore()
-    @EnvironmentObject var alertManager: AlertManager
+    
+    // MARK: - Body
     
     var body: some View {
         WithdrawSelectView(
@@ -48,7 +49,7 @@ struct WithdrawView: View {
 
 extension WithdrawView {
     private func showAlert() {
-        alertManager.showAlert(
+        AlertManager.shared.showAlert(
             alertType: .withdraw, onCancel: nil
         ) {
             store.dispatch(.withdraw)

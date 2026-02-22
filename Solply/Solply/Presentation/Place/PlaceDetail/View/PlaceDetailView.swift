@@ -13,8 +13,6 @@ struct PlaceDetailView: View {
     
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @EnvironmentObject private var toastManager: ToastManager
-    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store: PlaceDetailStore
     @StateObject private var locationManager = LocationManager()
     
@@ -74,33 +72,21 @@ struct PlaceDetailView: View {
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
         }
-        .onChange(of: store.state.toastContent) { _, toastContent in
-            guard let toastContent else { return }
-            
-            toastManager.showToast(content: toastContent)
-        }
         .onChange(of: store.state.addPlaceCourseInformation) { _, newValue in
             guard let addPlaceCourseInformation = newValue else { return }
             
-            store.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .withActionToast,
-                        message: "‘\(addPlaceCourseInformation.courseName.truncated(length: 8))’에 추가되었어요.",
-                        toastAction: ToastAction(
-                            buttonTitle: "자세히 보기",
-                            action: {
-                                appCoordinator.navigate(
-                                    to: .courseDetail(
-                                        townId: store.townId,
-                                        courseId: addPlaceCourseInformation.courseId,
-                                        fromArchive: true
-                                    )
-                                )
-                            }
+            ToastManager.shared.showToast(
+                .withActionToast(
+                    buttonTitle: "자세히 보기",
+                    action: {
+                        appCoordinator.navigate(to: .courseDetail(
+                            townId: store.townId,
+                            courseId: addPlaceCourseInformation.courseId,
+                            fromArchive: true)
                         )
-                    )
-                )
+                    }
+                ),
+                message: "‘\(addPlaceCourseInformation.courseName.truncated(length: 8))’에 추가되었어요."
             )
         }
     }
@@ -146,33 +132,32 @@ extension PlaceDetailView {
             openingHours: store.state.openingHours,
             snsLink: store.state.snsLink
         ) {
-            requireLogin {
+            appState.requireLoginWithAlert {
                 bookmarkPlace()
+            } onExplore: {
+                appCoordinator.changeRoot(to: .auth)
             }
         } findDirectionAction: {
             store.dispatch(.requestFindDirection)
         } addPlaceToCourseAction: {
-            requireLogin {
+            appState.requireLoginWithAlert {
                 store.dispatch(.fetchCourseArchive)
                 store.dispatch(.toggleAddToCourse)
                 
                 if store.state.selectedCourseIndex != -1 {
                     store.dispatch(.selectCourseToAdd(index: -1))
                 }
+            } onExplore: {
+                appCoordinator.changeRoot(to: .auth)
             }
         } copyAction: { text in
             store.dispatch(.copyToClipboard(text: text))
-            store.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .defaultToast,
-                        message: "클립보드에 복사되었습니다."
-                    )
-                )
-            )
+            ToastManager.shared.showToast(.defaultToast, message: "클립보드에 복사되었습니다.")
         } reportsAction: {
-            requireLogin {
+            appState.requireLoginWithAlert {
                 appCoordinator.navigate(to: .reports(placeId: store.placeId))
+            } onExplore: {
+                appCoordinator.changeRoot(to: .auth)
             }
         }
     }
@@ -190,23 +175,9 @@ extension PlaceDetailView {
                   let isPlaceCountLimited = store.state.courses[index].isPlaceCountLimited else { return }
             
             if isDuplicated {
-                store.dispatch(
-                    .showToastView(
-                        ToastContent(
-                            toastType: .withIconToast,
-                            message: "해당 장소가 코스에 이미 담겨있어요."
-                        )
-                    )
-                )
+                ToastManager.shared.showToast(.withIconToast, message: "해당 장소가 코스에 이미 담겨있어요.")
             } else if isPlaceCountLimited {
-                store.dispatch(
-                    .showToastView(
-                        ToastContent(
-                            toastType: .withIconToast,
-                            message: "코스에 이미 6개의 장소가 꽉 차 있어요."
-                        )
-                    )
-                )
+                ToastManager.shared.showToast(.withIconToast, message: "코스에 이미 6개의 장소가 꽉 차 있어요")
             } else {
                 store.dispatch(.selectCourseToAdd(index: index))
             }
@@ -251,29 +222,7 @@ extension PlaceDetailView {
         store.dispatch(.toggleBookmarkPlace)
         
         if store.state.isBookmarked {
-            store.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .defaultToast,
-                        message: "장소가 수집함에 저장되었어요."
-                    )
-                )
-            )
-        }
-    }
-    
-    private func requireLogin(_ action: (() -> Void)) {
-        switch appState.userSession {
-        case .explore:
-            showLoginAlert()
-        case .authenticated:
-            action()
-        }
-    }
-    
-    private func showLoginAlert() {
-        alertManager.showAlert(alertType: .authenticationRequired, onCancel: nil) {
-            appCoordinator.changeRoot(to: .auth)
+            ToastManager.shared.showToast(.defaultToast, message: "장소가 수집함에 저장되었어요.")
         }
     }
 }

@@ -37,9 +37,6 @@ enum PlaceDetailReducer {
         case .selectCourseToAdd(let index):
             state.selectedCourseIndex = index
             
-        case .showToastView(let toastContent):
-            state.toastContent = toastContent
-            
         case .copyToClipboard(let text):
             UIPasteboard.general.string = text
                 if UIPasteboard.general.string == text {

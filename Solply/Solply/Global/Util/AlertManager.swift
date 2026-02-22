@@ -9,6 +9,11 @@ import SwiftUI
 
 class AlertManager: ObservableObject {
     
+    // MARK: - Singleton
+    
+    static let shared: AlertManager = AlertManager()
+    private init() {}
+    
     // MARK: - Properties
     
     @Published var isPresented: Bool = false
