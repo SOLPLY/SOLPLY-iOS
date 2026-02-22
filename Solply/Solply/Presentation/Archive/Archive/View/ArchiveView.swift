@@ -74,8 +74,8 @@ extension ArchiveView {
                     }
                     .id(SolplyContentType.course)
                     .frame(width: geometry.size.width)
-                    
                 }
+                .padding(.bottom, 112.adjustedHeight)
                 .scrollTargetLayout()
                 .animation(.easeInOut(duration: 0.3), value: store.state.selectedCategory)
             }

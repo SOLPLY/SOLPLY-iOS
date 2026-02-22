@@ -22,7 +22,7 @@ struct MyPageView: View {
             Color(.gray100)
                 .ignoresSafeArea(edges: .top)
             
-            ScrollView {
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
                     header
                     
@@ -48,8 +48,7 @@ struct MyPageView: View {
                     )
                     .padding(.top, 16.adjustedHeight)
                 }
-                Spacer()
-                    .frame(height: 30.adjustedHeight)
+                .padding(.bottom, 112.adjustedHeight)
             }
         }
         .onChange(of: store.state.shouldChangeRoot) { _, newValue in
