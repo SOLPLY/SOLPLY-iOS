@@ -80,6 +80,9 @@ struct PlaceSearchView: View {
             
             toastManager.showToast(content: toastContent)
         }
+        .onAppear {
+            AmplitudeManager.shared.track(.viewSearch(entryMode: AmplitudeEntryMode.from(appState.userSession)))
+        }
     }
 }
 
