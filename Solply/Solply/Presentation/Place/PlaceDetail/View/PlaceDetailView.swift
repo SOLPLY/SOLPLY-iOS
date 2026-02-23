@@ -154,6 +154,14 @@ extension PlaceDetailView {
             }
         } findDirectionAction: {
             store.dispatch(.requestFindDirection)
+            
+            AmplitudeManager.shared.track(
+                .clickPlaceDirections(
+                    placeId: store.placeId,
+                    placeName: store.state.placeName,
+                    fromContext: .placeDetail
+                )
+            )
         } addPlaceToCourseAction: {
             requireLogin {
                 store.dispatch(.fetchCourseArchive)

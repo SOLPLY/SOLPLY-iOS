@@ -199,6 +199,14 @@ extension CourseDetailView {
                         appCoordinator.navigate(to: .placeDetail(townId: store.townId, placeId: store.state.places[index].placeId, fromSearch: false))
                     } findDirectionAction: {
                         store.dispatch(.requestFindDirection)
+                        
+                        AmplitudeManager.shared.track(
+                            .clickPlaceDirections(
+                                placeId: place.placeId,
+                                placeName: place.placeName,
+                                fromContext: .courseDetail
+                            )
+                        )
                     } saveAction: {
                         requireLogin {
                             store.dispatch(.toggleBookmarkPlace(index: index))
