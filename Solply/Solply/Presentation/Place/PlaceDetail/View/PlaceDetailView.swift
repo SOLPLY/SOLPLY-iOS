@@ -241,6 +241,8 @@ extension PlaceDetailView {
         } goToAddCourseAction: {
             appCoordinator.goToRoot()
             appCoordinator.switchTab(to: .course)
+            
+            AmplitudeManager.shared.track(.clickFindNewCourse)
         }
     }
     
