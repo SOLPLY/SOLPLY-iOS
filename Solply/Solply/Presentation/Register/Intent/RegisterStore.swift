@@ -117,6 +117,13 @@ final class RegisterStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .registerSubmitted:
+            AmplitudeManager.shared.track(
+                .completePlaceRequest(
+                    submissionType: state.placeAddress != nil ? .selected : .direct
+                )
+            )
+            
         default:
             break
         }
