@@ -39,6 +39,7 @@ struct PlaceSearchView: View {
                     if store.state.searchedPlaces.isEmpty {
                         PlaceEmptyView() {
                             requireLogin {
+                                AmplitudeManager.shared.track(.clickManualPlaceEntry(entryRoute: .noResults))
                                 appCoordinator.navigate(to: .register)
                             } exploreAction: {
                                 AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .requestPlaceRegister))
@@ -58,6 +59,7 @@ struct PlaceSearchView: View {
                             hideKeyboard()
                         } registerAction: {
                             requireLogin {
+                                AmplitudeManager.shared.track(.clickManualPlaceEntry(entryRoute: .notFound))
                                 appCoordinator.navigate(to: .register)
                             } exploreAction: {
                                 AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .requestPlaceRegister))
