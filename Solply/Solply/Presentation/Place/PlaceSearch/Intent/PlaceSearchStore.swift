@@ -26,6 +26,9 @@ final class PlaceSearchStore: ObservableObject {
             } else {
                 self.dispatch(.searchQueryLengthInvalid)
             }
+            
+        case .searchPlaceSuccess(let places):
+            AmplitudeManager.shared.track(.viewSearchResult(isEmpty: places.isEmpty))
         
         default:
             break
