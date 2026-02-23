@@ -201,6 +201,13 @@ extension CourseDetailView {
                         isFocused: (store.state.focusedPlaceIndex == index),
                         isEditing: store.state.isCourseEditing
                     ) {
+                        AmplitudeManager.shared.track(
+                            .clickCoursePlaceCard(
+                                courseId: store.courseId,
+                                placeId: place.placeId,
+                                placeName: place.placeName
+                            )
+                        )
                         store.dispatch(.focusPlace(index: index))
                     } detailAction: {
                         appCoordinator.navigate(to: .placeDetail(townId: store.townId, placeId: store.state.places[index].placeId, fromSearch: false))
