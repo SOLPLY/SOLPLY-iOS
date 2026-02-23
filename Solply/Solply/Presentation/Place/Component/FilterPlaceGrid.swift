@@ -142,6 +142,17 @@ struct FilterPlaceGrid: View {
                                 }
                             )
                         ) { selectedTags in
+                            let subTags = selectedTags.filter { $0.isSelected }.map { $0.name }
+                            
+                            AmplitudeManager.shared.track(
+                                .completePlaceFilter(
+                                    selectedOptionTags: subTags.map { AmplitudeSelectedOptionTag.from($0) },
+                                    optionTagCount: store.state.selectedSubTags.count,
+                                    townId: appState.townId ,
+                                    townName: appState.townName
+                                )
+                            )
+                            
                             store.dispatch(.updateSubTags(selectedTags))
                             
                             let subTagAIdList = selectedTags
