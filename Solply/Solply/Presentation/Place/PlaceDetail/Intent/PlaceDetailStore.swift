@@ -92,6 +92,14 @@ final class PlaceDetailStore: ObservableObject {
             }
             
         case .placeDetailFetched(let placeDetailInformation):
+            AmplitudeManager.shared.track(
+                .viewPlaceDetail(
+                    placeId: placeId,
+                    placeName: state.placeName,
+                    isBookmared: state.isBookmarked
+                )
+            )
+            
             guard state.shouldShowTownToast && fromSearch else { return }
             
             let townName = placeDetailInformation.townName
