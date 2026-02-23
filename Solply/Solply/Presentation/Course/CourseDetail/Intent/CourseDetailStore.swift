@@ -120,11 +120,17 @@ final class CourseDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .courseBookmarkSubmitted:
+            AmplitudeManager.shared.track(.successCourseSave(courseId: courseId, saveAction: .save))
+            
         case .removeCourseBookmark:
             Task {
                 let result = await effect.removeCourseBookmark(courseId: courseId)
                 self.dispatch(result)
             }
+            
+        case .courseBookmarkRemoved:
+            AmplitudeManager.shared.track(.successCourseSave(courseId: courseId, saveAction: .unsave))
             
         case .submitPlaceBookmark(let index):
             Task {
