@@ -52,6 +52,13 @@ struct CourseDetailView: View {
             store.dispatch(.endDragging)
         }
         .onAppear {
+            AmplitudeManager.shared.track(
+                .viewCourseDetail(
+                    entryMode: AmplitudeEntryMode.from(appState.userSession),
+                    courseId: store.courseId,
+                    isBookmarked: store.state.isCourseBookmarked
+                )
+            )
             store.dispatch(.fetchCourseDetail(courseId: store.courseId, isCourseUpdated: false))
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in

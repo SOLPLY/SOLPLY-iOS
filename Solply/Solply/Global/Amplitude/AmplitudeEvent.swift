@@ -49,7 +49,7 @@ enum AmplitudeEvent {
     case viewCourseList(townId: Int, townName: String)
     
     // 코스 상세
-    case viewCourseDetail(entryMode: AmplitudeEntryMode, courseId: Int, isBookmarked: Bool, fromContext: AmplitudeFromContext)
+    case viewCourseDetail(entryMode: AmplitudeEntryMode, courseId: Int, isBookmarked: Bool)
     case successCourseSave(courseId: Int, saveAction: AmplitudeSaveAction)
     case clickCoursePlaceCard(courseId: Int, placeId: Int, placeName: String)
     case clickCoursePlaceSave(courseId: Int, placeId: Int, saveAction: AmplitudeSaveAction)
@@ -274,12 +274,11 @@ extension AmplitudeEvent {
                 AmplitudePropertyKey.townName.rawValue: townName
             ]
             
-        case .viewCourseDetail(let entryMode, let courseId, let isBookmarked, let fromContext):
+        case .viewCourseDetail(let entryMode, let courseId, let isBookmarked):
             return [
                 AmplitudePropertyKey.entryMode.rawValue: entryMode.rawValue,
                 AmplitudePropertyKey.courseId.rawValue: courseId,
-                AmplitudePropertyKey.isBookmared.rawValue: isBookmarked,
-                AmplitudePropertyKey.fromContext.rawValue: fromContext.rawValue
+                AmplitudePropertyKey.isBookmared.rawValue: isBookmarked
             ]
             
         case .successCourseSave(let courseId, let saveAction):
