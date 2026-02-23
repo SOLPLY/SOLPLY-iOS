@@ -170,6 +170,13 @@ extension PlaceDetailView {
                 if store.state.selectedCourseIndex != -1 {
                     store.dispatch(.selectCourseToAdd(index: -1))
                 }
+                
+                AmplitudeManager.shared.track(
+                    .viewAddToCourse(
+                        placeId: store.placeId,
+                        hasCourse: !store.state.courses.isEmpty
+                    )
+                )
             } exploreAction: {
                 AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .addToCourse))
                 showLoginAlert(amplitudeBlockedAction: .addToCourse)
