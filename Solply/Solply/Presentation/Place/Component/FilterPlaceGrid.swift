@@ -95,6 +95,14 @@ struct FilterPlaceGrid: View {
                                 get: { store.state.isMainTagBottomSheetPresented },
                                 set: { isPresented in
                                     if !isPresented {
+                                        AmplitudeManager.shared.track(
+                                            .viewPlaceOptionPanel(
+                                                townId: appState.townId,
+                                                townName: appState.townName,
+                                                selectedMainTag: AmplitudeSelectedMainTag.from(store.state.selectedMainTag)
+                                            )
+                                        )
+                                        
                                         store.dispatch(.dismissMainTagBottomSheet)
                                     }
                                 }
