@@ -226,6 +226,13 @@ extension CourseDetailView {
                             store.dispatch(.toggleBookmarkPlace(index: index))
                             
                             if store.state.places[index].isBookmarked {
+                                AmplitudeManager.shared.track(
+                                    .clickCoursePlaceSave(
+                                        courseId: store.courseId,
+                                        placeId: place.placeId,
+                                        saveAction: .save
+                                    )
+                                )
                                 store.dispatch(.submitPlaceBookmark(index: index))
                                 
                                 store.dispatch(
@@ -237,6 +244,13 @@ extension CourseDetailView {
                                     )
                                 )
                             } else {
+                                AmplitudeManager.shared.track(
+                                    .clickCoursePlaceSave(
+                                        courseId: store.courseId,
+                                        placeId: place.placeId,
+                                        saveAction: .unsave
+                                    )
+                                )
                                 store.dispatch(.removePlaceBookmark(index: index))
                                 
                                 store.dispatch(
