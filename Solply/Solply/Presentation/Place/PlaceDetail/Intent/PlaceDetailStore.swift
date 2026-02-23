@@ -152,7 +152,7 @@ final class PlaceDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
-        case .placeBookmarkSubmitted:
+        case .placeBookmarkRemoved:
             AmplitudeManager.shared.track(
                 .successPlaceSave(
                     placeId: placeId,
@@ -166,6 +166,15 @@ final class PlaceDetailStore: ObservableObject {
                 let result = await effect.submitAddPlace(courseId: courseId, placeId: placeId)
                 self.dispatch(result)
             }
+            
+        case .addPlaceSubmitted(let addPlaceCourseInformation):
+            AmplitudeManager.shared.track(
+                .completeAddPlaceToCourse(
+                    placeId: placeId,
+                    placeName: state.placeName,
+                    courseId: addPlaceCourseInformation.courseId
+                )
+            )
             
         case .updateUserTowns(let newTownId):
             Task {
