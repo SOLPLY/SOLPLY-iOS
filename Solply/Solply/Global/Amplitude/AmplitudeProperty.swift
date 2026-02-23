@@ -179,6 +179,7 @@ enum AmplitudeSelectedOptionTag: String {
     case barTable = "bar_table"
     case singleMenu = "single_menu"
     case selfService = "self_service"
+    case popupMarket = "popup_market"
 }
 
 /// [Amplitude] - 선택된 옵션 태그 개수
@@ -297,6 +298,37 @@ extension AmplitudeSelectedMainTag {
         case .book: return .bookstore
         case .unique: return .uniqueSpace
         case .walk: return .walking
+        }
+    }
+}
+
+extension AmplitudeSelectedOptionTag {
+    static func from(_ subTagType: SubTagType) -> AmplitudeSelectedOptionTag {
+        switch subTagType {
+        case .coffeeDessert: return .coffeeDessert
+        case .work: return .work
+        case .reading: return .reading
+        case .healing: return .healing
+        case .signatureMenu: return .signatureMenu
+        case .moodInterior: return .moodInterior
+        case .sunlight: return .sunlight
+        case .manyPlug: return .manyPlug
+        case .noTimeLimit: return .noTimeLimit
+        case .barTable: return .barTable
+        case .koreanFood: return .koreanFood
+        case .chineseFood: return .chineseFood
+        case .japaneseFood: return .japaneseFood
+        case .westernFood: return .westernFood
+        case .bar: return .bar
+        case .bakery: return .bakery
+        case .asianFood: return .asianFood
+        case .singleMenu: return .singleMenu
+        case .selfService: return .selfService
+        case .art: return .art
+        case .workshop: return .workshop
+        case .lifestyleShop: return .lifestyleShop
+        case .vintageShop: return .vintageShop
+        case .popupMarket: return .popupMarket
         }
     }
 }

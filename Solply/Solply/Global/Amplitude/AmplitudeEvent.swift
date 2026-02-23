@@ -31,7 +31,7 @@ enum AmplitudeEvent {
     case completePlaceFilter(selectedOptionTags: [AmplitudeSelectedOptionTag], optionTagCount: Int, townId: Int, townName: String)
     
     // 장소 상세
-    case viewPlaceDetail(placeId: Int, placeName: String, fromContext: AmplitudeFromContext, isBookmared: Bool)
+    case viewPlaceDetail(placeId: Int, placeName: String, isBookmared: Bool)
     case successPlaceSave(placeId: Int, placeName: String, saveAction: AmplitudeSaveAction)
     case clickPlaceDirections(placeId: Int, placeName: String, fromContext: AmplitudeFromContext)
     case viewAddToCourse(placeId: Int, hasCourse: Bool)
@@ -206,11 +206,10 @@ extension AmplitudeEvent {
                 AmplitudePropertyKey.townName.rawValue: townName
             ]
             
-        case .viewPlaceDetail(let placeId, let placeName, let fromContext, let isBookmared):
+        case .viewPlaceDetail(let placeId, let placeName, let isBookmared):
             return [
                 AmplitudePropertyKey.placeId.rawValue: placeId,
                 AmplitudePropertyKey.placeName.rawValue: placeName,
-                AmplitudePropertyKey.fromContext.rawValue: fromContext.rawValue,
                 AmplitudePropertyKey.isBookmared.rawValue: isBookmared
             ]
             
