@@ -27,6 +27,7 @@ struct ArchiveView: View {
         .onAppear {
             store.dispatch(.fetchPlaceThumbnail)
             store.dispatch(.fetchCourseThumbnail)
+            AmplitudeManager.shared.track(.viewCollectionTownList(collectionType: .place))
         }
         .background(.gray100)
     }
@@ -81,6 +82,7 @@ extension ArchiveView {
                         guard let selectedCategory else { return }
                         
                         store.dispatch(.toggleArchiveBar(archiveCategory: selectedCategory))
+                        AmplitudeManager.shared.track(.viewCollectionTownList(collectionType: AmplitudeCollectionType.from(selectedCategory)))
                     }
                 )
             )

@@ -368,3 +368,12 @@ extension AmplitudeWithdrawType {
         }
     }
 }
+
+extension AmplitudeCollectionType {
+    static func from(_ solplyContentType: SolplyContentType) -> AmplitudeCollectionType {
+        switch solplyContentType {
+        case .place: return .place
+        case .course: return .course
+        }
+    }
+}
