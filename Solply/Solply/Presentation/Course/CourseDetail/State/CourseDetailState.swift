@@ -42,4 +42,24 @@ struct CourseDetailState {
     var isCourseNameUniqueRequired: Bool {
         return oldCourseName == courseName
     }
+    
+    var isCourseNameChanged: Bool {
+        return oldCourseName != courseName
+    }
+
+    var isCourseDescriptionChanged: Bool {
+        return oldCourseDescription != courseDescription
+    }
+
+    var isCoursePlacesChanged: Bool {
+        return oldPlaces != places
+    }
+    
+    var isCoursePlacesRemoved: Bool {
+        return oldPlaces.count != places.count
+    }
+
+    var isCourseChanged: Bool {
+        return isCourseNameChanged || isCourseDescriptionChanged || isCoursePlacesChanged
+    }
 }

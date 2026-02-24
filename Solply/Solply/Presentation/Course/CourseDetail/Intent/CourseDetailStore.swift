@@ -178,6 +178,44 @@ final class CourseDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .updateCourseDetailSuccess(let updatedCourseId):
+            self.dispatch(.fetchCourseDetail(courseId: updatedCourseId, isCourseUpdated: true))
+            
+            let changedFields: [AmplitudeChangedField] = [
+                state.isCourseNameChanged ? .title : nil,
+                state.isCourseDescriptionChanged ? .intro : nil,
+                state.isCoursePlacesChanged ? .order : nil,
+                state.isCoursePlacesRemoved ? .removePlace : nil,
+            ].compactMap { $0 }
+            
+            AmplitudeManager.shared.track(
+                .completeCourseEdit(
+                    courseId: courseId,
+                    saveMode: .current,
+                    changedFields: changedFields,
+                    placeCount: state.places.count
+                )
+            )
+            
+        case .submitCreateCourseDetailSuccess(let updatedCourseId):
+            self.dispatch(.fetchCourseDetail(courseId: updatedCourseId, isCourseUpdated: true))
+            
+            let changedFields: [AmplitudeChangedField] = [
+                state.isCourseNameChanged ? .title : nil,
+                state.isCourseDescriptionChanged ? .intro : nil,
+                state.isCoursePlacesChanged ? .order : nil,
+                state.isCoursePlacesRemoved ? .removePlace : nil,
+            ].compactMap { $0 }
+            
+            AmplitudeManager.shared.track(
+                .completeCourseEdit(
+                    courseId: courseId,
+                    saveMode: .new,
+                    changedFields: changedFields,
+                    placeCount: state.places.count
+                )
+            )
+            
         default:
             break
         }

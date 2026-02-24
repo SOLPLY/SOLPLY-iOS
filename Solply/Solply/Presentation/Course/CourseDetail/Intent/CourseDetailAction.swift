@@ -68,7 +68,9 @@ enum CourseDetailAction {
     
     case updateCourseDetail
     case updateCourseDetailFailed(error: NetworkError)
+    case updateCourseDetailSuccess(updatedCourseId: Int)
     
     case submitCreateCourseDetail
     case submitCreateCourseDetailFailed(error: NetworkError)
+    case submitCreateCourseDetailSuccess(updatedCourseId: Int)
 }
