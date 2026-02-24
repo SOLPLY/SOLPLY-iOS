@@ -172,7 +172,7 @@
 		E368827C2E0DD866008A7288 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = E36882752E0DD865008A7288 /* Solply */;
-			baseConfigurationReferenceRelativePath = Global/Config.xcconfig;
+			baseConfigurationReferenceRelativePath = Global/Environment/Debug.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -238,7 +238,7 @@
 		E368827D2E0DD866008A7288 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = E36882752E0DD865008A7288 /* Solply */;
-			baseConfigurationReferenceRelativePath = Global/Config.xcconfig;
+			baseConfigurationReferenceRelativePath = Global/Environment/Release.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -297,7 +297,7 @@
 		E368827F2E0DD866008A7288 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = E36882752E0DD865008A7288 /* Solply */;
-			baseConfigurationReferenceRelativePath = Global/Config.xcconfig;
+			baseConfigurationReferenceRelativePath = Global/Environment/Debug.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -340,7 +340,7 @@
 		E36882802E0DD866008A7288 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = E36882752E0DD865008A7288 /* Solply */;
-			baseConfigurationReferenceRelativePath = Global/Config.xcconfig;
+			baseConfigurationReferenceRelativePath = Global/Environment/Release.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
