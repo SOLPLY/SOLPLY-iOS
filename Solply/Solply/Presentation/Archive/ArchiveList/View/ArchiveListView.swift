@@ -89,6 +89,14 @@ struct ArchiveListView: View {
                 )
             )
             store.dispatch(.fetchCourseList(townId: townId, placeId: nil))
+            
+            AmplitudeManager.shared.track(
+                .viewCollectionPlaceList(
+                    townId: townId,
+                    townName: town,
+                    collectionType: AmplitudeCollectionType.from(archiveCategory)
+                )
+            )
         }
     }
 }

@@ -66,7 +66,7 @@ enum AmplitudeEvent {
     
     // 수집함
     case viewCollectionTownList(collectionType: AmplitudeCollectionType)
-    case viewCollectionPlaceList(townId: Int, townName: String, collectionType: AmplitudeCollectionType, placeCount: Int)
+    case viewCollectionPlaceList(townId: Int, townName: String, collectionType: AmplitudeCollectionType)
     case completeRemoveCollectionItems(removeCount: Int)
 }
 
@@ -343,12 +343,11 @@ extension AmplitudeEvent {
                 AmplitudePropertyKey.collectionType.rawValue: collectionType.rawValue
             ]
             
-        case .viewCollectionPlaceList(let townId, let townName, let collectionType, let placeCount):
+        case .viewCollectionPlaceList(let townId, let townName, let collectionType):
             return [
                 AmplitudePropertyKey.townId.rawValue: townId,
                 AmplitudePropertyKey.townName.rawValue: townName,
                 AmplitudePropertyKey.collectionType.rawValue: collectionType.rawValue,
-                AmplitudePropertyKey.placeCount.rawValue: placeCount
             ]
             
         case .completeRemoveCollectionItems(let removeCount):
