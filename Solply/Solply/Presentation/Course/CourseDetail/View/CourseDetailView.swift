@@ -449,8 +449,15 @@ extension CourseDetailView {
     }
     
     private func showChangesNotSavedAlert() {
-        alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
-            appCoordinator.goBack()
-        }
+        alertManager.showAlert(
+            alertType: .changesNotSaved,
+            onCancel: {
+                AmplitudeManager.shared.track(.clickLeaveCourseEdit(courseId: store.courseId, choice: .cancel))
+            },
+            onConfirm: {
+                AmplitudeManager.shared.track(.clickLeaveCourseEdit(courseId: store.courseId, choice: .leave))
+                appCoordinator.goBack()
+            }
+        )
     }
 }
