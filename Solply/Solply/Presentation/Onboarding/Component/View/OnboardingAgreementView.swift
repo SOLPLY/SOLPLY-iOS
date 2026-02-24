@@ -18,7 +18,9 @@ struct OnboardingAgreementView: View {
     }
     
     private var canProceed: Bool {
-        store.state.policyList
+        guard !store.state.policyList.isEmpty else { return false }
+        
+        return store.state.policyList
             .filter { $0.isRequired }
             .allSatisfy { $0.isAgreed }
     }

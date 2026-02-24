@@ -241,6 +241,8 @@ enum AmplitudeChangedField: String {
     case intro = "intro"
     case order = "order"
     case removePlace = "remove_place"
+    case nickname = "nickname"
+    case personaType = "persona_type"
 }
 
 enum AmplitudeCollectionType: String {
@@ -274,6 +276,27 @@ extension AmplitudePersonaType {
         case "MOODING": return .mooding
         case "NATURAL": return .natural
         default: return .rest
+        }
+    }
+    
+    static func from(personaType: PersonaType) -> AmplitudePersonaType {
+        switch personaType {
+        case .healing: return .rest
+        case .explorer: return .explorer
+        case .mooding: return .mooding
+        case .natural: return .natural
+        }
+    }
+    
+    static func from(text: String) -> AmplitudePersonaType? {
+        let personaType = AmplitudePersonaType(rawValue: text)
+        
+        switch personaType {
+        case .rest: return .rest
+        case .explorer: return .explorer
+        case .mooding: return .mooding
+        case .natural: return .natural
+        case nil: return nil
         }
     }
 }
