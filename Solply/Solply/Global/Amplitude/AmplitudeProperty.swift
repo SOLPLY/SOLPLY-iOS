@@ -355,3 +355,16 @@ extension AmplitudeSelectedOptionTag {
         }
     }
 }
+
+extension AmplitudeWithdrawType {
+    static func from(_ withdrawType: WithdrawType) -> AmplitudeWithdrawType {
+        switch withdrawType {
+        case .notUse: return .notUse
+        case .deficientInfo: return .deficientInfo
+        case .inconvenient: return .inconvenient
+        case .hateRecommend: return .hateRecommend
+        case .useOtherService: return .useOtherService
+        case .others: return .others
+        }
+    }
+}
