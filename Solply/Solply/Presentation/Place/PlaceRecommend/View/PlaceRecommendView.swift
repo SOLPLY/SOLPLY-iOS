@@ -83,37 +83,17 @@ struct PlaceRecommendView: View {
             )
         )
         .background(.gray100)
-        .onAppear {
-            if appState.userSession == .authenticated {
-                store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
-            }
-            
-            store.dispatch(.fetchPlaceList(
-                townId: appState.townId,
-                isBookmarkSearch: false,
-                mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: [],
-                subTagBIdList: []
-            ))
-        }
         .onChange(of: appState.townId) { _, newTownId in
             store.dispatch(.fetchPlaceRecommend(townId: newTownId))
             store.dispatch(.resetTags)
-            
-            let subTagAIdList = store.state.selectedSubTags
-                .filter { $0.tagType == "OPTION1" && $0.isSelected }
-                .map { $0.id }
-            
-            let subTagBIdList = store.state.selectedSubTags
-                .filter { $0.tagType == "OPTION2" && $0.isSelected }
-                .map { $0.id }
+            store.dispatch(.resetSubTags)
             
             store.dispatch(.fetchPlaceList(
                 townId: newTownId,
                 isBookmarkSearch: false,
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: subTagAIdList,
-                subTagBIdList: subTagBIdList
+                subTagAIdList: [],
+                subTagBIdList: []
             ))
         }
     }
