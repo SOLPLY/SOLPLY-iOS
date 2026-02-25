@@ -87,7 +87,7 @@ final class MyPageEditStore: ObservableObject {
             }
             
         case .photoUploadSuccess(let imageKey):
-            let imageKeyString = imageKey.absoluteString.truncated(includeStartRange: "dev", excludeEndRange: "?")
+            let imageKeyString = imageKey.absoluteString.truncatedForS3()
             
             self.dispatch(.updateUserInformation(imageKeyString: imageKeyString))
             

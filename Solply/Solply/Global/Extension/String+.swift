@@ -39,4 +39,12 @@ extension String {
         
         return String(self[startRange.lowerBound..<endRange.lowerBound])
     }
+    
+    func truncatedForS3() -> String {
+    #if DEBUG
+        return truncated(includeStartRange: "dev", excludeEndRange: "?")
+    #else
+        return truncated(includeStartRange: "prod", excludeEndRange: "?")
+    #endif
+    }
 }
