@@ -19,9 +19,8 @@ struct PlaceDetailResponseDTO: ResponseModelType {
     let contactNumber: String?
     let openingHours: String
     let snsLinks: [SnsLinkDTO]
+    let placeCheckpoints: [String]
     let isBookmarked: Bool
-    let placeType: String
-    let placeDefaultId: Int
     let townId: Int
     let townName: String
 }

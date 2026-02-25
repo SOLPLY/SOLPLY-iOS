@@ -78,8 +78,6 @@ enum PlaceDetailReducer {
             state.snsLink = placeDetailInformation.snsLink
             state.latitude = placeDetailInformation.latitude
             state.longitude = placeDetailInformation.longitude
-            state.placeDefaultId = placeDetailInformation.placeDefaultId
-            state.placeType = placeDetailInformation.placeType
             
         case .submitPlaceBookmark:
             break

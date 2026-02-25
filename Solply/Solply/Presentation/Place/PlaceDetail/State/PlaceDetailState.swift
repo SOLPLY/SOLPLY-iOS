@@ -38,6 +38,4 @@ struct PlaceDetailState {
     var snsLink: [PlaceDetailSnsLink] = []
     var latitude: Double = 0.0
     var longitude: Double = 0.0
-    var placeDefaultId: Int = -1
-    var placeType: String = ""
 }
