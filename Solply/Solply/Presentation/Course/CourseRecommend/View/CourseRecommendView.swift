@@ -83,6 +83,9 @@ struct CourseRecommendView: View {
             store.dispatch(.fetchCourseRecommend(townId: townId))
         }
         .background(.gray100)
+        .task {
+            store.dispatch(.fetchCourseRecommend(townId: appState.townId))
+        }
     }
 }
 

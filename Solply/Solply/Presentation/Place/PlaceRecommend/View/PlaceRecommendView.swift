@@ -83,6 +83,19 @@ struct PlaceRecommendView: View {
             )
         )
         .background(.gray100)
+        .onAppear {
+            if appState.userSession == .authenticated {
+                store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
+            }
+            
+            store.dispatch(.fetchPlaceList(
+                townId: appState.townId,
+                isBookmarkSearch: false,
+                mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
+                subTagAIdList: [],
+                subTagBIdList: []
+            ))
+        }
         .onChange(of: appState.townId) { _, newTownId in
             store.dispatch(.fetchPlaceRecommend(townId: newTownId))
             store.dispatch(.resetTags)
