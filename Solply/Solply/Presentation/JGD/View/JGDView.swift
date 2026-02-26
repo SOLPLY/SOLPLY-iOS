@@ -30,9 +30,9 @@ struct JGDView: View {
                     subTownListView
                 }
             }
-            .customNavigationBar(
-            .frequentTown(backAction: appCoordinator.goBack)
-            )
+            .customNavigationBar(.backWithTitle(title: "동네설정", backAction: {
+                appCoordinator.goBack()
+            }))
             .ignoresSafeArea(edges: .bottom)
             
             SolplyMainButton(

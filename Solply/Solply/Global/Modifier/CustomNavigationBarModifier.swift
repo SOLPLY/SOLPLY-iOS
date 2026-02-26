@@ -7,7 +7,93 @@
 
 import SwiftUI
 
-struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View, R: View {
+struct CustomNavigationBarModifier: ViewModifier {
+    
+    // MARK: - Properties
+    
+    private let navigationBarType: NavigationBarType
+    
+    // MARK: - Initializer
+    
+    init(_ navigationBarType: NavigationBarType) {
+        self.navigationBarType = navigationBarType
+    }
+    
+    // MARK: - Body
+    
+    func body(content: Content) -> some View {
+        switch navigationBarType {
+        case .auth(let exploreAction):
+            content.modifier(
+                LayoutNavigationBarModifier(
+                    centerView: { EmptyView() },
+                    leftView: { EmptyView() },
+                    rightView: { exploreBarButtonItem(action: exploreAction) },
+                    backgroundColor: .clear
+                )
+            )
+        case .backWithTitleAndHome(let title, let backAction, let homeAction):
+            content.modifier(
+                LayoutNavigationBarModifier(
+                    centerView: { titleItem(title) },
+                    leftView: { barButtonItem(.backIconIos, action: backAction) },
+                    rightView: { barButtonItem(.homeIcon, action: homeAction) },
+                    backgroundColor: .coreWhite
+                )
+            )
+        case .backWithTitle(let title, let backAction):
+            content.modifier(
+                LayoutNavigationBarModifier(
+                    centerView: { titleItem(title) },
+                    leftView: { barButtonItem(.backIconIos, action: backAction) },
+                    rightView: { EmptyView() },
+                    backgroundColor: .coreWhite
+                )
+            )
+        case .backOnly(let backAction):
+            content.modifier(
+                LayoutNavigationBarModifier(
+                    centerView: { EmptyView() },
+                    leftView: { barButtonItem(.backIconIos, action: backAction) },
+                    rightView: { EmptyView() },
+                    backgroundColor: .clear
+                )
+            )
+        case .titleWithNotification(let title, let notificationAction):
+            content.modifier(
+                LayoutNavigationBarModifier(
+                    centerView: { EmptyView() },
+                    leftView: { titleItem(title, isLargeTitle: true) },
+                    rightView: { barButtonItem(.alarmIcon, action: notificationAction) },
+                    backgroundColor: .clear
+                )
+            )
+        case .townFilterWithSearch(let filterTitle, let isLoading, let filterAction, let searchAction):
+            content.modifier(
+                LayoutNavigationBarModifier(
+                    centerView: { EmptyView() },
+                    leftView: { townFilterBarButtonItem(filterTitle, isLoading: isLoading, action: filterAction) },
+                    rightView: { barButtonItem(.searchIcon, action: searchAction) },
+                    backgroundColor: .clear
+                )
+            )
+        case .floating(let backAction, let homeAction):
+            content.modifier(
+                LayoutNavigationBarModifier(
+                    centerView: { EmptyView() },
+                    leftView: { floatingBarButtonItem(.backIconIos, action: backAction)},
+                    rightView: { floatingBarButtonItem(.homeIcon, action: homeAction) },
+                    backgroundColor: .clear,
+                    isFloatingBar: true
+                )
+            )
+        }
+    }
+}
+
+// MARK: - Layout
+
+struct LayoutNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View, R: View {
     
     // MARK: - Properties
     
@@ -44,9 +130,9 @@ struct CustomNavigationBarModifier<C, L, R>: ViewModifier where C: View, L: View
     }
 }
 
-extension CustomNavigationBarModifier {
+extension LayoutNavigationBarModifier {
     private func defaultNavigationBar(_ content: Content) -> some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .center, spacing: 0) {
             ZStack(alignment: .center) {
                 HStack(spacing: 0) {
                     self.leftView?()
@@ -59,10 +145,8 @@ extension CustomNavigationBarModifier {
                 self.centerView?()
                 
             }
-            .padding(.horizontal, 16.adjustedWidth)
-            .padding(.vertical, 16.adjustedHeight)
+            .frame(width: 375.adjustedWidth, height: 56.adjustedHeight)
             .background(backgroundColor)
-            .frame(width: 375.adjustedWidth)
             
             content
             
@@ -90,514 +174,88 @@ extension CustomNavigationBarModifier {
 }
 
 extension View {
-    @ViewBuilder
     func customNavigationBar(_ navigationBarType: NavigationBarType) -> some View {
-        switch navigationBarType {
-            
-            
-        // MARK: - Auth
-            
-        case .auth(let exploreAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        EmptyView()
-                    },
-                    leftView: {
-                        EmptyView()
-                    },
-                    rightView: {
-                        Button {
-                            exploreAction()
-                        } label: {
-                            Text("둘러보기")
-                                .applySolplyFont(.body_14_m)
-                                .foregroundStyle(.gray800)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    backgroundColor: .gray100
-                )
-            )
-            
-        // MARK: - Onboarding
-            
-        case .onboarding(let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        EmptyView()
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: {
-                        EmptyView()
-                    },
-                    backgroundColor: .gray100
-                )
-            )
-            
-        // MARK: - Recommend
-            
-        case .recommend(let isLoading, let filterTitle, let filterAction, let settingAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        EmptyView()
-                    },
-                    leftView: {
-                        HStack(alignment: .center, spacing: 4.adjustedWidth) {
-                            Image(.townIcon)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                            
-                            Button {
-                                filterAction()
-                            } label: {
-                                HStack(alignment: .center, spacing: 4.adjustedWidth) {
-                                    Text(filterTitle)
-                                        .applySolplyFont(.body_16_m)
-                                        .foregroundStyle(.coreBlack)
-                                        .customLoading(.JGDButtonLoading, isLoading: isLoading)
-                                    
-                                    Image(.arrowRightIcon)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24.adjusted, height: 24.adjusted)
-                                }
-                            }
-                            .allowsHitTesting(!isLoading)
-                            .buttonStyle(.plain)
-                        }
-                    },
-                    rightView: {
-                        Button {
-                            settingAction()
-                        } label: {
-                            Image(.searchIcon)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    backgroundColor: .gray100
-                )
-            )
-            
-        // MARK: - PlaceDetail
-            
-        case .placeDetail(let backAction, let homeAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        EmptyView()
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            ZStack(alignment: .center) {
-                                Circle()
-                                    .foregroundStyle(.coreWhite)
-                                    .frame(width: 40.adjusted, height: 40.adjusted)
-                                
-                                Image(.backIconIos)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24.adjusted, height: 24.adjusted)
-                            }
-                        }
-                        .buttonStyle(.plain)
-                        .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
-                    },
-                    rightView: {
-                        Button {
-                            homeAction()
-                        } label: {
-                            ZStack(alignment: .center) {
-                                Circle()
-                                    .foregroundStyle(.coreWhite)
-                                    .frame(width: 40.adjusted, height: 40.adjusted)
-                                
-                                Image(.homeIcon)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24.adjusted, height: 24.adjusted)
-                            }
-                        }
-                        .buttonStyle(.plain)
-                        .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
-                    },
-                    backgroundColor: .clear,
-                    isFloatingBar: true
-                )
-            )
-            
-        // MARK: - CourseDetail
-            
-        case .courseDetail(let backAction, let homeAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        EmptyView()
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            ZStack(alignment: .center) {
-                                Circle()
-                                    .foregroundStyle(.coreWhite)
-                                    .frame(width: 40.adjusted, height: 40.adjusted)
-                                
-                                Image(.backIconIos)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24.adjusted, height: 24.adjusted)
-                            }
-                        }
-                        .buttonStyle(.plain)
-                        .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
-                    },
-                    rightView: {
-                        Button {
-                            homeAction()
-                        } label: {
-                            ZStack(alignment: .center) {
-                                Circle()
-                                    .foregroundStyle(.coreWhite)
-                                    .frame(width: 40.adjusted, height: 40.adjusted)
-                                
-                                Image(.homeIcon)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24.adjusted, height: 24.adjusted)
-                            }
-                        }
-                        .buttonStyle(.plain)
-                        .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
-                    },
-                    backgroundColor: .clear,
-                    isFloatingBar: true
-                )
-            )
-            
-        // MARK: - Archive
-            
-        case .archive(let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        Text("수집함")
-                            .applySolplyFont(.head_16_m)
-                            .foregroundStyle(.coreBlack)
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: {
-                        EmptyView()
-                    },
-                    backgroundColor: .coreWhite
-                )
-            )
-            
-        // MARK: - ArchiveList
-            
-        case .archiveList(let title, let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        Text(title)
-                            .applySolplyFont(.head_16_m)
-                            .foregroundStyle(.coreBlack)
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: {
-                        EmptyView()
-                    },
-                    backgroundColor: .coreWhite
-                )
-            )
-            
-        // MARK: - FrequentTown
-            
-        case .frequentTown(let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        Text("동네 설정")
-                            .applySolplyFont(.head_16_m)
-                            .foregroundStyle(.coreBlack)
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: {
-                        EmptyView()
-                    },
-                    backgroundColor: .coreWhite
-                )
-            )
-            
-        // MARK: - Reports
-            
-        case .reports(let reportsStep, let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        Group {
-                            if reportsStep == .reportsComplete {
-                                Text(" ")
-                            } else {
-                                Text("제보하기")
-                                    .foregroundStyle(.coreBlack)
-                            }
-                        }
-                        .applySolplyFont(.head_16_m)
-                    },
-                    leftView: {
-                        Group {
-                            if reportsStep == .reportsComplete {
-                                EmptyView()
-                                    .frame(width: 24.adjusted, height: 24.adjusted)
-                            } else {
-                                Button {
-                                    backAction()
-                                } label: {
-                                    Image(.backIconIos)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24.adjusted, height: 24.adjusted)
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-                    },
-                    rightView: {
-                        EmptyView()
-                    },
-                    backgroundColor: .coreWhite
-                )
-            )
-            
-        // MARK: - PlaceSearch
-        
-        case .placeSearch(let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        Text("검색하기")
-                            .applySolplyFont(.head_16_m)
-                            .foregroundStyle(.coreBlack)
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: {
-                        EmptyView()
-                    },
-                    backgroundColor: .coreWhite
-                )
-            )
-            
-        // MARK: - MyPage
-            
-        case .myPage(let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: { EmptyView() },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: { EmptyView() },
-                    backgroundColor: .gray100
-                )
-            )
-            
-        // MARK: - MyPageEdit
-            
-        case .myPageEdit(let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        Text("프로필 수정")
-                            .applySolplyFont(.head_16_m)
-                            .foregroundStyle(.coreBlack)
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: { EmptyView() },
-                    backgroundColor: .coreWhite
-                )
-            )
-            
-        // MARK: - RegisteredPlace
-        case .registeredPlace(let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        Text("내가 등록한 장소")
-                            .applySolplyFont(.head_16_m)
-                            .foregroundStyle(.coreBlack)
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjustedWidth, height: 24.adjustedHeight)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: { EmptyView() },
-                    backgroundColor: .coreWhite
-                )
-            )
-            
-        // MARK: - Register
-            
-        case .register(let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        Text("장소 등록하기")
-                            .applySolplyFont(.head_16_m)
-                            .foregroundStyle(.coreBlack)
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: { EmptyView() },
-                    backgroundColor: .coreWhite
-                )
-            )
-            
-        // MARK: - Withdraw
-            
-        case .withdraw(let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        Text("탈퇴하기")
-                            .applySolplyFont(.head_16_m)
-                            .foregroundStyle(.coreBlack)
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: {
-                        EmptyView()
-                    },
-                    backgroundColor: .coreWhite
-                )
-            )
-            
-        case .customerCenter(let backAction):
-            self.modifier(
-                CustomNavigationBarModifier(
-                    centerView: {
-                        Text("고객센터")
-                            .applySolplyFont(.head_16_m)
-                            .foregroundStyle(.coreBlack)
-                    },
-                    leftView: {
-                        Button {
-                            backAction()
-                        } label: {
-                            Image(.backIconIos)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24.adjusted, height: 24.adjusted)
-                        }
-                        .buttonStyle(.plain)
-                    },
-                    rightView: {
-                        EmptyView()
-                    },
-                    backgroundColor: .coreWhite
-                )
-            )
+        self.modifier(CustomNavigationBarModifier(navigationBarType))
+    }
+}
+
+// MARK: - Subviews
+
+extension CustomNavigationBarModifier {
+    private func exploreBarButtonItem(action: (() -> Void)?) -> some View {
+        Button {
+            action?()
+        } label: {
+            Text("둘러보기")
+                .applySolplyFont(.body_14_m)
+                .foregroundStyle(.gray800)
         }
+        .buttonStyle(.plain)
+    }
+    
+    private func barButtonItem(_ icon: ImageResource, action: (() -> Void)?) -> some View {
+        Button {
+            action?()
+        } label: {
+            Image(icon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24.adjusted, height: 24.adjusted)
+                .padding(12.adjusted)
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 4.adjustedWidth)
+    }
+    
+    private func floatingBarButtonItem(_ icon: ImageResource, action: (() -> Void)?) -> some View {
+        Button {
+            action?()
+        } label: {
+            ZStack(alignment: .center) {
+                Circle()
+                    .foregroundStyle(.coreWhite)
+                    .frame(width: 40.adjusted, height: 40.adjusted)
+                
+                Image(icon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24.adjusted, height: 24.adjusted)
+            }
+        }
+        .buttonStyle(.plain)
+        .shadow(color: .coreBlack.opacity(0.05), radius: 2, x: 0, y: 5.55)
+    }
+    
+    private func titleItem(_ title: String, isLargeTitle: Bool = false) -> some View {
+        Text(title)
+            .applySolplyFont(isLargeTitle ? .display_20_sb : .head_16_m)
+            .foregroundStyle(.coreBlack)
+            .padding(.horizontal, isLargeTitle ? 20.adjustedWidth : 0)
+    }
+    
+    private func townFilterBarButtonItem(_ filterTitle: String, isLoading: Bool, action: (() -> Void)?) -> some View {
+        Button {
+            action?()
+        } label: {
+            HStack(alignment: .center, spacing: 4.adjustedWidth) {
+                Image(.townIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24.adjusted, height: 24.adjusted)
+                
+                Text(filterTitle)
+                    .applySolplyFont(.body_16_m)
+                    .foregroundStyle(.coreBlack)
+                    .customLoading(.JGDButtonLoading, isLoading: isLoading)
+                
+                Image(.arrowRightIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24.adjusted, height: 24.adjusted)
+            }
+        }
+        .buttonStyle(.plain)
+        .allowsHitTesting(!isLoading)
+        .padding(.horizontal, 16.adjustedWidth)
     }
 }

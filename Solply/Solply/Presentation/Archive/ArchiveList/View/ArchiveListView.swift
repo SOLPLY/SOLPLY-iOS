@@ -75,7 +75,12 @@ struct ArchiveListView: View {
                 }
             }
         }
-        .customNavigationBar(.archiveList(title: town, backAction: appCoordinator.goBack))
+        .customNavigationBar(
+            .backWithTitle(
+                title: town,
+                backAction: { appCoordinator.goBack() }
+            )
+        )
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(

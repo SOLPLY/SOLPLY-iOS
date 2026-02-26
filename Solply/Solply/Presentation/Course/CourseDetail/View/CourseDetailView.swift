@@ -96,13 +96,12 @@ struct CourseDetailView: View {
 extension CourseDetailView {
     private var courseMapView: some View {
         CourseDetailMapView(places: store.state.places)
-            .customNavigationBar(.courseDetail(
-                backAction: {
-                    store.state.isCourseEditing ? showChangesNotSavedAlert() : appCoordinator.goBack()
-                }, homeAction: {
-                    appCoordinator.goToRoot()
-                }
-            ))
+            .customNavigationBar(
+                .floating(
+                    backAction: { store.state.isCourseEditing ? showChangesNotSavedAlert() : appCoordinator.goBack() },
+                    homeAction: { store.state.isCourseEditing ? showChangesNotSavedAlert() : appCoordinator.goToRoot()  }
+                )
+            )
             .customBottomSheet(.courseDetail(fromArchive: store.fromArchive)) {
                 VStack(alignment: .center, spacing: 20.adjustedHeight) {
                     title

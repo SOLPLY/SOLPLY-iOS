@@ -57,15 +57,11 @@ struct PlaceRecommendView: View {
             }
         }
         .customNavigationBar(
-            .recommend(
-                isLoading: isUserInformationLoading,
+            .townFilterWithSearch(
                 filterTitle: appState.townName,
-                filterAction: {
-                    appCoordinator.navigate(to: .JGD)
-                },
-                settingAction: {
-                    appCoordinator.navigate(to: .placeSearch)
-                }
+                isLoading: isUserInformationLoading,
+                filterAction: { appCoordinator.navigate(to: .JGD) },
+                searchAction: { appCoordinator.navigate(to: .placeSearch) }
             )
         )
         .background(.gray100)

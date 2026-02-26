@@ -47,11 +47,9 @@ struct ReportsView: View {
         .disableSwipeBack()
         .background(.coreWhite)
         .customNavigationBar(
-            .reports(
-                reportStep: store.state.reportsStep,
-                backAction: {
-                    backAction()
-                }
+            .backWithTitle(
+                title: "제보하기",
+                backAction: { backAction() }
             )
         )
         .ignoresSafeArea(.keyboard)

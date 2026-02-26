@@ -39,7 +39,7 @@ struct OnboardingView: View {
                         appCoordinator.changeRoot(to: .tabBar)
                     }
                 }
-                .customNavigationBar(.onboarding(backAction: {
+                .customNavigationBar(.backOnly(backAction: {
                     switch store.state.step {
                     case .agreement:
                         appCoordinator.changeRoot(to: .auth)

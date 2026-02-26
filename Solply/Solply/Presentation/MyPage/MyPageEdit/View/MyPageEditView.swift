@@ -42,16 +42,20 @@ struct MyPageEditView: View {
         .padding(.top, 16.adjustedHeight)
         .padding(.bottom, 24.adjustedHeight)
         .background(.coreWhite)
-        .customNavigationBar(.myPageEdit(backAction: {
-            if store.state.isUserInformationChanged {
-                AlertManager.shared.showAlert(alertType: .changesNotSaved, onCancel: nil) {
-                    appCoordinator.goBack()
+        .customNavigationBar(
+            .backWithTitle(
+                title: "프로필 수정",
+                backAction: {
+                    if store.state.isUserInformationChanged {
+                        AlertManager.shared.showAlert(alertType: .changesNotSaved, onCancel: nil) {
+                            appCoordinator.goBack()
+                        }
+                    } else {
+                        appCoordinator.goBack()
+                    }
                 }
-            } else {
-                appCoordinator.goBack()
-            }
-            
-        }))
+            )
+        )
         .onAppear {
             store.dispatch(.loadUserInformation)
         }

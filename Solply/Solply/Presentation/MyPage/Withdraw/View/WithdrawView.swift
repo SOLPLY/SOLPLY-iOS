@@ -26,11 +26,12 @@ struct WithdrawView: View {
             },
             withdrawAction: {
                 showAlert()
-                }
-            )
+            }
+        )
         .customNavigationBar(
-            .withdraw(
-                backAction: appCoordinator.goBack
+            .backWithTitle(
+                title: "탈퇴하기",
+                backAction: { appCoordinator.goBack() }
             )
         )
         .onChange(of: store.state.shouldChangeRoot) { _, newValue in

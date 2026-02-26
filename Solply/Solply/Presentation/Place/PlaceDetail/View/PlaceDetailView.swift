@@ -34,13 +34,9 @@ struct PlaceDetailView: View {
         ZStack(alignment: .bottom) {
             placeMapView
                 .customNavigationBar(
-                    .placeDetail(
-                        backAction: {
-                            appCoordinator.goBack()
-                        },
-                        homeAction: {
-                            appCoordinator.goToRoot()
-                        }
+                    .floating(
+                        backAction: { appCoordinator.goBack() },
+                        homeAction: { appCoordinator.goToRoot() }
                     )
                 )
                 .customBottomSheet(.placeDetail) {

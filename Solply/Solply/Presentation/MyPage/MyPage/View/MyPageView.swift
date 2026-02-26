@@ -22,7 +22,7 @@ struct MyPageView: View {
             Color(.gray100)
                 .ignoresSafeArea(edges: .top)
             
-            ScrollView {
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
                     header
                     
@@ -48,8 +48,7 @@ struct MyPageView: View {
                     )
                     .padding(.top, 16.adjustedHeight)
                 }
-                Spacer()
-                    .frame(height: 30.adjustedHeight)
+                .padding(.bottom, 112.adjustedHeight)
             }
         }
         .onChange(of: store.state.shouldChangeRoot) { _, newValue in
@@ -57,8 +56,13 @@ struct MyPageView: View {
                 appCoordinator.changeRoot(to: .splash)
             }
         }
-        .background(Color(.gray100).ignoresSafeArea())
-        .customNavigationBar(.myPage(backAction: appCoordinator.goBack))
+        .customNavigationBar(
+            .titleWithNotification(
+                title: "마이페이지",
+                notificationAction: { print("알림") }
+            )
+        )
+        .background(.gray100)
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchUser)

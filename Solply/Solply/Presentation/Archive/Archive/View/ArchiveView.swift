@@ -22,7 +22,12 @@ struct ArchiveView: View {
             
             archiveGrid
         }
-        .customNavigationBar(.archive(backAction: appCoordinator.goBack))
+        .customNavigationBar(
+            .titleWithNotification(
+                title: "수집함",
+                notificationAction: { print("알림") }
+            )
+        )
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchPlaceThumbnail)
@@ -69,8 +74,8 @@ extension ArchiveView {
                     }
                     .id(SolplyContentType.course)
                     .frame(width: geometry.size.width)
-                    
                 }
+                .padding(.bottom, 112.adjustedHeight)
                 .scrollTargetLayout()
                 .animation(.easeInOut(duration: 0.3), value: store.state.selectedCategory)
             }
