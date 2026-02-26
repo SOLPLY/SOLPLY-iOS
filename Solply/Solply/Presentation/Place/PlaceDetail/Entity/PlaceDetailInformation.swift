@@ -12,7 +12,7 @@ struct PlaceDetailInformation {
     let primaryTag: MainTagType
     let placeName: String
     let introduction: String
-    let imageUrls: [String]
+    let imageUrls: [String?]
     let address: String
     let contactNumber: String
     let openingHours: String

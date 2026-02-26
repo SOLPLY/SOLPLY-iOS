@@ -27,7 +27,7 @@ struct PlaceDetailResponseDTO: ResponseModelType {
 
 struct ImageInfoDTO: ResponseModelType {
     let displayOrder: Int
-    let url: String
+    let url: String?
 }
 
 struct SnsLinkDTO: ResponseModelType {

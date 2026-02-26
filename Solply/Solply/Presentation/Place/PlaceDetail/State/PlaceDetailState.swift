@@ -31,7 +31,7 @@ struct PlaceDetailState {
     var primaryTag: MainTagType = .all
     var placeName: String = ""
     var introduction: String = ""
-    var imageURLs: [String] = []
+    var imageURLs: [String?] = []
     var address: String = ""
     var contactNumber: String = ""
     var openingHours: String = ""
