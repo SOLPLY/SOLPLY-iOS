@@ -66,6 +66,17 @@ final class Interceptor: RequestInterceptor {
         if shouldSkipAuth(for: path) {
             return completion(.doNotRetryWithError(error))
         }
+        
+        if status == 403 {
+            TokenManager.shared.clearTokens()
+            debug("🚫 403 → 강제 로그아웃")
+            
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .tokenExpired, object: nil)
+            }
+            
+            return completion(.doNotRetry)
+        }
 
         guard status == 401, request.retryCount == 0 else {
             return completion(.doNotRetryWithError(error))
