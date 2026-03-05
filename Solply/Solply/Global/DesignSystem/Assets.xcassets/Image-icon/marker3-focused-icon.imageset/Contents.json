@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "marker3-focused-icon.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

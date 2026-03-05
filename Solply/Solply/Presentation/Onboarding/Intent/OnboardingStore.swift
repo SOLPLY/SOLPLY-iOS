@@ -1,0 +1,82 @@
+//
+//  OnboardingStore.swift
+//  Solply
+//
+//  Created by 선영주 on 7/9/25.
+//
+
+import Foundation
+
+@MainActor
+final class OnboardingStore: ObservableObject {
+    
+    @Published private(set) var state = OnboardingState()
+    private let effect = OnboardingEffect(
+        userService : UserService()
+    )
+    
+    func dispatch(_ action: OnboardingAction) {
+        OnboardingReducer.reduce(state: &state, action: action)
+        
+        switch action {
+            
+        case .fetchPolicies:
+            Task {
+                let result = await effect.fetchPolicies()
+                dispatch(result)
+            }
+        
+        case .togglePolicy, .toggleAllPolicies:
+            break
+        
+        case .updateNickname(let nickname):
+            state.nickname = nickname
+            
+            if nickname.isEmpty {
+                state.nicknameType = .placeholder
+            } else {
+                state.nicknameType = .editing
+            }
+
+        case .checkNickname(let nickname):
+            if nickname.isEmpty {
+                dispatch(.nicknameChecked(.placeholder))
+            } else if nickname.contains(where: { !$0.isLetter && !$0.isNumber }) {
+                dispatch(.nicknameChecked(.invalidCharacter))
+            } else if nickname.count <= 1 {
+                dispatch(.nicknameChecked(.shouldTwoCharacter))
+            } else {
+                Task {
+                    let result = await effect.checkNickname(nickname)
+                    dispatch(result)
+                }
+            }
+            
+        case .fetchPersona:
+            Task {
+                let result = await effect.fetchPersonaList()
+                dispatch(result)
+            }
+            
+        case .onboardingCompleteOnAppear:
+            guard let selectedPersona = state.selectedPersona else {
+                print("❗️ 선택된 페르소나가 없습니다.")
+                return
+            }
+
+            Task {
+                let result = await effect.completeOnboarding(
+                    persona: selectedPersona.type,
+                    nickname: state.nickname,
+                    policyAgreementInfos: state.policyAgreementInfos
+                )
+                dispatch(result)
+            }
+        case .isLottieFinished:
+            state.isLottieFinished = true
+            
+        default:
+            break
+        }
+    }
+}

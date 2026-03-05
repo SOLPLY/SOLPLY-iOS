@@ -1,0 +1,260 @@
+//
+//  NMapView.swift
+//  Solply
+//
+//  Created by 김승원 on 7/3/25.
+//
+
+import SwiftUI
+
+import NMapsMap
+
+struct CourseDetailMapView: UIViewRepresentable {
+    
+    // MARK: - Properties
+    
+    private let markerManager = MarkerManager()
+    private var places: [PlaceDetailInCourse]
+    
+    private let contentInset: UIEdgeInsets = UIEdgeInsets(
+        top: 0,
+        left: 0,
+        bottom: 450.adjustedHeight,
+        right: 0
+    )
+    
+    private let markerWidth: CGFloat = 36.adjusted
+    private let markerHeight: CGFloat = 36.adjusted
+    
+    private let defaultZoomLevel: Double = ZoomLevel.extraLarge.zoom
+    
+    // MARK: - Initializer
+
+    init(places: [PlaceDetailInCourse]) {
+        self.places = places
+    }
+    
+    // MARK: - Functions
+    
+    func makeUIView(context: Context) -> NMFMapView {
+        let mapView = configureMapView(context: context)
+        return mapView
+    }
+    
+    func updateUIView(_ mapView: NMFMapView, context: Context) {
+        clearMapContent(mapView, context: context)
+
+        guard !places.isEmpty else { return }
+
+        addMarkersToMap(mapView, context: context)
+        addLineToMap(mapView, context: context)
+        configureCameraWithCalculatedZoom(mapView, coordinator: context.coordinator)
+    }
+}
+
+// MARK: - Map Configuration
+
+extension CourseDetailMapView {
+    /// 지도를 초기화하는 함수입니다.
+    private func configureMapView(context: Context) -> NMFMapView {
+        let mapView = NMFMapView()
+        mapView.mapType = .basic
+        mapView.setLayerGroup(NMF_LAYER_GROUP_BUILDING, isEnabled: true)
+        mapView.isIndoorMapEnabled = false
+        mapView.contentInset = contentInset
+        mapView.isZoomGestureEnabled = true
+        mapView.positionMode = .disabled
+        mapView.logoAlign = .rightBottom
+        mapView.logoInteractionEnabled = true
+        
+        return mapView
+    }
+    
+    /// 기존 지도 컨텐츠를 제거하는 함수입니다.
+    private func clearMapContent(_ mapView: NMFMapView, context: Context) {
+        let coordinator = context.coordinator
+            coordinator.markers.forEach { $0.mapView = nil }
+            coordinator.markers.removeAll()
+
+            coordinator.polyline?.mapView = nil
+            coordinator.polyline = nil
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        return Coordinator()
+    }
+
+}
+
+// MARK: - Camera Management
+
+extension CourseDetailMapView {
+    /// 계산된 줌 레벨로 카메라를 업데이트하는 함수입니다.
+    private func configureCameraWithCalculatedZoom(_ mapView: NMFMapView, coordinator: Coordinator) {
+        let centerCoordinate = calculateCenterCoordinate()
+        let calculatedZoomLevel = calculateOptimalZoomLevel()
+        
+        DispatchQueue.main.async {
+            let cameraUpdate = NMFCameraUpdate(scrollTo: centerCoordinate, zoomTo: calculatedZoomLevel)
+            
+            if coordinator.didInitialMove == false {
+                cameraUpdate.animation = .none
+                coordinator.didInitialMove = true
+            } else {
+                cameraUpdate.animation = .fly
+            }
+            
+            mapView.moveCamera(cameraUpdate)
+        }
+    }
+    
+    /// 코스 내 장소들의 중앙 좌표를 구하는 함수입니다.
+    private func calculateCenterCoordinate() -> NMGLatLng {
+        let boundingBox = calculateBoundingBox()
+        let centerLatitude = (boundingBox.minLatitude + boundingBox.maxLatitude) / 2
+        let centerLongitude = (boundingBox.minLongitude + boundingBox.maxLongitude) / 2
+        let centerCoordinate = NMGLatLng(lat: centerLatitude, lng: centerLongitude)
+        return centerCoordinate
+    }
+    
+    /// bounding box를 구하는 함수입니다.
+    private func calculateBoundingBox() -> BoundingBox {
+        guard !places.isEmpty else {
+            return BoundingBox(
+                minLatitude: 37.5665,
+                maxLatitude: 37.5665,
+                minLongitude: 126.9780,
+                maxLongitude: 126.9780
+            )
+        }
+        
+        var minLatitude = places[0].latitude // 가장 남쪽
+        var maxLatitude = places[0].latitude // 가장 북쪽
+        var minLongitude = places[0].longitude // 가장 서쪽
+        var maxLongitude = places[0].longitude // 가장 동쪽
+        
+        for place in places {
+            minLatitude = min(minLatitude, place.latitude)
+            maxLatitude = max(maxLatitude, place.latitude)
+            minLongitude = min(minLongitude, place.longitude)
+            maxLongitude = max(maxLongitude, place.longitude)
+        }
+        
+        let boundingBox = BoundingBox(
+            minLatitude: minLatitude,
+            maxLatitude: maxLatitude,
+            minLongitude: minLongitude,
+            maxLongitude: maxLongitude
+        )
+        
+        return boundingBox
+    }
+    
+    /// 마커 분포에 따라 최적의 줌 레벨을 계산하는 함수입니다.
+    private func calculateOptimalZoomLevel() -> Double {
+        guard !places.isEmpty else { return defaultZoomLevel }
+        
+        let boundingBox = calculateBoundingBox()
+        let latitudeRange = boundingBox.maxLatitude - boundingBox.minLatitude
+        let longitudeRange = boundingBox.maxLongitude - boundingBox.minLongitude
+        
+        for level in ZoomLevel.allCases {
+            let coordinateDelta = level.coordinateDelta
+            
+            // 마커들의 범위가 현재 레벨의 coordinateDelta 안에 들어가는지 확인
+            if latitudeRange <= coordinateDelta.latitude && longitudeRange <= coordinateDelta.longitude {
+                return level.zoom
+            }
+        }
+        
+        return ZoomLevel.galaxy.zoom
+    }
+    
+    /// 특정 장소로 카메라 이동하는 함수입니다.
+    private func moveCameraToPlace(_ place: PlaceDetailInCourse, mapView: NMFMapView, animated: Bool = true) {
+        let coordinate = NMGLatLng(lat: place.latitude, lng: place.longitude)
+        let cameraUpdate = NMFCameraUpdate(scrollTo: coordinate)
+        cameraUpdate.animation = animated ? .easeIn : .none
+        mapView.moveCamera(cameraUpdate)
+    }
+}
+
+// MARK: - Marker Management
+
+extension CourseDetailMapView {
+    /// 지도에 마커를 추가하는 함수입니다.
+    private func addMarkersToMap(_ mapView: NMFMapView, context: Context) {
+        let coordinator = context.coordinator
+        
+        DispatchQueue.global(qos: .default).async {
+            var markers: [NMFMarker] = []
+  
+            for (index, place) in self.places.enumerated() {
+                guard let markerType = MarkerType(rawValue: index + 1) else { continue }
+                
+                let marker = NMFMarker()
+                marker.position = NMGLatLng(lat: place.latitude, lng: place.longitude)
+                marker.iconImage = self.markerManager.getMarkerImage(for: markerType, isFocused: place.isFocused)
+                marker.width = markerWidth
+                marker.height = markerHeight
+                marker.anchor = CGPoint(x: 0.5, y: 0.5)
+                marker.zIndex = self.places.count - index
+                markers.append(marker)
+            }
+
+            DispatchQueue.main.async {
+                for marker in markers {
+                    marker.mapView = mapView
+                }
+            }
+            
+            coordinator.markers = markers
+        }
+    }
+    
+    /// 지도에 코스(선)을 추가하는 함수입니다.
+    private func addLineToMap(_ mapView: NMFMapView, context: Context) {
+        let coordinator = context.coordinator
+        
+        guard places.count > 1 else { return }
+        
+        var coordinates: [NMGLatLng] = []
+        
+        for place in places {
+            let coordinate = NMGLatLng(lat: place.latitude, lng: place.longitude)
+            coordinates.append(coordinate)
+        }
+        
+        let polyline = NMFPolylineOverlay(coordinates)
+        polyline?.width = 2
+        polyline?.color = .purple800
+        polyline?.mapView = mapView
+        
+        coordinator.polyline = polyline
+    }
+}
+
+// MARK: - Coordinator
+extension CourseDetailMapView {
+    class Coordinator {
+        var markers: [NMFMarker] = []
+        var polyline: NMFPolylineOverlay?
+        var didInitialMove: Bool = false
+    }
+}
+
+// MARK: - Equatable
+
+extension CourseDetailMapView: Equatable {
+    static func == (lhs: CourseDetailMapView, rhs: CourseDetailMapView) -> Bool {
+        guard lhs.places.count == rhs.places.count else { return false }
+        
+        for (lhsPlace, rhsPlace) in zip(lhs.places, rhs.places) {
+            if lhsPlace.id != rhsPlace.id || lhsPlace.isFocused != rhsPlace.isFocused {
+                return false
+            }
+        }
+        
+        return true
+    }
+}
