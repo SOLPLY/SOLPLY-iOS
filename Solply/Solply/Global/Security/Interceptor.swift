@@ -11,6 +11,7 @@ import Alamofire
 
 extension Notification.Name {
     static let tokenExpired = Notification.Name("tokenExpired")
+    static let tokenUnauthorized = Notification.Name("tokenUnauthorized")
 }
 
 final class Interceptor: RequestInterceptor {
@@ -72,7 +73,7 @@ final class Interceptor: RequestInterceptor {
             debug("🚫 403 → 강제 로그아웃")
             
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: .tokenExpired, object: nil)
+                NotificationCenter.default.post(name: .tokenUnauthorized, object: nil)
             }
             
             return completion(.doNotRetry)

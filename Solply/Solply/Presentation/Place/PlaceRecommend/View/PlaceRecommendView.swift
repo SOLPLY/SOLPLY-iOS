@@ -97,7 +97,10 @@ struct PlaceRecommendView: View {
             ))
         }
         .onChange(of: appState.townId) { _, newTownId in
-            store.dispatch(.fetchPlaceRecommend(townId: newTownId))
+            if appState.userSession == .authenticated {
+                store.dispatch(.fetchPlaceRecommend(townId: newTownId))
+            }
+            
             store.dispatch(.resetTags)
             store.dispatch(.resetSubTags)
             
