@@ -14,6 +14,7 @@
 		E3430AA32E2643C900EA1CE5 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = E3430AA22E2643C900EA1CE5 /* KakaoSDKUser */; };
 		E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E36882822E0DD8AF008A7288 /* Kingfisher */; };
 		E36882862E0DD935008A7288 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = E36882852E0DD935008A7288 /* Moya */; };
+		E3C6FDF22F5C09680050B294 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E3C6FDF12F5C09680050B294 /* AmplitudeSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3C6FDF22F5C09680050B294 /* AmplitudeSwift in Frameworks */,
 				E36882862E0DD935008A7288 /* Moya in Frameworks */,
 				E34011482E151709008944E7 /* NMapsMap in Frameworks */,
 				E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */,
@@ -102,6 +104,7 @@
 				E3430A9E2E2643C900EA1CE5 /* KakaoSDKAuth */,
 				E3430AA02E2643C900EA1CE5 /* KakaoSDKCommon */,
 				E3430AA22E2643C900EA1CE5 /* KakaoSDKUser */,
+				E3C6FDF12F5C09680050B294 /* AmplitudeSwift */,
 			);
 			productName = Solply;
 			productReference = E36882732E0DD865008A7288 /* Solply.app */;
@@ -137,6 +140,7 @@
 				E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */,
 				985476612E255FA5005164CF /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				E3430A9D2E2643C900EA1CE5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				E3C6FDF02F5C09680050B294 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E36882742E0DD865008A7288 /* Products */;
@@ -444,6 +448,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		E3C6FDF02F5C09680050B294 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amplitude/Amplitude-Swift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -481,6 +493,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E36882842E0DD935008A7288 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = Moya;
+		};
+		E3C6FDF12F5C09680050B294 /* AmplitudeSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3C6FDF02F5C09680050B294 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */;
+			productName = AmplitudeSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
