@@ -52,6 +52,13 @@ struct CourseDetailView: View {
             store.dispatch(.endDragging)
         }
         .onAppear {
+            AmplitudeManager.shared.track(
+                .viewCourseDetail(
+                    entryMode: AmplitudeEntryMode.from(appState.userSession),
+                    courseId: store.courseId,
+                    isBookmarked: store.state.isCourseBookmarked
+                )
+            )
             store.dispatch(.fetchCourseDetail(courseId: store.courseId, isCourseUpdated: false))
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
@@ -146,8 +153,9 @@ extension CourseDetailView {
                             Button {
                                 appState.requireLoginWithAlert {
                                     bookmarkCourse()
-                                } onExplore: {
-                                    appCoordinator.changeRoot(to: .auth)
+                                } exploreAction: {
+                                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .saveCourse))
+                                    showLoginAlert(amplitudeBlockedAction: .saveCourse)
                                 }
                             } label: {
                                 Image(store.state.isCourseBookmarkSelected ? .bookmarkSavedIcon : .bookmarkIcon)
@@ -187,24 +195,54 @@ extension CourseDetailView {
                         isFocused: (store.state.focusedPlaceIndex == index),
                         isEditing: store.state.isCourseEditing
                     ) {
+                        AmplitudeManager.shared.track(
+                            .clickCoursePlaceCard(
+                                courseId: store.courseId,
+                                placeId: place.placeId,
+                                placeName: place.placeName
+                            )
+                        )
                         store.dispatch(.focusPlace(index: index))
                     } detailAction: {
                         appCoordinator.navigate(to: .placeDetail(townId: store.townId, placeId: store.state.places[index].placeId, fromSearch: false))
                     } findDirectionAction: {
                         store.dispatch(.requestFindDirection)
+                        
+                        AmplitudeManager.shared.track(
+                            .clickPlaceDirections(
+                                placeId: place.placeId,
+                                placeName: place.placeName,
+                                fromContext: .courseDetail
+                            )
+                        )
                     } saveAction: {
                         appState.requireLoginWithAlert {
                             store.dispatch(.toggleBookmarkPlace(index: index))
                             
                             if store.state.places[index].isBookmarked {
+                                AmplitudeManager.shared.track(
+                                    .clickCoursePlaceSave(
+                                        courseId: store.courseId,
+                                        placeId: place.placeId,
+                                        saveAction: .save
+                                    )
+                                )
                                 store.dispatch(.submitPlaceBookmark(index: index))
                                 ToastManager.shared.showToast(.defaultToast, message: "'\(place.placeName.truncated(length: 9))'가 수집함에 저장되었어요.")
                             } else {
+                                AmplitudeManager.shared.track(
+                                    .clickCoursePlaceSave(
+                                        courseId: store.courseId,
+                                        placeId: place.placeId,
+                                        saveAction: .unsave
+                                    )
+                                )
                                 store.dispatch(.removePlaceBookmark(index: index))
                                 ToastManager.shared.showToast(.defaultToast, message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요.")
                             }
-                        } onExplore: {
-                            appCoordinator.changeRoot(to: .auth)
+                        } exploreAction: {
+                            AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .saveCoursePlace))
+                            showLoginAlert(amplitudeBlockedAction: .saveCoursePlace)
                         }
                     }
                     .animation(.easeInOut(duration: 0.2), value: store.state.isCourseEditing)
@@ -354,10 +392,34 @@ extension CourseDetailView {
             )
         }
     }
-
-    private func showChangesNotSavedAlert() {
-        AlertManager.shared.showAlert(alertType: .changesNotSaved, onCancel: nil) {
-            appCoordinator.goBack()
+    
+    private func requireLogin(_ authenticatedAction: (() -> Void), exploreAction: (() -> Void)) {
+        switch appState.userSession {
+        case .explore:
+            exploreAction()
+        case .authenticated:
+            authenticatedAction()
         }
+    }
+    
+    private func showLoginAlert(amplitudeBlockedAction: AmplitudeBlockedAction) {
+        alertManager.showAlert(alertType: .authenticationRequired) {
+            AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: amplitudeBlockedAction))
+        } onConfirm: {
+            appCoordinator.changeRoot(to: .auth)
+        }
+    }
+    
+    private func showChangesNotSavedAlert() {
+        alertManager.showAlert(
+            alertType: .changesNotSaved,
+            onCancel: {
+                AmplitudeManager.shared.track(.clickLeaveCourseEdit(courseId: store.courseId, choice: .cancel))
+            },
+            onConfirm: {
+                AmplitudeManager.shared.track(.clickLeaveCourseEdit(courseId: store.courseId, choice: .leave))
+                appCoordinator.goBack()
+            }
+        )
     }
 }

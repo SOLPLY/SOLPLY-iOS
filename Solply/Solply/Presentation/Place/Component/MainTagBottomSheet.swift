@@ -62,7 +62,6 @@ struct MainTagBottomSheet: View {
         }
         .padding(.horizontal, 16.adjustedWidth)
         .padding(.top, 24.adjustedHeight)
-
     }
 }
 

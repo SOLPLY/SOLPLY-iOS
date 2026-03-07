@@ -19,7 +19,7 @@ struct PlaceInformationView: View {
     private let placeName: String
     private let isBookmarked: Bool
     private let introduction: String
-    private let imageURLs: [String]
+    private let imageURLs: [String?]
     private let address: String
     private let contactNumber: String
     private let openingHours: String
@@ -37,7 +37,7 @@ struct PlaceInformationView: View {
         placeName: String,
         isBookmarked: Bool,
         introduction: String,
-        imageURLs: [String],
+        imageURLs: [String?],
         address: String,
         contactNumber: String,
         openingHours: String,
@@ -52,7 +52,7 @@ struct PlaceInformationView: View {
         self.placeName = placeName
         self.isBookmarked = isBookmarked
         self.introduction = introduction
-        self.imageURLs = imageURLs
+        self.imageURLs = imageURLs.isEmpty ? Array(repeating: nil, count: 3) : imageURLs
         self.address = address
         self.contactNumber = contactNumber
         self.openingHours = openingHours
@@ -134,17 +134,12 @@ extension PlaceInformationView {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .center, spacing: 12.adjustedWidth) {
                 ForEach(imageURLs, id: \.self) { imageURL in
-                    KFImage(URL(string: imageURL))
-                        .placeholder {
-                            Image(.placedetailPlaceholder)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        }
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 307.adjustedWidth, height: 204.adjustedHeight)
-                        .background(.gray200)
-                        .cornerRadius(12, corners: .allCorners)
+                    ThumbnailImage(
+                        imageURL,
+                        width: 307.adjustedWidth,
+                        height: 204.adjustedHeight,
+                        radius: 12
+                    )
                 }
             }
             .padding(.horizontal, 16.adjustedWidth)

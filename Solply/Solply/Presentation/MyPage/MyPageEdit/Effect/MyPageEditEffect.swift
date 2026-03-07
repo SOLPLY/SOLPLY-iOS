@@ -46,11 +46,11 @@ extension MyPageEditEffect {
         do {
             let response = try await userService.updateUserInformation(request: request)
             
-            guard response.data != nil else {
+            guard let data = response.data else {
                 return .updateUserInformationFailed(error: .responseError)
             }
             
-            return .updateUserInformationSuccess
+            return .updateUserInformationSuccess(nickName: data.nickname, persona: data.persona)
             
         } catch let error as NetworkError {
             return .updateUserInformationFailed(error: error)

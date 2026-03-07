@@ -10,7 +10,7 @@ import Foundation
 struct CourseRecommend: Identifiable, Equatable {
     let id: Int
     let courseName: String
-    let imageUrl: String
+    let imageUrl: String?
     let courseTagName: String
     let isBookmarked: Bool
 }

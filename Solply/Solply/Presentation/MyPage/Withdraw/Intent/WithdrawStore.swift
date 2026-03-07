@@ -34,6 +34,17 @@ final class WithdrawStore: ObservableObject {
                 )
                 self.dispatch(result)
             }
+            
+        case .withdrawSuccess:
+            guard let selectedWithdrawType = state.selectedWithdrawType else { return }
+            
+            AmplitudeManager.shared.track(
+                .completeWithdraw(
+                    withdrawType: AmplitudeWithdrawType.from(
+                        selectedWithdrawType
+                    )
+                )
+            )
         
         default:
             break

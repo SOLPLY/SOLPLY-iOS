@@ -23,7 +23,7 @@ enum MyPageEditAction {
     case fetchUserNicknameCheckFailed(error: NetworkError)
     
     case updateUserInformation(imageKeyString: String?)
-    case updateUserInformationSuccess
+    case updateUserInformationSuccess(nickName: String, persona: String)
     case updateUserInformationFailed(error: NetworkError)
     
     // uploadImage

@@ -14,7 +14,7 @@ struct CourseRecommendResponseDTO: ResponseModelType {
 struct CourseDTO: ResponseModelType {
     let courseId: Int
     let courseName: String
-    let thumbnailImage: String
+    let thumbnailImage: String?
     let courseTagName: String
     let isBookmarked: Bool
 }

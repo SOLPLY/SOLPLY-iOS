@@ -80,7 +80,7 @@ final class ReportsStore: ObservableObject {
             var imageKeyStrings: [String]
             
             imageKeyStrings = imageKeys.map { imageKey in
-                imageKey.absoluteString.truncated(includeStartRange: "dev", excludeEndRange: "?")
+                imageKey.absoluteString.truncatedForS3()
             }
             
             let request = ReportsRequestDTO(

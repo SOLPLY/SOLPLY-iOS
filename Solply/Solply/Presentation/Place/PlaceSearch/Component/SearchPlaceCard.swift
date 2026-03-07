@@ -13,14 +13,14 @@ struct SearchPlaceCard: View {
     
     // MARK: - Properties
     
-    private let thumnailUrl: String
+    private let thumnailUrl: String?
     private let placeName: String
     private let address: String
     private let mainTag: MainTagType
     private let onTap: (() -> Void)?
     
     init(
-        thumbnailUrl: String,
+        thumbnailUrl: String?,
         placeName: String,
         address: String,
         mainTag: MainTagType,
@@ -44,17 +44,13 @@ struct SearchPlaceCard: View {
                 onTap?()
             } label: {
                 HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                    KFImage(URL(string: thumnailUrl))
-                        .placeholder {
-                            Image(.placePlaceholder)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        }
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 52.adjusted, height: 52.adjusted)
-                        .cornerRadius(12, corners: .allCorners)
-                        .padding(.leading, 20.adjustedWidth)
+                    ThumbnailImage(
+                        thumnailUrl,
+                        width: 52.adjusted,
+                        height: 52.adjusted,
+                        radius: 12
+                    )
+                    .padding(.leading, 20.adjustedWidth)
                     
                     VStack(alignment: .leading, spacing: 6.adjustedHeight) {
                         

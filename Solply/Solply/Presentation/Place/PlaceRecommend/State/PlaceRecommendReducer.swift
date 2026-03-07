@@ -37,11 +37,13 @@ struct PlaceRecommendReducer {
             // api
         case .fetchPlaceRecommend:
             state.isCarouselLoading = true
+            state.placeRecommendItems = []
             break
             
         case .placeRecommendFetched(let placeRecommend):
-            state.isCarouselLoading = false
+            dump(state.placeRecommendItems)
             state.placeRecommendItems = placeRecommend.prefix(3).map { PlaceRecommend(dto: $0) }
+            state.isCarouselLoading = false
             
         case .fetchPlaceRecommendFailed(let error):
             state.isCarouselLoading = true
@@ -62,11 +64,12 @@ struct PlaceRecommendReducer {
             
         case .fetchPlaceList:
             state.isPlaceGridLoading = true
+            state.fetchedPlaceList = []
             break
             
         case .placeListFetched(let placeList):
-            state.isPlaceGridLoading = false
             state.fetchedPlaceList = placeList.map { Place(dto: $0) }
+            state.isPlaceGridLoading = false
             
         case .fetchPlaceListFailed(let error):
             state.isPlaceGridLoading = true

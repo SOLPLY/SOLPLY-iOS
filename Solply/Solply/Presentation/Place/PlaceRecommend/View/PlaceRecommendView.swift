@@ -60,7 +60,16 @@ struct PlaceRecommendView: View {
             .townFilterWithSearch(
                 filterTitle: appState.townName,
                 isLoading: isUserInformationLoading,
-                filterAction: { appCoordinator.navigate(to: .JGD) },
+                filterAction: {
+                    AmplitudeManager.shared.track(
+                        .viewTownList(
+                            entryMode: AmplitudeEntryMode.from(appState.userSession),
+                            fromContext: .placeList
+                        )
+                    )
+                    
+                    appCoordinator.navigate(to: .JGD)
+                },
                 searchAction: { appCoordinator.navigate(to: .placeSearch) }
             )
         )
@@ -79,23 +88,19 @@ struct PlaceRecommendView: View {
             ))
         }
         .onChange(of: appState.townId) { _, newTownId in
-            store.dispatch(.fetchPlaceRecommend(townId: newTownId))
+            if appState.userSession == .authenticated {
+                store.dispatch(.fetchPlaceRecommend(townId: newTownId))
+            }
+            
             store.dispatch(.resetTags)
-            
-            let subTagAIdList = store.state.selectedSubTags
-                .filter { $0.tagType == "OPTION1" && $0.isSelected }
-                .map { $0.id }
-            
-            let subTagBIdList = store.state.selectedSubTags
-                .filter { $0.tagType == "OPTION2" && $0.isSelected }
-                .map { $0.id }
+            store.dispatch(.resetSubTags)
             
             store.dispatch(.fetchPlaceList(
                 townId: newTownId,
                 isBookmarkSearch: false,
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: subTagAIdList,
-                subTagBIdList: subTagBIdList
+                subTagAIdList: [],
+                subTagBIdList: []
             ))
         }
     }
@@ -127,7 +132,11 @@ extension PlaceRecommendView {
             switch appState.userSession {
             case .explore:
                 ExplorePlaceRecommendCarousel() {
-                    AlertManager.shared.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .todayRecommend))
+                    
+                    AlertManager.shared.showAlert(alertType: .authenticationRequired) {
+                        AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: .todayRecommend))
+                    } onConfirm: {
                         appCoordinator.changeRoot(to: .auth)
                     }
                 }
