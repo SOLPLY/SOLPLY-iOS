@@ -303,7 +303,7 @@
 			baseConfigurationReferenceAnchor = E36882752E0DD865008A7288 /* Solply */;
 			baseConfigurationReferenceRelativePath = Global/Environment/Debug.xcconfig;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Debug";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solply/Solply.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -346,7 +346,7 @@
 			baseConfigurationReferenceAnchor = E36882752E0DD865008A7288 /* Solply */;
 			baseConfigurationReferenceRelativePath = Global/Environment/Release.xcconfig;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Release";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solply/Solply.entitlements;
 				CODE_SIGN_STYLE = Automatic;
