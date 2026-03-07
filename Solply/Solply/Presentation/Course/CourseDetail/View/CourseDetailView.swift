@@ -153,9 +153,8 @@ extension CourseDetailView {
                             Button {
                                 appState.requireLoginWithAlert {
                                     bookmarkCourse()
-                                } exploreAction: {
+                                } onExplore: {
                                     AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .saveCourse))
-                                    showLoginAlert(amplitudeBlockedAction: .saveCourse)
                                 }
                             } label: {
                                 Image(store.state.isCourseBookmarkSelected ? .bookmarkSavedIcon : .bookmarkIcon)
@@ -240,9 +239,8 @@ extension CourseDetailView {
                                 store.dispatch(.removePlaceBookmark(index: index))
                                 ToastManager.shared.showToast(.defaultToast, message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요.")
                             }
-                        } exploreAction: {
+                        } onExplore: {
                             AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .saveCoursePlace))
-                            showLoginAlert(amplitudeBlockedAction: .saveCoursePlace)
                         }
                     }
                     .animation(.easeInOut(duration: 0.2), value: store.state.isCourseEditing)
@@ -402,20 +400,10 @@ extension CourseDetailView {
         }
     }
     
-    private func showLoginAlert(amplitudeBlockedAction: AmplitudeBlockedAction) {
-        alertManager.showAlert(alertType: .authenticationRequired) {
-            AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: amplitudeBlockedAction))
-        } onConfirm: {
-            appCoordinator.changeRoot(to: .auth)
-        }
-    }
-    
     private func showChangesNotSavedAlert() {
-        alertManager.showAlert(
+        AlertManager.shared.showAlert(
             alertType: .changesNotSaved,
-            onCancel: {
-                AmplitudeManager.shared.track(.clickLeaveCourseEdit(courseId: store.courseId, choice: .cancel))
-            },
+            onCancel: { AmplitudeManager.shared.track(.clickLeaveCourseEdit(courseId: store.courseId, choice: .cancel)) },
             onConfirm: {
                 AmplitudeManager.shared.track(.clickLeaveCourseEdit(courseId: store.courseId, choice: .leave))
                 appCoordinator.goBack()

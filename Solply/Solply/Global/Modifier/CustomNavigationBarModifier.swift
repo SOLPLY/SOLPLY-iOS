@@ -29,7 +29,7 @@ struct CustomNavigationBarModifier: ViewModifier {
                     centerView: { EmptyView() },
                     leftView: { EmptyView() },
                     rightView: { exploreBarButtonItem(action: exploreAction) },
-                    backgroundColor: .clear
+                    backgroundColor: .gray100
                 )
             )
         case .backWithTitleAndHome(let title, let backAction, let homeAction):
@@ -191,6 +191,7 @@ extension CustomNavigationBarModifier {
                 .foregroundStyle(.gray800)
         }
         .buttonStyle(.plain)
+        .padding(.horizontal, 20.adjustedWidth)
     }
     
     private func barButtonItem(_ icon: ImageResource, action: (() -> Void)?) -> some View {
