@@ -41,8 +41,11 @@ struct PersonaOptionView: View {
                 title: "다음",
                 isEnabled: store.state.selectedPersona != nil
             ) {
-                let selected = store.state.selectedPersona?.description ?? "없음"
+                guard let selectedPersona = store.state.selectedPersona else { return }
+                
+                let selected = selectedPersona.description
                 print("➡️ [다음 버튼] 눌림 - 선택된 페르소나: \(selected)")
+                AmplitudeManager.shared.track(.completePersona(personaType: AmplitudePersonaType.from(selectedPersona)))
                 store.dispatch(.next)
             }
             .frame(width: 335.adjustedWidth)

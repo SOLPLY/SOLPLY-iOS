@@ -37,7 +37,7 @@ struct ArchiveListEffect {
         do {
             let _ = try await courseService.removeCourseList(courseIds: courseIds)
             
-            return .courseListRemoved
+            return .courseListRemoved(removedCount: courseIds.count)
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)
@@ -50,7 +50,7 @@ struct ArchiveListEffect {
         do {
             let _ = try await placeService.removePlaceList(placeIds: placeIds)
             
-            return .placeListRemoved
+            return .placeListRemoved(removedCount: placeIds.count)
             
         } catch let error as NetworkError {
             return .errorOccured(error: error)

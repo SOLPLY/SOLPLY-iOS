@@ -23,6 +23,9 @@ struct SolplyApp: App {
             fatalError("KAKAO_NATIVE_APP_KEY가 Info.plist에 없습니다.")
         }
         
+        // Amplitude
+        AmplitudeManager.shared.start(apiKey: AppEnvironment.amplitudeApiKey)
+        
         KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
     }
     

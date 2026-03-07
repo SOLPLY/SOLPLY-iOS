@@ -30,7 +30,7 @@ struct SolplyTabBar: View {
     private let tabBarBackgroundColor: Color = .gray900
     
     private let scrollToTopAction: ((TabBarState) -> Void)?
-    private let loginAction: (() -> Void)?
+    private let loginRequiredAction: (() -> Void)?
     
     // MARK: - Initializer
     
@@ -38,12 +38,12 @@ struct SolplyTabBar: View {
         selectedTab: Binding<TabBarState>,
         isAuthenticated: Bool,
         scrollToTopAction: ((TabBarState) -> Void)? = nil,
-        loginAction: (() -> Void)? = nil
+        loginRequiredAction: (() -> Void)? = nil
     ) {
         self._selectedTab = selectedTab
         self.isAuthenticated = isAuthenticated
         self.scrollToTopAction = scrollToTopAction
-        self.loginAction = loginAction
+        self.loginRequiredAction = loginRequiredAction
     }
     
     // MARK: - Body
@@ -98,7 +98,7 @@ extension SolplyTabBar {
 extension SolplyTabBar {
     private func selectTab(_ selectedTab: TabBarState) {
         if !isAuthenticated && loginRequiredTabs.contains(selectedTab) {
-            loginAction?()
+            loginRequiredAction?()
             return
         }
         

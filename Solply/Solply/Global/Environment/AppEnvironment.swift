@@ -80,4 +80,13 @@ enum AppEnvironment {
         
         return "v" + version
     }()
+    
+    /// Amplitude Api Key
+    static let amplitudeApiKey: String = {
+        guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "AMPLITUDE_API_KEY") as? String else {
+            fatalError("Info.plist에 AMPLITUDE_API_KEY가 없습니다.")
+        }
+        
+        return apiKey
+    }()
 }

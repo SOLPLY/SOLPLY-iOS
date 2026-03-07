@@ -36,6 +36,9 @@ struct TabBarView: View {
         .onAppear {
             locationManager.requestPermissionAndStartUpdates()
         }
+        .onChange(of: appCoordinator.selectedTab) { _, newValue in
+            trackAmplitudeViewListEvent(newValue)
+        }
         .task {
             await loadUserInfo()
         }
@@ -56,6 +59,8 @@ struct TabBarView: View {
                 appState.townId = userInfo.townId
                 placeRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 추천"
                 courseRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 코스"
+                
+                trackAmplitudeViewListEvent(appCoordinator.selectedTab)
             } catch {
                 print("사용자 정보 가져오기 실패: \(error)")
             }
@@ -110,7 +115,16 @@ extension TabBarView {
             scrollToTopAction: { tabBarState in
                 scrollToTopManager.trigger(tabBarState)
             },
-            loginAction: {
+            loginRequiredAction: {
+                switch appCoordinator.selectedTab {
+                case .bookmark:
+                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .openCollectionTab))
+                case .myPage:
+                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .openMyPageTab))
+                default:
+                    break
+                }
+                
                 AlertManager.shared.showAlert(alertType: .authenticationRequired, onCancel: nil) {
                     appCoordinator.changeRoot(to: .auth)
                 }
@@ -144,6 +158,21 @@ extension TabBarView {
         } catch {
             isUserInformationLoading = true
             throw error
+        }
+    }
+}
+
+// MARK: - Functions
+
+extension TabBarView {
+    private func trackAmplitudeViewListEvent(_ selectedTab: TabBarState) {
+        switch selectedTab {
+        case .place:
+            AmplitudeManager.shared.track(.viewPlaceList(townId: appState.townId, townName: appState.townName))
+        case .course:
+            AmplitudeManager.shared.track(.viewCourseList(townId: appState.townId, townName: appState.townName))
+        default:
+            break
         }
     }
 }

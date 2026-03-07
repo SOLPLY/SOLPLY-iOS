@@ -11,6 +11,7 @@ struct FilterPlaceGrid: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store: PlaceRecommendStore
     
@@ -54,6 +55,7 @@ struct FilterPlaceGrid: View {
                     FilterButton(title: mainTag.title) {
                         store.dispatch(.updateMainTag)
                         store.dispatch(.toggleMainTagBottomSheet)
+                        AmplitudeManager.shared.track(.viewPlaceFilter(townId: townId))
                     }
                     .sheet(
                         isPresented: Binding(
@@ -62,6 +64,14 @@ struct FilterPlaceGrid: View {
                                 if !isPresented {
                                     let current = store.state.selectedMainTag
                                     let previous = store.state.previousMainTag
+                                    
+                                    AmplitudeManager.shared.track(
+                                        .selectPlaceMainTag(
+                                            mainTag: AmplitudeSelectedMainTag.from(current),
+                                            townId: appState.townId,
+                                            townName: appState.townName
+                                        )
+                                    )
                                     
                                     if current != previous {
                                         store.dispatch(.resetSubTags)
@@ -85,6 +95,14 @@ struct FilterPlaceGrid: View {
                                 get: { store.state.isMainTagBottomSheetPresented },
                                 set: { isPresented in
                                     if !isPresented {
+                                        AmplitudeManager.shared.track(
+                                            .viewPlaceOptionPanel(
+                                                townId: appState.townId,
+                                                townName: appState.townName,
+                                                selectedMainTag: AmplitudeSelectedMainTag.from(store.state.selectedMainTag)
+                                            )
+                                        )
+                                        
                                         store.dispatch(.dismissMainTagBottomSheet)
                                     }
                                 }
@@ -124,6 +142,17 @@ struct FilterPlaceGrid: View {
                                 }
                             )
                         ) { selectedTags in
+                            let subTags = selectedTags.filter { $0.isSelected }.map { $0.name }
+                            
+                            AmplitudeManager.shared.track(
+                                .completePlaceFilter(
+                                    selectedOptionTags: subTags.map { AmplitudeSelectedOptionTag.from($0) },
+                                    optionTagCount: store.state.selectedSubTags.count,
+                                    townId: appState.townId ,
+                                    townName: appState.townName
+                                )
+                            )
+                            
                             store.dispatch(.updateSubTags(selectedTags))
                             
                             let subTagAIdList = selectedTags
@@ -179,28 +208,6 @@ struct FilterPlaceGrid: View {
             }
             .onChange(of: store.state.selectedMainTag) { _, _ in
                 store.dispatch(.resetSubTags)
-            }
-            .onChange(of: townId) { _, _ in
-                
-                store.dispatch(.fetchSubTags(
-                    parentId: store.state.selectedMainTag.parentId
-                ))
-                
-                let subTagAIdList = store.state.fetchedSubTags
-                    .filter { $0.tagType == "OPTION1" }
-                    .map { $0.id }
-                
-                let subTagBIdList = store.state.fetchedSubTags
-                    .filter { $0.tagType == "OPTION2" }
-                    .map { $0.id }
-                
-                store.dispatch(.fetchPlaceList(
-                    townId: townId,
-                    isBookmarkSearch: false,
-                    mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                    subTagAIdList: subTagAIdList,
-                    subTagBIdList: subTagBIdList
-                ))
             }
             .padding(.vertical, 20.adjustedHeight)
             .padding(.horizontal, 20.adjustedWidth)

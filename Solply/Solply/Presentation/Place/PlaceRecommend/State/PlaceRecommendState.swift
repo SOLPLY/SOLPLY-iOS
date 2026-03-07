@@ -8,8 +8,8 @@
 import Foundation
 
 struct PlaceRecommendState {
-    var isCarouselLoading: Bool = false
-    var isPlaceGridLoading: Bool = false
+    var isCarouselLoading: Bool = true
+    var isPlaceGridLoading: Bool = true
     
     var placeRecommendItems: [PlaceRecommend] = []
     

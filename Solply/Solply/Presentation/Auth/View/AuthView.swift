@@ -38,6 +38,7 @@ struct AuthView: View {
                 }
             }
             .customNavigationBar(.auth(exploreAction: {
+                AmplitudeManager.shared.track(.clickBrowseMode(entryMode: .guest))
                 appState.setInitialExploreTown()
                 appCoordinator.changeRoot(to: .tabBar)
             }))
@@ -90,10 +91,12 @@ extension AuthView {
         VStack(alignment: .center, spacing: 12.adjustedHeight) {
             SocialLoginButton(.kakao) {
                 store.dispatch(.loginWithKakao)
+                AmplitudeManager.shared.track(.clickLogin(loginMethod: .kakao))
             }
 
             SocialLoginButton(.apple) {
                 store.dispatch(.loginWithApple)
+                AmplitudeManager.shared.track(.clickLogin(loginMethod: .apple))
             }
         }
         .padding(.horizontal, 20.adjustedWidth)

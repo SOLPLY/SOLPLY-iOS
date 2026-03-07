@@ -131,10 +131,19 @@ extension PlaceDetailView {
             appState.requireLoginWithAlert {
                 bookmarkPlace()
             } onExplore: {
+                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .savePlace))
                 appCoordinator.changeRoot(to: .auth)
             }
         } findDirectionAction: {
             store.dispatch(.requestFindDirection)
+            
+            AmplitudeManager.shared.track(
+                .clickPlaceDirections(
+                    placeId: store.placeId,
+                    placeName: store.state.placeName,
+                    fromContext: .placeDetail
+                )
+            )
         } addPlaceToCourseAction: {
             appState.requireLoginWithAlert {
                 store.dispatch(.fetchCourseArchive)
@@ -143,7 +152,15 @@ extension PlaceDetailView {
                 if store.state.selectedCourseIndex != -1 {
                     store.dispatch(.selectCourseToAdd(index: -1))
                 }
+                
+                AmplitudeManager.shared.track(
+                    .viewAddToCourse(
+                        placeId: store.placeId,
+                        hasCourse: !store.state.courses.isEmpty
+                    )
+                )
             } onExplore: {
+                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .addToCourse))
                 appCoordinator.changeRoot(to: .auth)
             }
         } copyAction: { text in
@@ -153,6 +170,7 @@ extension PlaceDetailView {
             appState.requireLoginWithAlert {
                 appCoordinator.navigate(to: .reports(placeId: store.placeId))
             } onExplore: {
+                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .reportError))
                 appCoordinator.changeRoot(to: .auth)
             }
         }
@@ -184,6 +202,8 @@ extension PlaceDetailView {
         } goToAddCourseAction: {
             appCoordinator.goToRoot()
             appCoordinator.switchTab(to: .course)
+            
+            AmplitudeManager.shared.track(.clickFindNewCourse)
         }
     }
     

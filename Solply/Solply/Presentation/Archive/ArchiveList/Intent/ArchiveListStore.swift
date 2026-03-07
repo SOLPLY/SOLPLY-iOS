@@ -49,11 +49,18 @@ final class ArchiveListStore: ObservableObject {
                 self.dispatch(result)
             }
             
+            
         case .removePlaceList(let placeIds):
             Task {
                 let result = await effect.removePlaceList(placeIds: placeIds)
                 self.dispatch(result)
             }
+            
+        case .placeListRemoved(let removedCount):
+            AmplitudeManager.shared.track(.completeRemoveCollectionItems(removeCount: removedCount))
+            
+        case .courseListRemoved(let removedCount):
+            AmplitudeManager.shared.track(.completeRemoveCollectionItems(removeCount: removedCount))
             
         default:
             break

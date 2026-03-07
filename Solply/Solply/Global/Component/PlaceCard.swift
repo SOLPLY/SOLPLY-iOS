@@ -14,7 +14,7 @@ struct PlaceCard: View {
     // MARK: - Properties
     
     private let isSaved: Bool
-    private let thumbnailUrl: String
+    private let thumbnailUrl: String?
     private let placeName: String
     private let placeCategory: MainTagType
     private let isSelected: Bool
@@ -25,7 +25,7 @@ struct PlaceCard: View {
     
     init(
         isSaved: Bool,
-        thumbnailUrl: String,
+        thumbnailUrl: String?,
         placeName: String,
         placeCategory: MainTagType,
         isSelected: Bool,
@@ -46,15 +46,12 @@ struct PlaceCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             ZStack(alignment: .topTrailing) {
-                KFImage(URL(string: thumbnailUrl))
-                    .placeholder {
-                        Image(.placePlaceholder)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    }
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: size, height: size)
+                ThumbnailImage(
+                    thumbnailUrl,
+                    width: size,
+                    height: size,
+                    radius: 0
+                )
                 
                 if isSaved {
                     Image(placeCategory.savedBadge ?? "")
