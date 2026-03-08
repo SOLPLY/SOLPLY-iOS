@@ -99,7 +99,3 @@ extension SolplyTextEditor {
             .padding(.trailing, 8.adjustedWidth)
     }
 }
-
-#Preview {
-    SolplyTextEditor()
-}
