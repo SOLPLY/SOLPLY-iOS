@@ -17,6 +17,8 @@ struct SolplyTextEditor: View {
     private let isTextLimitEnabled: Bool
     private let onTextChanged: ((String) -> Void)?
     
+    private let textEditorFont: SolplyFont = .body_16_r
+    
     // MARK: - Initializer
     
     init(
@@ -35,7 +37,7 @@ struct SolplyTextEditor: View {
         ZStack(alignment: .topLeading) {
             TextEditor(text: $text)
                 .configureDefaultTextEditor()
-                .applySolplyFont(.body_16_r)
+                .applySolplyFont(textEditorFont)
                 .foregroundStyle(.coreBlack)
                 .padding(.horizontal, 10.adjustedWidth)
                 .padding(.vertical, 7.adjustedHeight)
@@ -56,7 +58,7 @@ struct SolplyTextEditor: View {
             
             if text.isEmpty {
                 Text(placeholder)
-                    .applySolplyFont(.body_14_r)
+                    .applySolplyFont(textEditorFont)
                     .foregroundStyle(.gray600)
                     .padding(.horizontal, 16.adjustedWidth)
                     .padding(.vertical, 16.adjustedHeight)
