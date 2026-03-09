@@ -30,13 +30,13 @@ struct SolplyTextEditor: View {
     init(
         placeholder: String = "최대 200자 입력 가능",
         isTextLimitEnabled: Bool = true,
-        informationLabel: String? = nil,
+        label: String? = nil,
         onTextChanged: ((String) -> Void)? = nil,
         onLabelTapped: (() -> Void)? = nil
     ) {
         self.placeholder = placeholder
         self.isTextLimitEnabled = isTextLimitEnabled
-        self.label = informationLabel
+        self.label = label
         self.onTextChanged = onTextChanged
         self.onLabelTapped = onLabelTapped
     }
@@ -127,4 +127,9 @@ extension SolplyTextEditor {
         .buttonStyle(.plain)
         .frame(width: 335.adjustedWidth, alignment: .leading)
     }
+}
+
+#Preview {
+    SolplyTextEditor()
+    SolplyTextEditor(label: "라벨이요")
 }
