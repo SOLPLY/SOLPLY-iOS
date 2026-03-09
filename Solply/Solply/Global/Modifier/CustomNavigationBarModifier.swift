@@ -202,7 +202,7 @@ extension CustomNavigationBarModifier {
     private func barButtonItem(
         _ icon: ImageResource,
         leadingPadding: CGFloat = 4.adjusted,
-        trailingPadding: CGFloat = 4,
+        trailingPadding: CGFloat = 4.adjusted,,
         action: (() -> Void)?
     ) -> some View {
         Button {
