@@ -283,16 +283,3 @@ extension CustomNavigationBarModifier {
         .padding(.horizontal, 16.adjustedWidth)
     }
 }
-
-#Preview {
-    Text("d")
-        .customNavigationBar(
-            .townFilterWithSearch(
-                filterTitle: "망원",
-                isLoading: false,
-                filterAction: {},
-                aiAction: {},
-                searchAction: {}
-            )
-        )
-}
