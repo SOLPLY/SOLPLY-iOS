@@ -128,8 +128,3 @@ extension SolplyTextEditor {
         .frame(width: 335.adjustedWidth, alignment: .leading)
     }
 }
-
-#Preview {
-    SolplyTextEditor(informationLabel: "오늘의 기록", onLabelTapped: {})
-    SolplyTextEditor()
-}
