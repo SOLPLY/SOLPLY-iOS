@@ -19,16 +19,15 @@ struct PlaceDetailResponseDTO: ResponseModelType {
     let contactNumber: String?
     let openingHours: String
     let snsLinks: [SnsLinkDTO]
+    let placeCheckpoints: [String]
     let isBookmarked: Bool
-    let placeType: String
-    let placeDefaultId: Int
     let townId: Int
     let townName: String
 }
 
 struct ImageInfoDTO: ResponseModelType {
     let displayOrder: Int
-    let url: String
+    let url: String?
 }
 
 struct SnsLinkDTO: ResponseModelType {

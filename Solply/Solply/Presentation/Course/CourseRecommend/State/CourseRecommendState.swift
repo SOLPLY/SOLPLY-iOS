@@ -8,6 +8,6 @@
 import Foundation
 
 struct CourseRecommendState {
-    var isCourseGridLoading: Bool = false
+    var isCourseGridLoading: Bool = true
     var courses: [CourseRecommend] = []
 }

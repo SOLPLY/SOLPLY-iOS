@@ -87,7 +87,7 @@ final class MyPageEditStore: ObservableObject {
             }
             
         case .photoUploadSuccess(let imageKey):
-            let imageKeyString = imageKey.absoluteString.truncated(includeStartRange: "dev", excludeEndRange: "?")
+            let imageKeyString = imageKey.absoluteString.truncatedForS3()
             
             self.dispatch(.updateUserInformation(imageKeyString: imageKeyString))
             
@@ -105,6 +105,21 @@ final class MyPageEditStore: ObservableObject {
                 let result = await effect.updateUserInformation(request: request)
                 self.dispatch(result)
             }
+            
+        case .updateUserInformationSuccess(let nickName, let persona):
+            let changedFields: [AmplitudeChangedField] = [
+                userInformation.nickname != nickName ? .nickname : nil,
+                userInformation.persona.rawValue != persona ? .personaType : nil
+            ].compactMap { $0 }
+            
+            AmplitudeManager.shared.track(
+                .completeProfileEdit(
+                    changedFields: changedFields,
+                    prevPersona: AmplitudePersonaType.from(personaType: userInformation.persona),
+                    newPersona: AmplitudePersonaType.from(text: persona) ?? AmplitudePersonaType.from(personaType: userInformation.persona)
+                )
+            )
+            
         default:
             break
         }

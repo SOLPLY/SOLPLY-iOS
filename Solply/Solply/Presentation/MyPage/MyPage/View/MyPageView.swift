@@ -67,6 +67,8 @@ struct MyPageView: View {
         .onAppear {
             store.dispatch(.fetchUser)
             store.dispatch(.fetchLoginInformation)
+            
+            AmplitudeManager.shared.track(.viewMyPage(entryMode: .member))
         }
     }
 }

@@ -8,7 +8,7 @@
 struct UserPlace: Hashable {
     let id: Int
     let name: String
-    let thumbnail: String
+    let thumbnail: String?
     let mainTag: MainTagType
     let isBookmarked: Bool
 }

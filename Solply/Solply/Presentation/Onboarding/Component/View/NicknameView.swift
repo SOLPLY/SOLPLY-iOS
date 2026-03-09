@@ -37,6 +37,9 @@ struct NicknameView: View {
                 title: "다음",
                 isEnabled: store.state.nicknameType == .valid
             ) {
+                guard let selectedPersona = store.state.selectedPersona else { return }
+                
+                AmplitudeManager.shared.track(.completeNickname(entryMode: .member, personaType: AmplitudePersonaType.from(selectedPersona), loginEntryType: .direct))
                 store.dispatch(.next)
             }
             .frame(width: 335.adjustedWidth)

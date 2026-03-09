@@ -98,7 +98,7 @@ extension CourseDetailEffect {
                 return .updateCourseDetailFailed(error: .responseError)
             }
             
-            return .fetchCourseDetail(courseId: data.updatedCourseId, isCourseUpdated: true)
+            return .updateCourseDetailSuccess(updatedCourseId: data.updatedCourseId)
             
         } catch let error as NetworkError {
             return .updateCourseDetailFailed(error: error)
@@ -115,7 +115,7 @@ extension CourseDetailEffect {
                 return .submitCreateCourseDetailFailed(error: .responseError)
             }
             
-            return .fetchCourseDetail(courseId: data.courseId, isCourseUpdated: true)
+            return .submitCreateCourseDetailSuccess(updatedCourseId: data.courseId)
             
         } catch let error as NetworkError {
             return .submitCreateCourseDetailFailed(error: error)

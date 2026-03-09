@@ -11,6 +11,7 @@ import Alamofire
 
 extension Notification.Name {
     static let tokenExpired = Notification.Name("tokenExpired")
+    static let tokenUnauthorized = Notification.Name("tokenUnauthorized")
 }
 
 final class Interceptor: RequestInterceptor {
@@ -65,6 +66,17 @@ final class Interceptor: RequestInterceptor {
 
         if shouldSkipAuth(for: path) {
             return completion(.doNotRetryWithError(error))
+        }
+        
+        if status == 403 {
+            TokenManager.shared.clearTokens()
+            debug("🚫 403 → 강제 로그아웃")
+            
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .tokenUnauthorized, object: nil)
+            }
+            
+            return completion(.doNotRetry)
         }
 
         guard status == 401, request.retryCount == 0 else {

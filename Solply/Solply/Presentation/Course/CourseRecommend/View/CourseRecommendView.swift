@@ -58,7 +58,16 @@ struct CourseRecommendView: View {
             .townFilterWithSearch(
                 filterTitle: appState.townName,
                 isLoading: isUserInformationLoading,
-                filterAction: { appCoordinator.navigate(to: .JGD) },
+                filterAction: {
+                    AmplitudeManager.shared.track(
+                        .viewTownList(
+                            entryMode: AmplitudeEntryMode.from(appState.userSession),
+                            fromContext: .courseList
+                        )
+                    )
+                    
+                    appCoordinator.navigate(to: .JGD)
+                },
                 searchAction: { appCoordinator.navigate(to: .placeSearch) }
             )
         )

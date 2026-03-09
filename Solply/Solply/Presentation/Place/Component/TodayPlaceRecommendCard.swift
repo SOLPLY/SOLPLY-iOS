@@ -13,7 +13,7 @@ struct TodayPlaceRecommendCard: View {
     
     // MARK: - Properties
     
-    private let thumbnailImageUrl: String
+    private let thumbnailImageUrl: String?
     private let category: MainTagType
     private let title: String
     private let introduction: String
@@ -22,7 +22,7 @@ struct TodayPlaceRecommendCard: View {
     // MARK: - Initializer
     
     init(
-        thumbnailImageUrl: String,
+        thumbnailImageUrl: String?,
         category: MainTagType,
         title: String,
         introduction: String,
@@ -39,16 +39,12 @@ struct TodayPlaceRecommendCard: View {
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            KFImage(URL(string: thumbnailImageUrl))
-                .placeholder {
-                    Image(.placePlaceholder)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                }
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 240.adjusted, height: 240.adjusted)
-                .cornerRadius(20, corners: .allCorners)
+            ThumbnailImage(
+                thumbnailImageUrl,
+                width: 240.adjusted,
+                height: 240.adjusted,
+                radius: 20
+            )
             
             LinearGradient(
                 gradient: Gradient(colors: [Color.black.opacity(0.8), Color.clear]),

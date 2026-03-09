@@ -46,10 +46,7 @@ enum CourseDetailReducer {
             state.isCourseEditing = true
             
         case .endEditing:
-            if state.oldPlaces != state.places
-                || state.oldCourseName != state.courseName
-                || state.oldCourseDescription != state.courseDescription
-            {
+            if state.isCourseChanged {
                 state.isSaveOptionPresented = true
             } else {
                 state.isCourseEditing = false
@@ -116,12 +113,10 @@ enum CourseDetailReducer {
         case .saveCourseToCurrent:
             state.isSaveOptionPresented = false
             state.isCourseEditing = false
-            state.oldPlaces.removeAll()
             
         case .saveCourseAsNew:
             state.isSaveOptionPresented = false
             state.isCourseEditing = false
-            state.oldPlaces.removeAll()
             
         case .saveCourseCancel:
             state.isSaveOptionPresented = false
@@ -185,9 +180,19 @@ enum CourseDetailReducer {
             break
             
         case .updateCourseDetail:
-            break
+            state.oldPlaces.removeAll()
+            state.oldCourseName = ""
+            state.oldCourseDescription = ""
+            
+        case .updateCourseDetailSuccess:
+            state.oldPlaces.removeAll()
+            state.oldCourseName = ""
+            state.oldCourseDescription = ""
             
         case .submitCreateCourseDetail:
+            break
+            
+        case .submitCreateCourseDetailSuccess:
             break
             
         // errors
