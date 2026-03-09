@@ -128,8 +128,3 @@ extension SolplyTextEditor {
         .frame(width: 335.adjustedWidth, alignment: .leading)
     }
 }
-
-#Preview {
-    SolplyTextEditor()
-    SolplyTextEditor(label: "라벨이요")
-}
