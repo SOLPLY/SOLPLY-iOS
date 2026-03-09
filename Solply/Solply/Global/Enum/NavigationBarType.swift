@@ -14,6 +14,6 @@ enum NavigationBarType {
     case backWithTitle(title: String, backAction: (() -> Void))
     case backOnly(backAction: (() -> Void))
     case titleWithNotification(title: String, notificationAction: (() -> Void))
-    case townFilterWithSearch(filterTitle: String, isLoading: Bool, filterAction: (() -> Void), searchAction: (() -> Void))
+    case townFilterWithSearch(filterTitle: String, isLoading: Bool, filterAction: (() -> Void), aiAction: (() -> Void), searchAction: (() -> Void))
     case floating(backAction: (() -> Void), homeAction: (() -> Void))
 }
