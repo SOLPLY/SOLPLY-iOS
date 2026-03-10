@@ -94,11 +94,7 @@ extension PlaceDetailView {
     private var placeMapView: some View {
         PlaceDetailMapView(
             latitude: store.state.latitude,
-            longitude: store.state.longitude,
-            addButtonSelected: store.state.addButtonSelected,
-            bookmarkButtonSelected: store.state.bookmarkButtonSelected,
-            bookmarkButtonEnabled: store.state.bookmarkButtonEnabled,
-            findDirectionEnabled: store.state.findDirectionEnabled
+            longitude: store.state.longitude
         )
     }
     

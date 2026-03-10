@@ -15,16 +15,12 @@ struct PlaceDetailMapView: UIViewRepresentable {
     
     private var latitude: Double
     private var longitude: Double
-    var addButtonSelected: Bool
-    var bookmarkButtonSelected: Bool
-    var bookmarkButtonEnabled: Bool
-    var findDirectionEnabled: Bool
     
-    private let zoomLevel: Double = 17
+    private let zoomLevel: Double = 18
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
         left: 0,
-        bottom: 450.adjustedHeight,
+        bottom: 0,
         right: 0
     )
     
@@ -36,17 +32,9 @@ struct PlaceDetailMapView: UIViewRepresentable {
     init(
         latitude: Double,
         longitude: Double,
-        addButtonSelected: Bool,
-        bookmarkButtonSelected: Bool,
-        bookmarkButtonEnabled: Bool,
-        findDirectionEnabled: Bool
     ) {
         self.latitude = latitude
         self.longitude = longitude
-        self.addButtonSelected = addButtonSelected
-        self.bookmarkButtonSelected = bookmarkButtonSelected
-        self.bookmarkButtonEnabled = bookmarkButtonEnabled
-        self.findDirectionEnabled = findDirectionEnabled
     }
     
     // MARK: - Functions
