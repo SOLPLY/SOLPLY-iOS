@@ -41,7 +41,6 @@ struct PlaceRecommendReducer {
             break
             
         case .placeRecommendFetched(let placeRecommend):
-            dump(state.placeRecommendItems)
             state.placeRecommendItems = placeRecommend.prefix(3).map { PlaceRecommend(dto: $0) }
             state.isCarouselLoading = false
             
