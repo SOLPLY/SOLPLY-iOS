@@ -68,12 +68,17 @@ struct CustomNavigationBarModifier: ViewModifier {
                     backgroundColor: .clear
                 )
             )
-        case .townFilterWithSearch(let filterTitle, let isLoading, let filterAction, let searchAction):
+        case .townFilterWithSearch(let filterTitle, let isLoading, let filterAction, let aiAction, let searchAction):
             content.modifier(
                 LayoutNavigationBarModifier(
                     centerView: { EmptyView() },
                     leftView: { townFilterBarButtonItem(filterTitle, isLoading: isLoading, action: filterAction) },
-                    rightView: { barButtonItem(.searchIcon, action: searchAction) },
+                    rightView: {
+                        HStack(alignment: .center, spacing: 0) {
+                            aiBarButtonItem(action: aiAction)
+                            barButtonItem(.searchIcon, leadingPadding: 0, action: searchAction)
+                        }
+                    },
                     backgroundColor: .clear
                 )
             )
@@ -194,7 +199,12 @@ extension CustomNavigationBarModifier {
         .padding(.horizontal, 20.adjustedWidth)
     }
     
-    private func barButtonItem(_ icon: ImageResource, action: (() -> Void)?) -> some View {
+    private func barButtonItem(
+        _ icon: ImageResource,
+        leadingPadding: CGFloat = 4.adjusted,
+        trailingPadding: CGFloat = 4.adjusted,
+        action: (() -> Void)?
+    ) -> some View {
         Button {
             action?()
         } label: {
@@ -205,7 +215,20 @@ extension CustomNavigationBarModifier {
                 .padding(12.adjusted)
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 4.adjustedWidth)
+        .padding(.leading, leadingPadding)
+        .padding(.trailing, trailingPadding)
+    }
+    
+    private func aiBarButtonItem(action: (() -> Void)?) -> some View {
+        Button {
+            action?()
+        } label: {
+            Image(.aiIcon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 48.adjusted, height: 48.adjusted)
+        }
+        .buttonStyle(.plain)
     }
     
     private func floatingBarButtonItem(_ icon: ImageResource, action: (() -> Void)?) -> some View {

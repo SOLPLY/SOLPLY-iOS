@@ -15,7 +15,9 @@ struct SolplyTextEditor: View {
     
     private let placeholder: String
     private let isTextLimitEnabled: Bool
+    private let label: String?
     private let onTextChanged: ((String) -> Void)?
+    private let onLabelTapped: (() -> Void)?
     
     private let textEditorFont: SolplyFont = .body_16_r
     private let backgroundColor: Color = .gray100
@@ -28,17 +30,25 @@ struct SolplyTextEditor: View {
     init(
         placeholder: String = "최대 200자 입력 가능",
         isTextLimitEnabled: Bool = true,
-        onTextChanged: ((String) -> Void)? = nil
+        label: String? = nil,
+        onTextChanged: ((String) -> Void)? = nil,
+        onLabelTapped: (() -> Void)? = nil
     ) {
         self.placeholder = placeholder
         self.isTextLimitEnabled = isTextLimitEnabled
+        self.label = label
         self.onTextChanged = onTextChanged
+        self.onLabelTapped = onLabelTapped
     }
     
     // MARK: - Body
     
     var body: some View {
         VStack(alignment: .trailing, spacing: 8.adjustedHeight) {
+            if let label {
+                labelButton(label)
+            }
+            
             textEditor
             
             textLimitCount
@@ -97,5 +107,24 @@ extension SolplyTextEditor {
             .applySolplyFont(.caption_12_m)
             .foregroundStyle(placeholderColor)
             .padding(.trailing, 8.adjustedWidth)
+    }
+    
+    private func labelButton(_ text: String) -> some View {
+        Button {
+            onLabelTapped?()
+        } label: {
+            HStack(alignment: .top, spacing: 4.adjustedWidth) {
+                Text(text)
+                    .applySolplyFont(.body_14_m)
+                    .foregroundStyle(.coreBlack)
+                
+                Image(.infoIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20.adjusted, height: 20.adjusted)
+            }
+        }
+        .buttonStyle(.plain)
+        .frame(width: 335.adjustedWidth, alignment: .leading)
     }
 }
