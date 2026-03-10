@@ -312,7 +312,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Solply/Global/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "솔플리";
+				INFOPLIST_KEY_CFBundleDisplayName = "솔플리dev";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱이 위치 정보를 사용하여 위경도를 표시합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱이 위치 정보를 기반으로 현재 위치, 주변 검색, 길찾기 정보를 제공합니다.";
@@ -329,7 +329,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.2;
-				PRODUCT_BUNDLE_IDENTIFIER = app.teamsolply.solply;
+				PRODUCT_BUNDLE_IDENTIFIER = app.dev.teamsolply.solply;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
