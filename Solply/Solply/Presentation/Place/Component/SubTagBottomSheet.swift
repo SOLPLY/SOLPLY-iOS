@@ -17,7 +17,7 @@ struct SubTagBottomSheet: View {
     @State private var optionTags1: [SelectableSubTag] = []
     @State private var optionTags2: [SelectableSubTag] = []
     
-    private let action: (([SelectableSubTag]) -> Void)?
+    private let confirmAction: (([SelectableSubTag]) -> Void)?
     
     // MARK: - Initializer
     
@@ -28,7 +28,7 @@ struct SubTagBottomSheet: View {
     ) {
         self.store = store
         self._isPresented = isPresented
-        self.action = action
+        self.confirmAction = action
     }
     
     // MARK: - Body
@@ -75,7 +75,7 @@ struct SubTagBottomSheet: View {
                     
                     store.dispatch(.updateSubTags(selectedTags))
                     
-                    action?(selectedTags)
+                    confirmAction?(selectedTags)
                     
                     isPresented = false
                 }

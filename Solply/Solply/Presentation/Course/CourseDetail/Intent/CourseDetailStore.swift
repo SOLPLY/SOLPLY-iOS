@@ -115,11 +115,17 @@ final class CourseDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .courseBookmarkSubmitted:
+            AmplitudeManager.shared.track(.successCourseSave(courseId: courseId, saveAction: .save))
+            
         case .removeCourseBookmark:
             Task {
                 let result = await effect.removeCourseBookmark(courseId: courseId)
                 self.dispatch(result)
             }
+            
+        case .courseBookmarkRemoved:
+            AmplitudeManager.shared.track(.successCourseSave(courseId: courseId, saveAction: .unsave))
             
         case .submitPlaceBookmark(let index):
             Task {
@@ -166,6 +172,44 @@ final class CourseDetailStore: ObservableObject {
                 let result = await effect.submitCreateCourseDetail(request: request)
                 self.dispatch(result)
             }
+            
+        case .updateCourseDetailSuccess(let updatedCourseId):
+            self.dispatch(.fetchCourseDetail(courseId: updatedCourseId, isCourseUpdated: true))
+            
+            let changedFields: [AmplitudeChangedField] = [
+                state.isCourseNameChanged ? .title : nil,
+                state.isCourseDescriptionChanged ? .intro : nil,
+                state.isCoursePlacesChanged ? .order : nil,
+                state.isCoursePlacesRemoved ? .removePlace : nil,
+            ].compactMap { $0 }
+            
+            AmplitudeManager.shared.track(
+                .completeCourseEdit(
+                    courseId: courseId,
+                    saveMode: .current,
+                    changedFields: changedFields,
+                    placeCount: state.places.count
+                )
+            )
+            
+        case .submitCreateCourseDetailSuccess(let updatedCourseId):
+            self.dispatch(.fetchCourseDetail(courseId: updatedCourseId, isCourseUpdated: true))
+            
+            let changedFields: [AmplitudeChangedField] = [
+                state.isCourseNameChanged ? .title : nil,
+                state.isCourseDescriptionChanged ? .intro : nil,
+                state.isCoursePlacesChanged ? .order : nil,
+                state.isCoursePlacesRemoved ? .removePlace : nil,
+            ].compactMap { $0 }
+            
+            AmplitudeManager.shared.track(
+                .completeCourseEdit(
+                    courseId: courseId,
+                    saveMode: .new,
+                    changedFields: changedFields,
+                    placeCount: state.places.count
+                )
+            )
             
         default:
             break

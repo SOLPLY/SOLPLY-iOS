@@ -58,7 +58,24 @@ struct CourseRecommendView: View {
             .townFilterWithSearch(
                 filterTitle: appState.townName,
                 isLoading: isUserInformationLoading,
-                filterAction: { appCoordinator.navigate(to: .JGD) },
+                filterAction: {
+                    AmplitudeManager.shared.track(
+                        .viewTownList(
+                            entryMode: AmplitudeEntryMode.from(appState.userSession),
+                            fromContext: .courseList
+                        )
+                    )
+                    
+                    appCoordinator.navigate(to: .JGD)
+                },
+                // TODO: - AI 추천 뷰 연결
+                // onAuthenticated 클로저에 연결해 주시면 됩니다!
+                aiAction: {
+                    appState.requireLoginWithAlert(
+                        onAuthenticated: {},
+                        onExplore: { appCoordinator.changeRoot(to: .auth) }
+                    )
+                },
                 searchAction: { appCoordinator.navigate(to: .placeSearch) }
             )
         )

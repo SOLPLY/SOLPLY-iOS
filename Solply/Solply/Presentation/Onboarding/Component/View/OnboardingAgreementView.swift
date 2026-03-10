@@ -18,7 +18,9 @@ struct OnboardingAgreementView: View {
     }
     
     private var canProceed: Bool {
-        store.state.policyList
+        guard !store.state.policyList.isEmpty else { return false }
+        
+        return store.state.policyList
             .filter { $0.isRequired }
             .allSatisfy { $0.isAgreed }
     }
@@ -62,6 +64,8 @@ struct OnboardingAgreementView: View {
                 title: "다음",
                 isEnabled: canProceed
             ) {
+                // TODO: - login_entry_type 논의 필요
+                AmplitudeManager.shared.track(.completeTerms)
                 store.dispatch(.next)
             }
             .frame(width: 335.adjustedWidth)

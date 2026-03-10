@@ -40,6 +40,7 @@ struct PlaceSearchView: View {
                             appState.requireLoginWithAlert {
                                 appCoordinator.navigate(to: .register)
                             } onExplore: {
+                                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .requestPlaceRegister))
                                 appCoordinator.changeRoot(to: .auth)
                             }
                         }
@@ -56,8 +57,10 @@ struct PlaceSearchView: View {
                             hideKeyboard()
                         } registerAction: {
                             appState.requireLoginWithAlert {
+                                AmplitudeManager.shared.track(.clickManualPlaceEntry(entryRoute: .notFound))
                                 appCoordinator.navigate(to: .register)
                             } onExplore: {
+                                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .requestPlaceRegister))
                                 appCoordinator.changeRoot(to: .auth)
                             }
                         }

@@ -52,6 +52,13 @@ struct CourseDetailView: View {
             store.dispatch(.endDragging)
         }
         .onAppear {
+            AmplitudeManager.shared.track(
+                .viewCourseDetail(
+                    entryMode: AmplitudeEntryMode.from(appState.userSession),
+                    courseId: store.courseId,
+                    isBookmarked: store.state.isCourseBookmarked
+                )
+            )
             store.dispatch(.fetchCourseDetail(courseId: store.courseId, isCourseUpdated: false))
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
@@ -147,6 +154,7 @@ extension CourseDetailView {
                                 appState.requireLoginWithAlert {
                                     bookmarkCourse()
                                 } onExplore: {
+                                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .saveCourse))
                                     appCoordinator.changeRoot(to: .auth)
                                 }
                             } label: {
@@ -187,23 +195,53 @@ extension CourseDetailView {
                         isFocused: (store.state.focusedPlaceIndex == index),
                         isEditing: store.state.isCourseEditing
                     ) {
+                        AmplitudeManager.shared.track(
+                            .clickCoursePlaceCard(
+                                courseId: store.courseId,
+                                placeId: place.placeId,
+                                placeName: place.placeName
+                            )
+                        )
                         store.dispatch(.focusPlace(index: index))
                     } detailAction: {
                         appCoordinator.navigate(to: .placeDetail(townId: store.townId, placeId: store.state.places[index].placeId, fromSearch: false))
                     } findDirectionAction: {
                         store.dispatch(.requestFindDirection)
+                        
+                        AmplitudeManager.shared.track(
+                            .clickPlaceDirections(
+                                placeId: place.placeId,
+                                placeName: place.placeName,
+                                fromContext: .courseDetail
+                            )
+                        )
                     } saveAction: {
                         appState.requireLoginWithAlert {
                             store.dispatch(.toggleBookmarkPlace(index: index))
                             
                             if store.state.places[index].isBookmarked {
+                                AmplitudeManager.shared.track(
+                                    .clickCoursePlaceSave(
+                                        courseId: store.courseId,
+                                        placeId: place.placeId,
+                                        saveAction: .save
+                                    )
+                                )
                                 store.dispatch(.submitPlaceBookmark(index: index))
                                 ToastManager.shared.showToast(.defaultToast, message: "'\(place.placeName.truncated(length: 9))'가 수집함에 저장되었어요.")
                             } else {
+                                AmplitudeManager.shared.track(
+                                    .clickCoursePlaceSave(
+                                        courseId: store.courseId,
+                                        placeId: place.placeId,
+                                        saveAction: .unsave
+                                    )
+                                )
                                 store.dispatch(.removePlaceBookmark(index: index))
                                 ToastManager.shared.showToast(.defaultToast, message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요.")
                             }
                         } onExplore: {
+                            AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .saveCoursePlace))
                             appCoordinator.changeRoot(to: .auth)
                         }
                     }

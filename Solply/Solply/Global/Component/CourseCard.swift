@@ -15,7 +15,7 @@ struct CourseCard: View {
     
     private let isSaved: Bool
     private let courseName: String
-    private let imageUrl: String
+    private let imageUrl: String?
     private let courseTagType: CourseTagType
     private let isSelected: Bool
     private let action: (() -> Void)?
@@ -25,7 +25,7 @@ struct CourseCard: View {
     init(
         isSaved: Bool,
         courseName: String,
-        imageUrl: String,
+        imageUrl: String?,
         courseTagType: CourseTagType,
         isSelected: Bool,
         action: (() -> Void)? = nil
@@ -61,15 +61,12 @@ struct CourseCard: View {
 
 extension CourseCard {
     private var courseThumnail: some View {
-        KFImage(URL(string: imageUrl))
-            .placeholder {
-                Image(.placePlaceholder)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            }
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(width: 165.adjusted, height: 165.adjusted)
+        ThumbnailImage(
+            imageUrl,
+            width: 165.adjusted,
+            height: 165.adjusted,
+            radius: 0
+        )
     }
     
     private var cardShellShadow: some View {

@@ -22,6 +22,8 @@ enum AuthReducer {
             state.isNewUser = isNewUser
             state.isLoading = false
             
+            AmplitudeManager.shared.track(.successLogin(isNewUser: isNewUser))
+            
         case .loginFailed(let networkError):
             state.isLoggedIn = false
             state.isLoading = false

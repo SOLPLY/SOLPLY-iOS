@@ -10,7 +10,7 @@ import Foundation
 struct Place: Identifiable {
     let placeId: Int
     let placeName: String
-    let thumbnailUrl: String
+    let thumbnailUrl: String?
     let mainTag: MainTagType
     let isBookmarked: Bool
     

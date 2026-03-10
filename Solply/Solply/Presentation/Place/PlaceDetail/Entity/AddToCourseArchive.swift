@@ -10,7 +10,7 @@ import Foundation
 struct AddToCourseArchive {
     let courseId: Int
     let courseName: String
-    let thumbnailImage: String
+    let thumbnailImage: String?
     let courseTag: CourseTagType
     let isBookmarked: Bool?
     let isDuplicated: Bool?

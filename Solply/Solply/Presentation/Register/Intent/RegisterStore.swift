@@ -66,7 +66,7 @@ final class RegisterStore: ObservableObject {
             var imageKeyStrings: [String]
             
             imageKeyStrings = imageKeys.map { imageKey in
-                imageKey.absoluteString.truncated(includeStartRange: "dev", excludeEndRange: "?")
+                imageKey.absoluteString.truncatedForS3()
             }
             
             self.dispatch(.submitRegister(imageKeyStrings: imageKeyStrings))
@@ -116,6 +116,13 @@ final class RegisterStore: ObservableObject {
                 
                 self.dispatch(result)
             }
+            
+        case .registerSubmitted:
+            AmplitudeManager.shared.track(
+                .completePlaceRequest(
+                    submissionType: state.placeAddress != nil ? .selected : .direct
+                )
+            )
             
         default:
             break

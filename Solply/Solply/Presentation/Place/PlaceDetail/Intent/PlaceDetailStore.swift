@@ -92,6 +92,14 @@ final class PlaceDetailStore: ObservableObject {
             }
             
         case .placeDetailFetched(let placeDetailInformation):
+            AmplitudeManager.shared.track(
+                .viewPlaceDetail(
+                    placeId: placeId,
+                    placeName: state.placeName,
+                    isBookmared: state.isBookmarked
+                )
+            )
+            
             guard state.shouldShowTownToast && fromSearch else { return }
             
             let townName = placeDetailInformation.townName
@@ -117,17 +125,44 @@ final class PlaceDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .placeBookmarkSubmitted:
+            AmplitudeManager.shared.track(
+                .successPlaceSave(
+                    placeId: placeId,
+                    placeName: state.placeName,
+                    saveAction: .save
+                )
+            )
+            
         case .removePlaceBookmark:
             Task {
                 let result = await effect.removePlaceBookmark(placeId: placeId)
                 self.dispatch(result)
             }
             
+        case .placeBookmarkRemoved:
+            AmplitudeManager.shared.track(
+                .successPlaceSave(
+                    placeId: placeId,
+                    placeName: state.placeName,
+                    saveAction: .unsave
+                )
+            )
+            
         case .submitAddPlace(let courseId):
             Task {
                 let result = await effect.submitAddPlace(courseId: courseId, placeId: placeId)
                 self.dispatch(result)
             }
+            
+        case .addPlaceSubmitted(let addPlaceCourseInformation):
+            AmplitudeManager.shared.track(
+                .completeAddPlaceToCourse(
+                    placeId: placeId,
+                    placeName: state.placeName,
+                    courseId: addPlaceCourseInformation.courseId
+                )
+            )
             
         case .updateUserTowns(let newTownId):
             Task {

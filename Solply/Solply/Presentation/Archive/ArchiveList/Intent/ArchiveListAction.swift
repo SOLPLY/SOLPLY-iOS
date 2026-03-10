@@ -27,10 +27,10 @@ enum ArchiveListAction {
     case placeListFetched([PlaceDTO])
     
     case removeCourseList(CourseIds: [Int])
-    case courseListRemoved
+    case courseListRemoved(removedCount: Int)
     
     case removePlaceList(PlaceIds: [Int])
-    case placeListRemoved
+    case placeListRemoved(removedCount: Int)
     
     case errorOccured(error: NetworkError)
 }
