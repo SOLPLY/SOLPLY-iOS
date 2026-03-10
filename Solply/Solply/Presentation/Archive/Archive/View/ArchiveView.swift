@@ -71,19 +71,6 @@ extension ArchiveView {
                     }
                 }
             }
-            .scrollPosition(
-                id: Binding(
-                    get: { store.state.selectedCategory },
-                    set: { selectedCategory in
-                        guard let selectedCategory else { return }
-                        
-                        store.dispatch(.toggleArchiveBar(archiveCategory: selectedCategory))
-                        AmplitudeManager.shared.track(.viewCollectionTownList(collectionType: AmplitudeCollectionType.from(selectedCategory)))
-                    }
-                )
-            )
-            .scrollTargetBehavior(.paging)
-            .scrollIndicators(.hidden)
         }
         .padding(.bottom, 112.adjustedHeight)
         .customLoading(
