@@ -17,9 +17,9 @@ enum PlaceDetailReducer {
             state.shouldShowTownToast = true
             
         case .toggleAddToCourse:
-            state.addButtonSelected.toggle()
-            state.findDirectionEnabled = state.addButtonSelected ? false : true
-            state.bookmarkButtonEnabled = state.addButtonSelected ? false : true
+            state.addToCourseButtonSelected.toggle()
+            state.findDirectionEnabled = state.addToCourseButtonSelected ? false : true
+            state.bookmarkButtonEnabled = state.addToCourseButtonSelected ? false : true
             
         case .toggleBookmarkPlace:
             state.isBookmarked.toggle()

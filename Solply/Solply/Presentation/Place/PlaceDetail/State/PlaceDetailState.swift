@@ -13,7 +13,7 @@ struct PlaceDetailState {
     var shouldShowTownToast: Bool = false
     var shouldShowFindDirectionDialog: Bool = false
     
-    var addButtonSelected: Bool = false
+    var addToCourseButtonSelected: Bool = false
     var bookmarkButtonSelected: Bool = false
     var bookmarkButtonEnabled: Bool = true
     var findDirectionEnabled: Bool = true
