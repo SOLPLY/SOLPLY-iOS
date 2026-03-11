@@ -17,7 +17,7 @@ struct ArchiveView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: 5.adjustedHeight) {
             archiveBar
             
             archiveGrid
@@ -33,6 +33,9 @@ struct ArchiveView: View {
             store.dispatch(.fetchPlaceThumbnail)
             store.dispatch(.fetchCourseThumbnail)
             AmplitudeManager.shared.track(.viewCollectionTownList(collectionType: .place))
+        }
+        .onChange(of: store.state.selectedCategory) { _, newValue in
+            AmplitudeManager.shared.track(.viewCollectionTownList(collectionType: AmplitudeCollectionType.from(newValue)))
         }
         .background(.gray100)
     }
@@ -53,70 +56,29 @@ extension ArchiveView {
     }
     
     private var archiveGrid: some View {
-        GeometryReader { geometry in
-            ScrollView(.horizontal) {
-                LazyHStack(alignment: .center, spacing: 0) {
-                    Group {
-                        if store.state.PlacefolderList.isEmpty {
-                            ArchiveEmptyView(archiveCategory: .place)
-                        } else {
-                            ArchiveFullView(archiveCategory: .place, store: store)
-                        }
+        Group {
+            if store.state.selectedCategory == .place {
+                Group {
+                    if store.state.PlacefolderList.isEmpty {
+                        ArchiveEmptyView(archiveCategory: .place)
+                    } else {
+                        ArchiveFullView(archiveCategory: .place, store: store)
                     }
-                    .id(SolplyContentType.place)
-                    .frame(width: geometry.size.width)
-                    
-                    Group {
-                        if store.state.CourseFolderList.isEmpty {
-                            ArchiveEmptyView(archiveCategory: .course)
-                        } else {
-                            ArchiveFullView(archiveCategory: .course, store: store)
-                        }
-                    }
-                    .id(SolplyContentType.course)
-                    .frame(width: geometry.size.width)
                 }
-                .padding(.bottom, 112.adjustedHeight)
-                .scrollTargetLayout()
-                .animation(.easeInOut(duration: 0.3), value: store.state.selectedCategory)
-            }
-            .scrollPosition(
-                id: Binding(
-                    get: { store.state.selectedCategory },
-                    set: { selectedCategory in
-                        guard let selectedCategory else { return }
-                        
-                        store.dispatch(.toggleArchiveBar(archiveCategory: selectedCategory))
-                        AmplitudeManager.shared.track(.viewCollectionTownList(collectionType: AmplitudeCollectionType.from(selectedCategory)))
+            } else {
+                Group {
+                    if store.state.CourseFolderList.isEmpty {
+                        ArchiveEmptyView(archiveCategory: .course)
+                    } else {
+                        ArchiveFullView(archiveCategory: .course, store: store)
                     }
-                )
-            )
-            .scrollTargetBehavior(.paging)
-            .scrollIndicators(.hidden)
+                }
+            }
         }
+        .padding(.bottom, 112.adjustedHeight)
         .customLoading(
             .archiveFolderLoading,
             isLoading: store.state.isPlaceFolderLoading || store.state.isCourseFolderLoading
         )
-        .overlay {
-            swipeBackArea
-        }
     }
-    
-    private var swipeBackArea: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Rectangle()
-                .fill(.clear)
-                .frame(width: 30.adjustedWidth)
-                .frame(maxHeight: .infinity)
-                .contentShape(Rectangle())
-            
-            Spacer()
-        }
-    }
-}
-
-#Preview {
-    ArchiveView()
-        .environmentObject(AppCoordinator())
 }

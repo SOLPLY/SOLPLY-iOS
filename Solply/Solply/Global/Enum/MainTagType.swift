@@ -101,4 +101,16 @@ enum MainTagType: String, CaseIterable, Identifiable, ResponseModelType, Request
         case .walk: return 6
         }
     }
+    
+    var aiIcon: ImageResource? {
+        switch self {
+        case .all: return nil
+        case .cafe: return .aiIconRed
+        case .food: return .aiIconYellow
+        case .shopping: return .aiIconPurple
+        case .book: return .aiIconPurple
+        case .unique: return .aiIconGreen
+        case .walk: return .aiIconGreen
+        }
+    }
 }
