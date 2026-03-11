@@ -9,16 +9,20 @@ import SwiftUI
 
 struct RecommendTipChip: View {
     
+    // MARK: - Properties
+    
     let text: String
     let tag: MainTagType
     
+    // MARK: - Body
+    
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: 4.adjustedWidth) {
             
             if let icon = tag.aiIcon {
                 Image(icon)
                     .resizable()
-                    .frame(width: 16, height: 16)
+                    .frame(width: 16.adjusted, height: 16.adjusted)
             }
             
             Text(text)
