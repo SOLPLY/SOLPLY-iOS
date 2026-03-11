@@ -34,6 +34,9 @@ struct ArchiveView: View {
             store.dispatch(.fetchCourseThumbnail)
             AmplitudeManager.shared.track(.viewCollectionTownList(collectionType: .place))
         }
+        .onChange(of: store.state.selectedCategory) { _, newValue in
+            AmplitudeManager.shared.track(.viewCollectionTownList(collectionType: AmplitudeCollectionType.from(newValue)))
+        }
         .background(.gray100)
     }
 }

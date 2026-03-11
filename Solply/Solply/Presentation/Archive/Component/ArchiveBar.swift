@@ -33,20 +33,11 @@ struct ArchiveBar: View {
                     action?(category)
                 } label: {
                     Text(category.title)
-                    .applySolplyFont(.body_16_m)
-                    .foregroundColor(
-                        selected == category ? .coreWhite : .gray900
-                    )
-                    .padding(.horizontal, 16.adjustedWidth)
-                    .padding(.vertical, 8.adjustedHeight)
-                    .background(
-                        Capsule()
-                            .fill(
-                                selected == category
-                                ? Color.gray900
-                                : Color.gray200
-                            )
-                    )
+                        .applySolplyFont(.body_16_m)
+                        .foregroundColor(selected == category ? .coreWhite : .gray900)
+                        .frame(width: 60.adjustedWidth, height: 40.adjustedHeight)
+                        .background(selected == category ? .gray900 : .gray200)
+                        .capsuleClipped()
                 }
                 .buttonStyle(.plain)
             }
