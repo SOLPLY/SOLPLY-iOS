@@ -17,7 +17,7 @@ struct RecommendTipChip: View {
     // MARK: - Body
     
     var body: some View {
-        HStack(spacing: 4.adjustedWidth) {
+        HStack(alignment: .center, spacing: 4.adjustedWidth) {
             
             if let icon = tag.aiIcon {
                 Image(icon)
