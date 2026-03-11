@@ -48,6 +48,8 @@ struct PlaceDetailView: View {
                 
                 reportsButton
                 
+                separator
+                
                 bottomPadding
             }
         }
@@ -103,6 +105,7 @@ struct PlaceDetailView: View {
 // MARK: - Subviews
 
 extension PlaceDetailView {
+    // 네비바 타이틀 오프셋 트래커
     private var scrollOffestTracker: some View {
         GeometryReader { geometry in
             Color.clear
@@ -307,6 +310,13 @@ extension PlaceDetailView {
         .padding(.horizontal, 16.adjustedWidth)
     }
     
+    private var separator: some View {
+        Rectangle()
+            .foregroundStyle(.gray100)
+            .frame(height: 8.adjustedHeight)
+            .frame(maxWidth: .infinity)
+    }
+    
     private var bottomPadding: some View {
         Rectangle()
             .foregroundStyle(.clear)
@@ -357,6 +367,7 @@ extension PlaceDetailView {
     
     // TODO: - 내 코스에 추가 디자인 확정 시 구현
     // bottomSheetContent, addPlaceToCourse, addPlaceToCourseButton
+    // 수정될 코드들 ⬇️⬇️
 
     private var bottomSheetContent: some View {
         ZStack {
