@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ai-icon-red.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
