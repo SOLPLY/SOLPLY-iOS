@@ -10,7 +10,7 @@ import Foundation
 /// 네비게이션 바 타입입니다.
 enum NavigationBarType {
     case auth(exploreAction: (() -> Void))
-    case backWithTitleAndHome(title: String, backAction: (() -> Void), homeAction: (() -> Void))
+    case backWithTitleAndHome(title: String?, backAction: (() -> Void), homeAction: (() -> Void))
     case backWithTitle(title: String, backAction: (() -> Void))
     case backOnly(backAction: (() -> Void))
     case titleWithNotification(title: String, notificationAction: (() -> Void))

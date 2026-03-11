@@ -33,6 +33,8 @@ struct PlaceDetailView: View {
     
     var body: some View {
         ScrollView(.vertical) {
+            scrollOffestTracker
+            
             VStack(alignment: .center, spacing: 20.adjustedHeight) {
                 placeNameWithIntroduction
                 
@@ -49,8 +51,9 @@ struct PlaceDetailView: View {
                 bottomPadding
             }
         }
+        .coordinateSpace(name: "scroll")
         .customNavigationBar(.backWithTitleAndHome(
-            title: store.state.placeName,
+            title: store.state.navigationBarTitle,
             backAction: { appCoordinator.goBack() },
             homeAction: { appCoordinator.goToRoot() }
             )
@@ -100,6 +103,22 @@ struct PlaceDetailView: View {
 // MARK: - Subviews
 
 extension PlaceDetailView {
+    private var scrollOffestTracker: some View {
+        GeometryReader { geometry in
+            Color.clear
+                .onChange(of: geometry.frame(in: .named("scroll")).minY) { _, newValue in
+                    withAnimation(.easeInOut(duration: 0.1)) {
+                        if newValue >= -45 {
+                            store.dispatch(.hideNavigationBarTitle)
+                        } else {
+                            store.dispatch(.showNavigationBarTitle)
+                        }
+                    }
+                }
+        }
+        .frame(height: 0)
+    }
+    
     // 태그, 제목, 설명
     private var placeNameWithIntroduction: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {

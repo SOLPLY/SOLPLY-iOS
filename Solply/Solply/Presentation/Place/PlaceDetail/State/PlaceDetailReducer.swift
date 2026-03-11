@@ -49,6 +49,12 @@ enum PlaceDetailReducer {
             state.userLatitude = latitude
             state.userLongitude = longitude
             
+        case .showNavigationBarTitle:
+            state.navigationBarTitle = state.placeName
+            
+        case .hideNavigationBarTitle:
+            state.navigationBarTitle = nil
+            
         // api
             
         case .fetchCourseArchive:

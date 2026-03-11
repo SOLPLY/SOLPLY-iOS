@@ -35,7 +35,15 @@ struct CustomNavigationBarModifier: ViewModifier {
         case .backWithTitleAndHome(let title, let backAction, let homeAction):
             content.modifier(
                 LayoutNavigationBarModifier(
-                    centerView: { titleItem(title) },
+                    centerView: {
+                        Group {
+                            if let title {
+                                titleItem(title)
+                            } else {
+                                EmptyView()
+                            }
+                        }
+                    },
                     leftView: { barButtonItem(.backIconIos, action: backAction) },
                     rightView: { barButtonItem(.homeIcon, action: homeAction) },
                     backgroundColor: .coreWhite
