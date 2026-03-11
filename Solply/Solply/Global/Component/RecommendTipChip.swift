@@ -17,7 +17,7 @@ struct RecommendTipChip: View {
     // MARK: - Body
     
     var body: some View {
-        HStack(alignment: .center, spacing: 4.adjustedWidth) {
+        HStack(alignment: .top, spacing: 4.adjustedWidth) {
             
             if let icon = tag.aiIcon {
                 Image(icon)
@@ -28,6 +28,7 @@ struct RecommendTipChip: View {
             Text(text)
                 .applySolplyFont(.body_14_m)
                 .foregroundStyle(tag.titleColor ?? .coreBlack)
+                .multilineTextAlignment(.leading)
         }
     }
 }
