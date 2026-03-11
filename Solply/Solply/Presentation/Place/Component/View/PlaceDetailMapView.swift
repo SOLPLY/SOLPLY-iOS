@@ -16,7 +16,7 @@ struct PlaceDetailMapView: UIViewRepresentable {
     private var latitude: Double
     private var longitude: Double
     
-    private let zoomLevel: Double = 18
+    private let zoomLevel: Double = 13
     private let contentInset: UIEdgeInsets = UIEdgeInsets(
         top: 0,
         left: 0,
@@ -78,6 +78,14 @@ private extension PlaceDetailMapView {
         mapView.positionMode = .disabled
         mapView.logoAlign = .rightBottom
         mapView.logoInteractionEnabled = true
+        mapView.isScrollGestureEnabled = false
+        
+        mapView.gestureRecognizers?.forEach { gesture in
+            if let pan = gesture as? UIPanGestureRecognizer {
+                pan.minimumNumberOfTouches = 2
+            }
+        }
+        
         return mapView
     }
     
