@@ -170,7 +170,7 @@ extension View {
             
         // MARK: - PlaceDetailLoading
             
-        case .placeInformationLoading:
+        case .placeDetailLoading:
             self.modifier(
                 CustomLoadingModifier(
                     isLoading: isLoading,
@@ -182,6 +182,11 @@ extension View {
                             }
                             
                             HStack(alignment: .center,spacing: 8.adjustedWidth) {
+                                SolplySkeletonView(
+                                    width: 73.adjustedWidth,
+                                    height: 40.adjustedHeight,
+                                    cornerRadius: 20
+                                )
                                 SolplySkeletonView(
                                     width: 85.adjustedWidth,
                                     height: 40.adjustedHeight,
@@ -205,6 +210,7 @@ extension View {
                             }
                         }
                         .padding(.leading, 16.adjustedWidth)
+                        .padding(.top, 16.adjustedHeight)
                         .frame(width: 375.adjustedWidth, alignment: .leading)
                         .clipped()
                     }
@@ -307,7 +313,7 @@ extension View {
 #Preview {
     Text("dasdf")
         .customLoading(
-            .courseDetailLoading,
+            .placeDetailLoading,
             isLoading: true
         )
 }
