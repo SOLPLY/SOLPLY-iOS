@@ -33,7 +33,7 @@ struct PlaceDetailView: View {
     
     var body: some View {
         ScrollView(.vertical) {
-            scrollOffestTracker
+            scrollOffsetTracker
             
             VStack(alignment: .center, spacing: 20.adjustedHeight) {
                 placeNameWithIntroduction
@@ -106,7 +106,7 @@ struct PlaceDetailView: View {
 
 extension PlaceDetailView {
     // 네비바 타이틀 오프셋 트래커
-    private var scrollOffestTracker: some View {
+    private var scrollOffsetTracker: some View {
         GeometryReader { geometry in
             Color.clear
                 .onChange(of: geometry.frame(in: .named("scroll")).minY) { _, newValue in
