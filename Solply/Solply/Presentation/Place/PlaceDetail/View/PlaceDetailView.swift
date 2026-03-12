@@ -50,6 +50,10 @@ struct PlaceDetailView: View {
                 
                 separator
                 
+                solplyTip
+                
+                separator
+                
                 bottomPadding
             }
             .customLoading(.placeDetailLoading, isLoading: store.state.isPlaceDetailLoading)
@@ -311,6 +315,28 @@ extension PlaceDetailView {
         .padding(.horizontal, 16.adjustedWidth)
     }
     
+    private var solplyTip: some View {
+        VStack(alignment: .leading, spacing: 16.adjustedHeight) {
+            Text("솔플리 TIP")
+                .applySolplyFont(.body_16_m)
+                .foregroundStyle(.black)
+            
+            HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                ForEach(store.state.solplyTips, id: \.self) { subTag in
+                    RecommendCardFilterChip(subTag: subTag)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            
+            VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                ForEach(store.state.solplyCheckPoints, id: \.self) { checkPoint in
+                    TextWithBulletIcon(text: checkPoint)
+                }
+            }
+        }
+        .padding(.horizontal, 16.adjustedWidth)
+    }
+
     private var separator: some View {
         Rectangle()
             .foregroundStyle(.gray100)

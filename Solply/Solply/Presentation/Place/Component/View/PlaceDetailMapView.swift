@@ -17,13 +17,7 @@ struct PlaceDetailMapView: UIViewRepresentable {
     private var longitude: Double
     
     private let zoomLevel: Double = 13
-    private let contentInset: UIEdgeInsets = UIEdgeInsets(
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0
-    )
-    
+
     private let markerWidth: CGFloat = 36.adjusted
     private let markerHeight: CGFloat = 36.adjusted
     
@@ -73,7 +67,6 @@ private extension PlaceDetailMapView {
         mapView.mapType = .basic
         mapView.setLayerGroup(NMF_LAYER_GROUP_BUILDING, isEnabled: true)
         mapView.isIndoorMapEnabled = false
-        mapView.contentInset = contentInset
         mapView.isZoomGestureEnabled = true
         mapView.positionMode = .disabled
         mapView.logoAlign = .rightBottom
