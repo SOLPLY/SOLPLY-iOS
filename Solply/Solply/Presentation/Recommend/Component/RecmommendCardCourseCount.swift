@@ -24,7 +24,7 @@ struct RecmommendCardCourseCount: View {
     // MARK: - Body
     
     var body: some View {
-        HStack(spacing: 4.adjustedHeight) {
+        HStack(alignment: .center, spacing: 4.adjustedHeight) {
             Image(tagType.icon)
                 .resizable()
                 .frame(width: 20.adjusted, height: 20.adjusted)
