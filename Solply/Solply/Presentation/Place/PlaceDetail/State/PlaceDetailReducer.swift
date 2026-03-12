@@ -17,9 +17,9 @@ enum PlaceDetailReducer {
             state.shouldShowTownToast = true
             
         case .toggleAddToCourse:
-            state.addButtonSelected.toggle()
-            state.findDirectionEnabled = state.addButtonSelected ? false : true
-            state.bookmarkButtonEnabled = state.addButtonSelected ? false : true
+            state.addToCourseButtonSelected.toggle()
+            state.findDirectionEnabled = state.addToCourseButtonSelected ? false : true
+            state.bookmarkButtonEnabled = state.addToCourseButtonSelected ? false : true
             
         case .toggleBookmarkPlace:
             state.isBookmarked.toggle()
@@ -49,6 +49,12 @@ enum PlaceDetailReducer {
             state.userLatitude = latitude
             state.userLongitude = longitude
             
+        case .showNavigationBarTitle:
+            state.navigationBarTitle = state.placeName
+            
+        case .hideNavigationBarTitle:
+            state.navigationBarTitle = nil
+            
         // api
             
         case .fetchCourseArchive:
@@ -59,11 +65,11 @@ enum PlaceDetailReducer {
             break
             
         case .fetchPlaceDetail:
-            state.isPlaceInformationLoading = true
+            state.isPlaceDetailLoading = true
             break
             
         case .placeDetailFetched(let placeDetailInformation):
-            state.isPlaceInformationLoading = false
+            state.isPlaceDetailLoading = false
             state.isBookmarked = placeDetailInformation.isBookmarked
             state.primaryTag = placeDetailInformation.primaryTag
             state.placeName = placeDetailInformation.placeName
@@ -114,7 +120,7 @@ enum PlaceDetailReducer {
             print(error)
             
         case .fetchPlaceDetailFailed(let error):
-            state.isPlaceInformationLoading = true
+            state.isPlaceDetailLoading = true
             print(error)
             
         case .submitPlaceBookmarkFailed(let error):
