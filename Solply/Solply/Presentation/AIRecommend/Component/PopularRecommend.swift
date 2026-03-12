@@ -23,11 +23,11 @@ struct PopularRecommend: View {
                 .padding(.leading, 4.adjustedWidth)
             
             VStack(alignment: .center, spacing: 12.adjustedHeight) {
-                ForEach(popularPrompt, id: \.self) { string in
+                ForEach(popularPrompt, id: \.self) { prompt in
                     Button {
                         
                     } label: {
-                        Text(string)
+                        Text(prompt)
                             .applySolplyFont(.body_14_r)
                             .foregroundStyle(.coreBlack)
                             .padding(.horizontal, 20.adjustedWidth)
@@ -47,8 +47,4 @@ struct PopularRecommend: View {
             }
         }
     }
-}
-
-#Preview {
-    PopularRecommend(popularPrompt: ["성수에서 작업하기 좋은 조용한 카페 추천해줘", "망원에서 혼자 오래 머물기 좋은 카페", "연남동 디저트가 맛있는 감성 카페", "서촌 사색하기 좋은 책방"])
 }
