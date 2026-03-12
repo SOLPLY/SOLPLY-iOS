@@ -13,6 +13,16 @@ struct RecommendCardFilterChip: View {
     
     let title: String
     
+    // MARK: - Init
+    
+    init(title: String) {
+        self.title = title
+    }
+    
+    init(subTag: SubTagType) {
+        self.title = subTag.title
+    }
+    
     // MARK: - Body
     
     var body: some View {
