@@ -52,6 +52,7 @@ struct PlaceDetailView: View {
                 
                 bottomPadding
             }
+            .customLoading(.placeDetailLoading, isLoading: store.state.isPlaceDetailLoading)
         }
         .coordinateSpace(name: "scroll")
         .customNavigationBar(.backWithTitleAndHome(

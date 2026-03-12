@@ -8,7 +8,7 @@
 import Foundation
 
 struct PlaceDetailState {
-    var isPlaceInformationLoading: Bool = false
+    var isPlaceDetailLoading: Bool = false
     
     var shouldShowTownToast: Bool = false
     var shouldShowFindDirectionDialog: Bool = false

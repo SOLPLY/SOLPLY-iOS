@@ -65,11 +65,11 @@ enum PlaceDetailReducer {
             break
             
         case .fetchPlaceDetail:
-            state.isPlaceInformationLoading = true
+            state.isPlaceDetailLoading = true
             break
             
         case .placeDetailFetched(let placeDetailInformation):
-            state.isPlaceInformationLoading = false
+            state.isPlaceDetailLoading = false
             state.isBookmarked = placeDetailInformation.isBookmarked
             state.primaryTag = placeDetailInformation.primaryTag
             state.placeName = placeDetailInformation.placeName
@@ -120,7 +120,7 @@ enum PlaceDetailReducer {
             print(error)
             
         case .fetchPlaceDetailFailed(let error):
-            state.isPlaceInformationLoading = true
+            state.isPlaceDetailLoading = true
             print(error)
             
         case .submitPlaceBookmarkFailed(let error):
