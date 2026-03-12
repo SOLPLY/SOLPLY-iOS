@@ -15,7 +15,7 @@ struct TextWithBulletIcon: View {
     
     // MARK: - Initializer
     
-    init(text: String) {
+    init(_ text: String) {
         self.text = text
     }
     

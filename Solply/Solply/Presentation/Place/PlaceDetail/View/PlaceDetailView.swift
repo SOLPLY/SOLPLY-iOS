@@ -330,7 +330,7 @@ extension PlaceDetailView {
             
             VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                 ForEach(store.state.solplyCheckPoints, id: \.self) { checkPoint in
-                    TextWithBulletIcon(text: checkPoint)
+                    TextWithBulletIcon(checkPoint)
                 }
             }
         }
