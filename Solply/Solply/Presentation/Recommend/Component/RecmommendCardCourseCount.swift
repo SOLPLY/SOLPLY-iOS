@@ -9,13 +9,19 @@ import SwiftUI
 
 struct RecmommendCardCourseCount: View {
     
+    // MARK: - Properties
+    
     let tagType: MainTagType
     let count: Int
+    
+    // MARK: - Initializer
     
     init(parentId: Int, count: Int) {
         self.tagType = MainTagType.allCases.first { $0.parentId == parentId } ?? .all
         self.count = count
     }
+    
+    // MARK: - Body
     
     var body: some View {
         HStack(spacing: 4.adjustedHeight) {

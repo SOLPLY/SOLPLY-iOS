@@ -9,7 +9,11 @@ import SwiftUI
 
 struct RecommendCardFilterChip: View {
     
+    // MARK: - Properties
+    
     let title: String
+    
+    // MARK: - Body
     
     var body: some View {
         HStack(alignment: .center, spacing: 4.adjustedWidth) {
