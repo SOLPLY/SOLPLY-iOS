@@ -1,5 +1,5 @@
 //
-//  AIRecommendCard.swift
+//  AIRecommendPlaceCard.swift
 //  Solply
 //
 //  Created by sun on 3/13/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AIRecommendCard: View {
+struct AIRecommendPlaceCard: View {
     
     // MARK: - Properties
     
@@ -44,8 +44,8 @@ struct AIRecommendCard: View {
             contentSection
             filterSection
         }
-        .padding(.horizontal, 12.adjusted)
-        .padding(.vertical, 12.adjusted)
+        .padding(.horizontal, 12.adjustedWidth)
+        .padding(.vertical, 12.adjustedHeight)
         .frame(width: 343.adjustedWidth, alignment: .topLeading)
         .background(.white)
         .cornerRadius(20)
@@ -59,7 +59,7 @@ struct AIRecommendCard: View {
 
 // MARK: - Sections
 
-private extension AIRecommendCard {
+private extension AIRecommendPlaceCard {
     
     var thumbnailSection: some View {
         ThumbnailImage(
@@ -102,8 +102,8 @@ private extension AIRecommendCard {
         Text(mainTag.title)
             .applySolplyFont(.body_14_m)
             .foregroundStyle(mainTag.titleColor ?? .coreBlack)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .padding(.horizontal, 8.adjustedWidth)
+            .padding(.vertical, 4.adjustedHeight)
             .background(mainTag.backgroundColor ?? .clear)
             .clipShape(Capsule())
     }
