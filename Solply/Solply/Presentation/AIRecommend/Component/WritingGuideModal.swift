@@ -24,15 +24,7 @@ struct WritingGuideModal: View {
                 
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                     ForEach(type.contents, id: \.self) { content in
-                        HStack(alignment: .top, spacing: 8.adjustedWidth) {
-                            Text("•")
-                                .applySolplyFont(.body_14_m)
-                                .foregroundStyle(.gray900)
-                            Text(content)
-                                .applySolplyFont(.body_14_m)
-                                .foregroundStyle(.gray900)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
+                        TextWithBulletIcon(content)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -46,8 +38,4 @@ struct WritingGuideModal: View {
         }
         .padding(.horizontal, 20.adjustedWidth)
     }
-}
-
-#Preview {
-    WritingGuideModal(type: .place)
 }
