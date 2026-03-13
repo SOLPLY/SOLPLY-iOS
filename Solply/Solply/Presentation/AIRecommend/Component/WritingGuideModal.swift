@@ -13,6 +13,12 @@ struct WritingGuideModal: View {
     
     let type: WritingGuideType
     
+    // MARK: - Initializer
+    
+    init(_ type: WritingGuideType) {
+        self.type = type
+    }
+    
     // MARK: - Body
     
     var body: some View {
