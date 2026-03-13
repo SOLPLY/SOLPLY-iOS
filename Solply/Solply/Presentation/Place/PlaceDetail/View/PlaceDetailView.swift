@@ -339,12 +339,44 @@ extension PlaceDetailView {
     }
     
     private var record: some View {
-        VStack(alignment: .leading, spacing: 20.adjustedHeight) {
+        VStack(alignment: .center, spacing: 20.adjustedHeight) {
             sectionHeader(title: "기록") {
                 //TODO: - 기록더보기 뷰 넘기기
             }
             .padding(.horizontal, 20.adjustedWidth)
+            
+            WriteRecordButton {
+                // TODO: - 기록작성 뷰 넘기기
+            }
+            
+            recordList
         }
+    }
+    
+    private var recordList: some View {
+        Group {
+            if !store.state.records.isEmpty {
+                VStack(alignment: .center, spacing: 0) {
+                    ForEach(Array(store.state.records.enumerated()), id: \.offset) { index, record in
+                        RecordCard(record, hideSeparator: index == store.state.records.count - 1) {
+                            // TODO: - 신고 뷰 넘기기
+                        }
+                    }
+                }
+            } else {
+                emptyRecord
+            }
+        }
+    }
+    
+    private var emptyRecord: some View {
+        Text("등록된 기록이 없어요.\n이 장소의 첫번째 기록을 남겨주세요!")
+            .applySolplyFont(.body_14_m)
+            .multilineTextAlignment(.center)
+            .foregroundStyle(.gray700)
+            .frame(maxWidth: .infinity)
+            .frame(height: 152.adjustedHeight)
+            .padding(.horizontal, 16.adjustedWidth)
     }
 
     private var separator: some View {

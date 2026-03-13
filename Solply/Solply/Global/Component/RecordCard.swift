@@ -70,7 +70,7 @@ extension RecordCard {
     private var photos: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                ForEach(record.photoUrls, id: \.self) { photoUrl in
+                ForEach(Array(record.photoUrls.enumerated()), id: \.offset) { _, photoUrl in
                     photo(photoUrl)
                 }
             }

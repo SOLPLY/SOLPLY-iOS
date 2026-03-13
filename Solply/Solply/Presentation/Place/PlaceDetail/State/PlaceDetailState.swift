@@ -38,6 +38,7 @@ struct PlaceDetailState {
     var longitude: Double = 0.0
     var solplyTips: [SubTagType] = []
     var solplyCheckPoints: [String] = []
+    var records: [Record] = []
     
     var navigationBarTitle: String? = nil
 }
