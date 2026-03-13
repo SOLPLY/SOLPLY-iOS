@@ -123,13 +123,3 @@ extension RecordCard {
             .cornerRadius(12, corners: .allCorners)
     }
 }
-
-#Preview {
-    ScrollView(.vertical, showsIndicators: true) {
-        VStack(alignment: .center, spacing: 0) {
-            ForEach(Array(Record.mock.enumerated()), id: \.offset) { index, record in
-                RecordCard(record, hideSeparator: index == Record.mock.count - 1)
-            }
-        }
-    }
-}
