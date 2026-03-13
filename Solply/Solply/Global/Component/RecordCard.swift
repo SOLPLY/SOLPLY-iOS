@@ -42,7 +42,6 @@ struct RecordCard: View {
             recordText
             
             visitTimeWithReport
-            
         }
         .padding(.vertical, 20.adjustedHeight)
         .background(.coreWhite)
@@ -116,7 +115,6 @@ extension RecordCard {
     }
     
     private func photo(_ url: String) -> some View {
-        // 여기를 썸네일로 써야할까 말까... 고민
         KFImage(URL(string: url))
             .aspectRatio(contentMode: .fill)
             .frame(width: 72.adjusted, height: 72.adjusted)
