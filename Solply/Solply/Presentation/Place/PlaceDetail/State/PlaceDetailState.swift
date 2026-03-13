@@ -36,6 +36,8 @@ struct PlaceDetailState {
     var snsLink: [PlaceDetailSnsLink] = []
     var latitude: Double = 0.0
     var longitude: Double = 0.0
+    var solplyTips: [SubTagType] = []
+    var solplyCheckPoints: [String] = []
     
     var navigationBarTitle: String? = nil
 }
