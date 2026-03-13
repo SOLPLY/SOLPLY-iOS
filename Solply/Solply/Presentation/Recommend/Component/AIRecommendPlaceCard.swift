@@ -13,7 +13,7 @@ struct AIRecommendPlaceCard: View {
     
     let mainTag: MainTagType
     let placeName: String
-    let neighborhood: String
+    let townName: String
     let tipText: String
     let filters: [String]
     let thumbnailImageUrl: String?
@@ -23,14 +23,14 @@ struct AIRecommendPlaceCard: View {
     init(
         mainTag: MainTagType,
         placeName: String = "장소 이름",
-        neighborhood: String = "동네",
+        townName: String = "동네",
         tipText: String = "조용한 분위기에서 혼자 작업하기 좋아요",
         filters: [String] = ["내용", "내용", "내용"],
         thumbnailImageUrl: String? = nil
     ) {
         self.mainTag = mainTag
         self.placeName = placeName
-        self.neighborhood = neighborhood
+        self.townName = townName
         self.tipText = tipText
         self.filters = filters
         self.thumbnailImageUrl = thumbnailImageUrl
@@ -45,7 +45,7 @@ struct AIRecommendPlaceCard: View {
             filterSection
         }
         .padding(.horizontal, 12.adjustedWidth)
-        .padding(.vertical, 12.adjustedHeight)
+        .padding(.vertical, 16.adjustedHeight)
         .frame(width: 343.adjustedWidth, alignment: .topLeading)
         .background(.white)
         .cornerRadius(20)
@@ -73,8 +73,11 @@ private extension AIRecommendPlaceCard {
     var contentSection: some View {
         VStack(alignment: .leading, spacing: 12.adjustedHeight) {
             titleRow
-            locationRow
-            tipRow
+            
+            VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                locationRow
+                tipRow
+            }
         }
     }
     
@@ -117,7 +120,7 @@ private extension AIRecommendPlaceCard {
                 .frame(width: 24.adjusted, height: 24.adjusted)
                 .foregroundStyle(.gray600)
             
-            Text(neighborhood)
+            Text(townName)
                 .applySolplyFont(.caption_14_m)
                 .foregroundStyle(.gray600)
         }

@@ -12,25 +12,25 @@ struct AIRecommendCourseCard: View {
     // MARK: - Properties
     
     let mainTag: MainTagType
-    let placeName: String
-    let neighborhood: String
+    let courseName: String
+    let townName: String
     let tipText: String
-    let courseCounts: [(parentId: Int, count: Int)]
+    let courseCounts: [(mainTag: String, count: Int)]
     let thumbnailImageUrl: String?
     
     // MARK: - Initializer
     
     init(
         mainTag: MainTagType,
-        placeName: String = "장소 이름",
-        neighborhood: String = "동네",
+        courseName: String = "장소 이름",
+        townName: String = "동네",
         tipText: String = "조용한 분위기에서 혼자 작업하기 좋아요",
-        courseCounts: [(parentId: Int, count: Int)] = [],
+        courseCounts: [(mainTag: String, count: Int)] = [],
         thumbnailImageUrl: String? = nil
     ) {
         self.mainTag = mainTag
-        self.placeName = placeName
-        self.neighborhood = neighborhood
+        self.courseName = courseName
+        self.townName = townName
         self.tipText = tipText
         self.courseCounts = courseCounts
         self.thumbnailImageUrl = thumbnailImageUrl
@@ -39,14 +39,16 @@ struct AIRecommendCourseCard: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20.adjustedHeight) {
+        VStack(alignment: .leading, spacing: 15.adjustedHeight) {
             thumbnailSection
-            contentSection
-            courseCountSection
-                .padding(.top, -8.adjustedHeight)
+            
+            VStack(alignment: .leading, spacing: 12.adjustedHeight) {
+                contentSection
+                courseCountSection
+            }
         }
-        .padding(.horizontal, 12.adjusted)
-        .padding(.vertical, 12.adjusted)
+        .padding(.horizontal, 12.adjustedWidth)
+        .padding(.vertical, 16.adjustedHeight)
         .frame(width: 343.adjustedWidth, alignment: .topLeading)
         .background(.white)
         .cornerRadius(20)
@@ -74,8 +76,11 @@ private extension AIRecommendCourseCard {
     var contentSection: some View {
         VStack(alignment: .leading, spacing: 12.adjustedHeight) {
             titleRow
-            locationRow
-            tipRow
+            
+            VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                locationRow
+                tipRow
+            }
         }
     }
     
@@ -83,7 +88,7 @@ private extension AIRecommendCourseCard {
         HStack(alignment: .center, spacing: 8.adjustedWidth) {
             categoryBadge
             
-            Text(placeName)
+            Text(courseName)
                 .applySolplyFont(.display_16_sb)
                 .foregroundStyle(.coreBlack)
                 .lineLimit(1)
@@ -106,7 +111,7 @@ private extension AIRecommendCourseCard {
             .padding(.horizontal, 8.adjustedWidth)
             .padding(.vertical, 4.adjustedHeight)
             .background(mainTag.backgroundColor ?? .clear)
-            .clipShape(Capsule())
+            .capsuleClipped()
     }
     
     var locationRow: some View {
@@ -118,7 +123,7 @@ private extension AIRecommendCourseCard {
                 .frame(width: 24.adjusted, height: 24.adjusted)
                 .foregroundStyle(.gray600)
             
-            Text(neighborhood)
+            Text(townName)
                 .applySolplyFont(.caption_14_m)
                 .foregroundStyle(.gray600)
         }
@@ -132,20 +137,18 @@ private extension AIRecommendCourseCard {
     }
     
     var courseCountSection: some View {
-        let columns = [
-            GridItem(.flexible(), spacing: 8.adjustedWidth),
-            GridItem(.flexible(), spacing: 8.adjustedWidth)
-        ]
-        
-        return LazyVGrid(
-            columns: columns,
+        LazyVGrid(
+            columns: [
+                GridItem(.flexible(), spacing: 8.adjustedWidth),
+                GridItem(.flexible(), spacing: 8.adjustedWidth)
+            ],
             alignment: .leading,
             spacing: 4.adjustedHeight
         ) {
-            ForEach(courseCounts.indices, id: \.self) { index in
+            ForEach(Array(courseCounts.enumerated()), id: \.offset) { _, item in
                 RecmommendCardCourseCount(
-                    parentId: courseCounts[index].parentId,
-                    count: courseCounts[index].count
+                    mainTag: item.mainTag,
+                    count: item.count
                 )
                 .frame(maxWidth: .infinity, alignment: .leading)
             }

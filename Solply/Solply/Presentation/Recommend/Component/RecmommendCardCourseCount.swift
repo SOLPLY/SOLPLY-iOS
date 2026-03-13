@@ -16,17 +16,18 @@ struct RecmommendCardCourseCount: View {
     
     // MARK: - Initializer
     
-    init(parentId: Int, count: Int) {
-        self.tagType = MainTagType.allCases.first { $0.parentId == parentId } ?? .all
+    init(mainTag: String, count: Int) {
+        self.tagType = MainTagType(rawValue: mainTag) ?? .all
         self.count = count
     }
     
     // MARK: - Body
     
     var body: some View {
-        HStack(alignment: .center, spacing: 4.adjustedHeight) {
+        HStack(alignment: .center, spacing: 4.adjustedWidth) {
             Image(tagType.icon)
                 .resizable()
+                .scaledToFit()
                 .frame(width: 20.adjusted, height: 20.adjusted)
             
             Text("\(tagType.title) \(count)개")
