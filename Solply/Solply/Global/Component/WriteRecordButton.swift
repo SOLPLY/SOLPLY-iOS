@@ -42,9 +42,3 @@ struct WriteRecordButton: View {
         .buttonStyle(.plain)
     }
 }
-
-#Preview {
-    WriteRecordButton {
-        
-    }
-}
