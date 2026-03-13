@@ -1,5 +1,5 @@
 //
-//  AIRecommendCardView.swift
+//  AIRecommendCard.swift
 //  Solply
 //
 //  Created by sun on 3/13/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AIRecommendCardView: View {
+struct AIRecommendCard: View {
     
     // MARK: - Properties
     
@@ -59,7 +59,7 @@ struct AIRecommendCardView: View {
 
 // MARK: - Sections
 
-private extension AIRecommendCardView {
+private extension AIRecommendCard {
     
     var thumbnailSection: some View {
         ThumbnailImage(
