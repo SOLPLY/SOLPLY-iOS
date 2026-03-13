@@ -340,13 +340,16 @@ extension PlaceDetailView {
     
     private var record: some View {
         VStack(alignment: .center, spacing: 20.adjustedHeight) {
-            sectionHeader(title: "기록") {
-                //TODO: - 기록더보기 뷰 넘기기
-            }
+            sectionHeader(title: "기록", moreButtonAction: store.state.records.isEmpty ? nil : {
+                // TODO: - 기록 더보기 뷰 넘기기
+            })
             .padding(.horizontal, 20.adjustedWidth)
             
             WriteRecordButton {
-                // TODO: - 기록작성 뷰 넘기기
+                appState.requireLoginWithAlert(
+                    onAuthenticated: { /* TODO: - 기록작성 뷰 넘기기 */ },
+                    onExplore: { appCoordinator.changeRoot(to: .auth) }
+                )
             }
             
             recordList
@@ -359,7 +362,10 @@ extension PlaceDetailView {
                 VStack(alignment: .center, spacing: 0) {
                     ForEach(Array(store.state.records.enumerated()), id: \.offset) { index, record in
                         RecordCard(record, hideSeparator: index == store.state.records.count - 1) {
-                            // TODO: - 신고 뷰 넘기기
+                            appState.requireLoginWithAlert(
+                                onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
+                                onExplore: { appCoordinator.changeRoot(to: .auth) }
+                            )
                         }
                     }
                 }
@@ -403,7 +409,10 @@ extension PlaceDetailView {
             
             if let moreButtonAction {
                 Button {
-                    moreButtonAction()
+                    appState.requireLoginWithAlert(
+                        onAuthenticated: { moreButtonAction() },
+                        onExplore: { appCoordinator.changeRoot(to: .auth) }
+                    )
                 } label: {
                     HStack(alignment: .center, spacing: 0) {
                         Text("더보기")
