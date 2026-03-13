@@ -74,7 +74,7 @@ extension RecordCard {
                 }
             }
         }
-        .contentMargins(.leading, 16.adjustedWidth, for: .scrollContent)
+        .contentMargins(.horizontal, 16.adjustedWidth, for: .scrollContent)
     }
     
     private var recordText: some View {
