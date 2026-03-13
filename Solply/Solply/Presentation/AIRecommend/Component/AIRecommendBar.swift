@@ -24,7 +24,7 @@ struct AIRecommendBar: View {
     // MARK: - Body
     
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: .center, spacing: 0) {
             ForEach(SolplyContentType.allCases, id: \.self) { category in
                 Button {
                     
