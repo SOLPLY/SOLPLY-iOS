@@ -36,7 +36,13 @@ enum PlaceDetailReducer {
             break
             
         case .selectCourseToAdd(let index):
-            state.selectedCourseIndex = index
+            if index == state.selectedCourseIndex {
+                state.selectedCourseIndex = -1
+                state.isPlaceConfirmButtonEnabled = false
+            } else {
+                state.selectedCourseIndex = index
+                state.isPlaceConfirmButtonEnabled = true
+            }
             
         case .copyToClipboard(let text):
             UIPasteboard.general.string = text

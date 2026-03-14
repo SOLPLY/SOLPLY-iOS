@@ -22,6 +22,7 @@ struct PlaceDetailState {
     var courses: [AddToCourseArchive] = []
     
     var selectedCourseIndex: Int = -1
+    var isPlaceConfirmButtonEnabled: Bool = false
     
     var isBookmarked: Bool = false
     var primaryTag: MainTagType = .all
