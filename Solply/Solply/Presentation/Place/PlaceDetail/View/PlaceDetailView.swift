@@ -60,6 +60,25 @@ struct PlaceDetailView: View {
             }
             .customLoading(.placeDetailLoading, isLoading: store.state.isPlaceDetailLoading)
         }
+        .sheet(
+            isPresented: Binding(
+                get: { store.state.isAddToCourseSheetPresented },
+                set: { isPresented in
+                    if !isPresented {
+                        store.dispatch(.dismissAddToCourseSheet)
+                    }
+                }
+            ),
+            onDismiss: {
+                store.dispatch(.dismissAddToCourseSheet)
+            },
+            content: {
+                Text("실험")
+                    .presentationDetents([.height(630.adjustedHeight)])
+                    .presentationDragIndicator(.hidden)
+                    .presentationCornerRadius(21)
+            }
+        )
         .coordinateSpace(name: "scroll")
         .customNavigationBar(.backWithTitleAndHome(
             title: store.state.navigationBarTitle,
@@ -181,7 +200,7 @@ extension PlaceDetailView {
             addToCourseButton {
                 appState.requireLoginWithAlert {
                     store.dispatch(.fetchCourseArchive)
-                    store.dispatch(.toggleAddToCourse)
+                    store.dispatch(.presentAddToCourseSheet)
                     
                     if store.state.selectedCourseIndex != -1 {
                         store.dispatch(.selectCourseToAdd(index: -1))
@@ -477,14 +496,14 @@ extension PlaceDetailView {
 
     private var bottomSheetContent: some View {
         ZStack {
-            if !store.state.addToCourseButtonSelected {
+            if !store.state.isAddToCourseSheetPresented {
                 
             } else {
                 addPlaceToCourse
                     .transition(.move(edge: .trailing))
             }
         }
-        .animation(.easeInOut(duration: 0.3), value: store.state.addToCourseButtonSelected)
+        .animation(.easeInOut(duration: 0.3), value: store.state.isAddToCourseSheetPresented)
     }
     
     private var addPlaceToCourse: some View {
@@ -508,7 +527,7 @@ extension PlaceDetailView {
             }
         } backAction: {
             store.dispatch(.fetchCourseArchive)
-            store.dispatch(.toggleAddToCourse)
+//            store.dispatch(.toggleAddToCourseSheet)
             store.dispatch(.selectCourseToAdd(index: -1))
         } goToAddCourseAction: {
             appCoordinator.goToRoot()
@@ -522,7 +541,7 @@ extension PlaceDetailView {
         SolplyMainButton(title: "이 코스에 추가할래요") {
             let selectedCourseIndex = store.state.selectedCourseIndex
             
-            store.dispatch(.toggleAddToCourse)
+//            store.dispatch(.toggleAddToCourseSheet)
             store.dispatch(
                 .submitAddPlace(
                     courseId: store.state.courses[selectedCourseIndex].courseId
