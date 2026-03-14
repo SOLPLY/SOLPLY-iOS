@@ -1,5 +1,5 @@
 //
-//  AIRecommendPlaceCard.swift
+//  AIRecommendCourseCard.swift
 //  Solply
 //
 //  Created by sun on 3/13/26.
@@ -7,32 +7,32 @@
 
 import SwiftUI
 
-struct AIRecommendPlaceCard: View {
+struct AIRecommendCourseCard: View {
     
     // MARK: - Properties
     
-    let placeTagType: MainTagType
-    let placeName: String
+    let courseTagType: MainTagType
+    let courseName: String
     let townName: String
     let tipText: String
-    let filters: [String]
+    let courseCounts: [(mainTag: String, count: Int)]
     let thumbnailImageUrl: String?
     
     // MARK: - Initializer
     
     init(
         mainTag: MainTagType,
-        placeName: String = "장소 이름",
+        courseName: String = "장소 이름",
         townName: String = "동네",
         tipText: String = "조용한 분위기에서 혼자 작업하기 좋아요",
-        filters: [String] = ["내용", "내용", "내용"],
+        courseCounts: [(mainTag: String, count: Int)] = [],
         thumbnailImageUrl: String? = nil
     ) {
-        self.placeTagType = mainTag
-        self.placeName = placeName
+        self.courseTagType = mainTag
+        self.courseName = courseName
         self.townName = townName
         self.tipText = tipText
-        self.filters = filters
+        self.courseCounts = courseCounts
         self.thumbnailImageUrl = thumbnailImageUrl
     }
     
@@ -44,7 +44,7 @@ struct AIRecommendPlaceCard: View {
             
             VStack(alignment: .leading, spacing: 12.adjustedHeight) {
                 contentSection
-                filterSection
+                courseCountSection
             }
         }
         .padding(.horizontal, 12.adjustedWidth)
@@ -63,7 +63,7 @@ struct AIRecommendPlaceCard: View {
 
 // MARK: - Sections
 
-private extension AIRecommendPlaceCard {
+private extension AIRecommendCourseCard {
     
     var thumbnailSection: some View {
         ThumbnailImage(
@@ -89,7 +89,7 @@ private extension AIRecommendPlaceCard {
         HStack(alignment: .center, spacing: 8.adjustedWidth) {
             categoryBadge
             
-            Text(placeName)
+            Text(courseName)
                 .applySolplyFont(.display_16_sb)
                 .foregroundStyle(.coreBlack)
                 .lineLimit(1)
@@ -106,13 +106,13 @@ private extension AIRecommendPlaceCard {
     }
     
     var categoryBadge: some View {
-        Text(placeTagType.title)
+        Text(courseTagType.title)
             .applySolplyFont(.body_14_m)
-            .foregroundStyle(placeTagType.titleColor ?? .coreBlack)
+            .foregroundStyle(courseTagType.titleColor ?? .coreBlack)
             .padding(.horizontal, 8.adjustedWidth)
             .padding(.vertical, 4.adjustedHeight)
-            .background(placeTagType.backgroundColor ?? .clear)
-            .clipShape(Capsule())
+            .background(courseTagType.backgroundColor ?? .clear)
+            .capsuleClipped()
     }
     
     var locationRow: some View {
@@ -133,14 +133,25 @@ private extension AIRecommendPlaceCard {
     var tipRow: some View {
         RecommendTipChip(
             text: tipText,
-            tag: placeTagType
+            tag: courseTagType
         )
     }
     
-    var filterSection: some View {
-        HStack(spacing: 8.adjustedWidth) {
-            ForEach(filters.indices, id: \.self) { index in
-                RecommendCardFilterChip(title: filters[index])
+    var courseCountSection: some View {
+        LazyVGrid(
+            columns: [
+                GridItem(.flexible(), spacing: 8.adjustedWidth),
+                GridItem(.flexible(), spacing: 8.adjustedWidth)
+            ],
+            alignment: .leading,
+            spacing: 4.adjustedHeight
+        ) {
+            ForEach(Array(courseCounts.enumerated()), id: \.offset) { _, item in
+                RecommendCardCourseCount(
+                    mainTag: item.mainTag,
+                    count: item.count
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
