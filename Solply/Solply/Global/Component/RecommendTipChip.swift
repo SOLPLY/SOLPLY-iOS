@@ -22,7 +22,7 @@ struct RecommendTipChip: View {
             if let icon = tag.aiIcon {
                 Image(icon)
                     .resizable()
-                    .frame(width: 16.adjusted, height: 16.adjusted)
+                    .frame(width: 24.adjusted, height: 24.adjusted)
             }
             
             Text(text)
