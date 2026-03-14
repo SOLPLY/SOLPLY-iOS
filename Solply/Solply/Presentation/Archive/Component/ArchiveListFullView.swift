@@ -115,14 +115,6 @@ extension ArchiveListFullView {
                 .frame(width: 165.adjusted, height: 165.adjusted)
                 .contentShape(Rectangle())
             }
-
-            if store.state.selectedCourseIds.contains(item.courseId) {
-                Image(.checkIcon)
-                    .resizable()
-                    .frame(width: 36.adjusted, height: 36.adjusted)
-                    .padding(.trailing, 12.adjustedWidth)
-                    .padding(.top, 12.adjustedHeight)
-            }
         }
     }
 }
