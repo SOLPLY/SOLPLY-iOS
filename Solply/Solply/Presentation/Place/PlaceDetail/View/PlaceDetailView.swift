@@ -341,11 +341,11 @@ extension PlaceDetailView {
     private var record: some View {
         VStack(alignment: .center, spacing: 20.adjustedHeight) {
             sectionHeader(title: "기록", moreButtonAction: store.state.records.isEmpty ? nil : {
-                // TODO: - 기록 더보기 뷰 넘기기
+                appCoordinator.navigate(to: .recordList)
             })
             .padding(.horizontal, 20.adjustedWidth)
             
-            WriteRecordButton {
+            RecordWriteButton {
                 appState.requireLoginWithAlert(
                     onAuthenticated: { /* TODO: - 기록작성 뷰 넘기기 */ },
                     onExplore: { appCoordinator.changeRoot(to: .auth) }
