@@ -345,7 +345,7 @@ extension PlaceDetailView {
             })
             .padding(.horizontal, 20.adjustedWidth)
             
-            WriteRecordButton {
+            RecordWriteButton {
                 appState.requireLoginWithAlert(
                     onAuthenticated: { /* TODO: - 기록작성 뷰 넘기기 */ },
                     onExplore: { appCoordinator.changeRoot(to: .auth) }
