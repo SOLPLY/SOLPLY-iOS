@@ -456,9 +456,17 @@ extension PlaceDetailView {
                                     isActive: course.isActive
                                 ) {
                                     if course.isDuplicated {
-                                        ToastManager.shared.showToast(.withIconToast, message: "해당 장소가 코스에 이미 담겨있어요.")
+                                        ToastManager.shared.showToast(
+                                            .withIconToast,
+                                            message: "해당 장소가 코스에 이미 담겨있어요.",
+                                            bottomPadding: store.state.isPlaceConfirmButtonEnabled ? 90.adjustedHeight : 28.adjustedHeight
+                                        )
                                     } else if course.isPlaceCountLimited {
-                                        ToastManager.shared.showToast(.withIconToast, message: "코스에 이미 6개의 장소가 꽉 차 있어요")
+                                        ToastManager.shared.showToast(
+                                            .withIconToast,
+                                            message: "코스에 이미 6개의 장소가 꽉 차 있어요",
+                                            bottomPadding: store.state.isPlaceConfirmButtonEnabled ? 90.adjustedHeight : 28.adjustedHeight
+                                        )
                                     } else {
                                         withAnimation(.easeInOut(duration: 0.1)) {
                                             store.dispatch(.selectCourseToAdd(index: index))
