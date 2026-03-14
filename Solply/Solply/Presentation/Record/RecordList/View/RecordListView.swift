@@ -31,6 +31,8 @@ struct RecordListView: View {
                 }
                 
                 recordList
+                
+                bottomPadding
             }
         }
         .contentMargins(.top, 8.adjustedHeight)
@@ -59,5 +61,12 @@ extension RecordListView {
                 }
             }
         }
+    }
+    
+    private var bottomPadding: some View {
+        Rectangle()
+            .foregroundStyle(.clear)
+            .frame(height: 40.adjustedHeight)
+            .frame(maxWidth: .infinity)
     }
 }
