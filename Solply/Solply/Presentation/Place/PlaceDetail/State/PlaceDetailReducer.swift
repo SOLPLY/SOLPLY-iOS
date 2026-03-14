@@ -81,9 +81,10 @@ enum PlaceDetailReducer {
             state.snsLink = placeDetailInformation.snsLink
             state.latitude = placeDetailInformation.latitude
             state.longitude = placeDetailInformation.longitude
-            // TODO: - 솔플리 팁 서버 작업 후 수정 예정
+            // TODO: - 솔플리 팁, 기록 서버 작업 후 수정 예정
             state.solplyTips = [.reading, .work, .signatureMenu]
             state.solplyCheckPoints = placeDetailInformation.placeCheckpoints
+            state.records = Array(Record.mock.prefix(3))
             
         case .submitPlaceBookmark:
             break

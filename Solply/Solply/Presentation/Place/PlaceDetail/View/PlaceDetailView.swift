@@ -54,6 +54,8 @@ struct PlaceDetailView: View {
                 
                 separator
                 
+                record
+                
                 bottomPadding
             }
             .customLoading(.placeDetailLoading, isLoading: store.state.isPlaceDetailLoading)
@@ -317,9 +319,8 @@ extension PlaceDetailView {
     
     private var solplyTip: some View {
         VStack(alignment: .leading, spacing: 16.adjustedHeight) {
-            Text("솔플리 TIP")
-                .applySolplyFont(.body_16_m)
-                .foregroundStyle(.black)
+            sectionHeader(title: "솔플리 TIP")
+                .padding(.horizontal, 20.adjustedWidth)
             
             HStack(alignment: .center, spacing: 8.adjustedWidth) {
                 ForEach(store.state.solplyTips, id: \.self) { subTag in
@@ -333,8 +334,55 @@ extension PlaceDetailView {
                     TextWithBulletIcon(checkPoint)
                 }
             }
+            .padding(.horizontal, 16.adjustedWidth)
         }
-        .padding(.horizontal, 16.adjustedWidth)
+    }
+    
+    private var record: some View {
+        VStack(alignment: .center, spacing: 20.adjustedHeight) {
+            sectionHeader(title: "기록", moreButtonAction: store.state.records.isEmpty ? nil : {
+                // TODO: - 기록 더보기 뷰 넘기기
+            })
+            .padding(.horizontal, 20.adjustedWidth)
+            
+            WriteRecordButton {
+                appState.requireLoginWithAlert(
+                    onAuthenticated: { /* TODO: - 기록작성 뷰 넘기기 */ },
+                    onExplore: { appCoordinator.changeRoot(to: .auth) }
+                )
+            }
+            
+            recordList
+        }
+    }
+    
+    private var recordList: some View {
+        Group {
+            if !store.state.records.isEmpty {
+                VStack(alignment: .center, spacing: 0) {
+                    ForEach(Array(store.state.records.enumerated()), id: \.offset) { index, record in
+                        RecordCard(record, hideSeparator: index == store.state.records.count - 1) {
+                            appState.requireLoginWithAlert(
+                                onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
+                                onExplore: { appCoordinator.changeRoot(to: .auth) }
+                            )
+                        }
+                    }
+                }
+            } else {
+                emptyRecord
+            }
+        }
+    }
+    
+    private var emptyRecord: some View {
+        Text("등록된 기록이 없어요.\n이 장소의 첫번째 기록을 남겨주세요!")
+            .applySolplyFont(.body_14_m)
+            .multilineTextAlignment(.center)
+            .foregroundStyle(.gray700)
+            .frame(maxWidth: .infinity)
+            .frame(height: 152.adjustedHeight)
+            .padding(.horizontal, 16.adjustedWidth)
     }
 
     private var separator: some View {
@@ -349,6 +397,37 @@ extension PlaceDetailView {
             .foregroundStyle(.clear)
             .frame(height: 40.adjustedHeight)
             .frame(maxWidth: .infinity)
+    }
+    
+    private func sectionHeader(title: String, moreButtonAction: (() -> Void)? = nil) -> some View {
+        HStack(alignment: .center, spacing: 0) {
+            Text(title)
+                .applySolplyFont(.body_16_m)
+                .foregroundStyle(.black)
+            
+            Spacer()
+            
+            if let moreButtonAction {
+                Button {
+                    appState.requireLoginWithAlert(
+                        onAuthenticated: { moreButtonAction() },
+                        onExplore: { appCoordinator.changeRoot(to: .auth) }
+                    )
+                } label: {
+                    HStack(alignment: .center, spacing: 0) {
+                        Text("더보기")
+                            .applySolplyFont(.body_14_r)
+                            .foregroundStyle(.gray600)
+                        
+                        Image(.arrowRightIconThin)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24.adjusted, height: 24.adjusted)
+                    }
+                }
+                .buttonStyle(.plain)
+            }
+        }
     }
     
     private func actionButton(title: String, icon: ImageResource, onTap: (() -> Void)?) -> some View {
