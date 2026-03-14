@@ -474,6 +474,7 @@ extension PlaceDetailView {
                             }
                         }
                     }
+                    .contentMargins(.top, 1.5.adjustedHeight)
                     
                     if store.state.isPlaceConfirmButtonEnabled {
                         addPlaceConfirmButton
