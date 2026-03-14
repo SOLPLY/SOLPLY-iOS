@@ -94,7 +94,7 @@ extension ArchiveListFullView {
                     courseName: item.courseName,
                     imageUrl: item.thumbnailImage,
                     courseTagType: CourseTagType(rawValue: item.courseTagName) ?? .daily,
-                    isSelected: store.state.selectedCourseIds.contains(item.courseId)
+                    isChecked: store.state.selectedCourseIds.contains(item.courseId)
                 ) {
                     if store.state.activeDelete {
                         store.dispatch(.toggleCourseArchiveList(courseId: item.courseId))
