@@ -112,7 +112,6 @@ class ToastManager: ObservableObject {
         let window = UIWindow(windowScene: scene)
         window.windowLevel = .alert + 1
         window.backgroundColor = .clear
-        window.isUserInteractionEnabled = false
         
         let hostingController = UIHostingController(
             rootView: ToastWindowView().environmentObject(self)
