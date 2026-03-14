@@ -11,7 +11,7 @@ struct AIRecommendPlaceCard: View {
     
     // MARK: - Properties
     
-    let mainTag: MainTagType
+    let placeTagType: MainTagType
     let placeName: String
     let townName: String
     let tipText: String
@@ -28,7 +28,7 @@ struct AIRecommendPlaceCard: View {
         filters: [String] = ["내용", "내용", "내용"],
         thumbnailImageUrl: String? = nil
     ) {
-        self.mainTag = mainTag
+        self.placeTagType = mainTag
         self.placeName = placeName
         self.townName = townName
         self.tipText = tipText
@@ -39,13 +39,17 @@ struct AIRecommendPlaceCard: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20.adjustedHeight) {
+        VStack(alignment: .leading, spacing: 15.adjustedHeight) {
             thumbnailSection
-            contentSection
-            filterSection
+            
+            VStack(alignment: .leading, spacing: 12.adjustedHeight) {
+                contentSection
+                filterSection
+            }
         }
         .padding(.horizontal, 12.adjustedWidth)
-        .padding(.vertical, 16.adjustedHeight)
+        .padding(.top, 12.adjustedHeight)
+        .padding(.bottom, 16.adjustedHeight)
         .frame(width: 343.adjustedWidth, alignment: .topLeading)
         .background(.white)
         .cornerRadius(20)
@@ -102,12 +106,12 @@ private extension AIRecommendPlaceCard {
     }
     
     var categoryBadge: some View {
-        Text(mainTag.title)
+        Text(placeTagType.title)
             .applySolplyFont(.body_14_m)
-            .foregroundStyle(mainTag.titleColor ?? .coreBlack)
+            .foregroundStyle(placeTagType.titleColor ?? .coreBlack)
             .padding(.horizontal, 8.adjustedWidth)
             .padding(.vertical, 4.adjustedHeight)
-            .background(mainTag.backgroundColor ?? .clear)
+            .background(placeTagType.backgroundColor ?? .clear)
             .clipShape(Capsule())
     }
     
@@ -129,19 +133,15 @@ private extension AIRecommendPlaceCard {
     var tipRow: some View {
         RecommendTipChip(
             text: tipText,
-            tag: mainTag
+            tag: placeTagType
         )
     }
     
     var filterSection: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8.adjustedWidth) {
-                ForEach(filters.indices, id: \.self) { index in
-                    RecommendCardFilterChip(title: filters[index])
-                }
+        HStack(spacing: 8.adjustedWidth) {
+            ForEach(filters.indices, id: \.self) { index in
+                RecommendCardFilterChip(title: filters[index])
             }
         }
-        .padding(.bottom, 8.adjustedHeight)
-        .scrollIndicators(.hidden)
     }
 }

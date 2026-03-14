@@ -11,7 +11,7 @@ struct AIRecommendCourseCard: View {
     
     // MARK: - Properties
     
-    let mainTag: MainTagType
+    let courseTagType: MainTagType
     let courseName: String
     let townName: String
     let tipText: String
@@ -28,7 +28,7 @@ struct AIRecommendCourseCard: View {
         courseCounts: [(mainTag: String, count: Int)] = [],
         thumbnailImageUrl: String? = nil
     ) {
-        self.mainTag = mainTag
+        self.courseTagType = mainTag
         self.courseName = courseName
         self.townName = townName
         self.tipText = tipText
@@ -48,7 +48,8 @@ struct AIRecommendCourseCard: View {
             }
         }
         .padding(.horizontal, 12.adjustedWidth)
-        .padding(.vertical, 16.adjustedHeight)
+        .padding(.top, 12.adjustedHeight)
+        .padding(.bottom, 16.adjustedHeight)
         .frame(width: 343.adjustedWidth, alignment: .topLeading)
         .background(.white)
         .cornerRadius(20)
@@ -105,13 +106,13 @@ private extension AIRecommendCourseCard {
     }
     
     var categoryBadge: some View {
-        Text(mainTag.title)
+        Text(courseTagType.title)
             .applySolplyFont(.body_14_m)
-            .foregroundStyle(mainTag.titleColor ?? .coreBlack)
+            .foregroundStyle(courseTagType.titleColor ?? .coreBlack)
             .padding(.horizontal, 8.adjustedWidth)
             .padding(.vertical, 4.adjustedHeight)
-            .background(mainTag.backgroundColor ?? .clear)
-            .capsuleClipped()
+            .background(courseTagType.backgroundColor ?? .clear)
+            .clipShape(Capsule())
     }
     
     var locationRow: some View {
@@ -132,7 +133,7 @@ private extension AIRecommendCourseCard {
     var tipRow: some View {
         RecommendTipChip(
             text: tipText,
-            tag: mainTag
+            tag: courseTagType
         )
     }
     
