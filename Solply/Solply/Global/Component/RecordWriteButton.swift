@@ -1,5 +1,5 @@
 //
-//  WriteRecordButton.swift
+//  RecordWriteButton.swift
 //  Solply
 //
 //  Created by 김승원 on 3/13/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WriteRecordButton: View {
+struct RecordWriteButton: View {
     
     // MARK: - Properties
     
