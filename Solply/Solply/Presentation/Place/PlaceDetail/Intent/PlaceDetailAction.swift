@@ -24,6 +24,8 @@ enum PlaceDetailAction {
     
     case updateUserCoordinate(latitude: Double, longitude: Double)
     
+    case showNavigationBarTitle
+    case hideNavigationBarTitle
     // api
     
     case fetchCourseArchive

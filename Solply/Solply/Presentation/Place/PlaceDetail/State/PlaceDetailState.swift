@@ -8,12 +8,12 @@
 import Foundation
 
 struct PlaceDetailState {
-    var isPlaceInformationLoading: Bool = false
+    var isPlaceDetailLoading: Bool = false
     
     var shouldShowTownToast: Bool = false
     var shouldShowFindDirectionDialog: Bool = false
     
-    var addButtonSelected: Bool = false
+    var addToCourseButtonSelected: Bool = false
     var bookmarkButtonSelected: Bool = false
     var bookmarkButtonEnabled: Bool = true
     var findDirectionEnabled: Bool = true
@@ -36,4 +36,8 @@ struct PlaceDetailState {
     var snsLink: [PlaceDetailSnsLink] = []
     var latitude: Double = 0.0
     var longitude: Double = 0.0
+    var solplyTips: [SubTagType] = []
+    var solplyCheckPoints: [String] = []
+    
+    var navigationBarTitle: String? = nil
 }

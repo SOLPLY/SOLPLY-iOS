@@ -15,19 +15,9 @@ struct PlaceDetailMapView: UIViewRepresentable {
     
     private var latitude: Double
     private var longitude: Double
-    var addButtonSelected: Bool
-    var bookmarkButtonSelected: Bool
-    var bookmarkButtonEnabled: Bool
-    var findDirectionEnabled: Bool
     
-    private let zoomLevel: Double = 17
-    private let contentInset: UIEdgeInsets = UIEdgeInsets(
-        top: 0,
-        left: 0,
-        bottom: 450.adjustedHeight,
-        right: 0
-    )
-    
+    private let zoomLevel: Double = 13
+
     private let markerWidth: CGFloat = 36.adjusted
     private let markerHeight: CGFloat = 36.adjusted
     
@@ -36,17 +26,9 @@ struct PlaceDetailMapView: UIViewRepresentable {
     init(
         latitude: Double,
         longitude: Double,
-        addButtonSelected: Bool,
-        bookmarkButtonSelected: Bool,
-        bookmarkButtonEnabled: Bool,
-        findDirectionEnabled: Bool
     ) {
         self.latitude = latitude
         self.longitude = longitude
-        self.addButtonSelected = addButtonSelected
-        self.bookmarkButtonSelected = bookmarkButtonSelected
-        self.bookmarkButtonEnabled = bookmarkButtonEnabled
-        self.findDirectionEnabled = findDirectionEnabled
     }
     
     // MARK: - Functions
@@ -85,11 +67,18 @@ private extension PlaceDetailMapView {
         mapView.mapType = .basic
         mapView.setLayerGroup(NMF_LAYER_GROUP_BUILDING, isEnabled: true)
         mapView.isIndoorMapEnabled = false
-        mapView.contentInset = contentInset
         mapView.isZoomGestureEnabled = true
         mapView.positionMode = .disabled
         mapView.logoAlign = .rightBottom
         mapView.logoInteractionEnabled = true
+        mapView.isScrollGestureEnabled = false
+        
+        mapView.gestureRecognizers?.forEach { gesture in
+            if let pan = gesture as? UIPanGestureRecognizer {
+                pan.minimumNumberOfTouches = 2
+            }
+        }
+        
         return mapView
     }
     
