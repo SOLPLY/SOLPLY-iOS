@@ -91,7 +91,7 @@ enum PlaceDetailReducer {
             // TODO: - 솔플리 팁, 기록 서버 작업 후 수정 예정
             state.solplyTips = [.reading, .work, .signatureMenu]
             state.solplyCheckPoints = placeDetailInformation.placeCheckpoints
-            state.records = Array(Record.mock.prefix(3))
+            state.records = Record.mock
             
         case .submitPlaceBookmark:
             break

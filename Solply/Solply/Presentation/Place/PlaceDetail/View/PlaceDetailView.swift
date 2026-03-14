@@ -376,7 +376,7 @@ extension PlaceDetailView {
         Group {
             if !store.state.records.isEmpty {
                 VStack(alignment: .center, spacing: 0) {
-                    ForEach(Array(store.state.records.enumerated()), id: \.offset) { index, record in
+                    ForEach(Array(store.state.records.prefix(3).enumerated()), id: \.offset) { index, record in
                         RecordCard(record, hideSeparator: index == store.state.records.count - 1) {
                             appState.requireLoginWithAlert(
                                 onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
@@ -468,9 +468,7 @@ extension PlaceDetailView {
                                             bottomPadding: store.state.isPlaceConfirmButtonEnabled ? 90.adjustedHeight : 28.adjustedHeight
                                         )
                                     } else {
-                                        withAnimation(.easeInOut(duration: 0.1)) {
-                                            store.dispatch(.selectCourseToAdd(index: index))
-                                        }
+                                        store.dispatch(.selectCourseToAdd(index: index))
                                     }
                                 }
                             }
