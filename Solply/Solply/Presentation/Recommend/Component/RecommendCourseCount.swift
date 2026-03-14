@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RecmommendCardCourseCount: View {
+struct RecommendCourseCount: View {
     
     // MARK: - Properties
     

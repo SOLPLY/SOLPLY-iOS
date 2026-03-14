@@ -147,7 +147,7 @@ private extension AIRecommendCourseCard {
             spacing: 4.adjustedHeight
         ) {
             ForEach(Array(courseCounts.enumerated()), id: \.offset) { _, item in
-                RecmommendCardCourseCount(
+                RecommendCourseCount(
                     mainTag: item.mainTag,
                     count: item.count
                 )
