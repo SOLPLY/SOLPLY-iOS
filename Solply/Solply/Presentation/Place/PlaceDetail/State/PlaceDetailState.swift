@@ -12,11 +12,9 @@ struct PlaceDetailState {
     
     var shouldShowTownToast: Bool = false
     var shouldShowFindDirectionDialog: Bool = false
+    var isAddToCourseSheetPresented: Bool = false
     
-    var addToCourseButtonSelected: Bool = false
     var bookmarkButtonSelected: Bool = false
-    var bookmarkButtonEnabled: Bool = true
-    var findDirectionEnabled: Bool = true
     var userLatitude: Double = 0.0
     var userLongitude: Double = 0.0
     var addPlaceCourseInformation: AddPlaceCourseInformation?
@@ -24,6 +22,7 @@ struct PlaceDetailState {
     var courses: [AddToCourseArchive] = []
     
     var selectedCourseIndex: Int = -1
+    var isPlaceConfirmButtonEnabled: Bool = false
     
     var isBookmarked: Bool = false
     var primaryTag: MainTagType = .all

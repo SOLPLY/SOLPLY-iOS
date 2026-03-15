@@ -58,7 +58,11 @@ extension ArchiveView {
             if store.state.selectedCategory == .place {
                 Group {
                     if store.state.PlacefolderList.isEmpty {
-                        ArchiveEmptyView(archiveCategory: .place)
+                        EmptyArchiveButton(contentType: .place) {
+                            appCoordinator.switchTab(to: .place)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 215.adjustedHeight)
                     } else {
                         ArchiveFullView(archiveCategory: .place, store: store)
                     }
@@ -66,7 +70,11 @@ extension ArchiveView {
             } else {
                 Group {
                     if store.state.CourseFolderList.isEmpty {
-                        ArchiveEmptyView(archiveCategory: .course)
+                        EmptyArchiveButton(contentType: .course) {
+                            appCoordinator.switchTab(to: .course)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 215.adjustedHeight)
                     } else {
                         ArchiveFullView(archiveCategory: .course, store: store)
                     }

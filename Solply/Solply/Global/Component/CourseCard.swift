@@ -5,6 +5,13 @@
 //  Created by LEESOOYONG on 7/8/25.
 //
 
+//
+//  CourseCard.swift
+//  Solply
+//
+//  Created by LEESOOYONG on 7/8/25.
+//
+
 import SwiftUI
 
 import Kingfisher
@@ -17,7 +24,8 @@ struct CourseCard: View {
     private let courseName: String
     private let imageUrl: String?
     private let courseTagType: CourseTagType
-    private let isSelected: Bool
+    private let isChecked: Bool
+    private let isActive: Bool
     private let action: (() -> Void)?
     
     // MARK: - Initializer
@@ -27,26 +35,45 @@ struct CourseCard: View {
         courseName: String,
         imageUrl: String?,
         courseTagType: CourseTagType,
-        isSelected: Bool,
+        isChecked: Bool = false,
+        isActive: Bool = true,
         action: (() -> Void)? = nil
     ) {
         self.isSaved = isSaved
         self.courseName = courseName
         self.imageUrl = imageUrl
         self.courseTagType = courseTagType
-        self.isSelected = isSelected
+        self.isChecked = isChecked
+        self.isActive = isActive
         self.action = action
     }
     
     // MARK: - Body
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            courseThumnail
+        ZStack(alignment: .topTrailing) {
+            ZStack(alignment: .bottom) {
+                courseThumnail
+                
+                cardShellShadow
+                
+                cardShell
+            }
             
-            cardShellShadow
+            if !isActive {
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(.coreWhite)
+                    .opacity(0.7)
+            }
             
-            cardShell
+            if isChecked {
+                Image(.checkIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 36.adjustedWidth, height: 36.adjustedHeight)
+                    .padding(.top, 12.adjustedHeight)
+                    .padding(.trailing, 12.adjustedWidth)
+            }
         }
         .frame(width: 165.adjusted, height: 165.adjusted)
         .cornerRadius(20, corners: .allCorners)

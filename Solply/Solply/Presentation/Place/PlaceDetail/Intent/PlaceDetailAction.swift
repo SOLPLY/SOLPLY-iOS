@@ -11,7 +11,8 @@ enum PlaceDetailAction {
     case compareUserTownId(userTownId: Int)
     case showTownToast
     
-    case toggleAddToCourse
+    case presentAddToCourseSheet
+    case dismissAddToCourseSheet
     case toggleBookmarkPlace
     
     case requestFindDirection
