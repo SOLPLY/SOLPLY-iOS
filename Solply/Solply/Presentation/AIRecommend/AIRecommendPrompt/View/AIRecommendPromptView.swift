@@ -9,7 +9,11 @@ import SwiftUI
 
 struct AIRecommendPromptView: View {
     
+    // MARK: - Properties
+    
     @StateObject private var store = AIRecommendPromptStore()
+    
+    // MARK: - Body
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -28,6 +32,8 @@ struct AIRecommendPromptView: View {
         })
     }
 }
+
+// MARK: - Subviews
 
 extension AIRecommendPromptView {
     private var aiRecommendBar: some View {
