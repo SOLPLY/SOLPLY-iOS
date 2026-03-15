@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct AIRecommendPromptView: View {
+    
+    @StateObject private var store = AIRecommendPromptStore()
+    
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             aiRecommendBar
@@ -28,7 +31,15 @@ struct AIRecommendPromptView: View {
 
 extension AIRecommendPromptView {
     private var aiRecommendBar: some View {
-        AIRecommendBar(selected: .place)
+        AIRecommendBar(
+            selectedCategory: store.state.selectedCategory,
+            action: { selectedCategory in
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    store.dispatch(.toggleAIRecommendBar(selectedCategory: selectedCategory))
+                }
+            }
+        )
+            
     }
     
     private var townSelectWithGuide: some View {
