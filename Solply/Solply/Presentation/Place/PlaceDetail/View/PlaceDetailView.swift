@@ -60,6 +60,13 @@ struct PlaceDetailView: View {
             }
             .customLoading(.placeDetailLoading, isLoading: store.state.isPlaceDetailLoading)
         }
+        .imageViewer(
+            selectedIndex: Binding(
+                get: { store.state.selectedImageIndex },
+                set: { store.dispatch(.selectImage(index: $0)) }
+            ),
+            imageUrls: store.state.imageURLs
+        )
         .coordinateSpace(name: "scroll")
         .customNavigationBar(.backWithTitleAndHome(
             title: store.state.navigationBarTitle,
@@ -207,13 +214,16 @@ extension PlaceDetailView {
     private var placeImages: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .center, spacing: 12.adjustedWidth) {
-                ForEach(store.state.imageURLs, id: \.self) { imageUrl in
+                ForEach(Array(store.state.imageURLs.enumerated()), id: \.offset) { index, imageUrl in
                     ThumbnailImage(
                         imageUrl,
                         width: 307.adjustedWidth,
                         height: 204.adjustedHeight,
                         radius: 12
                     )
+                    .onTapGesture {
+                        store.dispatch(.selectImage(index: index))
+                    }
                 }
             }
             .padding(.horizontal, 16.adjustedWidth)

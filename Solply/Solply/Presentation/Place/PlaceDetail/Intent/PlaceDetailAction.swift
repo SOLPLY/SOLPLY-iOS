@@ -26,6 +26,9 @@ enum PlaceDetailAction {
     
     case showNavigationBarTitle
     case hideNavigationBarTitle
+    
+    case selectImage(index: Int?)
+    
     // api
     
     case fetchCourseArchive

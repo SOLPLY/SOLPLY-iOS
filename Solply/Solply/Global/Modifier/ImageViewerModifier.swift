@@ -14,13 +14,13 @@ struct ImageViewerModifier: ViewModifier {
     // MARK: - Properties
     
     @Binding private var selectedIndex: Int?
-    private let imageUrls: [String]
+    private let imageUrls: [String?]
     
     // MARK: - Initializer
     
     init(
         selectedIndex: Binding<Int?>,
-        imageUrls: [String]
+        imageUrls: [String?]
     ) {
         self._selectedIndex = selectedIndex
         self.imageUrls = imageUrls
@@ -55,7 +55,7 @@ private struct ImageViewerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var currentIndex: Int
     
-    private let imageUrls: [String]
+    private let imageUrls: [String?]
     private let selectedIndex: Int
     
     private var imageCount: String {
@@ -64,7 +64,7 @@ private struct ImageViewerView: View {
     
     // MARK: - Initializer
     
-    init(imageUrls: [String], selectedIndex: Int) {
+    init(imageUrls: [String?], selectedIndex: Int) {
         self.imageUrls = imageUrls
         self.selectedIndex = selectedIndex
         self._currentIndex = State(initialValue: selectedIndex)
@@ -207,7 +207,7 @@ private struct ZoomableImageView: UIViewRepresentable {
 extension View {
     func imageViewer(
         selectedIndex: Binding<Int?>,
-        imageUrls: [String]
+        imageUrls: [String?]
     ) -> some View {
         self.modifier(ImageViewerModifier(
             selectedIndex: selectedIndex,
