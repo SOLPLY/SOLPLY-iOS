@@ -74,8 +74,10 @@ extension RecordCard {
             HStack(alignment: .center, spacing: 8.adjustedWidth) {
                 ForEach(Array(record.photoUrls.enumerated()), id: \.offset) { index, photoUrl in
                     photo(photoUrl)
+                        .contentShape(Rectangle())
                         .onTapGesture {
                             selectImageAction?(index)
+                            print(index)
                         }
                 }
             }
@@ -122,8 +124,9 @@ extension RecordCard {
     
     private func photo(_ url: String) -> some View {
         KFImage(URL(string: url))
-            .aspectRatio(contentMode: .fill)
+            .resizable()
             .frame(width: 72.adjusted, height: 72.adjusted)
+            .aspectRatio(contentMode: .fill)
             .cornerRadius(12, corners: .allCorners)
     }
 }
