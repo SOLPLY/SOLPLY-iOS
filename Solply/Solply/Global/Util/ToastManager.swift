@@ -70,7 +70,7 @@ class ToastManager: ObservableObject {
         
         setupToastWindowIfNeeded()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+        DispatchQueue.main.async {
             withAnimation(.easeInOut(duration: 0.3)) {
                 self.isShowing = true
             }
@@ -109,7 +109,7 @@ class ToastManager: ObservableObject {
                 .compactMap({ $0 as? UIWindowScene })
                 .first else { return }
         
-        let window = UIWindow(windowScene: scene)
+        let window = ToastWindow(windowScene: scene)
         window.windowLevel = .alert + 1
         window.backgroundColor = .clear
         
@@ -134,5 +134,17 @@ struct ToastWindowView: View {
     var body: some View {
         Color.clear
             .customToast()
+    }
+}
+
+final class ToastWindow: UIWindow {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let hitView = super.hitTest(point, with: event)
+        
+        if hitView == rootViewController?.view {
+            return nil
+        }
+        
+        return hitView
     }
 }
