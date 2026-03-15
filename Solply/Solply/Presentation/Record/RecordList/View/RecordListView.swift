@@ -35,6 +35,13 @@ struct RecordListView: View {
                 bottomPadding
             }
         }
+        .imageViewer(
+            selectedIndex: Binding(
+                get: { store.state.selectedImageViewerIndex },
+                set: { store.dispatch(.selectImage(index: $0, imageUrls: [])) }
+            ),
+            imageUrls: store.state.selectedImageViewerUrls
+        )
         .contentMargins(.top, 8.adjustedHeight)
         .customNavigationBar(.backWithTitle(
             title: "기록",
@@ -53,12 +60,18 @@ extension RecordListView {
     private var recordList: some View {
         VStack(alignment: .center, spacing: 0) {
             ForEach(Array(store.state.records.enumerated()), id: \.offset) { index, record in
-                RecordCard(record, hideSeparator: index == store.state.records.count - 1) {
-                    appState.requireLoginWithAlert(
-                        onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
-                        onExplore: { appCoordinator.changeRoot(to: .auth) }
-                    )
-                }
+                RecordCard(
+                    record,
+                    hideSeparator: index == store.state.records.count - 1,
+                    selectImageAction: { index in
+                        store.dispatch(.selectImage(index: index, imageUrls: record.photoUrls))
+                    }, reportAction: {
+                        appState.requireLoginWithAlert(
+                            onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
+                            onExplore: { appCoordinator.changeRoot(to: .auth) }
+                        )
+                    }
+                )
             }
         }
     }

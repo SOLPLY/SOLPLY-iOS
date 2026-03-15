@@ -12,6 +12,10 @@ enum RecordListReducer {
         switch action {
         case .onAppear:
             state.records = Record.mock
+            
+        case .selectImage(let index, let imageUrls):
+            state.selectedImageViewerIndex = index
+            state.selectedImageViewerUrls = imageUrls
         }
     }
 }

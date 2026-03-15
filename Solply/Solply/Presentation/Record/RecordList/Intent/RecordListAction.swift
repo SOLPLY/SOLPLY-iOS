@@ -9,5 +9,6 @@ import Foundation
 
 enum RecordListAction {
     case onAppear
+    case selectImage(index: Int?, imageUrls: [String?])
 }
     

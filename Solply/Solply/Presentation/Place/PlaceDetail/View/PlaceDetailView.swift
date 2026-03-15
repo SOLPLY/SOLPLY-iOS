@@ -62,10 +62,10 @@ struct PlaceDetailView: View {
         }
         .imageViewer(
             selectedIndex: Binding(
-                get: { store.state.selectedImageIndex },
-                set: { store.dispatch(.selectImage(index: $0)) }
+                get: { store.state.selectedImageViewerIndex },
+                set: { store.dispatch(.selectImage(index: $0, imageUrls: [])) }
             ),
-            imageUrls: store.state.imageURLs
+            imageUrls: store.state.selectedImageViewerUrls
         )
         .coordinateSpace(name: "scroll")
         .customNavigationBar(.backWithTitleAndHome(
@@ -222,7 +222,7 @@ extension PlaceDetailView {
                         radius: 12
                     )
                     .onTapGesture {
-                        store.dispatch(.selectImage(index: index))
+                        store.dispatch(.selectImage(index: index, imageUrls: store.state.imageURLs))
                     }
                 }
             }
@@ -371,12 +371,19 @@ extension PlaceDetailView {
             if !store.state.records.isEmpty {
                 VStack(alignment: .center, spacing: 0) {
                     ForEach(Array(store.state.records.enumerated()), id: \.offset) { index, record in
-                        RecordCard(record, hideSeparator: index == store.state.records.count - 1) {
-                            appState.requireLoginWithAlert(
-                                onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
-                                onExplore: { appCoordinator.changeRoot(to: .auth) }
-                            )
-                        }
+                        RecordCard(
+                            record,
+                            hideSeparator: index == store.state.records.count - 1,
+                            selectImageAction: { index in
+                                store.dispatch(.selectImage(index: index, imageUrls: record.photoUrls))
+                            },
+                            reportAction: {
+                                appState.requireLoginWithAlert(
+                                    onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
+                                    onExplore: { appCoordinator.changeRoot(to: .auth) }
+                                )
+                            }
+                        )
                     }
                 }
             } else {
