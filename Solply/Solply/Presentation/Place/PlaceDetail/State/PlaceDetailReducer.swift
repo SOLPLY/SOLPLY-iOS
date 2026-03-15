@@ -16,10 +16,11 @@ enum PlaceDetailReducer {
         case .showTownToast:
             state.shouldShowTownToast = true
             
-        case .toggleAddToCourse:
-            state.addToCourseButtonSelected.toggle()
-            state.findDirectionEnabled = state.addToCourseButtonSelected ? false : true
-            state.bookmarkButtonEnabled = state.addToCourseButtonSelected ? false : true
+        case .presentAddToCourseSheet:
+            state.isAddToCourseSheetPresented = true
+            
+        case .dismissAddToCourseSheet:
+            state.isAddToCourseSheetPresented = false
             
         case .toggleBookmarkPlace:
             state.isBookmarked.toggle()
@@ -35,7 +36,13 @@ enum PlaceDetailReducer {
             break
             
         case .selectCourseToAdd(let index):
-            state.selectedCourseIndex = index
+            if index == state.selectedCourseIndex {
+                state.selectedCourseIndex = -1
+                state.isPlaceConfirmButtonEnabled = false
+            } else {
+                state.selectedCourseIndex = index
+                state.isPlaceConfirmButtonEnabled = true
+            }
             
         case .copyToClipboard(let text):
             UIPasteboard.general.string = text
@@ -84,7 +91,7 @@ enum PlaceDetailReducer {
             // TODO: - 솔플리 팁, 기록 서버 작업 후 수정 예정
             state.solplyTips = [.reading, .work, .signatureMenu]
             state.solplyCheckPoints = placeDetailInformation.placeCheckpoints
-            state.records = Array(Record.mock.prefix(3))
+            state.records = Record.mock
             
         case .submitPlaceBookmark:
             break

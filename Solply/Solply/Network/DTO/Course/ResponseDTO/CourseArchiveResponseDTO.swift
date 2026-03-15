@@ -30,10 +30,10 @@ extension CourseArchiveResponseDTO {
                 courseName: course.courseName,
                 thumbnailImage: course.thumbnailImage,
                 courseTag: CourseTagType(rawValue: course.courseTagName) ?? .daily ,
-                isBookmarked: course.isBookmarked,
-                isDuplicated: course.isDuplicated,
-                isPlaceCountLimited: course.isPlaceCountLimited,
-                isActive: course.isActive
+                isBookmarked: course.isBookmarked ?? false,
+                isDuplicated: course.isDuplicated ?? false,
+                isPlaceCountLimited: course.isPlaceCountLimited ?? false,
+                isActive: course.isActive ?? true
             )
         }
     }
