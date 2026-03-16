@@ -11,6 +11,8 @@ struct AIRecommendPromptView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appCoordinator: AppCoordinator
+    @EnvironmentObject private var appState: AppState
     @StateObject private var store = AIRecommendPromptStore()
     
     // MARK: - Body
@@ -28,7 +30,7 @@ struct AIRecommendPromptView: View {
             aiRecommendButton
         }
         .customNavigationBar(.backWithTitle(title: "AI 추천") {
-            
+            appCoordinator.goBack()
         })
         .overlay {
             if store.state.isWritingGuidePresented {
@@ -82,7 +84,8 @@ extension AIRecommendPromptView {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjusted, height: 24.adjusted)
                 
-                Text("filterTitle")
+                // TODO: - 자가동 바텀시트 연결 후 수정 필요
+                Text(appState.townName)
                     .applySolplyFont(.body_16_m)
                     .foregroundStyle(.coreBlack)
 //                    .customLoading(.JGDButtonLoading, isLoading: isLoading)
@@ -115,7 +118,7 @@ extension AIRecommendPromptView {
     
     private var aiRecommendPromptField: some View {
         SolplyTextEditor(
-            placeholder: "작업하기 좋은 우드톤 카페\n시간 제한 없는 조용한 디저트 카페\n혼자 생각 정리하기 좋은 산책로",
+            placeholder: store.state.selectedCategory.aiRecommendPromptPlaceholder,
             isTextLimitEnabled: true
         )
     }

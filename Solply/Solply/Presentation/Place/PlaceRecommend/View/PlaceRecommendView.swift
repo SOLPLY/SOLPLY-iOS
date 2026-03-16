@@ -70,11 +70,9 @@ struct PlaceRecommendView: View {
                     
                     appCoordinator.navigate(to: .JGD)
                 },
-                // TODO: - AI 추천 뷰 연결
-                // onAuthenticated 클로저에 연결해 주시면 됩니다!
                 aiAction: {
                     appState.requireLoginWithAlert(
-                        onAuthenticated: {},
+                        onAuthenticated: { appCoordinator.navigate(to: .aiRecommend) },
                         onExplore: { appCoordinator.changeRoot(to: .auth) }
                     )
                 },
