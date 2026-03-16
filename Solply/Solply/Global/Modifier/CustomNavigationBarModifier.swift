@@ -100,6 +100,16 @@ struct CustomNavigationBarModifier: ViewModifier {
                     isFloatingBar: true
                 )
             )
+            
+        case .dismissWithImageCount(let dismissAction, let imageCount):
+            content.modifier(
+                LayoutNavigationBarModifier(
+                    centerView: { imageCountText(imageCount) },
+                    leftView: { EmptyView() },
+                    rightView: { barButtonItem(.xIconLgWhite, action: dismissAction).foregroundStyle(.coreWhite) },
+                    backgroundColor: .clear
+                )
+            )
         }
     }
 }
@@ -289,5 +299,11 @@ extension CustomNavigationBarModifier {
         .buttonStyle(.plain)
         .allowsHitTesting(!isLoading)
         .padding(.horizontal, 16.adjustedWidth)
+    }
+    
+    private func imageCountText(_ imageCount: String) -> some View {
+        Text(imageCount)
+            .applySolplyFont(.head_16_m)
+            .foregroundStyle(.coreWhite)
     }
 }

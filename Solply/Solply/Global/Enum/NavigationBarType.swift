@@ -16,4 +16,5 @@ enum NavigationBarType {
     case titleWithNotification(title: String, notificationAction: (() -> Void))
     case townFilterWithSearch(filterTitle: String, isLoading: Bool, filterAction: (() -> Void), aiAction: (() -> Void), searchAction: (() -> Void))
     case floating(backAction: (() -> Void), homeAction: (() -> Void))
+    case dismissWithImageCount(dismissAction: (() -> Void), imageCount: String)
 }

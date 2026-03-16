@@ -81,6 +81,10 @@ struct PlaceDetailView: View {
                 addToCourseSheet
             }
         )
+        .imageViewer(
+            item: store.state.imageViewerItem,
+            dismissAction: { store.dispatch(.dismissImageViewer) }
+        )
         .coordinateSpace(name: "scroll")
         .customNavigationBar(.backWithTitleAndHome(
             title: store.state.navigationBarTitle,
@@ -224,13 +228,16 @@ extension PlaceDetailView {
     private var placeImages: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .center, spacing: 12.adjustedWidth) {
-                ForEach(store.state.imageURLs, id: \.self) { imageUrl in
+                ForEach(Array(store.state.imageURLs.enumerated()), id: \.offset) { index, imageUrl in
                     ThumbnailImage(
                         imageUrl,
                         width: 307.adjustedWidth,
                         height: 204.adjustedHeight,
                         radius: 12
                     )
+                    .onTapGesture {
+                        store.dispatch(.presentImageViewer(index: index, imageUrls: store.state.imageURLs))
+                    }
                 }
             }
             .padding(.horizontal, 16.adjustedWidth)
@@ -376,13 +383,20 @@ extension PlaceDetailView {
         Group {
             if !store.state.records.isEmpty {
                 VStack(alignment: .center, spacing: 0) {
-                    ForEach(Array(store.state.records.prefix(3).enumerated()), id: \.offset) { index, record in
-                        RecordCard(record, hideSeparator: index == store.state.records.count - 1) {
-                            appState.requireLoginWithAlert(
-                                onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
-                                onExplore: { appCoordinator.changeRoot(to: .auth) }
-                            )
-                        }
+                    ForEach(Array(store.state.records.enumerated()), id: \.offset) { index, record in
+                        RecordCard(
+                            record,
+                            hideSeparator: index == store.state.records.count - 1,
+                            selectImageAction: { index in
+                                store.dispatch(.presentImageViewer(index: index, imageUrls: record.photoUrls))
+                            },
+                            reportAction: {
+                                appState.requireLoginWithAlert(
+                                    onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
+                                    onExplore: { appCoordinator.changeRoot(to: .auth) }
+                                )
+                            }
+                        )
                     }
                 }
             } else {
