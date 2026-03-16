@@ -15,6 +15,9 @@ enum AIRecommendPromptReducer {
         switch action {
         case .toggleAIRecommendBar(let selectedCategory):
             state.selectedCategory = selectedCategory
+            
+        case .toggleWritingGuide:
+            state.isWritingGuidePresented.toggle()
         }
     }
 }

@@ -9,5 +9,5 @@ import Foundation
 
 enum AIRecommendPromptAction {
     case toggleAIRecommendBar(selectedCategory: SolplyContentType)
-    
+    case toggleWritingGuide
 }

@@ -11,11 +11,11 @@ struct WritingGuideModal: View {
     
     // MARK: - Properties
     
-    let type: WritingGuideType
+    let type: SolplyContentType
     
     // MARK: - Initializer
     
-    init(_ type: WritingGuideType) {
+    init(_ type: SolplyContentType) {
         self.type = type
     }
     
@@ -24,12 +24,12 @@ struct WritingGuideModal: View {
     var body: some View {
         Group {
             VStack(alignment: .center, spacing: 16.adjustedHeight) {
-                Text(type.title)
+                Text(type.aiRecommendGuideTitle)
                     .applySolplyFont(.body_16_m)
                     .foregroundStyle(.coreBlack)
                 
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                    ForEach(type.contents, id: \.self) { content in
+                    ForEach(type.aiRecommendGuideContents, id: \.self) { content in
                         TextWithBulletIcon(content)
                     }
                 }

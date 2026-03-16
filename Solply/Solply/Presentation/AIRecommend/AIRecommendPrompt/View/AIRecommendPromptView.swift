@@ -30,6 +30,20 @@ struct AIRecommendPromptView: View {
         .customNavigationBar(.backWithTitle(title: "AI 추천") {
             
         })
+        .overlay {
+            if store.state.isWritingGuidePresented {
+                ZStack {
+                    Color.coreBlackO40
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            store.dispatch(.toggleWritingGuide)
+                        }
+                    
+                    WritingGuideModal(store.state.selectedCategory)
+                }
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: store.state.isWritingGuidePresented)
     }
 }
 
@@ -84,7 +98,7 @@ extension AIRecommendPromptView {
     
     private var guideButton: some View {
         Button {
-            
+            store.dispatch(.toggleWritingGuide)
         } label: {
             HStack(alignment: .center, spacing: 2) {
                 Text("작성 가이드")

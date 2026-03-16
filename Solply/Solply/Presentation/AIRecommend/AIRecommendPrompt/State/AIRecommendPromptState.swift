@@ -9,4 +9,5 @@ import Foundation
 
 struct AIRecommendPromptState {
     var selectedCategory: SolplyContentType = .place
+    var isWritingGuidePresented: Bool = false
 }
