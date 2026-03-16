@@ -27,7 +27,7 @@ enum SolplyContentType: String, CaseIterable, Codable{
 
 extension SolplyContentType {
     var aiRecommendGuideTitle: String {
-        return "이렇게 쓰면 더 정확해요"
+        return "이렇게 쓰면 더 정확해요 💡"
     }
     
     var aiRecommendGuideContents: [String] {
