@@ -94,7 +94,7 @@ extension ArchiveListFullView {
                     courseName: item.courseName,
                     imageUrl: item.thumbnailImage,
                     courseTagType: CourseTagType(rawValue: item.courseTagName) ?? .daily,
-                    isSelected: store.state.selectedCourseIds.contains(item.courseId)
+                    isChecked: store.state.selectedCourseIds.contains(item.courseId)
                 ) {
                     if store.state.activeDelete {
                         store.dispatch(.toggleCourseArchiveList(courseId: item.courseId))
@@ -114,14 +114,6 @@ extension ArchiveListFullView {
                 }
                 .frame(width: 165.adjusted, height: 165.adjusted)
                 .contentShape(Rectangle())
-            }
-
-            if store.state.selectedCourseIds.contains(item.courseId) {
-                Image(.checkIcon)
-                    .resizable()
-                    .frame(width: 36.adjusted, height: 36.adjusted)
-                    .padding(.trailing, 12.adjustedWidth)
-                    .padding(.top, 12.adjustedHeight)
             }
         }
     }

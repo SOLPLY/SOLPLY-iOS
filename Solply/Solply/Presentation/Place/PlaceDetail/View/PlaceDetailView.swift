@@ -17,6 +17,11 @@ struct PlaceDetailView: View {
     @StateObject private var store: PlaceDetailStore
     @StateObject private var locationManager = LocationManager()
     
+    private let columns = [
+        GridItem(.fixed(165.adjustedWidth), spacing: 11.adjustedWidth),
+        GridItem(.fixed(165.adjustedWidth))
+    ]
+    
     // MARK: - Initializer
     
     init(townId: Int, placeId: Int, fromSearch: Bool) {
@@ -54,10 +59,28 @@ struct PlaceDetailView: View {
                 
                 separator
                 
+                record
+                
                 bottomPadding
             }
             .customLoading(.placeDetailLoading, isLoading: store.state.isPlaceDetailLoading)
         }
+        .sheet(
+            isPresented: Binding(
+                get: { store.state.isAddToCourseSheetPresented },
+                set: { isPresented in
+                    if !isPresented {
+                        store.dispatch(.dismissAddToCourseSheet)
+                    }
+                }
+            ),
+            onDismiss: {
+                store.dispatch(.dismissAddToCourseSheet)
+            },
+            content: {
+                addToCourseSheet
+            }
+        )
         .coordinateSpace(name: "scroll")
         .customNavigationBar(.backWithTitleAndHome(
             title: store.state.navigationBarTitle,
@@ -110,7 +133,6 @@ struct PlaceDetailView: View {
 // MARK: - Subviews
 
 extension PlaceDetailView {
-    // 네비바 타이틀 오프셋 트래커
     private var scrollOffsetTracker: some View {
         GeometryReader { geometry in
             Color.clear
@@ -127,7 +149,6 @@ extension PlaceDetailView {
         .frame(height: 0)
     }
     
-    // 태그, 제목, 설명
     private var placeNameWithIntroduction: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             HStack(alignment: .center, spacing: 8.adjustedWidth) {
@@ -149,7 +170,6 @@ extension PlaceDetailView {
         .padding(.top, 16.adjustedHeight)
     }
     
-    // 버튼들
     private var actionBar: some View {
         HStack(alignment: .center, spacing: 8.adjustedWidth) {
             actionButton(
@@ -179,7 +199,7 @@ extension PlaceDetailView {
             addToCourseButton {
                 appState.requireLoginWithAlert {
                     store.dispatch(.fetchCourseArchive)
-                    store.dispatch(.toggleAddToCourse)
+                    store.dispatch(.presentAddToCourseSheet)
                     
                     if store.state.selectedCourseIndex != -1 {
                         store.dispatch(.selectCourseToAdd(index: -1))
@@ -201,7 +221,6 @@ extension PlaceDetailView {
         .padding(.horizontal, 16.adjustedWidth)
     }
     
-    // 이미지
     private var placeImages: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .center, spacing: 12.adjustedWidth) {
@@ -218,7 +237,6 @@ extension PlaceDetailView {
         }
     }
     
-    // 상세 정보 카드
     private var placeInformationCard: some View {
         VStack(alignment: .leading, spacing: 8.adjustedHeight) {
             PlaceInformationWithCopyRow(title: "주소", value: store.state.address) {
@@ -317,9 +335,8 @@ extension PlaceDetailView {
     
     private var solplyTip: some View {
         VStack(alignment: .leading, spacing: 16.adjustedHeight) {
-            Text("솔플리 TIP")
-                .applySolplyFont(.body_16_m)
-                .foregroundStyle(.black)
+            sectionHeader(title: "솔플리 TIP")
+                .padding(.horizontal, 20.adjustedWidth)
             
             HStack(alignment: .center, spacing: 8.adjustedWidth) {
                 ForEach(store.state.solplyTips, id: \.self) { subTag in
@@ -333,8 +350,163 @@ extension PlaceDetailView {
                     TextWithBulletIcon(checkPoint)
                 }
             }
+            .padding(.horizontal, 16.adjustedWidth)
         }
+    }
+    
+    private var record: some View {
+        VStack(alignment: .center, spacing: 20.adjustedHeight) {
+            sectionHeader(title: "기록", moreButtonAction: store.state.records.count < 4 ? nil : {
+                appCoordinator.navigate(to: .recordList)
+            })
+            .padding(.horizontal, 20.adjustedWidth)
+            
+            RecordWriteButton {
+                appState.requireLoginWithAlert(
+                    onAuthenticated: { /* TODO: - 기록작성 뷰 넘기기 */ },
+                    onExplore: { appCoordinator.changeRoot(to: .auth) }
+                )
+            }
+            
+            recordList
+        }
+    }
+    
+    private var recordList: some View {
+        Group {
+            if !store.state.records.isEmpty {
+                VStack(alignment: .center, spacing: 0) {
+                    ForEach(Array(store.state.records.prefix(3).enumerated()), id: \.offset) { index, record in
+                        RecordCard(record, hideSeparator: index == store.state.records.count - 1) {
+                            appState.requireLoginWithAlert(
+                                onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
+                                onExplore: { appCoordinator.changeRoot(to: .auth) }
+                            )
+                        }
+                    }
+                }
+            } else {
+                emptyRecord
+            }
+        }
+    }
+    
+    private var emptyRecord: some View {
+        Text("등록된 기록이 없어요.\n이 장소의 첫번째 기록을 남겨주세요!")
+            .applySolplyFont(.body_14_m)
+            .multilineTextAlignment(.center)
+            .foregroundStyle(.gray700)
+            .frame(maxWidth: .infinity)
+            .frame(height: 152.adjustedHeight)
+            .padding(.horizontal, 16.adjustedWidth)
+    }
+    
+    private var addToCourseSheet: some View {
+        VStack(alignment: .center, spacing: 20.adjustedHeight) {
+            addToCourseNavigationBar
+            
+            addToCourseGrid
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+        .presentationDetents([.height(630.adjustedHeight)])
+        .presentationDragIndicator(.hidden)
+        .presentationCornerRadius(21)
+    }
+    
+    private var addToCourseNavigationBar: some View {
+        ZStack(alignment: .center) {
+            HStack(alignment: .center, spacing: 0) {
+                Spacer()
+                
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        store.dispatch(.dismissAddToCourseSheet)
+                    }
+                } label: {
+                    Image(.xIconLg)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24.adjusted, height: 24.adjusted)
+                }
+                .buttonStyle(.plain)
+            }
+            
+            Text("내 코스에 추가")
+                .applySolplyFont(.head_16_m)
+                .foregroundStyle(.coreBlack)
+        }
+        .frame(maxWidth: .infinity)
         .padding(.horizontal, 16.adjustedWidth)
+        .padding(.top, 16.adjustedHeight)
+    }
+    
+    private var addToCourseGrid: some View {
+        Group {
+            if !store.state.courses.isEmpty {
+                ZStack(alignment: .bottom) {
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {
+                            ForEach(Array(store.state.courses.enumerated()), id: \.offset) { index, course in
+                                CourseCard(
+                                    isSaved: course.isBookmarked,
+                                    courseName: course.courseName,
+                                    imageUrl: course.thumbnailImage,
+                                    courseTagType: course.courseTag,
+                                    isChecked: index == store.state.selectedCourseIndex,
+                                    isActive: course.isActive
+                                ) {
+                                    if course.isDuplicated {
+                                        ToastManager.shared.showToast(
+                                            .withIconToast,
+                                            message: "해당 장소가 코스에 이미 담겨있어요.",
+                                            bottomPadding: store.state.isPlaceConfirmButtonEnabled ? 90.adjustedHeight : 28.adjustedHeight
+                                        )
+                                    } else if course.isPlaceCountLimited {
+                                        ToastManager.shared.showToast(
+                                            .withIconToast,
+                                            message: "코스에 이미 6개의 장소가 꽉 차 있어요",
+                                            bottomPadding: store.state.isPlaceConfirmButtonEnabled ? 90.adjustedHeight : 28.adjustedHeight
+                                        )
+                                    } else {
+                                        store.dispatch(.selectCourseToAdd(index: index))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .contentMargins(.top, 1.5.adjustedHeight)
+                    
+                    if store.state.isPlaceConfirmButtonEnabled {
+                        addPlaceConfirmButton
+                    }
+                }
+            } else {
+                EmptyArchiveButton(contentType: .course) {
+                    store.dispatch(.dismissAddToCourseSheet)
+                    appCoordinator.goToRoot()
+                    appCoordinator.switchTab(to: .course)
+                    AmplitudeManager.shared.track(.clickFindNewCourse)
+                }
+                .padding(.top, 200.adjustedHeight)
+            }
+        }
+    }
+    
+    private var addPlaceConfirmButton: some View {
+        SolplyMainButton(title: "이 코스에 추가할래요") {
+            let selectedCourseIndex = store.state.selectedCourseIndex
+            
+            store.dispatch(.dismissAddToCourseSheet)
+            store.dispatch(
+                .submitAddPlace(
+                    courseId: store.state.courses[selectedCourseIndex].courseId
+                )
+            )
+        }
+        .padding(.horizontal, 20.adjustedWidth)
+        .safeAreaInset(edge: .bottom) {
+            Color.clear.frame(height: 16.adjustedHeight)
+        }
     }
 
     private var separator: some View {
@@ -349,6 +521,37 @@ extension PlaceDetailView {
             .foregroundStyle(.clear)
             .frame(height: 40.adjustedHeight)
             .frame(maxWidth: .infinity)
+    }
+    
+    private func sectionHeader(title: String, moreButtonAction: (() -> Void)? = nil) -> some View {
+        HStack(alignment: .center, spacing: 0) {
+            Text(title)
+                .applySolplyFont(.body_16_m)
+                .foregroundStyle(.black)
+            
+            Spacer()
+            
+            if let moreButtonAction {
+                Button {
+                    appState.requireLoginWithAlert(
+                        onAuthenticated: { moreButtonAction() },
+                        onExplore: { appCoordinator.changeRoot(to: .auth) }
+                    )
+                } label: {
+                    HStack(alignment: .center, spacing: 0) {
+                        Text("더보기")
+                            .applySolplyFont(.body_14_r)
+                            .foregroundStyle(.gray600)
+                        
+                        Image(.arrowRightIconThin)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24.adjusted, height: 24.adjusted)
+                    }
+                }
+                .buttonStyle(.plain)
+            }
+        }
     }
     
     private func actionButton(title: String, icon: ImageResource, onTap: (() -> Void)?) -> some View {
@@ -390,70 +593,6 @@ extension PlaceDetailView {
                 .capsuleClipped()
         }
         .buttonStyle(.plain)
-    }
-    
-    // TODO: - 내 코스에 추가 디자인 확정 시 구현
-    // bottomSheetContent, addPlaceToCourse, addPlaceToCourseButton
-    // 수정될 코드들 ⬇️⬇️
-
-    private var bottomSheetContent: some View {
-        ZStack {
-            if !store.state.addToCourseButtonSelected {
-                
-            } else {
-                addPlaceToCourse
-                    .transition(.move(edge: .trailing))
-            }
-        }
-        .animation(.easeInOut(duration: 0.3), value: store.state.addToCourseButtonSelected)
-    }
-    
-    private var addPlaceToCourse: some View {
-        AddPlaceToCourseView(
-            courses: store.state.courses,
-            selectedIndex: store.state.selectedCourseIndex
-        ) { index in
-            if index == -1 { return }
-            
-            guard index < store.state.courses.count else { return }
-            
-            guard let isDuplicated = store.state.courses[index].isDuplicated,
-                  let isPlaceCountLimited = store.state.courses[index].isPlaceCountLimited else { return }
-            
-            if isDuplicated {
-                ToastManager.shared.showToast(.withIconToast, message: "해당 장소가 코스에 이미 담겨있어요.")
-            } else if isPlaceCountLimited {
-                ToastManager.shared.showToast(.withIconToast, message: "코스에 이미 6개의 장소가 꽉 차 있어요")
-            } else {
-                store.dispatch(.selectCourseToAdd(index: index))
-            }
-        } backAction: {
-            store.dispatch(.fetchCourseArchive)
-            store.dispatch(.toggleAddToCourse)
-            store.dispatch(.selectCourseToAdd(index: -1))
-        } goToAddCourseAction: {
-            appCoordinator.goToRoot()
-            appCoordinator.switchTab(to: .course)
-            
-            AmplitudeManager.shared.track(.clickFindNewCourse)
-        }
-    }
-    
-    private var addPlaceToCourseButton: some View {
-        SolplyMainButton(title: "이 코스에 추가할래요") {
-            let selectedCourseIndex = store.state.selectedCourseIndex
-            
-            store.dispatch(.toggleAddToCourse)
-            store.dispatch(
-                .submitAddPlace(
-                    courseId: store.state.courses[selectedCourseIndex].courseId
-                )
-            )
-        }
-        .padding(.horizontal, 20.adjustedWidth)
-        .safeAreaInset(edge: .bottom) {
-            Color.clear.frame(height: 16.adjustedHeight)
-        }
     }
 }
 
