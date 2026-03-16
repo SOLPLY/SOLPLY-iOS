@@ -1,0 +1,26 @@
+//
+//  AIRecommendPromptReducer.swift
+//  Solply
+//
+//  Created by seozero on 3/15/26.
+//
+
+import Foundation
+
+enum AIRecommendPromptReducer {
+    static func reduce(
+        state: inout AIRecommendPromptState,
+        action: AIRecommendPromptAction
+    ) {
+        switch action {
+        case .selectTab(let selectedCategory):
+            state.selectedCategory = selectedCategory
+            
+        case .toggleWritingGuide:
+            state.isWritingGuidePresented.toggle()
+            
+        case .updatePromptText(let text):
+            state.isRecommendButtonEnabled = text.count >= 5
+        }
+    }
+}
