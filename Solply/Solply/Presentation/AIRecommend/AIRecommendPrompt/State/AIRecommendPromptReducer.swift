@@ -13,7 +13,7 @@ enum AIRecommendPromptReducer {
         action: AIRecommendPromptAction
     ) {
         switch action {
-        case .toggleAIRecommendBar(let selectedCategory):
+        case .selectTab(let selectedCategory):
             state.selectedCategory = selectedCategory
             
         case .toggleWritingGuide:

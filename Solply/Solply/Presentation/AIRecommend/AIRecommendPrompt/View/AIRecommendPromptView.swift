@@ -57,7 +57,7 @@ extension AIRecommendPromptView {
             selectedCategory: store.state.selectedCategory,
             action: { selectedCategory in
                 withAnimation(.easeInOut(duration: 0.3)) {
-                    store.dispatch(.toggleAIRecommendBar(selectedCategory: selectedCategory))
+                    store.dispatch(.selectTab(selectedCategory: selectedCategory))
                 }
             }
         )
@@ -76,7 +76,7 @@ extension AIRecommendPromptView {
     
     private var townSelect: some View {
         Button {
-            
+            // TODO: - 동네 선택 바텀시트 연결
         } label: {
             HStack(alignment: .center, spacing: 4.adjustedWidth) {
                 Image(.townIcon)
@@ -84,7 +84,7 @@ extension AIRecommendPromptView {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjusted, height: 24.adjusted)
                 
-                // TODO: - 자가동 바텀시트 연결 후 수정 필요
+                // TODO: - 동네 선택 바텀시트 연결 후 수정 필요
                 Text(appState.townName)
                     .applySolplyFont(.body_16_m)
                     .foregroundStyle(.coreBlack)
@@ -103,7 +103,7 @@ extension AIRecommendPromptView {
         Button {
             store.dispatch(.toggleWritingGuide)
         } label: {
-            HStack(alignment: .center, spacing: 2) {
+            HStack(alignment: .center, spacing: 2.adjustedWidth) {
                 Text("작성 가이드")
                     .applySolplyFont(.button_12_m)
                     .foregroundStyle(.gray600)
@@ -119,9 +119,10 @@ extension AIRecommendPromptView {
     private var aiRecommendPromptField: some View {
         SolplyTextEditor(
             placeholder: store.state.selectedCategory.aiRecommendPromptPlaceholder,
-            isTextLimitEnabled: true) { newText in
-                store.dispatch(.updatePromptText(newText))
-            }
+            isTextLimitEnabled: true
+        ) { newText in
+            store.dispatch(.updatePromptText(newText))
+        }
     }
     
     private var popularRecommend: some View {
@@ -134,7 +135,7 @@ extension AIRecommendPromptView {
             title: "추천 받기",
             isEnabled: store.state.isRecommendButtonEnabled
         )
-            .padding(.horizontal, 20.adjustedWidth)
-            .padding(.top, 36.adjustedHeight)
+        .padding(.horizontal, 20.adjustedWidth)
+        .padding(.top, 36.adjustedHeight)
     }
 }

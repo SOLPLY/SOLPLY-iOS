@@ -8,7 +8,7 @@
 import Foundation
 
 enum AIRecommendPromptAction {
-    case toggleAIRecommendBar(selectedCategory: SolplyContentType)
+    case selectTab(selectedCategory: SolplyContentType)
     case toggleWritingGuide
     case updatePromptText(String)
 }
