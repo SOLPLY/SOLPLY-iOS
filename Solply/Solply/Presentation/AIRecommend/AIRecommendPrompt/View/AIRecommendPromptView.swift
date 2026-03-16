@@ -34,7 +34,7 @@ struct AIRecommendPromptView: View {
         })
         .overlay {
             if store.state.isWritingGuidePresented {
-                ZStack {
+                ZStack(alignment: .center) {
                     Color.coreBlackO40
                         .ignoresSafeArea()
                         .onTapGesture {
@@ -119,8 +119,9 @@ extension AIRecommendPromptView {
     private var aiRecommendPromptField: some View {
         SolplyTextEditor(
             placeholder: store.state.selectedCategory.aiRecommendPromptPlaceholder,
-            isTextLimitEnabled: true
-        )
+            isTextLimitEnabled: true) { newText in
+                store.dispatch(.updatePromptText(newText))
+            }
     }
     
     private var popularRecommend: some View {
@@ -129,12 +130,11 @@ extension AIRecommendPromptView {
     }
     
     private var aiRecommendButton: some View {
-        SolplyMainButton(title: "추천 받기", isEnabled: true)
+        SolplyMainButton(
+            title: "추천 받기",
+            isEnabled: store.state.isRecommendButtonEnabled
+        )
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.top, 36.adjustedHeight)
     }
-}
-
-#Preview {
-    AIRecommendPromptView()
 }

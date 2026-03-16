@@ -18,6 +18,9 @@ enum AIRecommendPromptReducer {
             
         case .toggleWritingGuide:
             state.isWritingGuidePresented.toggle()
+            
+        case .updatePromptText(let text):
+            state.isRecommendButtonEnabled = text.count >= 5
         }
     }
 }
