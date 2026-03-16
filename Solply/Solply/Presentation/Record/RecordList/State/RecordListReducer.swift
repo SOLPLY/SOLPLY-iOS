@@ -13,9 +13,14 @@ enum RecordListReducer {
         case .onAppear:
             state.records = Record.mock
             
-        case .selectImage(let index, let imageUrls):
-            state.selectedImageViewerIndex = index
-            state.selectedImageViewerUrls = imageUrls
+        case .presentImageViewer(let index, let imageUrls):
+            state.imageViewerItem = ImageViewerItem(
+                selectedIndex: index,
+                imageUrls: imageUrls
+            )
+            
+        case .dismissImageViewer:
+            state.imageViewerItem = nil
         }
     }
 }

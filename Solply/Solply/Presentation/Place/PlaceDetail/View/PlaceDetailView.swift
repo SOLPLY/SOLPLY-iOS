@@ -82,11 +82,8 @@ struct PlaceDetailView: View {
             }
         )
         .imageViewer(
-            selectedIndex: Binding(
-                get: { store.state.selectedImageViewerIndex },
-                set: { store.dispatch(.selectImage(index: $0, imageUrls: [])) }
-            ),
-            imageUrls: store.state.selectedImageViewerUrls
+            item: store.state.imageViewerItem,
+            dismissAction: { store.dispatch(.dismissImageViewer) }
         )
         .coordinateSpace(name: "scroll")
         .customNavigationBar(.backWithTitleAndHome(
@@ -239,7 +236,7 @@ extension PlaceDetailView {
                         radius: 12
                     )
                     .onTapGesture {
-                        store.dispatch(.selectImage(index: index, imageUrls: store.state.imageURLs))
+                        store.dispatch(.presentImageViewer(index: index, imageUrls: store.state.imageURLs))
                     }
                 }
             }
@@ -391,7 +388,7 @@ extension PlaceDetailView {
                             record,
                             hideSeparator: index == store.state.records.count - 1,
                             selectImageAction: { index in
-                                store.dispatch(.selectImage(index: index, imageUrls: record.photoUrls))
+                                store.dispatch(.presentImageViewer(index: index, imageUrls: record.photoUrls))
                             },
                             reportAction: {
                                 appState.requireLoginWithAlert(

@@ -36,11 +36,8 @@ struct RecordListView: View {
             }
         }
         .imageViewer(
-            selectedIndex: Binding(
-                get: { store.state.selectedImageViewerIndex },
-                set: { store.dispatch(.selectImage(index: $0, imageUrls: [])) }
-            ),
-            imageUrls: store.state.selectedImageViewerUrls
+            item: store.state.imageViewerItem,
+            dismissAction: { store.dispatch(.dismissImageViewer) }
         )
         .contentMargins(.top, 8.adjustedHeight)
         .customNavigationBar(.backWithTitle(
@@ -64,7 +61,7 @@ extension RecordListView {
                     record,
                     hideSeparator: index == store.state.records.count - 1,
                     selectImageAction: { index in
-                        store.dispatch(.selectImage(index: index, imageUrls: record.photoUrls))
+                        store.dispatch(.presentImageViewer(index: index, imageUrls: record.photoUrls))
                     }, reportAction: {
                         appState.requireLoginWithAlert(
                             onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },

@@ -10,6 +10,5 @@ import Foundation
 struct RecordListState {
     var records: [Record] = []
     
-    var selectedImageViewerIndex: Int? = nil
-    var selectedImageViewerUrls: [String?] = []
+    var imageViewerItem: ImageViewerItem? = nil
 }

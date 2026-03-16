@@ -9,6 +9,8 @@ import Foundation
 
 enum RecordListAction {
     case onAppear
-    case selectImage(index: Int?, imageUrls: [String?])
+    
+    case presentImageViewer(index: Int, imageUrls: [String?])
+    case dismissImageViewer
 }
     

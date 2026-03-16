@@ -28,7 +28,8 @@ enum PlaceDetailAction {
     case showNavigationBarTitle
     case hideNavigationBarTitle
     
-    case selectImage(index: Int?, imageUrls: [String?])
+    case presentImageViewer(index: Int, imageUrls: [String?])
+    case dismissImageViewer
     
     // api
     

@@ -62,9 +62,14 @@ enum PlaceDetailReducer {
         case .hideNavigationBarTitle:
             state.navigationBarTitle = nil
             
-        case .selectImage(let index, let imageUrls):
-            state.selectedImageViewerIndex = index
-            state.selectedImageViewerUrls = imageUrls
+        case .presentImageViewer(let index, let imageUrls):
+            state.imageViewerItem = ImageViewerItem(
+                selectedIndex: index,
+                imageUrls: imageUrls
+            )
+            
+        case .dismissImageViewer:
+            state.imageViewerItem = nil
             
         // api
             

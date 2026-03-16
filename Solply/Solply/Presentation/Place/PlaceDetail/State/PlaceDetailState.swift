@@ -40,6 +40,5 @@ struct PlaceDetailState {
     var records: [Record] = []
     
     var navigationBarTitle: String? = nil
-    var selectedImageViewerIndex: Int? = nil
-    var selectedImageViewerUrls: [String?] = []
+    var imageViewerItem: ImageViewerItem? = nil
 }
