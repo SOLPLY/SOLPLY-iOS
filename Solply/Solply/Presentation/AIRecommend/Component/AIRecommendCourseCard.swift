@@ -15,20 +15,20 @@ struct AIRecommendCourseCard: View {
     let courseName: String
     let townName: String
     let tipText: String
-    let courseCounts: [(mainTag: String, count: Int)]
+    let courseCounts: [AIRecommendCourseCountItem]
     let thumbnailImageUrl: String?
     
     // MARK: - Initializer
     
     init(
-        mainTag: CourseTagType,
+        courseTag: CourseTagType,
         courseName: String = "장소 이름",
         townName: String = "동네",
         tipText: String = "조용한 분위기에서 혼자 작업하기 좋아요",
-        courseCounts: [(mainTag: String, count: Int)] = [],
+        courseCounts: [AIRecommendCourseCountItem] = [],
         thumbnailImageUrl: String? = nil
     ) {
-        self.courseTagType = mainTag
+        self.courseTagType = courseTag
         self.courseName = courseName
         self.townName = townName
         self.tipText = tipText
