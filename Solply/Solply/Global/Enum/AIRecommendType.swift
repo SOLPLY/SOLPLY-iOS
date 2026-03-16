@@ -15,8 +15,8 @@ enum AIRecommendType {
         switch self {
         case .main(let tag):
             return tag.aiIcon
-        case .course:
-            return nil
+        case .course(let tag):
+            return tag.aiIcon
         }
     }
     
