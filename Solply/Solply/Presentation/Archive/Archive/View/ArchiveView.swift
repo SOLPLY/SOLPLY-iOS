@@ -48,9 +48,7 @@ extension ArchiveView {
         ArchiveBar(
             selected: store.state.selectedCategory,
             action: { selectedCategory in
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    store.dispatch(.toggleArchiveBar(archiveCategory: selectedCategory))
-                }
+                store.dispatch(.toggleArchiveBar(archiveCategory: selectedCategory))
             }
         )
     }
