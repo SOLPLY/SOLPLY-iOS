@@ -73,6 +73,67 @@ extension View {
                 )
             )
             
+        // MARK: - JGDLoading
+            
+        case .JGDLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    isLoading: isLoading,
+                    loadingView: {
+                        HStack(alignment: .top, spacing: 0) {
+                            VStack(alignment: .center, spacing: 0) {
+                                ForEach(0..<3) { index in
+                                    SolplySkeletonView(
+                                        font: .body_16_r,
+                                        width: 42.adjustedWidth
+                                    )
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 46.adjustedHeight)
+                                    .background(index == 0 ? .coreWhite : .clear)
+                                    .overlay(alignment: .bottom) {
+                                        Rectangle()
+                                            .frame(height: 1)
+                                            .foregroundStyle(.gray200)
+                                    }
+                                }
+                            }
+                            .frame(maxHeight: .infinity, alignment: .top)
+                            .frame(width: 128.adjustedWidth)
+                            .background(.gray100)
+                            
+                            Rectangle()
+                                .frame(width: 1)
+                                .frame(maxHeight: .infinity)
+                                .foregroundStyle(.gray200)
+                            
+                            VStack(alignment: .center, spacing: 0) {
+                                ForEach(0..<5) { _ in
+                                    SolplySkeletonView(
+                                        font: .body_16_r,
+                                        width: 58.adjustedWidth
+                                    )
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.leading, 16.adjustedWidth)
+                                    .frame(height: 46.adjustedHeight)
+                                    .overlay(alignment: .bottom) {
+                                        Rectangle()
+                                            .frame(height: 1)
+                                            .foregroundStyle(.gray200)
+                                    }
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                        .overlay(alignment: .top) {
+                            Rectangle()
+                                .frame(height: 1)
+                                .frame(maxWidth: .infinity)
+                                .foregroundStyle(.gray300)
+                        }
+                    }
+                )
+            )
+            
         // MARK: - RecommendTitleLoading
             
         case .recommendTitleLoading:
@@ -308,12 +369,4 @@ extension View {
             )
         }
     }
-}
-
-#Preview {
-    Text("dasdf")
-        .customLoading(
-            .placeDetailLoading,
-            isLoading: true
-        )
 }
