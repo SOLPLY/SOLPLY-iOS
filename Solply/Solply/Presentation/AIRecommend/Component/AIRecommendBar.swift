@@ -11,14 +11,17 @@ struct AIRecommendBar: View {
     
     // MARK: - Properties
     
-    private let selected: SolplyContentType
+    private let selectedCategory: SolplyContentType
+    private let action: ((SolplyContentType) -> Void)?
     
     // MARK: - Initializer
     
     init(
-        selected: SolplyContentType
+        selectedCategory: SolplyContentType,
+        action: ((SolplyContentType) -> Void)? = nil
     ) {
-        self.selected = selected
+        self.selectedCategory = selectedCategory
+        self.action = action
     }
     
     // MARK: - Body
@@ -27,11 +30,11 @@ struct AIRecommendBar: View {
         HStack(alignment: .center, spacing: 0) {
             ForEach(SolplyContentType.allCases, id: \.self) { category in
                 Button {
-                    
+                    action?(category)
                 } label: {
                     Text(category.title)
-                        .foregroundColor(selected == category ? .coreBlack : .gray800)
-                        .applySolplyFont(selected == category ? .head_15_sb : .head_15_m)
+                        .foregroundColor(selectedCategory == category ? .coreBlack : .gray800)
+                        .applySolplyFont(selectedCategory == category ? .head_15_sb : .head_15_m)
                         .frame(maxWidth: .infinity)
                         .frame(height: 48.adjustedHeight)
                         .contentShape(Rectangle())
@@ -45,9 +48,9 @@ struct AIRecommendBar: View {
                 .frame(width: 181.adjustedWidth, height: 3.adjustedHeight)
                 .frame(
                     maxWidth: .infinity,
-                    alignment: selected == .place ? .leading : .trailing
+                    alignment: selectedCategory == .place ? .leading : .trailing
                 )
-                .animation(.easeInOut(duration: 0.3), value: selected)
+                .animation(.easeInOut(duration: 0.3), value: selectedCategory)
         }
         .background(.coreWhite)
     }

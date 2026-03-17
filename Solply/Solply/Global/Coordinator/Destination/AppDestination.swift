@@ -23,6 +23,7 @@ enum AppDestination: Hashable {
     case registerComplete
     case customerCenter
     case recordList
+    case aiRecommend
 }
 
 extension AppDestination {
@@ -59,6 +60,8 @@ extension AppDestination {
             CustomerCenterView()
         case .recordList:
             RecordListView()
+        case .aiRecommend:
+            AIRecommendPromptView()
         }
     }
 }

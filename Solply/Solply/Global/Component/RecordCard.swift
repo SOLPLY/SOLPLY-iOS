@@ -15,6 +15,7 @@ struct RecordCard: View {
     
     private let record: Record
     private let hideSeparator: Bool
+    private let selectImageAction: ((Int) -> Void)?
     private let reportAction: (() -> Void)?
     
     // MARK: - Initializer
@@ -22,10 +23,12 @@ struct RecordCard: View {
     init(
         _ record: Record,
         hideSeparator: Bool = false,
+        selectImageAction: ((Int) -> Void)? = nil,
         reportAction: (() -> Void)? = nil
     ) {
         self.record = record
         self.hideSeparator = hideSeparator
+        self.selectImageAction = selectImageAction
         self.reportAction = reportAction
     }
     
@@ -69,8 +72,13 @@ extension RecordCard {
     private var photos: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                ForEach(Array(record.photoUrls.enumerated()), id: \.offset) { _, photoUrl in
+                ForEach(Array(record.photoUrls.enumerated()), id: \.offset) { index, photoUrl in
                     photo(photoUrl)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            selectImageAction?(index)
+                            print(index)
+                        }
                 }
             }
         }
@@ -116,8 +124,9 @@ extension RecordCard {
     
     private func photo(_ url: String) -> some View {
         KFImage(URL(string: url))
-            .aspectRatio(contentMode: .fill)
+            .resizable()
             .frame(width: 72.adjusted, height: 72.adjusted)
+            .aspectRatio(contentMode: .fill)
             .cornerRadius(12, corners: .allCorners)
     }
 }
