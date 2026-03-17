@@ -8,8 +8,6 @@
 import Foundation
 
 enum AIRecommendResultAction {
-    case selectCard(card: AIRecommendCard)
-    
     case fetchAIRecommendResults
     case aiRecommendResultsFetched(cards: [AIRecommendCard])
     case fetchAIRecommendResultsFailed(error: NetworkError)

@@ -73,7 +73,7 @@ private extension AIRecommendResultView {
     
     var recommendList: some View {
         LazyVStack(alignment: .leading, spacing: 24.adjustedHeight) {
-            ForEach(store.state.cards, id: \.id) { card in
+            ForEach(Array(store.state.cards.enumerated()), id: \.element.id) { _, card in
                 switch card {
                 case .place(let item):
                     AIRecommendPlaceCard(
@@ -85,9 +85,9 @@ private extension AIRecommendResultView {
                         thumbnailImageUrl: item.thumbnailImageUrl
                     )
                     .onTapGesture {
-                        store.dispatch(.selectCard(card: card))
+                        // TODO: 장소 카드 탭 시 장소 상세
                     }
-                    
+
                 case .course(let item):
                     AIRecommendCourseCard(
                         courseTag: item.courseTagType,
@@ -98,7 +98,7 @@ private extension AIRecommendResultView {
                         thumbnailImageUrl: item.thumbnailImageUrl
                     )
                     .onTapGesture {
-                        store.dispatch(.selectCard(card: card))
+                        // TODO: 코스 카드 탭 시 코스 상세
                     }
                 }
             }
