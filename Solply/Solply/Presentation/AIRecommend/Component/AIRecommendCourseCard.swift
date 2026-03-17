@@ -11,24 +11,24 @@ struct AIRecommendCourseCard: View {
     
     // MARK: - Properties
     
-    let courseTagType: MainTagType
+    let courseTagType: CourseTagType
     let courseName: String
     let townName: String
     let tipText: String
-    let courseCounts: [(mainTag: String, count: Int)]
+    let courseCounts: [AIRecommendCourseCountItem]
     let thumbnailImageUrl: String?
     
     // MARK: - Initializer
     
     init(
-        mainTag: MainTagType,
+        courseTag: CourseTagType,
         courseName: String = "장소 이름",
         townName: String = "동네",
         tipText: String = "조용한 분위기에서 혼자 작업하기 좋아요",
-        courseCounts: [(mainTag: String, count: Int)] = [],
+        courseCounts: [AIRecommendCourseCountItem] = [],
         thumbnailImageUrl: String? = nil
     ) {
-        self.courseTagType = mainTag
+        self.courseTagType = courseTag
         self.courseName = courseName
         self.townName = townName
         self.tipText = tipText
@@ -108,10 +108,10 @@ private extension AIRecommendCourseCard {
     var categoryBadge: some View {
         Text(courseTagType.title)
             .applySolplyFont(.body_14_m)
-            .foregroundStyle(courseTagType.titleColor ?? .coreBlack)
+            .foregroundStyle(courseTagType.titleColor)
             .padding(.horizontal, 8.adjustedWidth)
             .padding(.vertical, 4.adjustedHeight)
-            .background(courseTagType.backgroundColor ?? .clear)
+            .background(courseTagType.backgroundColor)
             .capsuleClipped()
     }
     
@@ -131,9 +131,9 @@ private extension AIRecommendCourseCard {
     }
     
     var tipRow: some View {
-        RecommendTipChip(
+        AIRecommendTipChip(
             text: tipText,
-            tag: courseTagType
+            tag: .course(courseTagType)
         )
     }
     
