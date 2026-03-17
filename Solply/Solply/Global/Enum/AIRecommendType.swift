@@ -8,12 +8,12 @@
 import SwiftUI
 
 enum AIRecommendType {
-    case main(MainTagType)
+    case place(MainTagType)
     case course(CourseTagType)
     
     var icon: ImageResource? {
         switch self {
-        case .main(let tag):
+        case .place(let tag):
             return tag.aiIcon
         case .course(let tag):
             return tag.aiIcon
@@ -24,7 +24,7 @@ enum AIRecommendType {
     
     var titleColor: Color {
         switch self {
-        case .main(let tag):
+        case .place(let tag):
             return tag.titleColor ?? .coreBlack
         case .course(let tag):
             return tag.titleColor
