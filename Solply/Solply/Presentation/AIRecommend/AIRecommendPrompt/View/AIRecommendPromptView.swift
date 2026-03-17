@@ -32,20 +32,7 @@ struct AIRecommendPromptView: View {
         .customNavigationBar(.backWithTitle(title: "AI 추천") {
             appCoordinator.goBack()
         })
-        .overlay {
-            if store.state.isWritingGuidePresented {
-                ZStack(alignment: .center) {
-                    Color.coreBlackO40
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            store.dispatch(.toggleWritingGuide)
-                        }
-                    
-                    WritingGuideModal(store.state.selectedCategory)
-                }
-            }
-        }
-        .animation(.easeInOut(duration: 0.2), value: store.state.isWritingGuidePresented)
+        .customModal()
     }
 }
 
@@ -61,7 +48,6 @@ extension AIRecommendPromptView {
                 }
             }
         )
-            
     }
     
     private var townSelectWithGuide: some View {
@@ -101,7 +87,7 @@ extension AIRecommendPromptView {
     
     private var guideButton: some View {
         Button {
-            store.dispatch(.toggleWritingGuide)
+            showModal()
         } label: {
             HStack(alignment: .center, spacing: 2.adjustedWidth) {
                 Text("작성 가이드")
@@ -137,5 +123,16 @@ extension AIRecommendPromptView {
         )
         .padding(.horizontal, 20.adjustedWidth)
         .padding(.top, 36.adjustedHeight)
+    }
+}
+
+// MARK: - Functions
+
+extension AIRecommendPromptView {
+    private func showModal() {
+        ModalManager.shared.showModal(
+            modalType: store.state.selectedCategory.modalType,
+            onDismiss: nil
+        )
     }
 }
