@@ -10,11 +10,14 @@ import Foundation
 enum AIRecommendResultReducer {
     static func reduce(state: inout AIRecommendResultState, action: AIRecommendResultAction) {
         switch action {
-        case .selectPlaceCard:
-            break
-            
-        case .selectCourseCard:
-            break
+        case .selectCard(let card):
+            switch card {
+            case .place(let item):
+                break
+                
+            case .course(let item):
+                break
+            }
             
         case .fetchAIRecommendResults:
             // TODO: - 서버 작업 후 지울 예정임니댜!!

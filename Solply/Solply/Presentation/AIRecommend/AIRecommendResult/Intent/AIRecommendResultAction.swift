@@ -8,8 +8,7 @@
 import Foundation
 
 enum AIRecommendResultAction {
-    case selectPlaceCard(item: AIRecommendPlaceCardItem)
-    case selectCourseCard(item: AIRecommendCourseCardItem)
+    case selectCard(card: AIRecommendCard)
     
     case fetchAIRecommendResults
     case aiRecommendResultsFetched(cards: [AIRecommendCard])
