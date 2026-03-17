@@ -14,15 +14,12 @@ struct AIRecommendResultView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = AIRecommendResultStore()
     
-    var onChange: ((String) -> Void)?
-    var onSubmit: ((String) -> Void)?
-    
     // MARK: - Body
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0) {
-                searchBar
+                promptText
                 resultCountText
                 recommendList
             }
@@ -43,8 +40,8 @@ struct AIRecommendResultView: View {
 
 private extension AIRecommendResultView {
     
-    var searchBar: some View {
-        ZStack {
+    var promptText: some View {
+        ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.gray100)
                 .frame(height: 52.adjustedHeight)
@@ -54,13 +51,12 @@ private extension AIRecommendResultView {
                     borderWidth: 1
                 )
             
-            HStack {
+            HStack(alignment: .center, spacing: 0) {
                 Text("서버에서 값 가져오는 거겠지")
                     .applySolplyFont(.body_14_r)
                     .foregroundColor(.gray900)
-                
-                Spacer()
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 20.adjustedWidth)
         }
         .padding(.bottom, 16.adjustedHeight)
@@ -89,7 +85,7 @@ private extension AIRecommendResultView {
                         thumbnailImageUrl: item.thumbnailImageUrl
                     )
                     .onTapGesture {
-                        store.dispatch(.selectPlaceCard(item: item))
+                        store.dispatch(.selectCard(card: card))
                     }
                     
                 case .course(let item):
@@ -102,7 +98,7 @@ private extension AIRecommendResultView {
                         thumbnailImageUrl: item.thumbnailImageUrl
                     )
                     .onTapGesture {
-                        store.dispatch(.selectCourseCard(item: item))
+                        store.dispatch(.selectCard(card: card))
                     }
                 }
             }
