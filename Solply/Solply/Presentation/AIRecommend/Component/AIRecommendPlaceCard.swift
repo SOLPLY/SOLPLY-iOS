@@ -11,7 +11,7 @@ struct AIRecommendPlaceCard: View {
     
     // MARK: - Properties
     
-    let placeTagType: MainTagType
+    let mainTagType: MainTagType
     let placeName: String
     let townName: String
     let tipText: String
@@ -28,7 +28,7 @@ struct AIRecommendPlaceCard: View {
         filters: [String] = ["내용", "내용", "내용"],
         thumbnailImageUrl: String? = nil
     ) {
-        self.placeTagType = mainTag
+        self.mainTagType = mainTag
         self.placeName = placeName
         self.townName = townName
         self.tipText = tipText
@@ -106,12 +106,12 @@ private extension AIRecommendPlaceCard {
     }
     
     var categoryBadge: some View {
-        Text(placeTagType.title)
+        Text(mainTagType.title)
             .applySolplyFont(.body_14_m)
-            .foregroundStyle(placeTagType.titleColor ?? .coreBlack)
+            .foregroundStyle(mainTagType.titleColor ?? .coreBlack)
             .padding(.horizontal, 8.adjustedWidth)
             .padding(.vertical, 4.adjustedHeight)
-            .background(placeTagType.backgroundColor ?? .clear)
+            .background(mainTagType.backgroundColor ?? .clear)
             .capsuleClipped()
     }
     
@@ -131,9 +131,9 @@ private extension AIRecommendPlaceCard {
     }
     
     var tipRow: some View {
-        RecommendTipChip(
+        AIRecommendTipChip(
             text: tipText,
-            tag: placeTagType
+            tag: .place(mainTagType)
         )
     }
     
