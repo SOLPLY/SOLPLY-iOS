@@ -30,6 +30,7 @@ struct JGDView: View {
                     subTownListView
                 }
             }
+            .customLoading(.JGDLoading, isLoading: store.state.isTownLoading)
             .customNavigationBar(.backWithTitle(title: "동네설정", backAction: {
                 appCoordinator.goBack()
             }))

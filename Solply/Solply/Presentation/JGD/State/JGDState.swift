@@ -6,6 +6,7 @@
 //
 
 struct JGDState {
+    var isTownLoading: Bool = false
     var isCompleteButtonLoading: Bool = false
     
     var initialTownId: Int = 0 // 초기 appState에서 받을 id
