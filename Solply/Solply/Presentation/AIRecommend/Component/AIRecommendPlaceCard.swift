@@ -133,7 +133,7 @@ private extension AIRecommendPlaceCard {
     var tipRow: some View {
         AIRecommendTipChip(
             text: tipText,
-            tag: .main(mainTagType)
+            tag: .place(mainTagType)
         )
     }
     
