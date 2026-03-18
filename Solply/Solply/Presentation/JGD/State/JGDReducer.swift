@@ -12,7 +12,7 @@ struct JGDReducer {
         switch action {
         
         case .fetchTowns:
-            break
+            state.isTownLoading = true
             
         case .fetchTownsSuccess(let townList):
             state.townList = townList
@@ -34,6 +34,8 @@ struct JGDReducer {
                     state.currentSelectedSubTown = nil
                 }
             }
+            
+            state.isTownLoading = false
 
         case .fetchTownsFailure(let error):
             print(error)

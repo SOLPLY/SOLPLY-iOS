@@ -10,6 +10,7 @@ import Foundation
 enum CustomLoadingType {
     case searchLoading
     case JGDButtonLoading
+    case JGDLoading
     case recommendTitleLoading
     case todayPlaceRecommendCarouselLoading
     case placeRecommendGridLoading
