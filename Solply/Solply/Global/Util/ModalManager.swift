@@ -23,20 +23,10 @@ class ModalManager: ObservableObject {
     // MARK: - Functions
     
     func showModal(
-        modalType: ModalType,
-        onDismiss: (() -> Void)? = nil
+        modalType: ModalType
     ) {
         self.modalType = modalType
         
-        self.onDismiss = {
-            self.dismiss()
-        }
-        
         self.isPresented = true
-    }
-    
-    private func dismiss() {
-        self.isPresented = false
-        self.onDismiss = nil
     }
 }

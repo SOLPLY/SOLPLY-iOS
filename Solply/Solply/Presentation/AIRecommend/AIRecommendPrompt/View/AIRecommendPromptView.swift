@@ -131,8 +131,7 @@ extension AIRecommendPromptView {
 extension AIRecommendPromptView {
     private func showModal() {
         ModalManager.shared.showModal(
-            modalType: store.state.selectedCategory.modalType,
-            onDismiss: nil
+            modalType: store.state.selectedCategory.modalType
         )
     }
 }

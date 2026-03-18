@@ -24,7 +24,7 @@ struct CustomModalModifier: ViewModifier {
                             Color.coreBlackO40
                                 .ignoresSafeArea()
                                 .onTapGesture {
-                                    modalManager.onDismiss?()
+                                    modalManager.isPresented = false
                                 }
                             
                             VStack(alignment: .center, spacing: 16.adjustedHeight) {
