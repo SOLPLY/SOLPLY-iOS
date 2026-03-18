@@ -64,7 +64,7 @@ extension RecordListView {
                         store.dispatch(.presentImageViewer(index: index, imageUrls: record.photoUrls))
                     }, reportAction: {
                         appState.requireLoginWithAlert(
-                            onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
+                            onAuthenticated: { appCoordinator.navigate(to: .placeComplaint) },
                             onExplore: { appCoordinator.changeRoot(to: .auth) }
                         )
                     }
