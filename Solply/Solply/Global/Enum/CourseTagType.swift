@@ -33,10 +33,10 @@ enum CourseTagType: String {
     
     var backgroundColor: Color {
         switch self {
-        case .food: return .red200
-        case .discovery: return .purple200
-        case .healing: return .yellow200
-        case .daily: return .green200
+        case .food: return .red50
+        case .discovery: return .purple50
+        case .healing: return .yellow50
+        case .daily: return .green50
         }
     }
     
@@ -64,6 +64,15 @@ enum CourseTagType: String {
         case .discovery: return 34
         case .healing: return 32
         case .daily: return 33
+        }
+    }
+    
+    var aiIcon: ImageResource? {
+        switch self {
+        case .food: return .aiIconRed
+        case .discovery: return .aiIconPurple
+        case .healing: return .aiIconYellow
+        case .daily: return .aiIconGreen
         }
     }
 }
