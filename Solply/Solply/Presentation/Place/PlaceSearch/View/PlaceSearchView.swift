@@ -28,7 +28,11 @@ struct PlaceSearchView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 28.adjustedHeight) {
-            searchBar
+            SolplyTextField(.searchBar, placeholder: "찾는 장소를 입력하세요") { text in
+                store.dispatch(.searchPlace(placeName: text))
+                hideKeyboard()
+            }
+            .padding(.top, 16.adjustedHeight)
             
             Group {
                 if store.state.isSearchCompleted {
@@ -75,17 +79,6 @@ struct PlaceSearchView: View {
         )
         .background(.coreWhite)
         .onTapGesture {
-            hideKeyboard()
-        }
-    }
-}
-
-// MARK: - Subviews
-
-extension PlaceSearchView {
-    private var searchBar: some View {
-        SolplyTextField(.searchBar, placeholder: "찾는 장소를 입력하세요") { text in
-            store.dispatch(.searchPlace(placeName: text))
             hideKeyboard()
         }
     }
