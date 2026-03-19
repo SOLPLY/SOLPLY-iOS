@@ -77,9 +77,9 @@ final class RegisterStore: ObservableObject {
                 self.dispatch(result)
             }
             
-        case .fetchSearchPlaces:
+        case .fetchSearchPlaces(let placeName):
             Task {
-                let result = await effect.fetchPlaces(for: state.placeName)
+                let result = await effect.fetchPlaces(for: placeName)
                 self.dispatch(result)
             }
             

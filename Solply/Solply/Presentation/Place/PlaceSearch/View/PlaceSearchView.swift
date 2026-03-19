@@ -27,11 +27,8 @@ struct PlaceSearchView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 28.adjustedHeight) {
-            SearchBar { text in
-                store.dispatch(.searchPlace(placeName: text))
-                hideKeyboard()
-            }
+        VStack(alignment: .center, spacing: 28.adjustedHeight) {
+            searchBar
             
             Group {
                 if store.state.isSearchCompleted {
@@ -67,9 +64,9 @@ struct PlaceSearchView: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .customLoading(.searchLoading, isLoading: store.state.isSearchLoading)
         }
-        .frame(maxWidth: .infinity)
         .customNavigationBar(
             .backWithTitle(
                 title: "검색하기",
@@ -78,6 +75,17 @@ struct PlaceSearchView: View {
         )
         .background(.coreWhite)
         .onTapGesture {
+            hideKeyboard()
+        }
+    }
+}
+
+// MARK: - Subviews
+
+extension PlaceSearchView {
+    private var searchBar: some View {
+        SolplyTextField(.searchBar, placeholder: "찾는 장소를 입력하세요") { text in
+            store.dispatch(.searchPlace(placeName: text))
             hideKeyboard()
         }
     }

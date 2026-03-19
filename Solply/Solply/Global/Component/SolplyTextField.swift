@@ -14,7 +14,7 @@ struct SolplyTextField: View {
     enum Style {
         case textField
         case searchBar
-        case register(action: (() -> Void)?)
+        case register(action: ((String) -> Void)?)
     }
     
     @State private var text: String = ""
@@ -96,11 +96,11 @@ extension SolplyTextField {
         .buttonStyle(.plain)
     }
     
-    private func registerButton(_ action: (() -> Void)?) -> some View {
+    private func registerButton(_ action: ((String) -> Void)?) -> some View {
         Group {
             if !text.isEmpty {
                 Button {
-                    action?()
+                    action?(text)
                 } label: {
                     Text("직접 등록")
                         .applySolplyFont(.body_14_r)
