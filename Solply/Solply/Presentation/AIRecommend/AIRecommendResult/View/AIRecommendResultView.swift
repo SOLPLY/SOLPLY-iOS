@@ -20,8 +20,13 @@ struct AIRecommendResultView: View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0) {
                 promptText
-                resultCountText
-                recommendList
+                
+                if store.state.cards.isEmpty {
+                    AIRecommendEmptyView()
+                } else {
+                    resultCountText
+                    recommendList
+                }
             }
         }
         .customNavigationBar(
@@ -39,10 +44,12 @@ struct AIRecommendResultView: View {
 // MARK: - UI Components
 
 private extension AIRecommendResultView {
+    
     var promptText: some View {
         AIRecommendPromptText(
             prompt: "서버에서 값 가져오는 거겠지"
         )
+        .padding(.top, 8.adjustedHeight)
         .padding(.bottom, 16.adjustedHeight)
         .padding(.horizontal, 16.adjustedWidth)
     }
