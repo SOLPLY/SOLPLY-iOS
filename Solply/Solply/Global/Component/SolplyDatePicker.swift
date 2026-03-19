@@ -9,24 +9,26 @@ import SwiftUI
 
 struct SolplyDatePicker: View {
     
+    // MARK: - Properties
+    
+    @Binding private var selectedDate: Date?
     @State private var showPicker = false
     @State private var draftDate: Date
     
-    // MARK: - Properties
-    
-    private let selectedDate: Date?
-    private let onDateSelected: (Date) -> Void
+    private let onDateSelected: ((Date) -> Void)?
     private let today = Calendar.current.startOfDay(for: Date())
     
     // MARK: - Initializer
     
     init(
-        selectedDate: Date?,
-        onDateSelected: @escaping (Date) -> Void
+        selectedDate: Binding<Date?>,
+        onDateSelected: ((Date) -> Void)? = nil
     ) {
-        self.selectedDate = selectedDate
+        self._selectedDate = selectedDate
         self.onDateSelected = onDateSelected
-        self._draftDate = State(initialValue: selectedDate ?? Calendar.current.startOfDay(for: Date()))
+        self._draftDate = State(
+            initialValue: selectedDate.wrappedValue ?? Calendar.current.startOfDay(for: Date())
+        )
     }
     
     // MARK: - Body
@@ -63,7 +65,7 @@ struct SolplyDatePicker: View {
                 DatePicker(
                     "날짜 선택",
                     selection: $draftDate,
-                    in: today...,
+                    in: ...today,
                     displayedComponents: .date
                 )
                 .datePickerStyle(.wheel)
@@ -71,7 +73,8 @@ struct SolplyDatePicker: View {
                 .environment(\.locale, Locale(identifier: "ko_KR"))
                 
                 Button {
-                    onDateSelected(draftDate)
+                    selectedDate = draftDate
+                    onDateSelected?(draftDate)
                     showPicker = false
                 } label: {
                     Text("완료")
