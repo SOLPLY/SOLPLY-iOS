@@ -1,5 +1,5 @@
 //
-//  AIRecommendEmpty.swift
+//  AIRecommendEmptyView.swift
 //  Solply
 //
 //  Created by sun on 3/17/26.
@@ -9,31 +9,14 @@ import SwiftUI
 
 struct AIRecommendEmptyView: View {
     
-    // MARK: - Properties
-    
-    @EnvironmentObject private var appCoordinator: AppCoordinator
-    
-    // MARK: - Body
-    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            promptText
-            
-            Spacer()
-            
             emptyText
-            
-            Spacer()
             
             popularRecommendSection
         }
+        .frame(maxWidth: .infinity)
         .padding(.bottom, 24.adjustedHeight)
-        .customNavigationBar(
-            .backWithTitle(
-                title: "AI 추천",
-                backAction: { appCoordinator.goBack() }
-            )
-        )
     }
 }
 
@@ -41,19 +24,11 @@ struct AIRecommendEmptyView: View {
 
 private extension AIRecommendEmptyView {
     
-    var promptText: some View {
-        AIRecommendPromptText(
-            prompt: "서버에서 값 가져오는 거겠지"
-        )
-        .padding(.top, 8.adjustedHeight)
-        .padding(.horizontal, 16.adjustedWidth)
-    }
-    
     var emptyText: some View {
         Text("원하시는 장소를 찾지 못했어요")
             .applySolplyFont(.body_16_m)
             .foregroundStyle(.gray700)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, minHeight: 152.adjustedHeight)
             .multilineTextAlignment(.center)
     }
     
