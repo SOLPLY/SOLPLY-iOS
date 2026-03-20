@@ -78,6 +78,7 @@ struct PlaceDetailView: View {
             },
             content: {
                 addToCourseSheet
+                    .customToast()
             }
         )
         .imageViewer(
