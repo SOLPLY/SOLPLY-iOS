@@ -60,9 +60,8 @@ struct PlaceDetailView: View {
                 separator
                 
                 record
-                
-                bottomPadding
             }
+            .padding(.bottom, 40.adjustedHeight)
             .customLoading(.placeDetailLoading, isLoading: store.state.isPlaceDetailLoading)
         }
         .sheet(
@@ -487,6 +486,7 @@ extension PlaceDetailView {
                                 }
                             }
                         }
+                        .padding(.bottom, 100.adjustedHeight)
                     }
                     .contentMargins(.top, 1.5.adjustedHeight)
                     
@@ -527,13 +527,6 @@ extension PlaceDetailView {
         Rectangle()
             .foregroundStyle(.gray100)
             .frame(height: 8.adjustedHeight)
-            .frame(maxWidth: .infinity)
-    }
-    
-    private var bottomPadding: some View {
-        Rectangle()
-            .foregroundStyle(.clear)
-            .frame(height: 40.adjustedHeight)
             .frame(maxWidth: .infinity)
     }
     
