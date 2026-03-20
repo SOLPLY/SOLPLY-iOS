@@ -33,10 +33,10 @@ enum CourseTagType: String {
     
     var backgroundColor: Color {
         switch self {
-        case .food: return .red50
-        case .discovery: return .purple50
-        case .healing: return .yellow50
-        case .daily: return .green50
+        case .food: return .red200
+        case .discovery: return .purple200
+        case .healing: return .yellow200
+        case .daily: return .green200
         }
     }
     
