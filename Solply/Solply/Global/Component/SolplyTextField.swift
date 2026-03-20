@@ -23,6 +23,8 @@ struct SolplyTextField: View {
     private let placeholder: String
     private let onSubmit: ((String) -> Void)?
     
+    private let height: CGFloat = 52.adjustedHeight
+    
     // MARK: - Initializer
     
     init(
@@ -51,7 +53,7 @@ struct SolplyTextField: View {
             }
         }
         .padding(.horizontal, 20.adjustedWidth)
-        .frame(width: 343.adjustedWidth, height: 52.adjustedHeight)
+        .frame(height: height)
         .foregroundStyle(.coreWhite)
         .addBorder(
             .roundedRectangle(cornerRadius: 20),

@@ -32,6 +32,7 @@ struct PlaceSearchView: View {
                 store.dispatch(.searchPlace(placeName: text))
                 hideKeyboard()
             }
+            .padding(.horizontal, 16.adjustedWidth)
             .padding(.top, 16.adjustedHeight)
             
             Group {
