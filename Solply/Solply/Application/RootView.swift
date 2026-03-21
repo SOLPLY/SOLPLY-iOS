@@ -23,6 +23,7 @@ struct RootView: View {
                 .navigationDestination(for: AppDestination.self) { $0.build() }
         }
         .customAlert()
+        .customToast()
         .environmentObject(appState)
         .environmentObject(appCoordinator)
         .environmentObject(scrollToTopManager)

@@ -26,8 +26,6 @@ class ToastManager: ObservableObject {
     private var workItem: DispatchWorkItem?
     private let duration: TimeInterval = 2.0
     
-    private var toastWindow: UIWindow?
-    
     // MARK: - Functions
     
     func showToast(
@@ -68,21 +66,13 @@ class ToastManager: ObservableObject {
         self.bottomPadding = bottomPadding
         self.toastId = UUID()
         
-        setupToastWindowIfNeeded()
-        
-        DispatchQueue.main.async {
-            withAnimation(.easeInOut(duration: 0.3)) {
-                self.isShowing = true
-            }
+        withAnimation(.easeInOut(duration: 0.3)) {
+            self.isShowing = true
         }
         
         workItem = DispatchWorkItem {
             withAnimation(.easeInOut(duration: 0.3)) {
                 self.isShowing = false
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.tearDownToastWindow()
             }
         }
         
@@ -95,56 +85,5 @@ class ToastManager: ObservableObject {
         withAnimation(.easeInOut(duration: 0.3)) {
             isShowing = false
         }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.tearDownToastWindow()
-        }
-    }
-    
-    // MARK: - UIWindow
-    
-    private func setupToastWindowIfNeeded() {
-        guard toastWindow == nil,
-              let scene = UIApplication.shared.connectedScenes
-                .compactMap({ $0 as? UIWindowScene })
-                .first else { return }
-        
-        let window = ToastWindow(windowScene: scene)
-        window.windowLevel = .alert + 1
-        window.backgroundColor = .clear
-        
-        let hostingController = UIHostingController(
-            rootView: ToastWindowView().environmentObject(self)
-        )
-        
-        hostingController.view.backgroundColor = .clear
-        window.rootViewController = hostingController
-        window.makeKeyAndVisible()
-        
-        self.toastWindow = window
-    }
-    
-    private func tearDownToastWindow() {
-        toastWindow?.isHidden = true
-        toastWindow = nil
-    }
-}
-
-struct ToastWindowView: View {
-    var body: some View {
-        Color.clear
-            .customToast()
-    }
-}
-
-final class ToastWindow: UIWindow {
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let hitView = super.hitTest(point, with: event)
-        
-        if hitView == rootViewController?.view {
-            return nil
-        }
-        
-        return hitView
     }
 }
