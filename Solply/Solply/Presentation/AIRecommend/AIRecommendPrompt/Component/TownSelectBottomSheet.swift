@@ -17,31 +17,33 @@ struct TownSelectBottomSheet: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
-            header
-            
-            divider
-            
-            ZStack(alignment: .bottom) {
-                VStack(alignment: .center, spacing: 0) {
-                    HStack(alignment: .top, spacing: 0) {
-                        townListView
-                        
-                        Divider()
-                        
-                        subTownListView
-                    }
+        ZStack(alignment: .bottom) {
+            VStack(alignment: .center, spacing: 0) {
+                header
+                
+                if !store.state.isTownLoading {
+                    divider
                 }
                 
-                SolplyMainButton(
-                    title: "완료",
-                    isEnabled: true
-                ) {
+                HStack(alignment: .top, spacing: 0) {
+                    townListView
                     
+                    Divider()
+                    
+                    subTownListView
                 }
-                .padding(.horizontal, 20.adjustedWidth)
-                .padding(.bottom, 38.adjustedHeight)
+                .customLoading(.JGDLoading, isLoading: store.state.isTownLoading)
             }
+            .ignoresSafeArea(edges: .bottom)
+            
+            SolplyMainButton(
+                title: "완료",
+                isEnabled: true
+            ) {
+                
+            }
+            .padding(.horizontal, 20.adjustedWidth)
+            .padding(.bottom, 38.adjustedHeight)
         }
         .onAppear {
             store.dispatch(.fetchTowns)
@@ -77,7 +79,7 @@ extension TownSelectBottomSheet {
     
     private var divider: some View {
         Rectangle()
-            .frame(height: 1.adjustedHeight)
+            .frame(height: 1)
             .foregroundStyle(.gray300)
     }
     
