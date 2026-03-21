@@ -12,21 +12,22 @@ struct MyPageSection: View {
     // MARK: - Properties
     
     private let type: MyPageSectionType
-    private let places: [UserPlace]?
-    private let records: [UserPlace]?
+    private let items: [UserPlace]
     private let onSeeAllTapped: (() -> Void)?
+    
+    private var isEmpty: Bool {
+        items.isEmpty
+    }
     
     // MARK: - Init
     
     init(
         type: MyPageSectionType,
-        places: [UserPlace]? = nil,
-        records: [UserPlace]? = nil,
+        items: [UserPlace] = [],
         onSeeAllTapped: (() -> Void)? = nil
     ) {
         self.type = type
-        self.places = places
-        self.records = records
+        self.items = items
         self.onSeeAllTapped = onSeeAllTapped
     }
     
@@ -94,47 +95,17 @@ struct MyPageSection: View {
     private var contentView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: 16.adjustedWidth) {
-                switch type {
-                case .registeredPlaces:
-                    if let places {
-                        ForEach(places, id: \.id) { place in
-                            PlaceCard(
-                                isSaved: place.isBookmarked,
-                                thumbnailUrl: place.thumbnail,
-                                placeName: place.name,
-                                placeCategory: place.mainTag,
-                                isSelected: false,
-                                size: 145.adjusted
-                            )
-                        }
-                    }
-                    
-                case .record:
-                    if let records {
-                        ForEach(records, id: \.id) { record in
-                            PlaceCard(
-                                isSaved: record.isBookmarked,
-                                thumbnailUrl: record.thumbnail,
-                                placeName: record.name,
-                                placeCategory: record.mainTag,
-                                isSelected: false,
-                                size: 145.adjusted
-                            )
-                        }
-                    }
+                ForEach(items, id: \.id) { item in
+                    PlaceCard(
+                        isSaved: item.isBookmarked,
+                        thumbnailUrl: item.thumbnail,
+                        placeName: item.name,
+                        placeCategory: item.mainTag,
+                        isSelected: false,
+                        size: 145.adjusted
+                    )
                 }
             }
-        }
-    }
-    
-    // MARK: - Helpers
-    
-    private var isEmpty: Bool {
-        switch type {
-        case .registeredPlaces:
-            return places?.isEmpty ?? true
-        case .record:
-            return records?.isEmpty ?? true
         }
     }
 }

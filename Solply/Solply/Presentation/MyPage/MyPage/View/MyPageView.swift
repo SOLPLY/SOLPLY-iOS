@@ -28,7 +28,7 @@ struct MyPageView: View {
                     
                     MyPageSection(
                         type: .registeredPlaces,
-                        places: store.state.user?.myPlacePreviews ?? [],
+                        items: store.state.user?.myPlacePreviews ?? [],
                         onSeeAllTapped: {
                             guard let userId = store.state.user?.userId else { return }
                             appCoordinator.navigate(to: .registeredPlaces(userId: userId))
@@ -38,7 +38,7 @@ struct MyPageView: View {
 
                     MyPageSection(
                         type: .record,
-                        records: [],
+                        items: [],
                         onSeeAllTapped: {
                             print("내 솔플리 기록 전체보기")
                         }
