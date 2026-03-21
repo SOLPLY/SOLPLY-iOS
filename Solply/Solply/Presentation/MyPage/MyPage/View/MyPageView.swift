@@ -26,14 +26,24 @@ struct MyPageView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     header
                     
-                    MyPageRegisteredPlaces(
-                        places: store.state.user?.myPlacePreviews ?? [],
+                    MyPageSection(
+                        type: .registeredPlaces,
+                        items: store.state.user?.myPlacePreviews ?? [],
                         onSeeAllTapped: {
                             guard let userId = store.state.user?.userId else { return }
                             appCoordinator.navigate(to: .registeredPlaces(userId: userId))
                         }
                     )
                     .padding(.top, 44.adjustedHeight)
+
+                    MyPageSection(
+                        type: .record,
+                        items: [],
+                        onSeeAllTapped: {
+                            print("내 솔플리 기록 전체보기")
+                        }
+                    )
+                    .padding(.top, 16.adjustedHeight)
                     
                     MyPageSettings(
                         loginProvider: store.state.loginInformation,
