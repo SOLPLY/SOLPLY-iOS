@@ -105,7 +105,7 @@ extension AIRecommendPromptView {
     private var aiRecommendPromptField: some View {
         SolplyTextEditor(
             placeholder: store.state.selectedCategory.aiRecommendPromptPlaceholder,
-            isTextLimitEnabled: true
+            backgroundColor: .gray100
         ) { newText in
             store.dispatch(.updatePromptText(newText))
         }

@@ -16,11 +16,11 @@ struct SolplyTextEditor: View {
     private let placeholder: String
     private let isTextLimitEnabled: Bool
     private let label: String?
+    private let backgroundColor: Color
     private let onTextChanged: ((String) -> Void)?
     private let onLabelTapped: (() -> Void)?
     
     private let textEditorFont: SolplyFont = .body_16_r
-    private let backgroundColor: Color = .gray100
     private let borderColor: Color = .gray200
     private let placeholderColor: Color = .gray500
     private let textColor: Color = .gray900
@@ -31,12 +31,14 @@ struct SolplyTextEditor: View {
         placeholder: String = "최대 200자 입력 가능",
         isTextLimitEnabled: Bool = true,
         label: String? = nil,
+        backgroundColor: Color = .coreWhite,
         onTextChanged: ((String) -> Void)? = nil,
         onLabelTapped: (() -> Void)? = nil
     ) {
         self.placeholder = placeholder
         self.isTextLimitEnabled = isTextLimitEnabled
         self.label = label
+        self.backgroundColor = backgroundColor
         self.onTextChanged = onTextChanged
         self.onLabelTapped = onLabelTapped
     }
