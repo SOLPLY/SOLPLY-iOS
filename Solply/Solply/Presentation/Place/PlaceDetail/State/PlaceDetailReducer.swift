@@ -21,6 +21,8 @@ enum PlaceDetailReducer {
             
         case .dismissAddToCourseSheet:
             state.isAddToCourseSheetPresented = false
+            state.selectedCourseIndex = -1
+            state.isPlaceConfirmButtonEnabled = false
             
         case .toggleBookmarkPlace:
             state.isBookmarked.toggle()
