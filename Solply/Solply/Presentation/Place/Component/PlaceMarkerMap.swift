@@ -42,6 +42,6 @@ struct PlaceMarkerMap: View {
             }
         }
         .mapControlVisibility(.hidden)
-        .mapStyle(.standard(emphasis: .muted))
+        .mapStyle(.standard)
     }
 }

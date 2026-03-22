@@ -51,7 +51,7 @@ extension CourseMarkerMap {
         }
         .animation(.easeInOut(duration: 0.3), value: position)
         .mapControlVisibility(.hidden)
-        .mapStyle(.standard(emphasis: .muted))
+        .mapStyle(.standard)
         .safeAreaPadding(.bottom, 450.adjustedHeight)
     }
 }
