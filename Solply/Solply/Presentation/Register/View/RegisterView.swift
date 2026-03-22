@@ -79,22 +79,11 @@ extension RegisterView {
                     VStack(alignment: .center, spacing: 28.adjustedHeight) {
                         
                         // 장소 검색바
-                        RegisterSearchBar(
-                            onChange: { text in
-                                store.dispatch(.updateSearchBarText(text: text))
-                            },
-                            onSubmit: { text in
-                                store.dispatch(.fetchSearchPlaces)
-                            },
-                            registerAction: {
-                                store.dispatch(
-                                    .selectPlaceToRegister(
-                                        placeName: store.state.placeName,
-                                        placeAddress: nil
-                                    )
-                                )
-                            }
-                        )
+                        SolplyTextField(.register(action: { text in
+                            store.dispatch(.selectPlaceToRegister(placeName: text, placeAddress: nil))
+                        }), placeholder: "장소 이름을 입력하세요") { text in
+                            store.dispatch(.fetchSearchPlaces(placeName: text))
+                        }
                         .padding(.horizontal, 16.adjustedWidth)
                         
                         // 검색 결과 List
