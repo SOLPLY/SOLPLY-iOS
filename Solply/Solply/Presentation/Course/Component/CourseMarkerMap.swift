@@ -86,12 +86,3 @@ extension CourseMarkerMap {
         return .region(MKCoordinateRegion(center: center, span: span))
     }
 }
-
-
-#Preview {
-    CourseMarkerMap(places: CoursePlaceMark.mockData)
-        .customBottomSheet(.courseDetail(fromArchive: false)) {
-            Text("df")
-        }
-        .customNavigationBar(.floating(backAction: {}, homeAction: {}))
-}
