@@ -10,16 +10,23 @@ import Foundation
 enum ModalType {
     case aiRecommendPlace
     case aiRecommendCourse
+    case recordWriteGuide
 }
 
-// MARK: - AI 추천 뷰
+// MARK: - Guide
 
 extension ModalType {
-    var aiRecommendGuideTitle: String {
-        return "이렇게 쓰면 더 정확해요"
+    var guideTitle: String {
+        switch self {
+        case .aiRecommendPlace, .aiRecommendCourse:
+            return "이렇게 쓰면 더 정확해요"
+            
+        case .recordWriteGuide:
+            return "이렇게 작성해보세요"
+        }
     }
     
-    var aiRecommendGuideContents: [String] {
+    var guideContents: [String] {
         switch self {
         case .aiRecommendPlace:
             return [
@@ -33,6 +40,13 @@ extension ModalType {
                 "코스에 포함되길 원하는 장소들을 적어주세요",
                 "선호하는 장소 개수(2~4개)를 알려주세요",
                 "선호하는 분위기와 활동을 함께 적어주세요"
+            ]
+            
+        case .recordWriteGuide:
+            return [
+                "오늘 먹은 음식이나 커피, 디저트",
+                "읽은 책이나 한 일, 공간에서 보낸 시간",
+                "오늘의 소비나 기억에 남은 순간"
             ]
         }
     }
