@@ -286,7 +286,7 @@ extension PlaceDetailView {
     }
     
     private var map: some View {
-        PlaceDetailMapView(
+        PlaceMarkerMap(
             latitude: store.state.latitude,
             longitude: store.state.longitude
         )

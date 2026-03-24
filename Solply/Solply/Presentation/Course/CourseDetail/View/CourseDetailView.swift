@@ -102,7 +102,7 @@ struct CourseDetailView: View {
 
 extension CourseDetailView {
     private var courseMapView: some View {
-        CourseDetailMapView(places: store.state.places)
+        CourseMarkerMap(places: store.state.coursePlaceMarks)
             .customNavigationBar(
                 .floating(
                     backAction: { store.state.isCourseEditing ? showChangesNotSavedAlert() : appCoordinator.goBack() },

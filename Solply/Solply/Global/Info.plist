@@ -33,8 +33,6 @@
 	<string>$(X_Naver_Client_Id)</string>
 	<key>NAVER_SEARCH_CLIENT_SECRET</key>
 	<string>$(X_Naver_Client_Secret)</string>
-	<key>NMFClientId</key>
-	<string>$(NMFNcpKeyId)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
