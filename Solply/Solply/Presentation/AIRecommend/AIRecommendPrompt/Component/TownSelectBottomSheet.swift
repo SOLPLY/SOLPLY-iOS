@@ -12,7 +12,34 @@ struct TownSelectBottomSheet: View {
     // MARK: - Properties
     
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var store = AIRecommendPromptStore()
+    
+    @State private var selectedTown: Town?
+    @State private var selectedSubTown: SubTown?
+    
+    private let isTownLoading: Bool
+    private let townList: [Town]
+    
+    private let initialTown: Town?
+    private let initialSubTown: SubTown?
+    
+    private let onAppear: (() -> Void)?
+    private let onComplete: ((Town?, SubTown?) -> Void)?
+    
+    init(
+        isTownLoading: Bool,
+        townList: [Town],
+        initialTown: Town? = nil,
+        initialSubTown: SubTown? = nil,
+        onAppear: (() -> Void)? = nil,
+        onComplete: ((Town?, SubTown?) -> Void)? = nil
+    ) {
+        self.isTownLoading = isTownLoading
+        self.townList = townList
+        self.initialTown = initialTown
+        self.initialSubTown = initialSubTown
+        self.onAppear = onAppear
+        self.onComplete = onComplete
+    }
     
     // MARK: - Body
     
@@ -21,7 +48,7 @@ struct TownSelectBottomSheet: View {
             VStack(alignment: .center, spacing: 0) {
                 header
                 
-                if !store.state.isTownLoading {
+                if !isTownLoading {
                     divider
                 }
                 
@@ -32,7 +59,7 @@ struct TownSelectBottomSheet: View {
                     
                     subTownListView
                 }
-                .customLoading(.JGDLoading, isLoading: store.state.isTownLoading)
+                .customLoading(.JGDLoading, isLoading: isTownLoading)
             }
             .ignoresSafeArea(edges: .bottom)
             
@@ -40,13 +67,19 @@ struct TownSelectBottomSheet: View {
                 title: "완료",
                 isEnabled: true
             ) {
-                
+                onComplete?(selectedTown, selectedSubTown)
             }
             .padding(.horizontal, 20.adjustedWidth)
             .padding(.bottom, 38.adjustedHeight)
         }
         .onAppear {
-            store.dispatch(.fetchTowns)
+            onAppear?()
+        }
+        .onChange(of: townList) {
+            if selectedTown == nil {
+                selectedTown = initialTown
+                selectedSubTown = initialSubTown
+            }
         }
     }
 }
@@ -85,12 +118,13 @@ extension TownSelectBottomSheet {
     
     private var townListView: some View {
         VStack(spacing: 0) {
-            ForEach(store.state.townList, id: \.self) { town in
+            ForEach(townList, id: \.self) { town in
                 JGDTopTownRow(
                     title: town.townName,
-                    isSelected: store.state.selectedTown?.id == town.id
+                    isSelected: selectedTown?.id == town.id
                 ) {
-                    store.dispatch(.selectTown(town))
+                    selectedTown = town
+                    selectedSubTown = nil
                 }
             }
             
@@ -101,15 +135,15 @@ extension TownSelectBottomSheet {
     }
     
     private var subTownListView: some View {
-        let subTowns = store.state.selectedTown?.subTowns ?? []
+        let subTowns = selectedTown?.subTowns ?? []
         
         return VStack(spacing: 0) {
             ForEach(subTowns, id: \.self) { subTown in
                 JGDSubTownRow(
                     title: subTown.townName,
-                    isSelected: store.state.selectedSubTown?.id == subTown.id
+                    isSelected: selectedSubTown?.id == subTown.id
                 ) {
-                    store.dispatch(.selectSubTown(subTown))
+                    selectedSubTown = subTown
                 }
             }
             

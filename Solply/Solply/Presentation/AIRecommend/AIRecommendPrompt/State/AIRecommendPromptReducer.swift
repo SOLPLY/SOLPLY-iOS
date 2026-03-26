@@ -81,7 +81,7 @@ enum AIRecommendPromptReducer {
         case .saveSelectionSuccess:
             break
         case .saveSelectionFailure(let error):
-            break
+            print(error)
         }
     }
 }
