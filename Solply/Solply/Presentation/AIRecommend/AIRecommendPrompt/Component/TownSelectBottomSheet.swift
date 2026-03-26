@@ -100,6 +100,7 @@ extension TownSelectBottomSheet {
             } label: {
                 Image(.xIconSm)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjusted, height: 24.adjusted)
                     .foregroundStyle(.gray800)
             }
@@ -117,7 +118,7 @@ extension TownSelectBottomSheet {
     }
     
     private var townListView: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .center, spacing: 0) {
             ForEach(townList, id: \.self) { town in
                 JGDTopTownRow(
                     title: town.townName,
@@ -137,7 +138,7 @@ extension TownSelectBottomSheet {
     private var subTownListView: some View {
         let subTowns = selectedTown?.subTowns ?? []
         
-        return VStack(spacing: 0) {
+        return VStack(alignment: .center, spacing: 0) {
             ForEach(subTowns, id: \.self) { subTown in
                 JGDSubTownRow(
                     title: subTown.townName,
