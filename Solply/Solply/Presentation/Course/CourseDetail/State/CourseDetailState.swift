@@ -60,4 +60,8 @@ struct CourseDetailState {
     var isCourseChanged: Bool {
         return isCourseNameChanged || isCourseDescriptionChanged || isCoursePlacesChanged
     }
+    
+    var coursePlaceMarks: [CoursePlaceMark] {
+        return CoursePlaceMark.from(places)
+    }
 }
