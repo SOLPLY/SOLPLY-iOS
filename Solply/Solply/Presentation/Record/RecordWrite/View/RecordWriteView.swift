@@ -31,59 +31,60 @@ struct RecordWriteView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    
-                    VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                        RecordWriteSectionHeader(title: "방문 장소")
-                        placeField
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                        RecordWriteSectionHeader(title: "방문 날짜")
-                        SolplyDatePicker(
-                            selectedDate: Binding(
-                                get: { store.state.selectedDate },
-                                set: { store.dispatch(.selectDate($0)) }
-                            )
-                        )
-                        visitTimeButtons
-                    }
-                    .padding(.top, 40.adjustedHeight)
-                    
-                    VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                        RecordWriteSectionHeader(
-                            title: "오늘의 기록",
-                            showsGuide: true,
-                            onGuideTapped: {
-                                showModal()
-                            }
-                        )
-                        
-                        SolplyTextEditor(
-                            placeholder: "오늘의 기록을 입력해주세요",
-                            isTextLimitEnabled: true
-                        ) { newText in
-                            store.dispatch(.writeRecordText(newText))
-                        }
-                    }
-                    .padding(.top, 40.adjustedHeight)
-                    
-                    VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                        RecordWriteSectionHeader(title: "사진 추가 (선택)")
-                        
-                        SolplyPhotosPicker { imageData in
-                            store.dispatch(.selectTime(imageData))
-                        }
-                    }
-                    .padding(.top, 14.adjustedHeight)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                
+                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                    RecordWriteSectionHeader(title: "방문 장소")
+                    placeField
                 }
-                .padding(.horizontal, 20.adjustedWidth)
+                
+                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                    RecordWriteSectionHeader(title: "방문 날짜")
+                    SolplyDatePicker(
+                        selectedDate: Binding(
+                            get: { store.state.selectedDate },
+                            set: { store.dispatch(.selectDate($0)) }
+                        )
+                    )
+                    visitTimeButtons
+                }
+                .padding(.top, 40.adjustedHeight)
+                
+                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                    RecordWriteSectionHeader(
+                        title: "오늘의 기록",
+                        showsGuide: true,
+                        onGuideTapped: {
+                            showModal()
+                        }
+                    )
+                    
+                    SolplyTextEditor(
+                        placeholder: "오늘의 기록을 입력해주세요",
+                        isTextLimitEnabled: true
+                    ) { newText in
+                        store.dispatch(.writeRecordText(newText))
+                    }
+                }
+                .padding(.top, 40.adjustedHeight)
+                
+                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                    RecordWriteSectionHeader(title: "사진 추가 (선택)")
+                    
+                    SolplyPhotosPicker { imageData in
+                        store.dispatch(.selectTime(imageData))
+                    }
+                }
+                .padding(.top, 14.adjustedHeight)
             }
-            
+            .padding(.horizontal, 20.adjustedWidth)
+            .padding(.bottom, 100.adjustedHeight)
+        }
+        .overlay(alignment: .bottom) {
             aiRecommendButton
+                .padding(.horizontal, 20.adjustedWidth)
+                .padding(.bottom, 4.adjustedHeight)
         }
         .customNavigationBar(.backWithTitle(title: "혼놀 기록 남기기") {
             appCoordinator.goBack()
