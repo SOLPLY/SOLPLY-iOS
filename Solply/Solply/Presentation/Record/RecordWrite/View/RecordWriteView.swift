@@ -165,10 +165,3 @@ extension RecordWriteView {
         )
     }
 }
-
-//// MARK: - Preview
-
-#Preview {
-    RecordWriteView(placeName: "성수동 추가해주세요")
-        .environmentObject(AppCoordinator())
-}
