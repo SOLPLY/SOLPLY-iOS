@@ -8,9 +8,26 @@
 import SwiftUI
 
 struct RecordWriteSectionHeader: View {
+    
+    // MARK: - Properties
+    
     let title: String
-    var showsInfo: Bool = false
-    var onInfoTapped: (() -> Void)? = nil
+    var showsGuide: Bool
+    var onGuideTapped: (() -> Void)?
+    
+    // MARK: - Initializer
+    
+    init(
+        title: String,
+        showsGuide: Bool = false,
+        onGuideTapped: (() -> Void)? = nil
+    ) {
+        self.title = title
+        self.showsGuide = showsGuide
+        self.onGuideTapped = onGuideTapped
+    }
+    
+    // MARK: - Body
     
     var body: some View {
         HStack(alignment: .center, spacing: 4.adjustedWidth) {
@@ -18,9 +35,9 @@ struct RecordWriteSectionHeader: View {
                 .applySolplyFont(.body_14_m)
                 .foregroundStyle(.coreBlack)
             
-            if showsInfo {
+            if showsGuide {
                 Button {
-                    onInfoTapped?()
+                    onGuideTapped?()
                 } label: {
                     Image(.infoIcon)
                         .resizable()
@@ -34,5 +51,3 @@ struct RecordWriteSectionHeader: View {
         }
     }
 }
-
-

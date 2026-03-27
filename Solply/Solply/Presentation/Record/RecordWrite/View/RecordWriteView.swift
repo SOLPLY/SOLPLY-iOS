@@ -31,7 +31,7 @@ struct RecordWriteView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
@@ -56,8 +56,8 @@ struct RecordWriteView: View {
                     VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                         RecordWriteSectionHeader(
                             title: "오늘의 기록",
-                            showsInfo: true,
-                            onInfoTapped: {
+                            showsGuide: true,
+                            onGuideTapped: {
                                 showModal()
                             }
                         )
@@ -97,7 +97,7 @@ struct RecordWriteView: View {
 extension RecordWriteView {
     
     private var placeField: some View {
-        HStack {
+        HStack(alignment: .center, spacing: 0) {
             Text(store.state.placeName)
                 .applySolplyFont(.body_16_r)
                 .foregroundStyle(.coreBlack)
@@ -118,7 +118,7 @@ extension RecordWriteView {
     }
     
     private var visitTimeButtons: some View {
-        HStack(spacing: 8.adjustedWidth) {
+        HStack(alignment: .center, spacing: 8.adjustedWidth) {
             ForEach(VisitTime.allCases, id: \.self) { time in
                 Button {
                     store.dispatch(.selectVisitTime(time))
@@ -165,7 +165,7 @@ extension RecordWriteView {
     }
 }
 
-// MARK: - Preview
+//// MARK: - Preview
 
 #Preview {
     RecordWriteView(placeName: "성수동 추가해주세요")
