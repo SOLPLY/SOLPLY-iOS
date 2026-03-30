@@ -20,6 +20,10 @@ struct TabBarView: View {
     @State private var placeRecommendTitle: String = ""
     @State private var courseRecommendTitle: String = ""
     @State private var isUserInformationLoading: Bool = false
+    @State private var showOfflineBanner: Bool = false
+    
+    @State private var networkMonitor = NetworkMonitor()
+    @State private var retryRegistry = RetryRegistry()
     
     private let userService = UserService()
     
@@ -33,6 +37,35 @@ struct TabBarView: View {
                 .zIndex(10)
                 .padding(.bottom, 16.adjustedHeight)
         }
+        .overlay(alignment: .top) {
+            if showOfflineBanner {
+                OfflineBanner {
+                    if networkMonitor.checkConnection() {
+                        retryRegistry.reload()
+                        showOfflineBanner = false
+                    }
+                }
+                .transition(
+                    .move(edge: .top)
+                    .combined(with: .opacity)
+                )
+                .zIndex(20)
+            }
+        }
+        .animation(.easeInOut(duration: 0.4), value: showOfflineBanner)
+        .onChange(of: networkMonitor.isConnected) { _, isConnected in
+            if !isConnected {
+                showOfflineBanner = true
+            } else {
+                Task {
+                    try? await Task.sleep(for: .seconds(1))
+                    guard networkMonitor.isConnected else { return }
+                    retryRegistry.reload()
+                    showOfflineBanner = false
+                }
+            }
+        }
+        .environment(retryRegistry)
         .onAppear {
             locationManager.requestPermissionAndStartUpdates()
         }
@@ -79,6 +112,7 @@ extension TabBarView {
                     isUserInformationLoading: isUserInformationLoading
                 )
                 .visible(appCoordinator.selectedTab == .place)
+                .id(retryRegistry.reloadID)
             }
             
             if visitedTabs.contains(.course) {
@@ -87,16 +121,19 @@ extension TabBarView {
                     isUserInformationLoading: isUserInformationLoading
                 )
                 .visible(appCoordinator.selectedTab == .course)
+                .id(retryRegistry.reloadID)
             }
             
             if visitedTabs.contains(.bookmark) {
                 ArchiveView()
                     .visible(appCoordinator.selectedTab == .bookmark)
+                    .id(retryRegistry.reloadID)
             }
             
             if visitedTabs.contains(.myPage) {
                 MyPageView()
                     .visible(appCoordinator.selectedTab == .myPage)
+                    .id(retryRegistry.reloadID)
             }
         }
         .ignoresSafeArea(edges: .bottom)
