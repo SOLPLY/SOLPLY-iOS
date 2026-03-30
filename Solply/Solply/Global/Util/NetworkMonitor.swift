@@ -43,9 +43,9 @@ final class NetworkMonitor {
 
 @Observable
 final class RetryRegistry {
-    private(set) var reloadID = UUID()
+    private(set) var reloadId = UUID()
     
     func reload() {
-        reloadID = UUID()
+        reloadId = UUID()
     }
 }

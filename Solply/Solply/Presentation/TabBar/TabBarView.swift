@@ -112,7 +112,7 @@ extension TabBarView {
                     isUserInformationLoading: isUserInformationLoading
                 )
                 .visible(appCoordinator.selectedTab == .place)
-                .id(retryRegistry.reloadID)
+                .id(retryRegistry.reloadId)
             }
             
             if visitedTabs.contains(.course) {
@@ -121,19 +121,19 @@ extension TabBarView {
                     isUserInformationLoading: isUserInformationLoading
                 )
                 .visible(appCoordinator.selectedTab == .course)
-                .id(retryRegistry.reloadID)
+                .id(retryRegistry.reloadId)
             }
             
             if visitedTabs.contains(.bookmark) {
                 ArchiveView()
                     .visible(appCoordinator.selectedTab == .bookmark)
-                    .id(retryRegistry.reloadID)
+                    .id(retryRegistry.reloadId)
             }
             
             if visitedTabs.contains(.myPage) {
                 MyPageView()
                     .visible(appCoordinator.selectedTab == .myPage)
-                    .id(retryRegistry.reloadID)
+                    .id(retryRegistry.reloadId)
             }
         }
         .ignoresSafeArea(edges: .bottom)
