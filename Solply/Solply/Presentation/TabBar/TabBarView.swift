@@ -66,14 +66,16 @@ struct TabBarView: View {
         .environment(retryRegistry)
         .onAppear {
             locationManager.requestPermissionAndStartUpdates()
+            trackAmplitudeViewListEvent(appCoordinator.selectedTab)
         }
         .onChange(of: appCoordinator.selectedTab) { _, newValue in
             trackAmplitudeViewListEvent(newValue)
         }
-        .task {
-            await appState.fetchUserInformation()
-            trackAmplitudeViewListEvent(appCoordinator.selectedTab)
-        }
+//        .task {
+//            // TODO: - 유저 정보 받아오는 시점보다 추천뷰 api 호출 시점이 빨라서 문제가 생김
+//            await appState.fetchUserInformation()
+//            trackAmplitudeViewListEvent(appCoordinator.selectedTab)
+//        }
     }
 }
 

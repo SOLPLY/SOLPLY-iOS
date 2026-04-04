@@ -64,13 +64,10 @@ struct CourseRecommendView: View {
                 searchAction: { appCoordinator.navigate(to: .placeSearch) }
             )
         )
-        .onChange(of: appState.townId) { _, townId in
-            store.dispatch(.fetchCourseRecommend(townId: townId))
-        }
-        .background(.gray100)
-        .task {
+        .onAppear {
             store.dispatch(.fetchCourseRecommend(townId: appState.townId))
         }
+        .background(.gray100)
     }
 }
 

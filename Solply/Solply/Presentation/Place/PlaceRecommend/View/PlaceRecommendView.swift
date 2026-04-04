@@ -72,24 +72,12 @@ struct PlaceRecommendView: View {
                 store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
             }
             
-            store.dispatch(.fetchPlaceList(
-                townId: appState.townId,
-                isBookmarkSearch: false,
-                mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: [],
-                subTagBIdList: []
-            ))
-        }
-        .onChange(of: appState.townId) { _, newTownId in
-            if appState.userSession == .authenticated {
-                store.dispatch(.fetchPlaceRecommend(townId: newTownId))
-            }
-            
+            // TODO: - 태그 살릴지 말지 고민해야함
             store.dispatch(.resetTags)
             store.dispatch(.resetSubTags)
             
             store.dispatch(.fetchPlaceList(
-                townId: newTownId,
+                townId: appState.townId,
                 isBookmarkSearch: false,
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
                 subTagAIdList: [],

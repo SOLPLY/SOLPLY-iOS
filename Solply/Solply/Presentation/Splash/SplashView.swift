@@ -42,6 +42,7 @@ extension SplashView {
         appState.updateUserSession()
         
         if TokenManager.shared.isSessionAvailable {
+            await appState.fetchUserInformation()
             appCoordinator.changeRoot(to: .tabBar)
         } else {
             appCoordinator.changeRoot(to: .auth)

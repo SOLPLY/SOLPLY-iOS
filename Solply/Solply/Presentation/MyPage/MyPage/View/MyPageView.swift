@@ -52,8 +52,12 @@ struct MyPageView: View {
                         onTapCustomerCenter: {
                             appCoordinator.navigate(to: .customerCenter)
                         },
-                        onTapLogout: { store.dispatch(.logout) },
+                        onTapLogout: {
+                            appState.clearUserInformation()
+                            store.dispatch(.logout)
+                        },
                         onTapDeleteAccount: {
+                            appState.clearUserInformation()
                             appCoordinator.navigate(to: .withdraw)
                         }
                     )

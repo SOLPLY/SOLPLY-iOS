@@ -88,4 +88,12 @@ extension AppState {
         }
         onAuthenticated?()
     }
+    
+    func clearUserInformation() {
+        self.userInformation = nil
+        self.townId = 0
+        self.townName = ""
+        self.isUserInformationLoading = false
+        self.userSession = .explore
+    }
 }
