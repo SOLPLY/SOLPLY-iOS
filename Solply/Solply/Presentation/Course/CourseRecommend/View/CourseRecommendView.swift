@@ -16,20 +16,7 @@ struct CourseRecommendView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = CourseRecommendStore()
     
-    private let title: String
-    private let isUserInformationLoading: Bool
-    
     private let topId: String = "TOP"
-    
-    // MARK: - Initializer
-    
-    init(
-        title: String,
-        isUserInformationLoading: Bool,
-    ) {
-        self.title = title
-        self.isUserInformationLoading = isUserInformationLoading
-    }
     
     // MARK: - Body
     
@@ -57,7 +44,7 @@ struct CourseRecommendView: View {
         .customNavigationBar(
             .townFilterWithSearch(
                 filterTitle: appState.townName,
-                isLoading: isUserInformationLoading,
+                isLoading: appState.isUserInformationLoading,
                 filterAction: {
                     AmplitudeManager.shared.track(
                         .viewTownList(
@@ -98,13 +85,13 @@ extension CourseRecommendView {
     
     private var courseRecommendTitle: some View {
         HStack(alignment: .center, spacing: 0) {
-            Text(title)
+            Text(appState.courseRecommendTitle)
                 .applySolplyFont(.display_20_sb)
                 .foregroundStyle(.coreBlack)
             
             Spacer()
         }
-        .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
+        .customLoading(.recommendTitleLoading, isLoading: appState.isUserInformationLoading)
         .frame(width: 335.adjustedWidth)
     }
     
