@@ -28,9 +28,10 @@ struct MyPageView: View {
                     
                     MyPageSection(
                         type: .registeredPlaces,
-                        items: store.state.user?.myPlacePreviews ?? [],
+                        items: appState.userInformation?.myPlacePreviews ?? [],
                         onSeeAllTapped: {
-                            guard let userId = store.state.user?.userId else { return }
+                            guard let userId = appState.userInformation?.userId else { return }
+                            
                             appCoordinator.navigate(to: .registeredPlaces(userId: userId))
                         }
                     )
@@ -52,7 +53,7 @@ struct MyPageView: View {
                             appCoordinator.navigate(to: .customerCenter)
                         },
                         onTapLogout: { store.dispatch(.logout) },
-                        onTapDeleteAccount: { store.dispatch(.deleteAccountTapped)
+                        onTapDeleteAccount: {
                             appCoordinator.navigate(to: .withdraw)
                         }
                     )
@@ -75,7 +76,6 @@ struct MyPageView: View {
         .background(.gray100)
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
-            store.dispatch(.fetchUser)
             store.dispatch(.fetchLoginInformation)
             
             AmplitudeManager.shared.track(.viewMyPage(entryMode: .member))
@@ -88,16 +88,16 @@ struct MyPageView: View {
 private extension MyPageView {
     var header: some View {
         VStack(alignment: .center, spacing: 15.adjustedHeight) {
-            ProfileImage(profileImageUrl: store.state.user?.profileImageUrl)
+            ProfileImage(profileImageUrl: appState.userInformation?.profileImageUrl)
             
-            Text(store.state.user?.nickname ?? "")
+            Text(appState.userInformation?.nickname ?? "")
                 .applySolplyFont(.title_18_sb)
                 .foregroundColor(.coreBlack)
             
             Button {
-                guard let user = store.state.user else { return }
+                guard let userInformation = appState.userInformation else { return }
                 
-                appCoordinator.navigate(to: .myPageEdit(userInformation: user))
+                appCoordinator.navigate(to: .myPageEdit(userInformation: userInformation))
             } label: {
                 HStack(alignment: .center, spacing: 0) {
                     Text("프로필 수정")

@@ -19,13 +19,6 @@ final class MyPageStore: ObservableObject {
         MyPageReducer.reduce(state: &state, action: action)
 
         switch action {
-            
-        case .fetchUser:
-            Task {
-                let result = await effect.fetchUser()
-                dispatch(result)
-            }
-            
         case .fetchLoginInformation:
             Task {
                 let result = await effect.fetchLoginInformation()

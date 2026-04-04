@@ -20,26 +20,6 @@ struct MyPageEffect {
         self.userService = userService
         self.authService = authService
     }
-    
-    // MARK: - Functions
-    
-    func fetchUser() async -> MyPageAction {
-        do {
-            let response = try await userService.fetchUserInformation()
-            
-            guard let dto = response.data else {
-                return .userLoadFailed(error: .responseError)
-            }
-            
-            let user = UserInformation(dto: dto)
-            return .userLoaded(user)
-            
-        } catch let error as NetworkError {
-            return .userLoadFailed(error: error)
-        } catch {
-            return .userLoadFailed(error: .unknownError)
-        }
-    }
 }
 
  // MARK: - AuthAPI
