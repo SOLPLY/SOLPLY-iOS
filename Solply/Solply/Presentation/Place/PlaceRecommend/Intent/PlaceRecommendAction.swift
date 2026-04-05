@@ -8,6 +8,7 @@
 import Foundation
 
 enum PlaceRecommendAction {
+    case onAppear(townId: Int)
     case resetTags
     
     case toggleMainTagBottomSheet

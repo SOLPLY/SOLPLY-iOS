@@ -155,20 +155,12 @@ struct FilterPlaceGrid: View {
                             
                             store.dispatch(.updateSubTags(selectedTags))
                             
-                            let subTagAIdList = selectedTags
-                                .filter { $0.tagType == "OPTION1" && $0.isSelected }
-                                .map { $0.id }
-                            
-                            let subTagBIdList = selectedTags
-                                .filter { $0.tagType == "OPTION2" && $0.isSelected }
-                                .map { $0.id }
-                            
                             store.dispatch(.fetchPlaceList(
                                 townId: townId,
                                 isBookmarkSearch: false,
                                 mainTagId: store.state.selectedMainTag.parentId,
-                                subTagAIdList: subTagAIdList,
-                                subTagBIdList: subTagBIdList
+                                subTagAIdList: store.state.subTagAIdList,
+                                subTagBIdList: store.state.subTagBIdList
                             ))
                         }
                         .presentationDetents([.fraction(0.6)])
