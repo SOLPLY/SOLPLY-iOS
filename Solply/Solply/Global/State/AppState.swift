@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class AppState: ObservableObject {
     @Published private(set) var userSession: UserSession = .explore
     @Published var townId: Int = 0
@@ -48,25 +49,23 @@ extension AppState {
     func fetchUserInformation() async {
         guard userSession == .authenticated else { return }
         
-        await MainActor.run { isUserInformationLoading = true }
+        isUserInformationLoading = true
         
         do {
             let response = try await userService.fetchUserInformation()
             
             guard let data = response.data else {
-                await MainActor.run { isUserInformationLoading = false }
+                isUserInformationLoading = false
                 return
             }
             
             let information = UserInformation(dto: data)
-            await MainActor.run {
-                self.userInformation = information
-                self.townName = information.townName
-                self.townId = information.townId
-                self.isUserInformationLoading = false
-            }
+            self.userInformation = information
+            self.townName = information.townName
+            self.townId = information.townId
+            self.isUserInformationLoading = false
         } catch {
-            await MainActor.run { isUserInformationLoading = false }
+            isUserInformationLoading = false
         }
     }
     
