@@ -68,20 +68,18 @@ struct PlaceRecommendView: View {
         )
         .background(.gray100)
         .onAppear {
+            store.dispatch(.onAppear(townId: appState.townId))
+            
             if appState.userSession == .authenticated {
                 store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
             }
-            
-            // TODO: - 태그 버그 일단 다른 화면 갔다 오면 태그 초기화하도록 해둠... 수정예정!
-            store.dispatch(.resetTags)
-            store.dispatch(.resetSubTags)
             
             store.dispatch(.fetchPlaceList(
                 townId: appState.townId,
                 isBookmarkSearch: false,
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: [],
-                subTagBIdList: []
+                subTagAIdList: store.state.subTagAIdList,
+                subTagBIdList: store.state.subTagBIdList
             ))
         }
     }
