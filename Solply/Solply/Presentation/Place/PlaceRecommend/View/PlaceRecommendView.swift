@@ -16,20 +16,7 @@ struct PlaceRecommendView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceRecommendStore()
     
-    private let title: String
-    private let isUserInformationLoading: Bool
-    
     private let topId: String = "TOP"
-    
-    // MARK: - Initializer
-    
-    init(
-        title: String,
-        isUserInformationLoading: Bool,
-    ) {
-        self.title = title
-        self.isUserInformationLoading = isUserInformationLoading
-    }
     
     // MARK: - Body
     
@@ -59,7 +46,7 @@ struct PlaceRecommendView: View {
         .customNavigationBar(
             .townFilterWithSearch(
                 filterTitle: appState.townName,
-                isLoading: isUserInformationLoading,
+                isLoading: appState.isUserInformationLoading,
                 filterAction: {
                     AmplitudeManager.shared.track(
                         .viewTownList(
@@ -85,24 +72,12 @@ struct PlaceRecommendView: View {
                 store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
             }
             
-            store.dispatch(.fetchPlaceList(
-                townId: appState.townId,
-                isBookmarkSearch: false,
-                mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: [],
-                subTagBIdList: []
-            ))
-        }
-        .onChange(of: appState.townId) { _, newTownId in
-            if appState.userSession == .authenticated {
-                store.dispatch(.fetchPlaceRecommend(townId: newTownId))
-            }
-            
+            // TODO: - 태그 버그 일단 다른 화면 갔다 오면 태그 초기화하도록 해둠... 수정예정!
             store.dispatch(.resetTags)
             store.dispatch(.resetSubTags)
             
             store.dispatch(.fetchPlaceList(
-                townId: newTownId,
+                townId: appState.townId,
                 isBookmarkSearch: false,
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
                 subTagAIdList: [],
@@ -123,13 +98,13 @@ extension PlaceRecommendView {
     
     private var placeRecommendTitle: some View {
         HStack(alignment: .center, spacing: 0) {
-            Text(title)
+            Text(appState.placeRecommendTitle)
                 .applySolplyFont(.display_20_sb)
                 .foregroundStyle(.coreBlack)
             
             Spacer()
         }
-        .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
+        .customLoading(.recommendTitleLoading, isLoading: appState.isUserInformationLoading)
         .frame(width: 335.adjustedWidth)
     }
     
