@@ -73,6 +73,7 @@ enum AppEnvironment {
     }()
     
     /// solply 앱 버전
+    /// 마이페이지 UI용
     static let appVersion: String = {
         guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
             return ""
@@ -88,5 +89,38 @@ enum AppEnvironment {
         }
         
         return apiKey
+    }()
+    
+    /// 현재 앱 버전
+    /// 업데이트 필요 여부 판단용
+    static let currentVersion: String = {
+        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            return ""
+        }
+        
+        return version
+    }()
+    
+    /// BundleID
+    static let bundleId: String = {
+        guard let bundleId = Bundle.main.bundleIdentifier else {
+            fatalError("bundleId를 가져올 수 없습니다.")
+        }
+        
+        return bundleId
+    }()
+    
+    /// 앱스토어 App ID
+    static let appStoreID: String = {
+        guard let appStoreID = Bundle.main.object(forInfoDictionaryKey: "APP_STORE_ID") as? String else {
+            fatalError("Info.plist에 APP_STORE_ID가 없습니다.")
+        }
+        
+        return appStoreID
+    }()
+    
+    /// 앱스토어 URL
+    static let appStoreURL: URL? = {
+        URL(string: "https://apps.apple.com/app/id\(appStoreID)")
     }()
 }
