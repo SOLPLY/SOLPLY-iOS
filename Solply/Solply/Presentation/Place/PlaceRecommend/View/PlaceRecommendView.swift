@@ -68,28 +68,18 @@ struct PlaceRecommendView: View {
         )
         .background(.gray100)
         .onAppear {
+            store.dispatch(.onAppear(townId: appState.townId))
+            
             if appState.userSession == .authenticated {
                 store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
             }
-            
-            // TODO: - TownId가 바뀌면 reset하도록 하고, 그대로면 아래 로직 진행하도록 수정해야함.
-//            store.dispatch(.resetTags)
-//            store.dispatch(.resetSubTags)
-            
-            let subTagAIdList = store.state.selectedSubTags
-                .filter { $0.tagType == "OPTION1" && $0.isSelected }
-                .map { $0.id }
-            
-            let subTagBIdList = store.state.selectedSubTags
-                .filter { $0.tagType == "OPTION2" && $0.isSelected }
-                .map { $0.id }
             
             store.dispatch(.fetchPlaceList(
                 townId: appState.townId,
                 isBookmarkSearch: false,
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: subTagAIdList,
-                subTagBIdList: subTagBIdList
+                subTagAIdList: store.state.subTagAIdList,
+                subTagBIdList: store.state.subTagBIdList
             ))
         }
     }
