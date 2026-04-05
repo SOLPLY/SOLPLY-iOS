@@ -72,16 +72,24 @@ struct PlaceRecommendView: View {
                 store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
             }
             
-            // TODO: - 태그 버그 일단 다른 화면 갔다 오면 태그 초기화하도록 해둠... 수정예정!
-            store.dispatch(.resetTags)
-            store.dispatch(.resetSubTags)
+            // TODO: - TownId가 바뀌면 reset하도록 하고, 그대로면 아래 로직 진행하도록 수정해야함.
+//            store.dispatch(.resetTags)
+//            store.dispatch(.resetSubTags)
+            
+            let subTagAIdList = store.state.selectedSubTags
+                .filter { $0.tagType == "OPTION1" && $0.isSelected }
+                .map { $0.id }
+            
+            let subTagBIdList = store.state.selectedSubTags
+                .filter { $0.tagType == "OPTION2" && $0.isSelected }
+                .map { $0.id }
             
             store.dispatch(.fetchPlaceList(
                 townId: appState.townId,
                 isBookmarkSearch: false,
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: [],
-                subTagBIdList: []
+                subTagAIdList: subTagAIdList,
+                subTagBIdList: subTagBIdList
             ))
         }
     }
