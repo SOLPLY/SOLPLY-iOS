@@ -72,6 +72,11 @@ struct TodayPlaceRecommendCarousel: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             }
         }
+        .onChange(of: currentIndex) { oldValue, newValue in
+            if oldValue != newValue {
+                HapticManager.shared.impact(style: .light)
+            }
+        }
         .frame(height: store.state.placeRecommendItems.isEmpty ? 60.adjustedHeight : 240.adjusted)
         .gesture(
             DragGesture()

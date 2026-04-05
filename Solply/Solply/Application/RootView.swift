@@ -16,6 +16,8 @@ struct RootView: View {
     @StateObject private var toastManager = ToastManager()
     @StateObject private var alertManager = AlertManager()
     
+    @State private var appVersionMonitor = AppVersionMonitor()
+    
     // MARK: - Body
     
     var body: some View {
@@ -40,6 +42,10 @@ struct RootView: View {
                     bottomPadding: 16.adjustedHeight
                 )
             )
+        }
+        .forceUpdateAlert(monitor: appVersionMonitor)
+        .task {
+            await appVersionMonitor.checkCurrentVersionForUpdate()
         }
     }
 }
