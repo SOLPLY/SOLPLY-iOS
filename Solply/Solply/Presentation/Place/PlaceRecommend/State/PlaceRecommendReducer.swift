@@ -11,10 +11,18 @@ struct PlaceRecommendReducer {
     static func reduce(state: inout PlaceRecommendState, action: PlaceRecommendAction) {
         switch action {
         case .onAppear(let townId):
+            print("previous: \(state.previousTownId), current: \(townId)")
+            // TODO: - 초기 TownId값이 0인 것 때문에 임시로 if문 추가
+            // 2.0.0에서는 지워야 함
+            if state.previousTownId == 0 {
+                state.previousTownId = townId
+            }
             let townChanged = state.previousTownId != townId
             state.previousTownId = townId
             
+            
             if townChanged {
+                print("동네 변경됨)")
                 state.selectedMainTag = .all
                 state.selectedSubTags = []
             }
