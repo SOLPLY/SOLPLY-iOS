@@ -345,12 +345,17 @@ extension PlaceDetailView {
             sectionHeader(title: "솔플리 TIP")
                 .padding(.horizontal, 20.adjustedWidth)
             
-            HStack(alignment: .center, spacing: 8.adjustedWidth) {
+            CustomFlowLayout(
+                horizontalSpacing: 8.adjustedWidth,
+                verticalSpacing: 8.adjustedHeight,
+                lineHeight: 32.adjusted,
+                alignment: .center
+            ) {
                 ForEach(store.state.solplyTips, id: \.self) { subTag in
                     RecommendCardFilterChip(subTag: subTag)
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.horizontal, 20.adjustedWidth)
             
             VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                 ForEach(store.state.solplyCheckPoints, id: \.self) { checkPoint in
