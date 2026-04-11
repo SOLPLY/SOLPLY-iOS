@@ -22,7 +22,7 @@ enum AppDestination: Hashable {
     case register
     case registerComplete
     case customerCenter
-    case recordList
+    case recordList(placeId: Int)
     case aiRecommend
 }
 
@@ -58,8 +58,8 @@ extension AppDestination {
             RegisterCompleteView()
         case .customerCenter:
             CustomerCenterView()
-        case .recordList:
-            RecordListView()
+        case .recordList(let placeId):
+            RecordListView(placeId: placeId)
         case .aiRecommend:
             AIRecommendPromptView()
         }
