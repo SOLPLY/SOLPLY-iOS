@@ -2,7 +2,7 @@
 //  VisitTime.swift
 //  Solply
 //
-//  Created by 김승원 on 4/11/26.
+//  Created by sun on 4/11/26.
 //
 
 import Foundation
