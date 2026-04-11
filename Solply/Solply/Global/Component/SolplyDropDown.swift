@@ -219,24 +219,3 @@ private extension SolplyDropDown {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    VStack(alignment: .leading, spacing: 24.adjustedHeight) {
-        SolplyDropDown(
-            title: "솔플 스타일을 선택하라우",
-            options: [
-                "이곳저곳 둘러보고 싶어요",
-                "취향이 담긴 곳을 찾고 싶어요",
-                "자연을 감상하며 쉬고 싶어요"
-            ]
-        )
-        
-        SolplyDropDown(
-            title: "장소 유형을 선택해주세요",
-            tagOptions: Array(MainTagType.allCases.dropFirst())
-        )
-    }
-    .padding(20.adjustedWidth)
-}

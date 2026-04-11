@@ -84,7 +84,3 @@ struct SearchPlaceCard: View {
         }
     }
 }
-
-//#Preview {
-//    SearchPlaceCard(thumbnailUrl: "https://d2ga1f2858oj5h.cloudfront.net/dev/uploads/places/18/place_018_image_1.jpg", placeName: "공간이름", address: "경기도 김포시", mainTag: .cafe)
-//}

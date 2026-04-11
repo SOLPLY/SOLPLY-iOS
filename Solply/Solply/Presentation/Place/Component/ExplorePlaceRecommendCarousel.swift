@@ -66,7 +66,3 @@ extension ExplorePlaceRecommendCarousel {
         .frame(width: 200.adjustedWidth)
     }
 }
-
-#Preview {
-    ExplorePlaceRecommendCarousel()
-}

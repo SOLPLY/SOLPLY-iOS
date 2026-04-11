@@ -46,8 +46,3 @@ struct SocialLoginButton: View {
         .buttonStyle(.plain)
     }
 }
-
-#Preview {
-    SocialLoginButton(.kakao)
-    SocialLoginButton(.apple)
-}
