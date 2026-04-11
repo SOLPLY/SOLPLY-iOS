@@ -11,7 +11,7 @@ struct RecordWriteState {
     var placeName: String
     
     var selectedDate: Date? = nil
-    var selectedVisitTime: RecordWriteView.VisitTime? = nil
+    var selectedVisitTime: VisitTime? = nil
     var recordText: String = ""
     var selectedPhotos: [(fileName: String, data: Data)] = []
     

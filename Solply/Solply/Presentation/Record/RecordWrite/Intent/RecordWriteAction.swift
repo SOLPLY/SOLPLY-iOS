@@ -9,7 +9,7 @@ import Foundation
 
 enum RecordWriteAction {
     case selectDate(Date?)
-    case selectVisitTime(RecordWriteView.VisitTime)
+    case selectVisitTime(VisitTime)
     case writeRecordText(String)
     
     case selectTime([(fileName: String, data: Data)])

@@ -93,8 +93,9 @@ extension PlaceDetailEffect {
             }
             
             let placeDetailInformation = PlaceDetailInformation(dto: data)
+            let records = data.latestReviews.map { Record($0) }
             
-            return .placeDetailFetched(placeDetailInformation: placeDetailInformation)
+            return .placeDetailFetched(placeDetailInformation: placeDetailInformation, records: records)
         } catch let error as NetworkError {
             return .fetchPlaceDetailFailed(error: error)
         } catch {

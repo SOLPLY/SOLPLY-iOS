@@ -49,32 +49,38 @@ final class PlaceDetailStore: ObservableObject {
             }
             
         case .findDirection(let mapRouteType):
+            
+            guard let userLatitude = state.userLatitude,
+                  let userLongitude = state.userLongitude,
+                  let latitude = state.latitude,
+                  let longitude = state.longitude else { return }
+            
             switch mapRouteType {
             case .naver:
                 effect.findDirection(
                     with: .naver,
-                    startLatitude: state.userLatitude,
-                    startLongitude: state.userLongitude,
-                    destinationLatitude: state.latitude,
-                    destinationLongitude: state.longitude,
+                    startLatitude: userLatitude,
+                    startLongitude: userLongitude,
+                    destinationLatitude: latitude,
+                    destinationLongitude: longitude,
                     destinationName: state.placeName
                 )
             case .apple:
                 effect.findDirection(
                     with: .apple,
-                    startLatitude: state.userLatitude,
-                    startLongitude: state.userLongitude,
-                    destinationLatitude: state.latitude,
-                    destinationLongitude: state.longitude,
+                    startLatitude: userLatitude,
+                    startLongitude: userLongitude,
+                    destinationLatitude: latitude,
+                    destinationLongitude: longitude,
                     destinationName: nil
                 )
             case .kakao:
                 effect.findDirection(
                     with: .kakao,
-                    startLatitude: state.userLatitude,
-                    startLongitude: state.userLongitude,
-                    destinationLatitude: state.latitude,
-                    destinationLongitude: state.longitude,
+                    startLatitude: userLatitude,
+                    startLongitude: userLongitude,
+                    destinationLatitude: latitude,
+                    destinationLongitude: longitude,
                     destinationName: nil
                 )
             }
@@ -91,7 +97,7 @@ final class PlaceDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
-        case .placeDetailFetched(let placeDetailInformation):
+        case .placeDetailFetched(let placeDetailInformation, _):
             AmplitudeManager.shared.track(
                 .viewPlaceDetail(
                     placeId: placeId,
