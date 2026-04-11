@@ -18,14 +18,14 @@ struct Record: Identifiable {
 }
 
 extension Record {
-    init(_ reviewDto: ReviewDTO) {
-        self.id = reviewDto.reviewId
-        self.userId = reviewDto.userId
-        self.profileImageUrl = reviewDto.profileImageUrl
-        self.userName = reviewDto.nickname
-        self.photoUrls = reviewDto.imageUrls
-        self.recordText = reviewDto.content
-        self.visitTime = "\(reviewDto.visitedAt.replacingOccurrences(of: "-", with: ".")) \(reviewDto.visitTimeSlot.title) 방문"
+    init(_ recordDto: RecordDTO) {
+        self.id = recordDto.reviewId
+        self.userId = recordDto.userId
+        self.profileImageUrl = recordDto.profileImageUrl
+        self.userName = recordDto.nickname
+        self.photoUrls = recordDto.imageUrls
+        self.recordText = recordDto.content
+        self.visitTime = "\(recordDto.visitedAt.replacingOccurrences(of: "-", with: ".")) \(recordDto.visitTimeSlot.title) 방문"
     }
 }
 
