@@ -11,12 +11,6 @@ struct RecordWriteView: View {
     
     // MARK: - Properties
     
-    enum VisitTime: String, CaseIterable {
-        case morning = "오전"
-        case afternoon = "오후"
-        case evening = "저녁"
-    }
-    
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store: RecordWriteStore
     
@@ -124,7 +118,7 @@ extension RecordWriteView {
                 Button {
                     store.dispatch(.selectVisitTime(time))
                 } label: {
-                    Text(time.rawValue)
+                    Text(time.title)
                         .applySolplyFont(.body_16_r)
                         .foregroundStyle(
                             store.state.selectedVisitTime == time ? .coreWhite : .gray900

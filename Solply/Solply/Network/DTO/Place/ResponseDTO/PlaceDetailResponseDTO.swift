@@ -41,8 +41,9 @@ struct ReviewDTO: ResponseModelType {
     let reviewId: Int
     let userId: Int
     let nickname: String
-    let profileImageUrl: String
+    let profileImageUrl: String?
     let content: String
     let visitedAt: String
+    let visitTimeSlot: VisitTime
     let imageUrls: [String]
 }

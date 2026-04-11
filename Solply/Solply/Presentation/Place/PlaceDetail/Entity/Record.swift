@@ -25,7 +25,7 @@ extension Record {
         self.userName = reviewDto.nickname
         self.photoUrls = reviewDto.imageUrls
         self.recordText = reviewDto.content
-        self.visitTime = reviewDto.visitedAt
+        self.visitTime = "\(reviewDto.visitedAt.replacingOccurrences(of: "-", with: ".")) \(reviewDto.visitTimeSlot.title) 방문"
     }
 }
 
