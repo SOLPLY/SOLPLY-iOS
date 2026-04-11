@@ -11,6 +11,7 @@ struct PlaceDetailResponseDTO: ResponseModelType {
     let placeId: Int
     let placeName: String
     let mainTag: MainTagType
+    let optionTags: [SubTagType]
     let introduction: String
     let imageInfos: [ImageInfoDTO]
     let address: String
@@ -23,6 +24,7 @@ struct PlaceDetailResponseDTO: ResponseModelType {
     let isBookmarked: Bool
     let townId: Int
     let townName: String
+    let latestReviews: [ReviewDTO]
 }
 
 struct ImageInfoDTO: ResponseModelType {
@@ -33,4 +35,14 @@ struct ImageInfoDTO: ResponseModelType {
 struct SnsLinkDTO: ResponseModelType {
     let snsPlatform: String
     let url: String
+}
+
+struct ReviewDTO: ResponseModelType {
+    let reviewId: Int
+    let userId: Int
+    let nickname: String
+    let profileImageUrl: String
+    let content: String
+    let visitedAt: String
+    let imageUrls: [String]
 }
