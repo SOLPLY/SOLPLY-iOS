@@ -363,7 +363,7 @@ extension PlaceDetailView {
     
     private var record: some View {
         VStack(alignment: .center, spacing: 20.adjustedHeight) {
-            sectionHeader(title: "기록", moreButtonAction: store.state.records.count < 4 ? nil : {
+            sectionHeader(title: "기록", moreButtonAction: store.state.moreRecordsButtonEnabled ? nil : {
                 appCoordinator.navigate(to: .recordList)
             })
             .padding(.horizontal, 20.adjustedWidth)

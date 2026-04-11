@@ -39,6 +39,10 @@ struct PlaceDetailState {
     var solplyCheckPoints: [String] = []
     var records: [Record] = []
     
+    var moreRecordsButtonEnabled: Bool {
+        records.count > 3
+    }
+    
     var navigationBarTitle: String? = nil
     var imageViewerItem: ImageViewerItem? = nil
 }
