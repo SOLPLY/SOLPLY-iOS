@@ -401,6 +401,7 @@ extension PlaceDetailView {
                 }
             } else {
                 emptyRecord
+                    .padding(.bottom, 32.adjustedHeight)
             }
         }
     }
