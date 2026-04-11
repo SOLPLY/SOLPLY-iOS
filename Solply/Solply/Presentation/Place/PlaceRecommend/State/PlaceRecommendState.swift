@@ -38,6 +38,10 @@ struct PlaceRecommendState {
             .filter { $0.tagType == "OPTION2" && $0.isSelected }
             .map { $0.id }
     }
+    
+    var isPlaceRecommendLoading: Bool {
+        isCarouselLoading || isPlaceGridLoading
+    }
 }
 
 struct SelectableSubTag: Identifiable, Hashable {
