@@ -27,13 +27,14 @@ struct CustomLoadingModifier<T>: ViewModifier where T: View {
     // MARK: - Body
     
     func body(content: Content) -> some View {
-        Group {
-            if isLoading {
-                self.loadingView?()
-            } else {
-                content
+        content
+            .opacity(isLoading ? 0 : 1)
+            .overlay(alignment: .top) {
+                if isLoading {
+                    self.loadingView?()
+                        .allowsHitTesting(false)
+                }
             }
-        }
     }
 }
 

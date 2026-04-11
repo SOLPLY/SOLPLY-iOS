@@ -33,15 +33,19 @@ struct PlaceMarkerMap: View {
     // MARK: - Body
     
     var body: some View {
-        Map(initialPosition: .region(region), interactionModes: []) {
-            Annotation("", coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), anchor: .bottom) {
-                Image(.mapMarkPlace)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 36.adjusted, height: 36.adjusted)
+        if latitude == 0.0 || longitude == 0.0 {
+            Color.clear
+        } else {
+            Map(initialPosition: .region(region), interactionModes: []) {
+                Annotation("", coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), anchor: .bottom) {
+                    Image(.mapMarkPlace)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 36.adjusted, height: 36.adjusted)
+                }
             }
+            .mapControlVisibility(.hidden)
+            .mapStyle(.standard)
         }
-        .mapControlVisibility(.hidden)
-        .mapStyle(.standard)
     }
 }
