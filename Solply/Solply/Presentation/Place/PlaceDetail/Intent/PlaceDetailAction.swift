@@ -38,7 +38,7 @@ enum PlaceDetailAction {
     case fetchCourseArchiveFailed(error: NetworkError)
     
     case fetchPlaceDetail
-    case placeDetailFetched(placeDetailInformation: PlaceDetailInformation)
+    case placeDetailFetched(placeDetailInformation: PlaceDetailInformation, records: [Record])
     case fetchPlaceDetailFailed(error: NetworkError)
     
     case submitPlaceBookmark

@@ -91,7 +91,7 @@ final class PlaceDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
-        case .placeDetailFetched(let placeDetailInformation):
+        case .placeDetailFetched(let placeDetailInformation, _):
             AmplitudeManager.shared.track(
                 .viewPlaceDetail(
                     placeId: placeId,
