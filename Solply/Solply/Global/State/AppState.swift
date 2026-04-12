@@ -41,6 +41,14 @@ final class AppState: ObservableObject {
             return "\(userInformation.persona.description)\n\(userInformation.nickname)님을 위한 오늘의 코스"
         }
     }
+    
+    var isExplore: Bool {
+        userSession == .explore
+    }
+
+    var isAuthenticated: Bool {
+        userSession == .authenticated
+    }
 }
 
 // MARK: - Functions

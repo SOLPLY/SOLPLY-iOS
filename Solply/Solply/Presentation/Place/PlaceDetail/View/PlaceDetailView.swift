@@ -368,9 +368,13 @@ extension PlaceDetailView {
     
     private var record: some View {
         VStack(alignment: .center, spacing: 20.adjustedHeight) {
-            sectionHeader(title: "기록", moreButtonAction: store.state.moreRecordsButtonEnabled ? nil : {
-                appCoordinator.navigate(to: .recordList(placeId: store.placeId))
-            })
+            sectionHeader(
+                title: "기록",
+                // TODO: - 여기 버튼 고쳐야함
+                moreButtonAction: store.state.moreRecordsButtonEnabled ? {
+                    appCoordinator.navigate(to: .recordList(placeId: store.placeId))
+                } : nil
+            )
             .padding(.horizontal, 20.adjustedWidth)
             
             RecordWriteButton {

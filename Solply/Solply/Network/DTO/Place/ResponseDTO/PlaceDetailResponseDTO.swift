@@ -25,6 +25,7 @@ struct PlaceDetailResponseDTO: ResponseModelType {
     let townId: Int
     let townName: String
     let latestReviews: [RecordDTO]
+    let hasMoreReviews: Bool
 }
 
 struct ImageInfoDTO: ResponseModelType {

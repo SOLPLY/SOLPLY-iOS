@@ -86,7 +86,7 @@ enum PlaceDetailReducer {
             state.isPlaceDetailLoading = true
             break
             
-        case .placeDetailFetched(let placeDetailInformation, let records):
+        case .placeDetailFetched(let placeDetailInformation, let records, let hasMoreRecords):
             state.isPlaceDetailLoading = false
             state.isBookmarked = placeDetailInformation.isBookmarked
             state.primaryTag = placeDetailInformation.primaryTag
@@ -101,6 +101,7 @@ enum PlaceDetailReducer {
             state.longitude = placeDetailInformation.longitude
             state.solplyTips = placeDetailInformation.solplyTips
             state.solplyCheckPoints = placeDetailInformation.placeCheckpoints
+            state.moreRecordsButtonEnabled = hasMoreRecords
             state.records = records
             
         case .submitPlaceBookmark:
