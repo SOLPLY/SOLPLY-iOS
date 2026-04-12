@@ -60,9 +60,8 @@ struct PlaceDetailView: View {
                 separator
                 
                 record
-                
-                bottomPadding
             }
+            .padding(.bottom, 40.adjustedHeight)
             .customLoading(.placeDetailLoading, isLoading: store.state.isPlaceDetailLoading)
         }
         .sheet(
@@ -79,6 +78,7 @@ struct PlaceDetailView: View {
             },
             content: {
                 addToCourseSheet
+                    .customToast()
             }
         )
         .imageViewer(
@@ -286,7 +286,7 @@ extension PlaceDetailView {
     }
     
     private var map: some View {
-        PlaceDetailMapView(
+        PlaceMarkerMap(
             latitude: store.state.latitude,
             longitude: store.state.longitude
         )
@@ -345,12 +345,17 @@ extension PlaceDetailView {
             sectionHeader(title: "솔플리 TIP")
                 .padding(.horizontal, 20.adjustedWidth)
             
-            HStack(alignment: .center, spacing: 8.adjustedWidth) {
+            CustomFlowLayout(
+                horizontalSpacing: 8.adjustedWidth,
+                verticalSpacing: 8.adjustedHeight,
+                lineHeight: 32.adjusted,
+                alignment: .center
+            ) {
                 ForEach(store.state.solplyTips, id: \.self) { subTag in
                     RecommendCardFilterChip(subTag: subTag)
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.horizontal, 20.adjustedWidth)
             
             VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                 ForEach(store.state.solplyCheckPoints, id: \.self) { checkPoint in
@@ -363,9 +368,13 @@ extension PlaceDetailView {
     
     private var record: some View {
         VStack(alignment: .center, spacing: 20.adjustedHeight) {
-            sectionHeader(title: "기록", moreButtonAction: store.state.records.count < 4 ? nil : {
-                appCoordinator.navigate(to: .recordList)
-            })
+            sectionHeader(
+                title: "기록",
+                moreButtonAction: {
+                    appCoordinator.navigate(to: .recordList(placeId: store.placeId))
+                },
+                isButtonEnabled: store.state.isMoreRecordsButtonEnabled
+            )
             .padding(.horizontal, 20.adjustedWidth)
             
             RecordWriteButton {
@@ -401,6 +410,7 @@ extension PlaceDetailView {
                 }
             } else {
                 emptyRecord
+                    .padding(.bottom, 32.adjustedHeight)
             }
         }
     }
@@ -487,6 +497,7 @@ extension PlaceDetailView {
                                 }
                             }
                         }
+                        .padding(.bottom, 100.adjustedHeight)
                     }
                     .contentMargins(.top, 1.5.adjustedHeight)
                     
@@ -530,14 +541,11 @@ extension PlaceDetailView {
             .frame(maxWidth: .infinity)
     }
     
-    private var bottomPadding: some View {
-        Rectangle()
-            .foregroundStyle(.clear)
-            .frame(height: 40.adjustedHeight)
-            .frame(maxWidth: .infinity)
-    }
-    
-    private func sectionHeader(title: String, moreButtonAction: (() -> Void)? = nil) -> some View {
+    private func sectionHeader(
+        title: String,
+        moreButtonAction: (() -> Void)? = nil,
+        isButtonEnabled: Bool = false
+    ) -> some View {
         HStack(alignment: .center, spacing: 0) {
             Text(title)
                 .applySolplyFont(.body_16_m)
@@ -564,6 +572,7 @@ extension PlaceDetailView {
                     }
                 }
                 .buttonStyle(.plain)
+                .disabled(!isButtonEnabled)
             }
         }
     }

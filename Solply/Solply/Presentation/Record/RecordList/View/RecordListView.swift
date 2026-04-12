@@ -17,8 +17,8 @@ struct RecordListView: View {
     
     // MARK: - Initializer
     
-    init() {
-        self._store = StateObject(wrappedValue: RecordListStore())
+    init(placeId: Int) {
+        self._store = StateObject(wrappedValue: RecordListStore(placeId: placeId))
     }
     
     // MARK: - Body

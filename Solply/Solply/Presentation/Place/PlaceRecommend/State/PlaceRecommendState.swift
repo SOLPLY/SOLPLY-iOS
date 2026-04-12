@@ -25,6 +25,23 @@ struct PlaceRecommendState {
     var selectedSubTags: [SelectableSubTag] = []
 
     var fetchedPlaceList: [Place] = []
+    var previousTownId: Int = 0
+    
+    var subTagAIdList: [Int] {
+        return selectedSubTags
+            .filter { $0.tagType == "OPTION1" && $0.isSelected }
+            .map { $0.id }
+    }
+    
+    var subTagBIdList: [Int] {
+        return selectedSubTags
+            .filter { $0.tagType == "OPTION2" && $0.isSelected }
+            .map { $0.id }
+    }
+    
+    var isPlaceRecommendLoading: Bool {
+        isCarouselLoading || isPlaceGridLoading
+    }
 }
 
 struct SelectableSubTag: Identifiable, Hashable {

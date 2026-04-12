@@ -10,9 +10,6 @@ import Foundation
 enum RegisterReducer {
     static func reduce(state: inout RegisterState, action: RegisterAction) {
         switch action {
-        case .updateSearchBarText(let text):
-            state.placeName = text
-            
         case .selectPlaceToRegister(let placeName, let placeAddress):
             state.placeName = placeName
             state.placeAddress = placeAddress

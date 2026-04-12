@@ -12,6 +12,7 @@ struct MyPageEditView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @EnvironmentObject private var appState: AppState
     @StateObject private var store: MyPageEditStore
     @FocusState private var isNicknameTextFieldFocused: Bool
     
@@ -64,11 +65,14 @@ struct MyPageEditView: View {
                 store.dispatch(.fetchUserNicknameCheck)
             }
         }
-        .onChange(of: store.state.shouldGoBack, { _, newValue in
-            if newValue {
-                appCoordinator.goBack()
+        .onChange(of: store.state.shouldGoBack) { _, shouldGoBack in
+            if shouldGoBack {
+                Task {
+                    await appState.fetchUserInformation()
+                    appCoordinator.goBack()
+                }
             }
-        })
+        }
         .onTapGesture {
             hideKeyboard()
         }

@@ -26,8 +26,3 @@ struct CustomerCenterView: View {
             .ignoresSafeArea(edges: .bottom)
     }
 }
-
-#Preview {
-    CustomerCenterView()
-        .environmentObject(AppCoordinator())
-}

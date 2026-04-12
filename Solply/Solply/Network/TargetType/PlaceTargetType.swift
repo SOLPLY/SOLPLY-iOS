@@ -25,6 +25,8 @@ enum PlaceTargetType {
     case searchPlace(placeName: String)
     case submitReports(placeId: Int, request: ReportsRequestDTO)
     case submitRegister(request: RegisterRequestDTO)
+    // TODO: - 장소 기록 작성 API
+    case fetchPlaceRecordList(placeId: Int)
 }
 
 extension PlaceTargetType: BaseTargetType {
@@ -52,6 +54,8 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/\(placeId)/reports"
         case .submitRegister:
             return "/places/requests"
+        case .fetchPlaceRecordList(let placeId):
+            return "/places/reviews/\(placeId)/reviews"
         }
     }
     
@@ -66,6 +70,7 @@ extension PlaceTargetType: BaseTargetType {
         case .searchPlace: return .get
         case .submitReports: return .post
         case .submitRegister: return .post
+        case .fetchPlaceRecordList: return .get
         }
     }
     
@@ -119,6 +124,8 @@ extension PlaceTargetType: BaseTargetType {
             return .requestJSONEncodable(request)
         case .submitRegister(let request):
             return .requestJSONEncodable(request)
+        case .fetchPlaceRecordList:
+            return .requestPlain
         }
     }
 }

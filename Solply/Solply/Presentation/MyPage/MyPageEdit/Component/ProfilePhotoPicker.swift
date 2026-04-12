@@ -173,8 +173,3 @@ extension ProfilePhotoPicker {
         }
     }
 }
-#Preview {
-    ProfilePhotoPicker(profileImageUrl: "https://i.pinimg.com/1200x/29/0a/41/290a41a756c7b1482af1897fdcb65a7a.jpg")
-    
-    ProfilePhotoPicker(profileImageUrl: nil)
-}

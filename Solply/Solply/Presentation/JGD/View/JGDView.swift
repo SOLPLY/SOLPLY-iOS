@@ -59,7 +59,10 @@ struct JGDView: View {
         }
         .onChange(of: store.state.shouldGoBack) { _, shouldGoBack in
             if shouldGoBack {
-                appCoordinator.goBack()
+                Task {
+                    await appState.fetchUserInformation()
+                    appCoordinator.goBack()
+                }
             }
         }
     }

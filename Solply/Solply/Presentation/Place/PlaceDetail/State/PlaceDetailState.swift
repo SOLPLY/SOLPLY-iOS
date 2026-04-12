@@ -15,8 +15,8 @@ struct PlaceDetailState {
     var isAddToCourseSheetPresented: Bool = false
     
     var bookmarkButtonSelected: Bool = false
-    var userLatitude: Double = 0.0
-    var userLongitude: Double = 0.0
+    var userLatitude: Double?
+    var userLongitude: Double?
     var addPlaceCourseInformation: AddPlaceCourseInformation?
     
     var courses: [AddToCourseArchive] = []
@@ -33,11 +33,12 @@ struct PlaceDetailState {
     var contactNumber: String = ""
     var openingHours: String = ""
     var snsLink: [PlaceDetailSnsLink] = []
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
+    var latitude: Double?
+    var longitude: Double?
     var solplyTips: [SubTagType] = []
     var solplyCheckPoints: [String] = []
     var records: [Record] = []
+    var isMoreRecordsButtonEnabled: Bool = false
     
     var navigationBarTitle: String? = nil
     var imageViewerItem: ImageViewerItem? = nil

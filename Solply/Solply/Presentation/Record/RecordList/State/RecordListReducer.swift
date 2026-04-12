@@ -11,7 +11,7 @@ enum RecordListReducer {
     static func reduce(state: inout RecordListState, action: RecordListAction) {
         switch action {
         case .onAppear:
-            state.records = Record.mock
+            break
             
         case .presentImageViewer(let index, let imageUrls):
             state.imageViewerItem = ImageViewerItem(
@@ -21,6 +21,17 @@ enum RecordListReducer {
             
         case .dismissImageViewer:
             state.imageViewerItem = nil
+            
+        case .fetchPlaceRecordList:
+            state.isLoading = true
+            
+        case .fetchPlaceRecordListSuccess(let records):
+            state.records = records
+            state.isLoading = false
+            
+        case .fetchPlaceRecordListFailed(let error):
+            state.isLoading = true
+            print(error)
         }
     }
 }

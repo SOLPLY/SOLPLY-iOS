@@ -8,7 +8,8 @@
 import Foundation
 
 struct Record: Identifiable {
-    let id = UUID()
+    let id: Int
+    let userId: Int
     let profileImageUrl: String?
     let userName: String
     let photoUrls: [String]
@@ -17,9 +18,23 @@ struct Record: Identifiable {
 }
 
 extension Record {
+    init(_ recordDto: RecordDTO) {
+        self.id = recordDto.reviewId
+        self.userId = recordDto.userId
+        self.profileImageUrl = recordDto.profileImageUrl
+        self.userName = recordDto.nickname
+        self.photoUrls = recordDto.imageUrls
+        self.recordText = recordDto.content
+        self.visitTime = "\(recordDto.visitedAt.replacingOccurrences(of: "-", with: ".")) \(recordDto.visitTimeSlot.title) 방문"
+    }
+}
+
+extension Record {
     static var mock: [Record] {
         return [
             Record(
+                id: 1,
+                userId: 1,
                 profileImageUrl: "https://i.pinimg.com/1200x/23/ce/ea/23ceead7c9d0d5db016b404faa3bbd87.jpg",
                 userName: "민지",
                 photoUrls: [
@@ -33,6 +48,8 @@ extension Record {
                 visitTime: "2026.02.19 오후 방문"
             ),
             Record(
+                id: 2,
+                userId: 2,
                 profileImageUrl: nil,
                 userName: "승원",
                 photoUrls: [
@@ -43,6 +60,8 @@ extension Record {
                 visitTime: "2026.02.19 오후 방문"
             ),
             Record(
+                id: 3,
+                userId: 3,
                 profileImageUrl: "https://i.pinimg.com/1200x/23/ce/ea/23ceead7c9d0d5db016b404faa3bbd87.jpg",
                 userName: "솔플릴",
                 photoUrls: [],
@@ -50,6 +69,8 @@ extension Record {
                 visitTime: "2026.02.19 오후 방문"
             ),
             Record(
+                id: 4,
+                userId: 4,
                 profileImageUrl: "https://i.pinimg.com/1200x/23/ce/ea/23ceead7c9d0d5db016b404faa3bbd87.jpg",
                 userName: "민지",
                 photoUrls: [
@@ -62,6 +83,8 @@ extension Record {
                 visitTime: "2026.02.19 오후 방문"
             ),
             Record(
+                id: 5,
+                userId: 5,
                 profileImageUrl: "https://i.pinimg.com/1200x/23/ce/ea/23ceead7c9d0d5db016b404faa3bbd87.jpg",
                 userName: "민지",
                 photoUrls: [

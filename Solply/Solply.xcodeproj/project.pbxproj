@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		985476632E255FA5005164CF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 985476622E255FA5005164CF /* Lottie */; };
-		E34011482E151709008944E7 /* NMapsMap in Frameworks */ = {isa = PBXBuildFile; productRef = E34011472E151709008944E7 /* NMapsMap */; };
 		E3430A9F2E2643C900EA1CE5 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E3430A9E2E2643C900EA1CE5 /* KakaoSDKAuth */; };
 		E3430AA12E2643C900EA1CE5 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = E3430AA02E2643C900EA1CE5 /* KakaoSDKCommon */; };
 		E3430AA32E2643C900EA1CE5 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = E3430AA22E2643C900EA1CE5 /* KakaoSDKUser */; };
@@ -49,7 +48,6 @@
 			files = (
 				E3475AE72F1F958200D530DB /* AmplitudeSwift in Frameworks */,
 				E36882862E0DD935008A7288 /* Moya in Frameworks */,
-				E34011482E151709008944E7 /* NMapsMap in Frameworks */,
 				E36882832E0DD8AF008A7288 /* Kingfisher in Frameworks */,
 				E3430AA32E2643C900EA1CE5 /* KakaoSDKUser in Frameworks */,
 				985476632E255FA5005164CF /* Lottie in Frameworks */,
@@ -99,7 +97,6 @@
 			packageProductDependencies = (
 				E36882822E0DD8AF008A7288 /* Kingfisher */,
 				E36882852E0DD935008A7288 /* Moya */,
-				E34011472E151709008944E7 /* NMapsMap */,
 				985476622E255FA5005164CF /* Lottie */,
 				E3430A9E2E2643C900EA1CE5 /* KakaoSDKAuth */,
 				E3430AA02E2643C900EA1CE5 /* KakaoSDKCommon */,
@@ -137,7 +134,6 @@
 			packageReferences = (
 				E36882812E0DD8AF008A7288 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				E36882842E0DD935008A7288 /* XCRemoteSwiftPackageReference "Moya" */,
-				E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */,
 				985476612E255FA5005164CF /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				E3430A9D2E2643C900EA1CE5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				E3475AE52F1F958200D530DB /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
@@ -355,7 +351,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Solply/Global/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "솔플리dev";
+				INFOPLIST_KEY_CFBundleDisplayName = "솔플리";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱이 위치 정보를 사용하여 위경도를 표시합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱이 위치 정보를 기반으로 현재 위치, 주변 검색, 길찾기 정보를 제공합니다.";
@@ -416,14 +412,6 @@
 				minimumVersion = 4.5.2;
 			};
 		};
-		E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/navermaps/SPM-NMapsMap";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.22.0;
-			};
-		};
 		E3430A9D2E2643C900EA1CE5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
@@ -463,11 +451,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 985476612E255FA5005164CF /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
-		};
-		E34011472E151709008944E7 /* NMapsMap */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E34011462E151709008944E7 /* XCRemoteSwiftPackageReference "SPM-NMapsMap" */;
-			productName = NMapsMap;
 		};
 		E3430A9E2E2643C900EA1CE5 /* KakaoSDKAuth */ = {
 			isa = XCSwiftPackageProductDependency;

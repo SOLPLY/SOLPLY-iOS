@@ -8,8 +8,6 @@
 import Foundation
 
 struct MyPageState {
-    var user: UserInformation?
-    var registeredPlaces: [UserPlace] = []
     var error: NetworkError?
     var loginInformation: SocialLoginType?
     

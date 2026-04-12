@@ -17,11 +17,9 @@ struct TabBarView: View {
     @StateObject private var locationManager = LocationManager()
     
     @State private var visitedTabs: Set<TabBarState> = [.place]
-    @State private var placeRecommendTitle: String = ""
-    @State private var courseRecommendTitle: String = ""
-    @State private var isUserInformationLoading: Bool = false
-    
-    private let userService = UserService()
+    @State private var showOfflineBanner: Bool = false
+    @State private var networkMonitor = NetworkMonitor()
+    @State private var retryRegistry = RetryRegistry()
     
     // MARK: - Body
     
@@ -33,38 +31,51 @@ struct TabBarView: View {
                 .zIndex(10)
                 .padding(.bottom, 16.adjustedHeight)
         }
+        .overlay(alignment: .top) {
+            if showOfflineBanner {
+                OfflineBanner {
+                    if networkMonitor.checkConnection() {
+                        retryRegistry.reload()
+                        showOfflineBanner = false
+                    }
+                }
+                .transition(
+                    .move(edge: .top)
+                    .combined(with: .opacity)
+                )
+                .zIndex(20)
+            }
+        }
+        .animation(.easeInOut(duration: 0.4), value: showOfflineBanner)
+        .onChange(of: networkMonitor.isConnected) { _, isConnected in
+            if !isConnected {
+                showOfflineBanner = true
+            } else {
+                Task {
+                    try? await Task.sleep(for: .seconds(1))
+                    
+                    guard networkMonitor.isConnected else { return }
+                    
+                    retryRegistry.reload()
+                    await appState.fetchUserInformation()
+                    trackAmplitudeViewListEvent(appCoordinator.selectedTab)
+                    showOfflineBanner = false
+                }
+            }
+        }
+        .environment(retryRegistry)
         .onAppear {
             locationManager.requestPermissionAndStartUpdates()
+            trackAmplitudeViewListEvent(appCoordinator.selectedTab)
         }
         .onChange(of: appCoordinator.selectedTab) { _, newValue in
             trackAmplitudeViewListEvent(newValue)
         }
-        .task {
-            await loadUserInfo()
-        }
-    }
-    
-    private func loadUserInfo() async {
-        print("🌳 [TabBarView] User Information Update")
-
-        switch appState.userSession {
-        case .explore:
-            placeRecommendTitle = "로그인하고\n취향에 맞는 추천을 받아보세요"
-            courseRecommendTitle = "로그인하고\n취향에 맞는 추천을 받아보세요"
-            
-        case .authenticated:
-            do {
-                let userInfo = try await fetchUserInformation()
-                appState.townName = userInfo.townName
-                appState.townId = userInfo.townId
-                placeRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 추천"
-                courseRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 코스"
-                
-                trackAmplitudeViewListEvent(appCoordinator.selectedTab)
-            } catch {
-                print("사용자 정보 가져오기 실패: \(error)")
-            }
-        }
+//        .task {
+//            // TODO: - 유저 정보 받아오는 시점보다 추천뷰 api 호출 시점이 빨라서 문제가 생김
+//            await appState.fetchUserInformation()
+//            trackAmplitudeViewListEvent(appCoordinator.selectedTab)
+//        }
     }
 }
 
@@ -74,29 +85,27 @@ extension TabBarView {
     private var tabContent: some View {
         ZStack {
             if visitedTabs.contains(.place) {
-                PlaceRecommendView(
-                    title: placeRecommendTitle,
-                    isUserInformationLoading: isUserInformationLoading
-                )
-                .visible(appCoordinator.selectedTab == .place)
+                PlaceRecommendView()
+                    .visible(appCoordinator.selectedTab == .place)
+                    .id(retryRegistry.reloadId)
             }
             
             if visitedTabs.contains(.course) {
-                CourseRecommendView(
-                    title: courseRecommendTitle,
-                    isUserInformationLoading: isUserInformationLoading
-                )
-                .visible(appCoordinator.selectedTab == .course)
+                CourseRecommendView()
+                    .visible(appCoordinator.selectedTab == .course)
+                    .id(retryRegistry.reloadId)
             }
             
             if visitedTabs.contains(.bookmark) {
                 ArchiveView()
                     .visible(appCoordinator.selectedTab == .bookmark)
+                    .id(retryRegistry.reloadId)
             }
             
             if visitedTabs.contains(.myPage) {
                 MyPageView()
                     .visible(appCoordinator.selectedTab == .myPage)
+                    .id(retryRegistry.reloadId)
             }
         }
         .ignoresSafeArea(edges: .bottom)
@@ -131,34 +140,6 @@ extension TabBarView {
             }
         )
         .shadow(color: .coreBlack.opacity(0.15), radius: 8)
-    }
-}
-
-// MARK: - Network
-
-extension TabBarView {
-    private func fetchUserInformation() async throws -> UserInformation {
-        do {
-            isUserInformationLoading = true
-            
-            let response = try await userService.fetchUserInformation()
-            
-            guard let data = response.data else {
-                isUserInformationLoading = true
-                throw NetworkError.responseError
-            }
-            
-            isUserInformationLoading = false
-            return UserInformation(dto: data)
-
-        } catch let error as NetworkError {
-            isUserInformationLoading = true
-            throw error
-            
-        } catch {
-            isUserInformationLoading = true
-            throw error
-        }
     }
 }
 

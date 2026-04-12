@@ -8,7 +8,6 @@
 import Foundation
 
 enum RegisterAction {
-    case updateSearchBarText(text: String)
     case selectPlaceToRegister(placeName: String, placeAddress: String?)
     case selectMainTag(mainTag: MainTagType)
     case selectSubTagA(selectableSubTags: [SelectableSubTag])
@@ -24,7 +23,7 @@ enum RegisterAction {
     case fetchSubTags(parentId: Int)
     case subTagsFetched(selectableSubTags: [SelectableSubTag])
     
-    case fetchSearchPlaces
+    case fetchSearchPlaces(placeName: String)
     case searchPlacesFetched(places: [RegisterSearch])
     case fetchSearchPlacesFailed(error: NetworkError)
     

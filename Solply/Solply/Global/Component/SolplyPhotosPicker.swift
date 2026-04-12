@@ -145,7 +145,3 @@ extension SolplyPhotosPicker {
         }
     }
 }
-
-#Preview {
-    SolplyPhotosPicker()
-}

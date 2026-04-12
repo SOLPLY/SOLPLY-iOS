@@ -12,7 +12,8 @@ enum AIRecommendResultReducer {
         switch action {
         case .fetchAIRecommendResults:
             // TODO: - 서버 작업 후 지울 예정임니댜!!
-            state.cards = AIRecommendCard.mockData
+//            state.cards = AIRecommendCard.mockData
+            state.cards = []
             
         case .aiRecommendResultsFetched(let cards):
             state.cards = cards

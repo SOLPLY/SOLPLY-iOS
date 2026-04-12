@@ -10,6 +10,17 @@ import Foundation
 struct PlaceRecommendReducer {
     static func reduce(state: inout PlaceRecommendState, action: PlaceRecommendAction) {
         switch action {
+        case .onAppear(let isExplore, let townId):
+            state.isCarouselLoading = !isExplore
+            
+            let townChanged = state.previousTownId != townId
+            state.previousTownId = townId
+            
+            if townChanged {
+                state.selectedMainTag = .all
+                state.selectedSubTags = []
+            }
+            
         case .resetTags:
             state.selectedMainTag = .all
             state.selectedSubTags = []

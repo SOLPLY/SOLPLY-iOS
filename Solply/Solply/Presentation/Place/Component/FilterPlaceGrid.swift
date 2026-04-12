@@ -140,37 +140,30 @@ struct FilterPlaceGrid: View {
                                         store.dispatch(.dismissSubTagBottomSheet)
                                     }
                                 }
-                            )
-                        ) { selectedTags in
-                            let subTags = selectedTags.filter { $0.isSelected }.map { $0.name }
-                            
-                            AmplitudeManager.shared.track(
-                                .completePlaceFilter(
-                                    selectedOptionTags: subTags.map { AmplitudeSelectedOptionTag.from($0) },
-                                    optionTagCount: store.state.selectedSubTags.count,
-                                    townId: appState.townId ,
-                                    townName: appState.townName
+                            ),
+                            confirmAction: { selectedTags in
+                                let subTags = selectedTags.filter { $0.isSelected }.map { $0.name }
+                                
+                                AmplitudeManager.shared.track(
+                                    .completePlaceFilter(
+                                        selectedOptionTags: subTags.map { AmplitudeSelectedOptionTag.from($0) },
+                                        optionTagCount: store.state.selectedSubTags.count,
+                                        townId: appState.townId ,
+                                        townName: appState.townName
+                                    )
                                 )
-                            )
-                            
-                            store.dispatch(.updateSubTags(selectedTags))
-                            
-                            let subTagAIdList = selectedTags
-                                .filter { $0.tagType == "OPTION1" && $0.isSelected }
-                                .map { $0.id }
-                            
-                            let subTagBIdList = selectedTags
-                                .filter { $0.tagType == "OPTION2" && $0.isSelected }
-                                .map { $0.id }
-                            
-                            store.dispatch(.fetchPlaceList(
-                                townId: townId,
-                                isBookmarkSearch: false,
-                                mainTagId: store.state.selectedMainTag.parentId,
-                                subTagAIdList: subTagAIdList,
-                                subTagBIdList: subTagBIdList
-                            ))
-                        }
+                                
+                                store.dispatch(.updateSubTags(selectedTags))
+                                
+                                store.dispatch(.fetchPlaceList(
+                                    townId: townId,
+                                    isBookmarkSearch: false,
+                                    mainTagId: store.state.selectedMainTag.parentId,
+                                    subTagAIdList: store.state.subTagAIdList,
+                                    subTagBIdList: store.state.subTagBIdList
+                                ))
+                            }
+                        )
                         .presentationDetents([.fraction(0.6)])
                         .presentationCornerRadius(20)
                     }
@@ -204,7 +197,6 @@ struct FilterPlaceGrid: View {
                             .frame(height: 40.adjustedHeight)
                     }
                 }
-                .customLoading(.placeRecommendGridLoading, isLoading: store.state.isPlaceGridLoading)
             }
             .onChange(of: store.state.selectedMainTag) { _, _ in
                 store.dispatch(.resetSubTags)
