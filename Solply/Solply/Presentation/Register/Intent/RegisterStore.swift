@@ -13,9 +13,7 @@ final class RegisterStore: ObservableObject {
     private let effect = RegisterEffect(
         tagsService: TagsService(),
         naverPlaceSearchService: NaverPlaceSearchService(),
-        placeService: PlaceService(),
-        fileService: FileService(),
-        uploadPhotosService: UploadPhotosService()
+        placeService: PlaceService()
     )
     
     func dispatch(_ action: RegisterAction) {
@@ -24,52 +22,12 @@ final class RegisterStore: ObservableObject {
         switch action {
             
         case .startRegister:
-            if state.attachedImageData.isEmpty {
-                self.dispatch(.submitRegister(imageKeyStrings: []))
-            } else {
-                dispatch(
-                    .submitPresignedUrlRequest(
-                        request: PresignedUrlRequestDTO(
-                            files: state.attachedImageData.map { fileName, _ in
-                                File(fileName: fileName)
-                                
-                            }
-                        )
-                    )
+            Task {
+                let imageKeyStrings = await PhotoUploadManager.shared.upload(
+                    imageDatas: state.attachedImageData
                 )
+                self.dispatch(.submitRegister(imageKeyStrings: imageKeyStrings))
             }
-            
-        case .submitPresignedUrlRequest(let request):
-            Task {
-                let result = await effect.submitPresignedUrlRequest(request: request)
-                self.dispatch(result)
-            }
-            
-        case .presignedUrlRequestSubmitted(let response):
-            let presignedInformation = response.presignedGetUrlInfos
-            let imageDatas = state.attachedImageData
-
-            var presignedDictionary: [URL: Data] = [:]
-
-            for (info, data) in zip(presignedInformation, imageDatas) {
-                if let url = URL(string: info.presignedUrl) {
-                    presignedDictionary[url] = data.1
-                }
-            }
-            
-            Task {
-                let result = await effect.uploadImages(dictionary: presignedDictionary)
-                self.dispatch(result)
-            }
-            
-        case .photoUploadSuccess(let imageKeys):
-            var imageKeyStrings: [String]
-            
-            imageKeyStrings = imageKeys.map { imageKey in
-                imageKey.absoluteString.truncatedForS3()
-            }
-            
-            self.dispatch(.submitRegister(imageKeyStrings: imageKeyStrings))
             
         case .fetchSubTags(let parentId):
             Task {
