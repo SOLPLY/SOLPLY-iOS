@@ -8,6 +8,8 @@
 import Foundation
 
 struct RecordWriteState {
+    var shouldGoBack: Bool = false
+    
     var selectedDate: Date? = nil
     var selectedVisitTime: VisitTime? = nil
     var recordText: String = ""

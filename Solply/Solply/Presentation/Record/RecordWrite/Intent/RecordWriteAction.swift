@@ -11,6 +11,12 @@ enum RecordWriteAction {
     case selectDate(Date?)
     case selectVisitTime(VisitTime)
     case writeRecordText(String)
+    case selectPhotos([(fileName: String, data: Data)])
     
-    case selectTime([(fileName: String, data: Data)])
+    case registerRecordButtonTapped
+    
+    // api
+    case submitPlaceRecordWrite(request: PlaceRecordWriteRequestDTO)
+    case submitPlaceRecordWriteSuccess
+    case submitPlaceRecordWriteFailed(error: NetworkError)
 }

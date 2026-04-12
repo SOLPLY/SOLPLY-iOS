@@ -20,8 +20,22 @@ enum RecordWriteReducer {
         case .writeRecordText(let text):
             state.recordText = text
             
-        case .selectTime(let photos):
+        case .selectPhotos(let photos):
             state.selectedPhotos = photos
+            
+        case .registerRecordButtonTapped:
+            break
+            
+        // api
+        case .submitPlaceRecordWrite:
+            break
+            
+        case .submitPlaceRecordWriteSuccess:
+            state.shouldGoBack = true
+            
+        case .submitPlaceRecordWriteFailed(let error):
+            print(error)
+            break
         }
     }
 }
