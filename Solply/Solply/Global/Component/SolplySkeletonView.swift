@@ -93,13 +93,3 @@ extension SolplySkeletonView {
         )
     }
 }
-
-#Preview {
-    SolplySkeletonView(width: 100.adjustedWidth, height: 20.adjustedHeight, cornerRadius: 5)
-    SolplySkeletonView(width: 240.adjusted, height: 240.adjusted, cornerRadius: 20)
-    
-    VStack(alignment: .leading, spacing: 0) {
-        SolplySkeletonView(font: .display_20_sb, width: 300.adjustedWidth, cornerRadius: 5)
-        SolplySkeletonView(font: .display_20_sb, width: 300.adjustedWidth, cornerRadius: 5)
-    }
-}

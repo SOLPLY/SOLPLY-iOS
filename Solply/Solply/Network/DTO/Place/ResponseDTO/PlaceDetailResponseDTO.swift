@@ -24,7 +24,8 @@ struct PlaceDetailResponseDTO: ResponseModelType {
     let isBookmarked: Bool
     let townId: Int
     let townName: String
-    let latestReviews: [ReviewDTO]
+    let latestReviews: [RecordDTO]
+    let hasMoreReviews: Bool
 }
 
 struct ImageInfoDTO: ResponseModelType {
@@ -37,7 +38,7 @@ struct SnsLinkDTO: ResponseModelType {
     let url: String
 }
 
-struct ReviewDTO: ResponseModelType {
+struct RecordDTO: ResponseModelType {
     let reviewId: Int
     let userId: Int
     let nickname: String

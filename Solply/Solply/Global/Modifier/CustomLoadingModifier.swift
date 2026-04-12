@@ -151,53 +151,64 @@ extension View {
                 )
             )
             
-        // MARK: - TodayPlaceRecommendCarouselLoading
+        // MARK: - PlaceRecommendLoading
             
-        case .todayPlaceRecommendCarouselLoading:
+        case .placeRecommendLoading:
             self.modifier(
                 CustomLoadingModifier(
                     isLoading: isLoading,
                     loadingView: {
-                        HStack(alignment: .center, spacing: 16.adjustedWidth) {
-                            SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
-                            SolplySkeletonView(width: 240.adjusted, height: 240.adjusted, cornerRadius: 20)
-                            SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
-                        }
-                        .frame(width: 375.adjustedWidth)
-                        .clipped()
-                    }
-                )
-            )
-            
-        // MARK: - PlaceRecommendGridLoading
-            
-        case .placeRecommendGridLoading:
-            self.modifier(
-                CustomLoadingModifier(
-                    isLoading: isLoading,
-                    loadingView: {
-                        Grid(
-                            alignment: .center,
-                            horizontalSpacing: 12.5.adjusted,
-                            verticalSpacing: 16.adjusted
-                        ) {
-                            ForEach(0..<2) { _ in
-                                GridRow(alignment: .center) {
+                        VStack(alignment: .center, spacing: 28.adjustedHeight) {
+                            HStack(alignment: .center, spacing: 16.adjustedWidth) {
+                                SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
+                                SolplySkeletonView(width: 240.adjusted, height: 240.adjusted, cornerRadius: 20)
+                                SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
+                            }
+                            .frame(width: 375.adjustedWidth)
+                            .clipped()
+                            
+                            VStack(alignment: .leading, spacing: 16.adjustedWidth) {
+                                HStack(alignment: .center, spacing: 0) {
+                                    SolplySkeletonView(font: .body_14_m, width: 25.adjustedWidth)
+                                    
+                                    Image(.arrowDownIcon)
+                                        .resizable()
+                                        .frame(width: 24.adjusted, height: 24.adjusted)
+                                }
+                                .padding(.vertical, 4.adjustedHeight)
+                                .padding(.leading, 12.adjustedWidth)
+                                .padding(.trailing, 4.adjustedWidth)
+                                .addBorder(.capsule, borderColor: .gray300, borderWidth: 1)
+                                
+                                Grid(
+                                    alignment: .center,
+                                    horizontalSpacing: 12.5.adjusted,
+                                    verticalSpacing: 16.adjusted
+                                ) {
                                     ForEach(0..<2) { _ in
-                                        VStack(alignment: .leading, spacing: 8.adjusted) {
-                                            SolplySkeletonView(
-                                                width: 145.adjusted,
-                                                height: 145.adjusted,
-                                                cornerRadius: 20
-                                            )
-                                            
-                                            SolplySkeletonView(font: .body_14_m, width: 110.adjusted)
+                                        GridRow(alignment: .center) {
+                                            ForEach(0..<2) { _ in
+                                                VStack(alignment: .leading, spacing: 8.adjusted) {
+                                                    SolplySkeletonView(
+                                                        width: 145.adjusted,
+                                                        height: 145.adjusted,
+                                                        cornerRadius: 20
+                                                    )
+                                                    
+                                                    SolplySkeletonView(font: .body_14_m, width: 110.adjusted)
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                                .frame(maxWidth: .infinity)
                             }
+                            .padding(.vertical, 20.adjustedHeight)
+                            .padding(.horizontal, 20.adjustedWidth)
+                            .background(.coreWhite)
+                            .cornerRadius(20, corners: .allCorners)
                         }
-                        .frame(maxWidth: .infinity)
+                        .frame(width: 343.adjustedWidth)
                     }
                 )
             )

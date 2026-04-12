@@ -76,4 +76,10 @@ extension PlaceService: PlaceAPI {
     ) async throws -> BaseResponseBody<RegisterResponseDTO> {
         return try await self.request(with: .submitRegister(request: request))
     }
+    
+    // TODO: - 장소 기록 작성 API
+    
+    func fetchPlaceRecordList(placeId: Int) async throws -> BaseResponseBody<PlaceRecordListResponseDTO> {
+        return try await self.request(with: .fetchPlaceRecordList(placeId: placeId))
+    }
 }

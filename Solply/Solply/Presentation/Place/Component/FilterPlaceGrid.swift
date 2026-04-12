@@ -197,7 +197,6 @@ struct FilterPlaceGrid: View {
                             .frame(height: 40.adjustedHeight)
                     }
                 }
-                .customLoading(.placeRecommendGridLoading, isLoading: store.state.isPlaceGridLoading)
             }
             .onChange(of: store.state.selectedMainTag) { _, _ in
                 store.dispatch(.resetSubTags)

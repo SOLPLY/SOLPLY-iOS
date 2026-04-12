@@ -44,7 +44,7 @@ struct CourseRecommendView: View {
         .customNavigationBar(
             .townFilterWithSearch(
                 filterTitle: appState.townName,
-                isLoading: appState.isUserInformationLoading,
+                isLoading: appState.isAuthenticated ? appState.isUserInformationLoading : false,
                 filterAction: {
                     AmplitudeManager.shared.track(
                         .viewTownList(
@@ -88,7 +88,7 @@ extension CourseRecommendView {
             
             Spacer()
         }
-        .customLoading(.recommendTitleLoading, isLoading: appState.isUserInformationLoading)
+        .customLoading(.recommendTitleLoading, isLoading: appState.isAuthenticated ? appState.isUserInformationLoading : false)
         .frame(width: 335.adjustedWidth)
     }
     

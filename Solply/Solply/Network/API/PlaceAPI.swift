@@ -49,4 +49,10 @@ protocol PlaceAPI {
     
     /// 장소 등록 요청
     func submitRegister(request: RegisterRequestDTO) async throws -> BaseResponseBody<RegisterResponseDTO>
+    
+    /// 장소 리뷰(기록) 작성
+    // TODO: - 장소 리뷰 API 추가
+    
+    /// 장소 리뷰(기록) 리스트 조회
+    func fetchPlaceRecordList(placeId: Int) async throws -> BaseResponseBody<PlaceRecordListResponseDTO>
 }

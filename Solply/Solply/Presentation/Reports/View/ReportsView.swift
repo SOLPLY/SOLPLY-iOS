@@ -114,8 +114,3 @@ extension ReportsView {
         }
     }
 }
-
-#Preview {
-    ReportsView(placeId: 1)
-        .environmentObject(AppCoordinator())
-}

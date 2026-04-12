@@ -49,7 +49,3 @@ extension SplashView {
         }
     }
 }
-
-#Preview {
-    SplashView()
-}
