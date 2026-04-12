@@ -31,12 +31,6 @@ enum ReportsReducer {
             state.shouldGoBack = true
             break
             
-        case .submitPresignedUrlRequest:
-            break
-            
-        case .presignedUrlRequestSubmitted:
-            break
-            
         case .submitReports:
             break
             
@@ -47,14 +41,6 @@ enum ReportsReducer {
             // TODO: - 제보 실패했을 때 처리 필요
             print("제보하기에 실패했습니다 error: \(error)")
             state.shouldGoBack = true
-            break
-            
-        case .photoUploadSuccess:
-            print("S3 사진 업로드 성공")
-            break
-            
-        case .photoUploadFailed(let error):
-            print("S3 사진 업로드 실패 error: \(error)")
             break
         }
     }
