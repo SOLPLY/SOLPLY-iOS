@@ -23,9 +23,7 @@ final class RegisterStore: ObservableObject {
             
         case .startRegister:
             Task {
-                let imageKeyStrings = await PhotoUploadManager.shared.upload(
-                    imageDatas: state.attachedImageData
-                )
+                let imageKeyStrings = await PhotoUploadManager.shared.upload(imageDatas: state.attachedImageData)
                 self.dispatch(.submitRegister(imageKeyStrings: imageKeyStrings))
             }
             
