@@ -21,15 +21,10 @@ final class MyPageEditStore: ObservableObject {
     // MARK: - Initializer
     
     init(
-        effect: MyPageEditEffect = MyPageEditEffect(
-            userService: UserService(),
-            fileService: FileService(),
-            uploadPhotosService: UploadPhotosService()
-        ),
         userInformation: UserInformation,
     ) {
-        self.effect = effect
         self.userInformation = userInformation
+        self.effect = MyPageEditEffect(userService: UserService())
     }
     
     // MARK: - Dispatch
@@ -50,46 +45,17 @@ final class MyPageEditStore: ObservableObject {
             }
             
         case .startUpdateUserInformation:
-            if let attachedImageData = state.attachedImageData {
-                if attachedImageData.0.isEmpty {
-                    self.dispatch(.updateUserInformation(imageKeyString: ""))
-                } else {
-                    self.dispatch(
-                        .submitPresignedUrlRequest(
-                            request: PresignedUrlRequestDTO(
-                                files: [File(fileName: attachedImageData.0)]
-                            )
-                        )
+            Task {
+                if let attachedImageData = state.attachedImageData {
+                    let imageKeyStrings = await PhotoUploadManager.shared.upload(
+                        imageDatas: [attachedImageData]
                     )
+                    
+                    self.dispatch(.updateUserInformation(imageKeyString: imageKeyStrings.first ?? ""))
+                } else {
+                    self.dispatch(.updateUserInformation(imageKeyString: nil))
                 }
-            } else {
-                self.dispatch(.updateUserInformation(imageKeyString: nil))
             }
-            
-        case .submitPresignedUrlRequest(let request):
-            Task {
-                let result = await effect.submitPresignedUrlRequest(request: request)
-                self.dispatch(result)
-            }
-            
-        case .submitPresignedUrlRequestSuccess(let presignedUrl):
-            guard let attachedImageData = state.attachedImageData else { return }
-            
-            var presignedDictionary: [URL: Data] = [:]
-            
-            if let url = URL(string: presignedUrl) {
-                presignedDictionary[url] = attachedImageData.1
-            }
-            
-            Task {
-                let result = await effect.uploadImage(dictionary: presignedDictionary)
-                self.dispatch(result)
-            }
-            
-        case .photoUploadSuccess(let imageKey):
-            let imageKeyString = imageKey.absoluteString.truncatedForS3()
-            
-            self.dispatch(.updateUserInformation(imageKeyString: imageKeyString))
             
         case .updateUserInformation(let imageKeyString):
             let nickname = state.nickname.isEmpty ? userInformation.nickname : state.nickname
