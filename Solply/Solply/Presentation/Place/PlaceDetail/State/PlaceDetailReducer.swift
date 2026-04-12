@@ -101,7 +101,7 @@ enum PlaceDetailReducer {
             state.longitude = placeDetailInformation.longitude
             state.solplyTips = placeDetailInformation.solplyTips
             state.solplyCheckPoints = placeDetailInformation.placeCheckpoints
-            state.moreRecordsButtonEnabled = hasMoreRecords
+            state.isMoreRecordsButtonEnabled = hasMoreRecords
             state.records = records
             
         case .submitPlaceBookmark:

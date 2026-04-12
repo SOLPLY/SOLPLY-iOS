@@ -38,7 +38,7 @@ struct PlaceDetailState {
     var solplyTips: [SubTagType] = []
     var solplyCheckPoints: [String] = []
     var records: [Record] = []
-    var moreRecordsButtonEnabled: Bool = false
+    var isMoreRecordsButtonEnabled: Bool = false
     
     var navigationBarTitle: String? = nil
     var imageViewerItem: ImageViewerItem? = nil

@@ -370,10 +370,10 @@ extension PlaceDetailView {
         VStack(alignment: .center, spacing: 20.adjustedHeight) {
             sectionHeader(
                 title: "기록",
-                // TODO: - 여기 버튼 고쳐야함
-                moreButtonAction: store.state.moreRecordsButtonEnabled ? {
+                moreButtonAction: {
                     appCoordinator.navigate(to: .recordList(placeId: store.placeId))
-                } : nil
+                },
+                isButtonEnabled: store.state.isMoreRecordsButtonEnabled
             )
             .padding(.horizontal, 20.adjustedWidth)
             
@@ -541,7 +541,11 @@ extension PlaceDetailView {
             .frame(maxWidth: .infinity)
     }
     
-    private func sectionHeader(title: String, moreButtonAction: (() -> Void)? = nil) -> some View {
+    private func sectionHeader(
+        title: String,
+        moreButtonAction: (() -> Void)? = nil,
+        isButtonEnabled: Bool = false
+    ) -> some View {
         HStack(alignment: .center, spacing: 0) {
             Text(title)
                 .applySolplyFont(.body_16_m)
@@ -568,6 +572,7 @@ extension PlaceDetailView {
                     }
                 }
                 .buttonStyle(.plain)
+                .disabled(!isButtonEnabled)
             }
         }
     }
