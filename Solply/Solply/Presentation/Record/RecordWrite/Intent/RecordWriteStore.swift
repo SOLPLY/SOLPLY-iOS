@@ -36,15 +36,21 @@ final class RecordWriteStore: ObservableObject {
             guard let vistedAt = state.selectedDate?.yyyyMMddString,
                   let visitTimeSlot = state.selectedVisitTime else { return }
             
-            let request = PlaceRecordWriteRequestDTO(
-                placeId: placeId,
-                visitedAt: vistedAt,
-                visitTimeSlot: visitTimeSlot,
-                content: state.recordText,
-                imageKeys: [] // 임시 빈배열
-            )
-            
-            dispatch(.submitPlaceRecordWrite(request: request))
+            Task {
+                let imageKeyStrings = await PhotoUploadManager.shared.upload(
+                    imageDatas: state.selectedPhotos
+                )
+                
+                let request = PlaceRecordWriteRequestDTO(
+                    placeId: placeId,
+                    visitedAt: vistedAt,
+                    visitTimeSlot: visitTimeSlot,
+                    content: state.recordText,
+                    imageKeys: imageKeyStrings
+                )
+                
+                dispatch(.submitPlaceRecordWrite(request: request))
+            }
             
         case .submitPlaceRecordWrite(let request):
             Task {
