@@ -371,7 +371,7 @@ extension PlaceDetailView {
             sectionHeader(
                 title: "기록",
                 moreButtonAction: {
-                    appCoordinator.navigate(to: .recordList(placeId: store.placeId))
+                    appCoordinator.navigate(to: .recordList(placeId: store.placeId, placeName: store.state.placeName))
                 },
                 isButtonEnabled: store.state.isMoreRecordsButtonEnabled
             )
@@ -379,7 +379,7 @@ extension PlaceDetailView {
             
             RecordWriteButton {
                 appState.requireLoginWithAlert(
-                    onAuthenticated: { /* TODO: - 기록작성 뷰 넘기기 */ },
+                    onAuthenticated: { appCoordinator.navigate(to: .recordWrite(placeId: store.placeId, placeName: store.state.placeName)) },
                     onExplore: { appCoordinator.changeRoot(to: .auth) }
                 )
             }
