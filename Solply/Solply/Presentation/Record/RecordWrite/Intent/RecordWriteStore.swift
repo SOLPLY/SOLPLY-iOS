@@ -12,12 +12,15 @@ final class RecordWriteStore: ObservableObject {
     
     // MARK: - Properties
     
-    @Published private(set) var state: RecordWriteState
+    @Published private(set) var state = RecordWriteState()
+    let placeId: Int
+    let placeName: String
     
     // MARK: - Initializer
     
-    init(placeName: String) {
-        self.state = RecordWriteState(placeName: placeName)
+    init(placeId: Int, placeName: String) {
+        self.placeId = placeId
+        self.placeName = placeName
     }
     
     // MARK: - Dispatch
