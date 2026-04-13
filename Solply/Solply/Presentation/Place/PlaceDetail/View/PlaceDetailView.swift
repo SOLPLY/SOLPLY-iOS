@@ -379,8 +379,12 @@ extension PlaceDetailView {
             
             RecordWriteButton {
                 appState.requireLoginWithAlert(
-                    onAuthenticated: { appCoordinator.navigate(to: .recordWrite(placeId: store.placeId, placeName: store.state.placeName)) },
-                    onExplore: { appCoordinator.changeRoot(to: .auth) }
+                    onAuthenticated: {
+                        appCoordinator.navigate(to: .placeComplaint)
+                    },
+                    onExplore: {
+                        appCoordinator.changeRoot(to: .auth)
+                    }
                 )
             }
             
@@ -401,7 +405,7 @@ extension PlaceDetailView {
                             },
                             reportAction: {
                                 appState.requireLoginWithAlert(
-                                    onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
+                                    onAuthenticated: { appCoordinator.navigate(to: .placeComplaint) },
                                     onExplore: { appCoordinator.changeRoot(to: .auth) }
                                 )
                             }
