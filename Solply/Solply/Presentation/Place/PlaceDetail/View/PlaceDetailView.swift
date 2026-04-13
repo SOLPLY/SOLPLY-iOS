@@ -379,8 +379,12 @@ extension PlaceDetailView {
             
             RecordWriteButton {
                 appState.requireLoginWithAlert(
-                    onAuthenticated: { /* TODO: - 기록작성 뷰 넘기기 */ },
-                    onExplore: { appCoordinator.changeRoot(to: .auth) }
+                    onAuthenticated: {
+                        appCoordinator.navigate(to: .placeComplaint)
+                    },
+                    onExplore: {
+                        appCoordinator.changeRoot(to: .auth)
+                    }
                 )
             }
             
