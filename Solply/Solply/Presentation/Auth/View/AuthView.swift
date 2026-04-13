@@ -26,7 +26,7 @@ struct AuthView: View {
                 
                 buttons
             }
-            .background(.gray100)
+            .background(.purple500)
             .onAppear {
                 appCoordinator.switchTab(to: .place)
             }
@@ -86,7 +86,7 @@ extension AuthView {
             
             Text("혼자만의 시간을\n더 쉽게, 더 즐겁게!")
                 .applySolplyFont(.display_20_sb)
-                .foregroundColor(.gray800)
+                .foregroundColor(.gray100)
                 .padding(.top, 8.adjustedHeight)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
