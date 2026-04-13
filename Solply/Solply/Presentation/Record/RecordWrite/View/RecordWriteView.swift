@@ -32,6 +32,7 @@ struct RecordWriteView: View {
                     RecordWriteSectionHeader(title: "방문 장소")
                     placeField
                 }
+                .padding(.horizontal, 20.adjustedWidth)
                 
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                     RecordWriteSectionHeader(title: "방문 날짜")
@@ -43,6 +44,7 @@ struct RecordWriteView: View {
                     )
                     visitTimeButtons
                 }
+                .padding(.horizontal, 20.adjustedWidth)
                 .padding(.top, 40.adjustedHeight)
                 
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
@@ -61,18 +63,19 @@ struct RecordWriteView: View {
                         store.dispatch(.writeRecordText(newText))
                     }
                 }
+                .padding(.horizontal, 20.adjustedWidth)
                 .padding(.top, 40.adjustedHeight)
                 
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
                     RecordWriteSectionHeader(title: "사진 추가 (선택)")
+                        .padding(.horizontal, 20.adjustedWidth)
                     
-                    SolplyPhotosPicker { imageData in
+                    SolplyPhotosPicker(maxSelectionCount: 5) { imageData in
                         store.dispatch(.selectPhotos(imageData))
                     }
                 }
                 .padding(.top, 14.adjustedHeight)
             }
-            .padding(.horizontal, 20.adjustedWidth)
             .padding(.bottom, 124.adjustedHeight)
         }
         .overlay(alignment: .bottom) {

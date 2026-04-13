@@ -380,7 +380,7 @@ extension PlaceDetailView {
             RecordWriteButton {
                 appState.requireLoginWithAlert(
                     onAuthenticated: {
-                        appCoordinator.navigate(to: .placeComplaint)
+                        appCoordinator.navigate(to: .recordWrite(placeId: store.placeId, placeName: store.state.placeName))
                     },
                     onExplore: {
                         appCoordinator.changeRoot(to: .auth)
