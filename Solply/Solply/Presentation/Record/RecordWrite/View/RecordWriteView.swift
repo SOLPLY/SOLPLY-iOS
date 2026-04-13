@@ -16,9 +16,9 @@ struct RecordWriteView: View {
     
     // MARK: - Initializer
     
-    init(placeName: String) {
+    init(placeId: Int, placeName: String) {
         _store = StateObject(
-            wrappedValue: RecordWriteStore(placeName: placeName)
+            wrappedValue: RecordWriteStore(placeId: placeId, placeName: placeName)
         )
     }
     
@@ -67,22 +67,26 @@ struct RecordWriteView: View {
                     RecordWriteSectionHeader(title: "사진 추가 (선택)")
                     
                     SolplyPhotosPicker { imageData in
-                        store.dispatch(.selectTime(imageData))
+                        store.dispatch(.selectPhotos(imageData))
                     }
                 }
                 .padding(.top, 14.adjustedHeight)
             }
             .padding(.horizontal, 20.adjustedWidth)
-            .padding(.bottom, 100.adjustedHeight)
+            .padding(.bottom, 124.adjustedHeight)
         }
         .overlay(alignment: .bottom) {
-            aiRecommendButton
-                .padding(.horizontal, 20.adjustedWidth)
+            registerRecordButton
                 .padding(.bottom, 4.adjustedHeight)
         }
         .customNavigationBar(.backWithTitle(title: "혼놀 기록 남기기") {
             appCoordinator.goBack()
         })
+        .onChange(of: store.state.shouldGoBack) { _, shouldGoBack in
+            if shouldGoBack {
+                appCoordinator.goBack()
+            }
+        }
         .customModal()
     }
 }
@@ -93,7 +97,7 @@ extension RecordWriteView {
     
     private var placeField: some View {
         HStack(alignment: .center, spacing: 0) {
-            Text(store.state.placeName)
+            Text(store.placeName)
                 .applySolplyFont(.body_16_r)
                 .foregroundStyle(.coreBlack)
             
@@ -139,11 +143,13 @@ extension RecordWriteView {
         }
     }
     
-    private var aiRecommendButton: some View {
+    private var registerRecordButton: some View {
         SolplyMainButton(
             title: "등록하기",
             isEnabled: store.state.isSubmitButtonEnabled
-        )
+        ) {
+            store.dispatch(.registerRecordButtonTapped)
+        }
         .padding(.horizontal, 20.adjustedWidth)
         .padding(.top, 12.adjustedHeight)
         .padding(.bottom, 4.adjustedHeight)

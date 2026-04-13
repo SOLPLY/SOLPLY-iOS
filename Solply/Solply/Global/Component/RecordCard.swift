@@ -123,10 +123,11 @@ extension RecordCard {
     }
     
     private func photo(_ url: String) -> some View {
-        KFImage(URL(string: url))
-            .resizable()
-            .frame(width: 72.adjusted, height: 72.adjusted)
-            .aspectRatio(contentMode: .fill)
-            .cornerRadius(12, corners: .allCorners)
+        ThumbnailImage(
+            url,
+            width: 72.adjusted,
+            height: 72.adjusted,
+            radius: 12
+        )
     }
 }

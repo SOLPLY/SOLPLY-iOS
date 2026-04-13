@@ -16,6 +16,7 @@ final class RecordListStore: ObservableObject {
     private let effect: RecordListEffect
     
     let placeId: Int
+    let placeName: String
     
     // MARK: - Initializer
     
@@ -23,10 +24,12 @@ final class RecordListStore: ObservableObject {
         effect: RecordListEffect = RecordListEffect(
             placeService: PlaceService()
         ),
-        placeId: Int
+        placeId: Int,
+        placeName: String
     ) {
         self.effect = effect
         self.placeId = placeId
+        self.placeName = placeName
     }
     
     // MARK: - dispatch

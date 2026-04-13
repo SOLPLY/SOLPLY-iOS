@@ -17,8 +17,8 @@ struct RecordListView: View {
     
     // MARK: - Initializer
     
-    init(placeId: Int) {
-        self._store = StateObject(wrappedValue: RecordListStore(placeId: placeId))
+    init(placeId: Int, placeName: String) {
+        self._store = StateObject(wrappedValue: RecordListStore(placeId: placeId, placeName: placeName))
     }
     
     // MARK: - Body
@@ -27,7 +27,7 @@ struct RecordListView: View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .center, spacing: 20.adjustedHeight) {
                 RecordWriteButton {
-                    // TODO: - 기록 작성하기 뷰 연결
+                    appCoordinator.navigate(to: .recordWrite(placeId: store.placeId, placeName: store.placeName)) 
                 }
                 
                 recordList

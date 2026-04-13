@@ -371,7 +371,7 @@ extension PlaceDetailView {
             sectionHeader(
                 title: "기록",
                 moreButtonAction: {
-                    appCoordinator.navigate(to: .recordList(placeId: store.placeId))
+                    appCoordinator.navigate(to: .recordList(placeId: store.placeId, placeName: store.state.placeName))
                 },
                 isButtonEnabled: store.state.isMoreRecordsButtonEnabled
             )
