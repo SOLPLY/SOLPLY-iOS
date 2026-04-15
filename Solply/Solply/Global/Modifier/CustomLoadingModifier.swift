@@ -427,9 +427,3 @@ extension View {
         }
     }
 }
-
-#Preview {
-    Text("")
-        .customLoading(.recordListLoading, isLoading: true)
-    Spacer()
-}

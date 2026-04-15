@@ -28,14 +28,16 @@ enum RecordWriteReducer {
             
         // api
         case .submitPlaceRecordWrite:
+            state.isLoading = true
             break
             
         case .submitPlaceRecordWriteSuccess:
             state.shouldGoBack = true
+            state.isLoading = false
             
         case .submitPlaceRecordWriteFailed(let error):
+            state.isLoading = false
             print(error)
-            break
         }
     }
 }

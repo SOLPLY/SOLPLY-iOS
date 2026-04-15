@@ -152,7 +152,8 @@ extension RecordWriteView {
     private var registerRecordButton: some View {
         SolplyMainButton(
             title: "등록하기",
-            isEnabled: store.state.isSubmitButtonEnabled
+            isEnabled: store.state.isSubmitButtonEnabled,
+            isLoading: store.state.isLoading
         ) {
             store.dispatch(.registerRecordButtonTapped)
         }

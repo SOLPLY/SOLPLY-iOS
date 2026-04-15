@@ -8,6 +8,7 @@
 import Foundation
 
 struct RecordWriteState {
+    var isLoading: Bool = false
     var shouldGoBack: Bool = false
     
     var selectedDate: Date? = nil
