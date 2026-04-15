@@ -404,18 +404,18 @@ extension View {
                                     }
                                     
                                     VStack(alignment: .leading, spacing: 2.adjustedHeight) {
-                                        SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth)
+                                        SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth, cornerRadius: 4)
                                         SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth)
                                     }
                                     
-                                    SolplySkeletonView(font: .body_14_m, width: 127.adjustedWidth)
+                                    SolplySkeletonView(font: .body_14_m, width: 127.adjustedWidth, cornerRadius: 4)
                                 }
                                 .padding(.vertical, 20.adjustedHeight)
                                 .overlay(alignment: .bottom) {
                                     if index == 0 {
                                         Rectangle()
                                             .frame(height: 1)
-                                            .foregroundStyle(.gray300)
+                                            .foregroundStyle(.gray200)
                                     }
                                 }
                                 .padding(.horizontal, 20.adjustedWidth)

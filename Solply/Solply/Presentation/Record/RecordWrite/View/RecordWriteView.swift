@@ -78,6 +78,9 @@ struct RecordWriteView: View {
             }
             .padding(.bottom, 124.adjustedHeight)
         }
+        .onTapGesture {
+            hideKeyboard()
+        }
         .overlay(alignment: .bottom) {
             registerRecordButton
                 .padding(.bottom, 4.adjustedHeight)

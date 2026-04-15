@@ -33,6 +33,9 @@ struct AIRecommendPromptView: View {
             appCoordinator.goBack()
         })
         .customModal()
+        .onTapGesture {
+            hideKeyboard()
+        }
     }
 }
 
