@@ -16,29 +16,42 @@ struct SolplyPhotosPicker: View {
     @State private var selectedItems: [PhotosPickerItem] = []
     @State private var selectedImages: [UIImage] = []
     
-    private let maxSelectionCount: Int = 3
+    private let maxSelectionCount: Int
     private let onComplete: (([(String, Data)]) -> Void)?
+    
+    private var isScrollDisabled: Bool {
+        return maxSelectionCount <= 4
+    }
     
     // MARK: - Initializer
     
-    init(onComplete: (([(String, Data)]) -> Void)? = nil) {
+    init(
+        maxSelectionCount: Int = 3,
+        onComplete: (([(String, Data)]) -> Void)? = nil
+    ) {
+        self.maxSelectionCount = maxSelectionCount
         self.onComplete = onComplete
     }
     
     // MARK: - Body
     
     var body: some View {
-        HStack(alignment: .center, spacing: 12.adjustedWidth) {
-            ForEach(0..<maxSelectionCount, id: \.self) { index in
-                if index < selectedImages.count {
-                    selectedPhotoCell(selectedImages[index])
-                } else if index == selectedImages.count {
-                    addPhotoCell
-                } else {
-                    emptyPhotoCell
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .center, spacing: 12.adjustedWidth) {
+                ForEach(0..<maxSelectionCount, id: \.self) { index in
+                    if index < selectedImages.count {
+                        selectedPhotoCell(selectedImages[index])
+                    } else if index == selectedImages.count {
+                        addPhotoCell
+                    } else {
+                        emptyPhotoCell
+                    }
                 }
             }
         }
+        .scrollDisabled(isScrollDisabled)
+        .scrollClipDisabled(true)
+        .contentMargins(.horizontal, 20.adjustedWidth, for: .scrollContent)
         .photosPicker(
             isPresented: $isPickerPresented,
             selection: $selectedItems,

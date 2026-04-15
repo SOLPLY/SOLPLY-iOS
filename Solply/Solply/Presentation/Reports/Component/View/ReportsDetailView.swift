@@ -74,12 +74,12 @@ extension ReportsDetailView {
                     .applySolplyFont(.body_16_m)
                     .foregroundStyle(.gray500)
             }
+            .padding(.horizontal, 20.adjustedWidth)
             
             SolplyPhotosPicker() { imageData in
                 onPhotosSelected?(imageData)
             }
         }
-        .padding(.horizontal, 20.adjustedWidth)
     }
     
     private var completeButton: some View {
