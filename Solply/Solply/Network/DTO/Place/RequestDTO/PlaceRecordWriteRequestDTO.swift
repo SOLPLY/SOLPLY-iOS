@@ -10,7 +10,7 @@ import Foundation
 struct PlaceRecordWriteRequestDTO: RequestModelType {
     let placeId: Int
     let visitedAt: String
-    let visitTimeSlot: VisitTime
+    let visitTimeSlot: String
     let content: String
     let imageKeys: [String]
 }

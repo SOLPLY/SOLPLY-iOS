@@ -44,7 +44,7 @@ final class RecordWriteStore: ObservableObject {
                 let request = PlaceRecordWriteRequestDTO(
                     placeId: placeId,
                     visitedAt: vistedAt,
-                    visitTimeSlot: visitTimeSlot,
+                    visitTimeSlot: visitTimeSlot.rawValue,
                     content: state.recordText,
                     imageKeys: imageKeyStrings
                 )
