@@ -17,4 +17,5 @@ enum CustomLoadingType {
     case placeDetailLoading
     case courseDetailLoading
     case archiveFolderLoading
+    case recordListLoading
 }
