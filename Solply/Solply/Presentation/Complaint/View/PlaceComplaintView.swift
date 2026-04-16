@@ -12,9 +12,7 @@ struct PlaceComplaintView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    
-    @State private var selectedComplaintType: ComplaintType?
-    @State private var content: String = ""
+    @StateObject private var store = PlaceComplaintStore()
     
     // MARK: - Body
     
@@ -22,10 +20,10 @@ struct PlaceComplaintView: View {
         VStack(alignment: .center, spacing: 0) {
             complaintTypeList
             
-            if selectedComplaintType == .others {
+            if store.state.selectedComplaintType == .others {
                 SolplyTextEditor(
                     onTextChanged: { text in
-                        content = text
+                        store.dispatch(.updateContent(text))
                     }
                 )
             }
@@ -44,16 +42,24 @@ struct PlaceComplaintView: View {
         .onTapGesture {
             hideKeyboard()
         }
+        .customAlert()
+        .overlay(alignment: .center) {
+            if store.state.showComplaintCompleteModal {
+                ComplaintCompleteModal {
+                    appCoordinator.goBack()
+                }
+            }
+        }
     }
 }
 
 extension PlaceComplaintView {
     
     private var isNextEnabled: Bool {
-        guard let selectedComplaintType else { return false }
+        guard let selectedComplaintType = store.state.selectedComplaintType else { return false }
         
         if selectedComplaintType == .others {
-            return !content
+            return !store.state.content
                 .trimmingCharacters(in: .whitespacesAndNewlines)
                 .isEmpty
         }
@@ -66,10 +72,10 @@ extension PlaceComplaintView {
             ForEach(ComplaintType.allCases, id: \.self) { complaint in
                 SolplySelectRow(
                     title: complaint.title,
-                    isSelected: selectedComplaintType == complaint,
-                    hideSeparator: selectedComplaintType == complaint && complaint == .others
+                    isSelected: store.state.selectedComplaintType == complaint,
+                    hideSeparator: store.state.selectedComplaintType == complaint && complaint == .others
                 ) {
-                    selectedComplaintType = complaint
+                    store.dispatch(.selectComplaintType(complaint))
                 }
             }
         }
@@ -82,6 +88,7 @@ extension PlaceComplaintView {
             title: "다음",
             isEnabled: isNextEnabled
         ) {
+            store.dispatch(.complaint)
         }
         .padding(.horizontal, 20.adjustedWidth)
         .padding(.bottom, 16.adjustedHeight)
