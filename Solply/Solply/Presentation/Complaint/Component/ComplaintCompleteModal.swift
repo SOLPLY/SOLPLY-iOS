@@ -9,7 +9,17 @@ import SwiftUI
 
 struct ComplaintCompleteModal: View {
     
-    let confirmAction: () -> Void
+    // MARK: - Properties
+    
+    private let confirmAction: (() -> Void)?
+    
+    // MARK: - Initializer
+    
+    init(confirmAction: (() -> Void)? = nil) {
+        self.confirmAction = confirmAction
+    }
+    
+    // MARK: - Body
     
     var body: some View {
         ZStack(alignment: .center) {
@@ -37,7 +47,7 @@ struct ComplaintCompleteModal: View {
                     title: "확인",
                     isEnabled: true
                 ) {
-                    confirmAction()
+                    confirmAction?()
                 }
                 .padding(.top, 16.adjustedHeight)
             }
@@ -48,10 +58,4 @@ struct ComplaintCompleteModal: View {
             .cornerRadius(12)
         }
     }
-}
-
-#Preview {
-    ComplaintCompleteModal(
-        confirmAction: {}
-    )
 }
