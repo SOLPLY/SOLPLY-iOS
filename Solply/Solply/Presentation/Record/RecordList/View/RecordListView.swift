@@ -31,6 +31,7 @@ struct RecordListView: View {
                 }
                 
                 recordList
+                    .customLoading(.recordListLoading, isLoading: store.state.isLoading)
                 
                 bottomPadding
             }

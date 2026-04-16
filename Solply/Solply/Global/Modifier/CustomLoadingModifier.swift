@@ -379,6 +379,51 @@ extension View {
                     }
                 )
             )
+            
+            // MARK: - RecordListLoading
+            
+        case .recordListLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    isLoading: isLoading,
+                    loadingView: {
+                        VStack(alignment: .center, spacing: 0) {
+                            ForEach(0..<2) { index in
+                                VStack(alignment: .leading, spacing : 16.adjustedHeight) {
+                                    HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                                        SolplySkeletonView(width: 24.adjusted, height: 24.adjusted, cornerRadius: 0)
+                                            .capsuleClipped()
+                                        
+                                        SolplySkeletonView(font: .body_14_m, width: 60.adjustedWidth)
+                                    }
+                                    
+                                    HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                                        ForEach(0..<4) { _ in
+                                            SolplySkeletonView(width: 72.adjusted, height: 72.adjusted, cornerRadius: 12)
+                                        }
+                                    }
+                                    
+                                    VStack(alignment: .leading, spacing: 2.adjustedHeight) {
+                                        SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth, cornerRadius: 4)
+                                        SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth)
+                                    }
+                                    
+                                    SolplySkeletonView(font: .body_14_m, width: 127.adjustedWidth, cornerRadius: 4)
+                                }
+                                .padding(.vertical, 20.adjustedHeight)
+                                .overlay(alignment: .bottom) {
+                                    if index == 0 {
+                                        Rectangle()
+                                            .frame(height: 1)
+                                            .foregroundStyle(.gray200)
+                                    }
+                                }
+                                .padding(.horizontal, 20.adjustedWidth)
+                            }
+                        }
+                    }
+                )
+            )
         }
     }
 }

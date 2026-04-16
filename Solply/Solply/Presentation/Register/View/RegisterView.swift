@@ -214,7 +214,6 @@ extension RegisterView {
                         SolplyPhotosPicker { imageData in
                             store.dispatch(.attachRegisterPhoto(imageData: imageData))
                         }
-                        .padding(.horizontal, 20.adjustedWidth)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
