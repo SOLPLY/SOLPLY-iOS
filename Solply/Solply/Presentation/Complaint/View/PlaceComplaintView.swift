@@ -44,6 +44,7 @@ struct PlaceComplaintView: View {
         .onTapGesture {
             hideKeyboard()
         }
+        .customAlert()
     }
 }
 
@@ -82,8 +83,17 @@ extension PlaceComplaintView {
             title: "다음",
             isEnabled: isNextEnabled
         ) {
+            showAlert()
         }
         .padding(.horizontal, 20.adjustedWidth)
         .padding(.bottom, 16.adjustedHeight)
+    }
+    
+    private func showAlert() {
+        AlertManager.shared.showAlert(
+            alertType: .complaint,
+            onCancel: nil
+        ) {
+        }
     }
 }
