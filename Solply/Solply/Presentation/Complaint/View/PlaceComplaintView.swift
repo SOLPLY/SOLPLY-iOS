@@ -15,6 +15,7 @@ struct PlaceComplaintView: View {
     
     @State private var selectedComplaintType: ComplaintType?
     @State private var content: String = ""
+    @State private var showComplaintCompleteModal: Bool = false
     
     // MARK: - Body
     
@@ -45,6 +46,14 @@ struct PlaceComplaintView: View {
             hideKeyboard()
         }
         .customAlert()
+        .overlay(alignment: .center) {
+            if showComplaintCompleteModal {
+                ComplaintCompleteModal {
+                    showComplaintCompleteModal = false
+                    appCoordinator.goBack()
+                }
+            }
+        }
     }
 }
 
@@ -94,6 +103,7 @@ extension PlaceComplaintView {
             alertType: .complaint,
             onCancel: nil
         ) {
+            showComplaintCompleteModal = true
         }
     }
 }
