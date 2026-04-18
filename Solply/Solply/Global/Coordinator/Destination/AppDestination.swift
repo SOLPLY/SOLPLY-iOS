@@ -26,6 +26,7 @@ enum AppDestination: Hashable {
     case recordWrite(placeId: Int, placeName: String)
     case aiRecommend
     case placeComplaint
+    case mySolplyRecords
 }
 
 extension AppDestination {
@@ -68,6 +69,8 @@ extension AppDestination {
             AIRecommendPromptView()
         case .placeComplaint:
             PlaceComplaintView()
+        case .mySolplyRecords:
+            MySolplyRecordsView()
         }
     }
 }
