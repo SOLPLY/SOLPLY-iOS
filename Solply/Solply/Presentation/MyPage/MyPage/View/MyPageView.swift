@@ -134,7 +134,7 @@ private extension MyPageView {
                 title: "내 솔플리 기록",
                 // TODO: - API 연결 후 버튼 활성화 수정 필요
                 isButtonEnabled: true) {
-                    // TODO: - 내 솔플리 기록 전체보기 연결 필요
+                    appCoordinator.navigate(to: .mySolplyRecords)
                     
                 }
             
