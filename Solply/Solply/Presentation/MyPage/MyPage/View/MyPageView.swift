@@ -29,25 +29,9 @@ struct MyPageView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     userProfileHeader
                     
-//                    MyPageSection(
-//                        type: .record,
-//                        items: [],
-//                        onSeeAllTapped: {
-//                            // TODO: - 나의 솔플 기록 전체보기 연결
-//                        }
-//                    )
                     mySolplyRecordSection
                         .padding(.top, 44.adjustedHeight)
 
-//                    MyPageSection(
-//                        type: .registeredPlaces,
-//                        items: appState.userInformation?.myPlacePreviews ?? [],
-//                        onSeeAllTapped: {
-//                            guard let userId = appState.userInformation?.userId else { return }
-//                            
-//                            appCoordinator.navigate(to: .registeredPlaces(userId: userId))
-//                        }
-//                    )
                     myRegisteredPlacesSection
                         .padding(.top, 16.adjustedHeight)
                     

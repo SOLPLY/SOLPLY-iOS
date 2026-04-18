@@ -115,8 +115,3 @@ extension MySolplyRecordsView {
         }
     }
 }
-
-#Preview {
-    MySolplyRecordsView()
-        .environmentObject(AppCoordinator())
-}
