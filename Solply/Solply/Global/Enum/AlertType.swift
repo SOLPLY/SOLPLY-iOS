@@ -16,6 +16,7 @@ enum AlertType {
     case withdraw
     case authenticationRequired
     case complaint
+    case deleteRecord
     
     var title: String {
         switch self {
@@ -27,6 +28,7 @@ enum AlertType {
         case .withdraw: return "탈퇴하시겠습니까?"
         case .authenticationRequired: return "로그인이 필요한 기능이에요."
         case .complaint: return "신고가 접수되면 검토 후\n필요한 조치가 이루어져요"
+        case .deleteRecord: return "작성한 기록을 삭제하시겠어요?"
         }
     }
     
@@ -50,6 +52,8 @@ enum AlertType {
             return "로그인"
         case .complaint:
             return "신고하기"
+        case .deleteRecord:
+            return "삭제하기"
         }
     }
 }
