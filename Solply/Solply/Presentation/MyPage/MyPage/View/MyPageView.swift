@@ -147,17 +147,18 @@ private extension MyPageView {
         .background(.coreWhite)
     }
     
-    @ViewBuilder
     func mySolplyRecordList() -> some View {
         // TODO: - API 연결 후 수정 필요
-        if let mySolplyRecords = mySolplyRecords, !mySolplyRecords.isEmpty {
-            VStack(alignment: .center, spacing: 0) {
-                ForEach(Array(mySolplyRecords.enumerated()), id: \.offset) { index, mySolplyRecord in
-                    mySolplyRecordRow(mySolplyRecord, showsDivider: mySolplyRecords.count - 1 != index)
+        Group {
+            if let mySolplyRecords = mySolplyRecords, !mySolplyRecords.isEmpty {
+                VStack(alignment: .center, spacing: 0) {
+                    ForEach(Array(mySolplyRecords.enumerated()), id: \.offset) { index, mySolplyRecord in
+                        mySolplyRecordRow(mySolplyRecord, showsDivider: mySolplyRecords.count - 1 != index)
+                    }
                 }
+            } else {
+                emptyView(title: "등록한 기록이 없어요")
             }
-        } else {
-            emptyView(title: "등록한 기록이 없어요")
         }
     }
     
@@ -194,26 +195,27 @@ private extension MyPageView {
         }
     }
     
-    @ViewBuilder
     func myRegisteredPlacesList() -> some View {
-        if let myPlacePreviews = appState.userInformation?.myPlacePreviews, !myPlacePreviews.isEmpty {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .top, spacing: 16.adjustedWidth) {
-                    ForEach(myPlacePreviews, id: \.id) { item in
-                        PlaceCard(
-                            isSaved: item.isBookmarked,
-                            thumbnailUrl: item.thumbnail,
-                            placeName: item.name,
-                            placeCategory: item.mainTag,
-                            isSelected: false,
-                            size: 145.adjusted
-                        )
+        Group {
+            if let myPlacePreviews = appState.userInformation?.myPlacePreviews, !myPlacePreviews.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(alignment: .top, spacing: 16.adjustedWidth) {
+                        ForEach(myPlacePreviews, id: \.id) { item in
+                            PlaceCard(
+                                isSaved: item.isBookmarked,
+                                thumbnailUrl: item.thumbnail,
+                                placeName: item.name,
+                                placeCategory: item.mainTag,
+                                isSelected: false,
+                                size: 145.adjusted
+                            )
+                        }
                     }
                 }
+                .contentMargins(.horizontal, 20.adjustedWidth)
+            } else {
+                emptyView(title: "등록한 장소가 없어요")
             }
-            .contentMargins(.horizontal, 20.adjustedWidth)
-        } else {
-            emptyView(title: "등록한 장소가 없어요")
         }
     }
     
