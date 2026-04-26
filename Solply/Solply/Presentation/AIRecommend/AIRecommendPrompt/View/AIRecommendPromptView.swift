@@ -21,17 +21,24 @@ struct AIRecommendPromptView: View {
         VStack(alignment: .center, spacing: 0) {
             aiRecommendBar
             
-            townSelectWithGuide
-            
-            aiRecommendPromptField
-            
-            popularRecommend
-            
-            aiRecommendButton
+            ScrollView(.vertical, showsIndicators: true) {
+                VStack(alignment: .center, spacing: 0) {
+                    townSelectWithGuide
+                    
+                    aiRecommendPromptField
+                    
+                    popularRecommend
+                }
+            }
         }
         .customNavigationBar(.backWithTitle(title: "AI 추천") {
             appCoordinator.goBack()
         })
+        .ignoresSafeArea(edges: .bottom)
+        .overlay(alignment: .bottom) {
+            aiRecommendButton
+                .padding(.bottom, 4.adjustedHeight)
+        }
         .customModal()
         .onTapGesture {
             hideKeyboard()
