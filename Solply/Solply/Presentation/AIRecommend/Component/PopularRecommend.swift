@@ -11,7 +11,16 @@ struct PopularRecommend: View {
     
     // MARK: - Properties
 
-    let popularPrompt: [String]
+    private let popularPrompt: [String]
+    private let action: ((String) -> Void)?
+    
+    
+    // MARK: - Initializer
+    
+    init(popularPrompt: [String], action: ((String) -> Void)? = nil) {
+        self.popularPrompt = popularPrompt
+        self.action = action
+    }
     
     // MARK: - Body
     
@@ -25,7 +34,7 @@ struct PopularRecommend: View {
             VStack(alignment: .center, spacing: 12.adjustedHeight) {
                 ForEach(popularPrompt, id: \.self) { prompt in
                     Button {
-                        
+                        action?(prompt)
                     } label: {
                         Text(prompt)
                             .applySolplyFont(.body_14_r)

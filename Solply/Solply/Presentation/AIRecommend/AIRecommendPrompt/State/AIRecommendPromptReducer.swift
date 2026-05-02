@@ -27,6 +27,8 @@ enum AIRecommendPromptReducer {
             state.isLoading = true
             break
             
+        case .popularPromptTapped:
+            state.isLoading = true
             
         case .submitAIPlaceRecommend:
             break
