@@ -122,7 +122,10 @@ extension AIRecommendPromptView {
     }
     
     private var popularRecommend: some View {
-        PopularRecommend(popularPrompt: store.state.popularRecommends) { text in
+        PopularRecommend(
+            popularPrompt: store.state.popularRecommends,
+            isLoading: store.state.isLoading
+        ) { text in
             store.dispatch(.popularPromptTapped(prompt: text))
         }
         .padding(.top, 24.adjustedHeight)

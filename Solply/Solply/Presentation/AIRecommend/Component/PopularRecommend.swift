@@ -12,13 +12,18 @@ struct PopularRecommend: View {
     // MARK: - Properties
 
     private let popularPrompt: [String]
+    private let isLoading: Bool
     private let action: ((String) -> Void)?
-    
     
     // MARK: - Initializer
     
-    init(popularPrompt: [String], action: ((String) -> Void)? = nil) {
+    init(
+        popularPrompt: [String],
+        isLoading: Bool,
+        action: ((String) -> Void)? = nil
+    ) {
         self.popularPrompt = popularPrompt
+        self.isLoading = isLoading
         self.action = action
     }
     
@@ -52,6 +57,7 @@ struct PopularRecommend: View {
                             )
                     }
                     .buttonStyle(.plain)
+                    .disabled(isLoading)
                 }
             }
         }

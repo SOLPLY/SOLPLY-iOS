@@ -39,7 +39,9 @@ private extension AIRecommendEmptyView {
                 "망원에서 혼자 오래 머물기 좋은 카페",
                 "연남동 디저트가 맛있는 감성카페",
                 "서촌 사색하기 좋은 책방"
-            ]
+            ],
+            // TODO: - 로딩 연결
+            isLoading: false
         )
         .padding(.top, 24.adjustedHeight)
         .padding(.horizontal, 16.adjustedWidth)
