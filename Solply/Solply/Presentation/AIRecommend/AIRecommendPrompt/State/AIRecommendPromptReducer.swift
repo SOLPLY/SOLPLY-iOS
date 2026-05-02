@@ -24,6 +24,7 @@ enum AIRecommendPromptReducer {
             state.isRecommendButtonEnabled = state.promptContent.count >= 5
             
         case .aiRecommendButtonTapped:
+            state.isLoading = true
             break
             
             
@@ -31,7 +32,7 @@ enum AIRecommendPromptReducer {
             break
             
         case .submitAIPlaceRecommendSuccess:
-            break
+            state.isLoading = false
             
         case .submitAIPlaceRecommendFailed(let error):
             print(error)
@@ -41,7 +42,7 @@ enum AIRecommendPromptReducer {
             break
             
         case .submitAICourseRecommendSuccess:
-            break
+            state.isLoading = false
             
         case .submitAICourseRecommendFailed(let error):
             print(error)

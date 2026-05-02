@@ -122,21 +122,15 @@ extension AIRecommendPromptView {
     }
     
     private var popularRecommend: some View {
-        PopularRecommend(
-            popularPrompt: [
-                "성수에서 작업하기 좋은 조용한 카페 추천해줘",
-                "망원에서 혼자 오래 머물기 좋은 카페",
-                "연남동 디저트가 맛있는 감성카페",
-                "서촌 사색하기 좋은 책방"
-            ]
-        )
+        PopularRecommend(popularPrompt: store.state.popularRecommends)
             .padding(.top, 24.adjustedHeight)
     }
     
     private var aiRecommendButton: some View {
         SolplyMainButton(
             title: "추천 받기",
-            isEnabled: store.state.isRecommendButtonEnabled
+            isEnabled: store.state.isRecommendButtonEnabled,
+            isLoading: store.state.isLoading
         ) {
             store.dispatch(.aiRecommendButtonTapped(content: store.state.selectedCategory))
         }
