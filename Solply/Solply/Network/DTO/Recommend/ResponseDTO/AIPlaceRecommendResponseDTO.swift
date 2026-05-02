@@ -14,6 +14,7 @@ struct AIPlaceRecommendResponseDTO: ResponseModelType {
 struct AIRecommendedPlace: ResponseModelType {
     let placeId: Int
     let placeName: String
+    let thumbnailImageUrl: String
     let mainTag: String
     let optionTags: [String]
     let townName: String

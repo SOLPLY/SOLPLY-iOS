@@ -130,7 +130,9 @@ extension AIRecommendPromptView {
         SolplyMainButton(
             title: "추천 받기",
             isEnabled: store.state.isRecommendButtonEnabled
-        )
+        ) {
+            store.dispatch(.aiRecommendButtonTapped(content: store.state.selectedCategory))
+        }
         .padding(.horizontal, 20.adjustedWidth)
         .padding(.top, 36.adjustedHeight)
     }

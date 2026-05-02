@@ -10,5 +10,6 @@ import Foundation
 struct AIRecommendPromptState {
     var selectedCategory: SolplyContentType = .place
     var isWritingGuidePresented: Bool = false
-    var isRecommendButtonEnabled: Bool = false
+    // TODO: - 활성화 상태 수정 필요
+    var isRecommendButtonEnabled: Bool = true
 }

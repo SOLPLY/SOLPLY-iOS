@@ -78,4 +78,46 @@ extension MockRecommendService: RecommendAPI {
         let response = BaseResponseBody.mockSuccess(data: mock)
         return response
     }
+    
+    func submitAIPlaceRecommend(
+        request: AIRecommendRequestDTO
+    ) async throws -> BaseResponseBody<AIPlaceRecommendResponseDTO> {
+        let mock = AIPlaceRecommendResponseDTO(
+            places: [
+                AIRecommendedPlace(
+                    placeId: 1,
+                    placeName: "임시 장소 1",
+                    thumbnailImageUrl: "https://d2ga1f2858oj5h.cloudfront.net/dev/uploads/places/25/place_025_image_1.jpg",
+                    mainTag: "CAFE",
+                    optionTags: ["WORK", "READING"],
+                    townName: "망원",
+                    reason: "a;dslkfja;sldkjf;alksdjf;lakdsjf;lkj"
+                )
+            ]
+        )
+        
+        let response = BaseResponseBody.mockSuccess(data: mock)
+        return response
+    }
+    
+    func submitAICourseRecommend(
+        request: AIRecommendRequestDTO
+    ) async throws -> BaseResponseBody<AICourseRecommendResponseDTO> {
+        let mock = AICourseRecommendResponseDTO(
+            courses: [
+                AIRecommendedCourse(
+                    courseId: 1,
+                    courseName: "임시 코스 1",
+                    thumbnailImageUrl: "https://d2ga1f2858oj5h.cloudfront.net/dev/uploads/places/25/place_025_image_1.jpg",
+                    courseTag: "FOOD",
+                    townName: "망원",
+                    reason: "안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요",
+                    placeMainTags: ["CAFE", "SHOPPING"]
+                )
+            ]
+        )
+        
+        let response = BaseResponseBody.mockSuccess(data: mock)
+        return response
+    }
 }

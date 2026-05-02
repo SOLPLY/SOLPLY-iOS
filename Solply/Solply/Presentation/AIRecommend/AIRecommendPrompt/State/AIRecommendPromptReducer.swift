@@ -21,6 +21,31 @@ enum AIRecommendPromptReducer {
             
         case .updatePromptText(let text):
             state.isRecommendButtonEnabled = text.count >= 5
+            
+        case .aiRecommendButtonTapped:
+            break
+            
+            
+        case .submitAIPlaceRecommend:
+            break
+            
+        case .submitAIPlaceRecommendSuccess:
+            break
+            
+        case .submitAIPlaceRecommendFailed(let error):
+            print(error)
+            break
+            
+        case .submitAICourseRecommend:
+            break
+            
+        case .submitAICourseRecommendSuccess:
+            break
+            
+        case .submitAICourseRecommendFailed(let error):
+            print(error)
+            break
+            
         }
     }
 }

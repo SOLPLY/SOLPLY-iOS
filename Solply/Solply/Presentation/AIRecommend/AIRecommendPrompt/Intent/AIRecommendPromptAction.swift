@@ -11,4 +11,14 @@ enum AIRecommendPromptAction {
     case selectTab(selectedCategory: SolplyContentType)
     case toggleWritingGuide
     case updatePromptText(String)
+    case aiRecommendButtonTapped(content: SolplyContentType)
+    
+    // api
+    case submitAIPlaceRecommend
+    case submitAIPlaceRecommendSuccess
+    case submitAIPlaceRecommendFailed(error: NetworkError)
+    
+    case submitAICourseRecommend
+    case submitAICourseRecommendSuccess
+    case submitAICourseRecommendFailed(error: NetworkError)
 }
