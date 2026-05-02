@@ -20,7 +20,8 @@ enum AIRecommendPromptReducer {
             state.isWritingGuidePresented.toggle()
             
         case .updatePromptText(let text):
-            state.isRecommendButtonEnabled = text.count >= 5
+            state.promptContent = text
+            state.isRecommendButtonEnabled = state.promptContent.count >= 5
             
         case .aiRecommendButtonTapped:
             break

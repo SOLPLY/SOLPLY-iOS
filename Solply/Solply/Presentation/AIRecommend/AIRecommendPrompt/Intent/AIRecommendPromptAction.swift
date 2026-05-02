@@ -14,11 +14,11 @@ enum AIRecommendPromptAction {
     case aiRecommendButtonTapped(content: SolplyContentType)
     
     // api
-    case submitAIPlaceRecommend
+    case submitAIPlaceRecommend(townId: Int)
     case submitAIPlaceRecommendSuccess
     case submitAIPlaceRecommendFailed(error: NetworkError)
     
-    case submitAICourseRecommend
+    case submitAICourseRecommend(townId: Int)
     case submitAICourseRecommendSuccess
     case submitAICourseRecommendFailed(error: NetworkError)
 }

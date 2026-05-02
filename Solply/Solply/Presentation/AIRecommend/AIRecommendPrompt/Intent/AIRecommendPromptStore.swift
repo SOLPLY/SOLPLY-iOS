@@ -29,28 +29,31 @@ final class AIRecommendPromptStore: ObservableObject {
         switch action {
             
         case .aiRecommendButtonTapped(let content):
+            // TODO: - townId 연동 필요
             switch content {
             case .place:
-                dispatch(.submitAIPlaceRecommend)
+                dispatch(.submitAIPlaceRecommend(townId: 2))
             case .course:
-                dispatch(.submitAICourseRecommend)
+                dispatch(.submitAICourseRecommend(townId: 2))
             }
             
-        case .submitAIPlaceRecommend:
+            // TODO: - 수정필요
+            
+        case .submitAIPlaceRecommend(let townId):
             Task {
                 let request = AIRecommendRequestDTO(
-                    query: "혼자 작업하기 좋은 카페",
-                    townId: 2
+                    query: state.promptContent,
+                    townId: townId
                 )
                 let result = await effect.submitAIPlaceRecommend(request: request)
                 self.dispatch(result)
             }
             
-        case .submitAICourseRecommend:
+        case .submitAICourseRecommend(let townId):
             Task {
                 let request = AIRecommendRequestDTO(
-                    query: "자연을 느끼기 좋은 코스",
-                    townId: 2
+                    query: state.promptContent,
+                    townId: townId
                 )
                 let result = await effect.submitAICourseRecommend(request: request)
                 self.dispatch(result)
