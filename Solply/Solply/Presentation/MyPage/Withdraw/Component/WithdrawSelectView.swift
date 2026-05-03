@@ -12,7 +12,7 @@ struct WithdrawSelectView: View {
     // MARK: - Properties
     
     private let selectedWithdrawType: WithdrawType?
-    private var withdrawContent: String
+    private let withdrawContent: String
     private let onChangeContent: ((String) -> Void)?
     private let selectWithdrawAction: ((WithdrawType) -> Void)?
     private let withdrawAction: (() -> Void)?
@@ -55,6 +55,19 @@ struct WithdrawSelectView: View {
 }
 
 extension WithdrawSelectView {
+    
+    private var isWithdrawEnabled: Bool {
+        guard let selectedWithdrawType else { return false }
+        
+        if selectedWithdrawType == .others {
+            return !withdrawContent
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .isEmpty
+        }
+        
+        return true
+    }
+    
     private var withdrawSelectList: some View {
         VStack(alignment: .center, spacing: 0) {
             ForEach(WithdrawType.allCases, id: \.self) { withdraws in
@@ -72,11 +85,13 @@ extension WithdrawSelectView {
     }
     
     private var withdrawButton: some View {
-        SolplyMainButton(title: "탈퇴하기", isEnabled: selectedWithdrawType != nil) {
+        SolplyMainButton(
+            title: "탈퇴하기",
+            isEnabled: isWithdrawEnabled
+        ) {
             withdrawAction?()
         }
         .padding(.horizontal, 20.adjustedWidth)
         .padding(.bottom, 16.adjustedHeight)
     }
 }
-

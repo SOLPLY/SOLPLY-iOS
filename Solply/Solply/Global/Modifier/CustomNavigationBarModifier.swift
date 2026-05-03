@@ -29,7 +29,7 @@ struct CustomNavigationBarModifier: ViewModifier {
                     centerView: { EmptyView() },
                     leftView: { EmptyView() },
                     rightView: { exploreBarButtonItem(action: exploreAction) },
-                    backgroundColor: .gray100
+                    backgroundColor: .purple500
                 )
             )
         case .backWithTitleAndHome(let title, let backAction, let homeAction):
@@ -211,7 +211,7 @@ extension CustomNavigationBarModifier {
         } label: {
             Text("둘러보기")
                 .applySolplyFont(.body_14_m)
-                .foregroundStyle(.gray800)
+                .foregroundStyle(.gray100)
         }
         .buttonStyle(.plain)
         .padding(.horizontal, 20.adjustedWidth)

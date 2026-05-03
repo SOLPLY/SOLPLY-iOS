@@ -146,10 +146,3 @@ extension CourseInformationEditBottomSheet {
         .padding(.bottom, 16.adjustedHeight)
     }
 }
-
-#Preview {
-    CourseInformationEditBottomSheet(
-        courseName: "오감으로 수집할까말까 ",
-        courseDescription: "오감 육감 칠감 ㅋㅋㅋ"
-    )
-}

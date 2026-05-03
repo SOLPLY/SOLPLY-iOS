@@ -54,20 +54,3 @@ struct RegisterSearchList: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
-
-#Preview {
-    RegisterSearchList(searchResult: [
-        RegisterSearch(
-            placeName: "공간 이름1이이이이이이이이이이이ㅣ이이이이이이이이이",
-            placeAddress: "상세 주소 1 아아아아아아아아아아아아아아아ㅏ앙아아"
-        ),
-        RegisterSearch(
-            placeName: "공간 이름2",
-            placeAddress: "상세 주소2"
-        ),
-        RegisterSearch(
-            placeName: "공간 이름3",
-            placeAddress: "상세 주소3"
-        )
-    ])
-}

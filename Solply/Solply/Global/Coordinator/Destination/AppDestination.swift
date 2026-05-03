@@ -22,8 +22,11 @@ enum AppDestination: Hashable {
     case register
     case registerComplete
     case customerCenter
-    case recordList
+    case recordList(placeId: Int, placeName: String)
+    case recordWrite(placeId: Int, placeName: String)
     case aiRecommend
+    case placeComplaint
+    case mySolplyRecords
 }
 
 extension AppDestination {
@@ -58,10 +61,16 @@ extension AppDestination {
             RegisterCompleteView()
         case .customerCenter:
             CustomerCenterView()
-        case .recordList:
-            RecordListView()
+        case .recordList(let placeId, let placeName):
+            RecordListView(placeId: placeId, placeName: placeName)
+        case .recordWrite(let placeId, let placeName):
+            RecordWriteView(placeId: placeId, placeName: placeName)
         case .aiRecommend:
             AIRecommendPromptView()
+        case .placeComplaint:
+            PlaceComplaintView()
+        case .mySolplyRecords:
+            MySolplyRecordsView()
         }
     }
 }

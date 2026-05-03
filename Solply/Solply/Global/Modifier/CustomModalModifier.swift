@@ -28,12 +28,12 @@ struct CustomModalModifier: ViewModifier {
                                 }
                             
                             VStack(alignment: .center, spacing: 16.adjustedHeight) {
-                                Text(modalType.aiRecommendGuideTitle)
+                                Text(modalType.guideTitle)
                                     .applySolplyFont(.body_16_m)
                                     .foregroundStyle(.coreBlack)
                                 
                                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                                    ForEach(modalType.aiRecommendGuideContents, id: \.self) { content in
+                                    ForEach(modalType.guideContents, id: \.self) { content in
                                         TextWithBulletIcon(content)
                                     }
                                 }

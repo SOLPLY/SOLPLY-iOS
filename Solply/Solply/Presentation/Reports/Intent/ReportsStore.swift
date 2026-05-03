@@ -11,11 +11,7 @@ import Foundation
 final class ReportsStore: ObservableObject {
     
     @Published private(set) var state = ReportsState()
-    private let effect = ReportsEffect(
-        fileService: FileService(),
-        uploadPhotosService: UploadPhotosService(),
-        placeService: PlaceService()
-    )
+    private let effect = ReportsEffect(placeService: PlaceService())
     
     func dispatch(_ action: ReportsAction) {
         ReportsReducer.reduce(state: &state, action: action)
@@ -23,73 +19,26 @@ final class ReportsStore: ObservableObject {
         switch action {
             
         case .changeReportsStep(let reportsStep):
-            guard let placeId = state.placeId else { return }
-            
-            if let selectedReportsType = state.selectedReportsType, reportsStep == .reportsComplete {
-                if state.attachedImageData.isEmpty {
-                    dispatch(
-                        .submitReports(
-                            placeId: placeId,
-                            request: ReportsRequestDTO(
-                                reportType: selectedReportsType.rawValue,
-                                content: state.reportsContent,
-                                imageKeys: []
-                            )
-                        )
-                    )
-                } else {
-                    dispatch(
-                        .submitPresignedUrlRequest(
-                            request: PresignedUrlRequestDTO(
-                                files: state.attachedImageData.map { fileName, _ in
-                                    File(fileName: fileName)
-                                }
-                            )
-                        )
-                    )
-                }
-            }
-            
-        case .submitPresignedUrlRequest(let request):
-            Task {
-                let result = await effect.submitPresignedUrlRequest(request: request)
-                self.dispatch(result)
-            }
-            
-        case .presignedUrlRequestSubmitted(let response):
-            let presignedInformation = response.presignedGetUrlInfos
-            let imageDatas = state.attachedImageData
-
-            var presignedDictionary: [URL: Data] = [:]
-
-            for (info, data) in zip(presignedInformation, imageDatas) {
-                if let url = URL(string: info.presignedUrl) {
-                    presignedDictionary[url] = data.1
-                }
-            }
+            guard let placeId = state.placeId,
+                  let selectedReportsType = state.selectedReportsType,
+                  reportsStep == .reportsComplete else { return }
             
             Task {
-                let result = await effect.uploadImages(dictionary: presignedDictionary)
-                self.dispatch(result)
+                let imageKeyStrings = await PhotoUploadManager.shared.upload(
+                    imageDatas: state.attachedImageData
+                )
+                
+                self.dispatch(
+                    .submitReports(
+                        placeId: placeId,
+                        request: ReportsRequestDTO(
+                            reportType: selectedReportsType.rawValue,
+                            content: state.reportsContent,
+                            imageKeys: imageKeyStrings
+                        )
+                    )
+                )
             }
-            
-        case .photoUploadSuccess(let imageKeys):
-            guard let reportsType = state.selectedReportsType,
-                  let placeId = state.placeId else { return }
-            
-            var imageKeyStrings: [String]
-            
-            imageKeyStrings = imageKeys.map { imageKey in
-                imageKey.absoluteString.truncatedForS3()
-            }
-            
-            let request = ReportsRequestDTO(
-                reportType: reportsType.rawValue,
-                content: state.reportsContent,
-                imageKeys: imageKeyStrings
-            )
-            
-            self.dispatch(.submitReports(placeId: placeId, request: request))
             
         case .submitReports(let placeId, let request):
             Task {

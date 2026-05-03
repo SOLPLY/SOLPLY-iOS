@@ -12,5 +12,10 @@ enum RecordListAction {
     
     case presentImageViewer(index: Int, imageUrls: [String?])
     case dismissImageViewer
+    
+    // api
+    case fetchPlaceRecordList
+    case fetchPlaceRecordListSuccess(records: [Record])
+    case fetchPlaceRecordListFailed(error: NetworkError)
 }
     

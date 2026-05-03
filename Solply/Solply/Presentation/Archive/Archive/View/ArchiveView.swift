@@ -51,6 +51,7 @@ extension ArchiveView {
                 store.dispatch(.toggleArchiveBar(archiveCategory: selectedCategory))
             }
         )
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     private var archiveGrid: some View {

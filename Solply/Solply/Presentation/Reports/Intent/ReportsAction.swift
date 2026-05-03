@@ -18,14 +18,7 @@ enum ReportsAction {
     // api
     case errorOccured(error: NetworkError)
     
-    case submitPresignedUrlRequest(request: PresignedUrlRequestDTO)
-    case presignedUrlRequestSubmitted(response: PresignedUrlResponseDTO)
-    
     case submitReports(placeId: Int, request: ReportsRequestDTO)
     case reportsSubmitted
     case reportsFailed(error: NetworkError)
-    
-    // 사진 업로드
-    case photoUploadSuccess(imageKeys: [URL])
-    case photoUploadFailed(error: NetworkError)
 }

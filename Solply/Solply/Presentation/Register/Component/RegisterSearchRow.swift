@@ -60,7 +60,3 @@ struct RegisterSearchRow: View {
         .buttonStyle(.plain)
     }
 }
-
-#Preview {
-    RegisterSearchRow(placeName: "장소 이름1", placeAddress: "장소 주소1")
-}

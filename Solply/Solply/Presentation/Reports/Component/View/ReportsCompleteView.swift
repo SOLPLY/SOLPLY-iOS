@@ -21,7 +21,3 @@ struct ReportsCompleteView: View {
         .background(.coreWhite)
     }
 }
-
-#Preview {
-    ReportsCompleteView()
-}

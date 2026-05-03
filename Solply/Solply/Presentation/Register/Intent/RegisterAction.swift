@@ -30,11 +30,4 @@ enum RegisterAction {
     case submitRegister(imageKeyStrings: [String])
     case registerSubmitted
     case submitRegisterFailed(error: NetworkError)
-    
-    case submitPresignedUrlRequest(request: PresignedUrlRequestDTO)
-    case presignedUrlRequestSubmitted(response: PresignedUrlResponseDTO)
-    case submitPresignedUrlRequestFailed(error: NetworkError)
-    
-    case photoUploadSuccess(imageKeys: [URL])
-    case photoUploadFailed(error: NetworkError)
 }

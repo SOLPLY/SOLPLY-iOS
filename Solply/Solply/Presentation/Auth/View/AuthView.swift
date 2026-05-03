@@ -9,9 +9,13 @@ import SwiftUI
 
 struct AuthView: View {
     
+    // MARK: - Properties
+    
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store: AuthStore = AuthStore()
+    
+    // MARK: - Body
     
     var body: some View {
         ZStack {
@@ -22,18 +26,21 @@ struct AuthView: View {
                 
                 buttons
             }
-            .background(.gray100)
+            .background(.purple500)
             .onAppear {
                 appCoordinator.switchTab(to: .place)
             }
-            .onChange(of: store.state.isLoggedIn) { _, newValue in
-                if newValue {
+            .onChange(of: store.state.isLoggedIn) { _, isLoggedIn in
+                if isLoggedIn {
                     appState.updateUserSession()
                     
                     if store.state.isNewUser {
                         appCoordinator.changeRoot(to: .onboarding)
                     } else {
-                        appCoordinator.changeRoot(to: .tabBar)
+                        Task {
+                            await appState.fetchUserInformation()
+                            appCoordinator.changeRoot(to: .tabBar)
+                        }
                     }
                 }
             }
@@ -79,7 +86,7 @@ extension AuthView {
             
             Text("혼자만의 시간을\n더 쉽게, 더 즐겁게!")
                 .applySolplyFont(.display_20_sb)
-                .foregroundColor(.gray800)
+                .foregroundColor(.gray100)
                 .padding(.top, 8.adjustedHeight)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -102,9 +109,4 @@ extension AuthView {
         .padding(.horizontal, 20.adjustedWidth)
         .padding(.bottom, 76.adjustedHeight)
     }
-}
-
-#Preview {
-    AuthView()
-        .environmentObject(AppCoordinator())
 }

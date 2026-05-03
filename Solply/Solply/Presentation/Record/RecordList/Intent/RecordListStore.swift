@@ -13,10 +13,24 @@ final class RecordListStore: ObservableObject {
     // MARK: - Properties
     
     @Published private(set) var state = RecordListState()
+    private let effect: RecordListEffect
+    
+    let placeId: Int
+    let placeName: String
     
     // MARK: - Initializer
     
-    // TODO: - API 연동할 때 Effect 추가하기
+    init(
+        effect: RecordListEffect = RecordListEffect(
+            placeService: PlaceService()
+        ),
+        placeId: Int,
+        placeName: String
+    ) {
+        self.effect = effect
+        self.placeId = placeId
+        self.placeName = placeName
+    }
     
     // MARK: - dispatch
     
@@ -24,7 +38,17 @@ final class RecordListStore: ObservableObject {
         RecordListReducer.reduce(state: &state, action: action)
         
         switch action {
+        case .onAppear:
+            dispatch(.fetchPlaceRecordList)
+            
+        case .fetchPlaceRecordList:
+            Task {
+                let result = await effect.fetchPlaceRecordList(placeId: placeId)
+                self.dispatch(result)
+            }
+            
         default:
+            
             break
         }
     }

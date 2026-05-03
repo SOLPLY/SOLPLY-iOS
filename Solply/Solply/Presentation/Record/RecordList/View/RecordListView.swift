@@ -17,8 +17,8 @@ struct RecordListView: View {
     
     // MARK: - Initializer
     
-    init() {
-        self._store = StateObject(wrappedValue: RecordListStore())
+    init(placeId: Int, placeName: String) {
+        self._store = StateObject(wrappedValue: RecordListStore(placeId: placeId, placeName: placeName))
     }
     
     // MARK: - Body
@@ -27,10 +27,11 @@ struct RecordListView: View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .center, spacing: 20.adjustedHeight) {
                 RecordWriteButton {
-                    // TODO: - 기록 작성하기 뷰 연결
+                    appCoordinator.navigate(to: .recordWrite(placeId: store.placeId, placeName: store.placeName)) 
                 }
                 
                 recordList
+                    .customLoading(.recordListLoading, isLoading: store.state.isLoading)
                 
                 bottomPadding
             }
@@ -64,7 +65,7 @@ extension RecordListView {
                         store.dispatch(.presentImageViewer(index: index, imageUrls: record.photoUrls))
                     }, reportAction: {
                         appState.requireLoginWithAlert(
-                            onAuthenticated: { /* TODO: - 신고 뷰 넘기기 */ },
+                            onAuthenticated: { appCoordinator.navigate(to: .placeComplaint) },
                             onExplore: { appCoordinator.changeRoot(to: .auth) }
                         )
                     }

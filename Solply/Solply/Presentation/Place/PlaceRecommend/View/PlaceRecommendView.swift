@@ -16,20 +16,7 @@ struct PlaceRecommendView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceRecommendStore()
     
-    private let title: String
-    private let isUserInformationLoading: Bool
-    
     private let topId: String = "TOP"
-    
-    // MARK: - Initializer
-    
-    init(
-        title: String,
-        isUserInformationLoading: Bool,
-    ) {
-        self.title = title
-        self.isUserInformationLoading = isUserInformationLoading
-    }
     
     // MARK: - Body
     
@@ -41,9 +28,8 @@ struct PlaceRecommendView: View {
                 VStack(alignment: .center, spacing: 28.adjustedHeight) {
                     placeRecommendTitle
                     
-                    todayPlaceRecommendCarousel
-                    
-                    filterPlaceGrid
+                    placeRecommend
+                        .customLoading(.placeRecommendLoading, isLoading: store.state.isPlaceRecommendLoading)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.bottom, 112.adjustedHeight)
@@ -59,7 +45,7 @@ struct PlaceRecommendView: View {
         .customNavigationBar(
             .townFilterWithSearch(
                 filterTitle: appState.townName,
-                isLoading: isUserInformationLoading,
+                isLoading: appState.isAuthenticated ? appState.isUserInformationLoading : false,
                 filterAction: {
                     AmplitudeManager.shared.track(
                         .viewTownList(
@@ -81,7 +67,9 @@ struct PlaceRecommendView: View {
         )
         .background(.gray100)
         .onAppear {
-            if appState.userSession == .authenticated {
+            store.dispatch(.onAppear(isExplore: appState.isExplore, townId: appState.townId))
+            
+            if appState.isAuthenticated {
                 store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
             }
             
@@ -89,24 +77,8 @@ struct PlaceRecommendView: View {
                 townId: appState.townId,
                 isBookmarkSearch: false,
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: [],
-                subTagBIdList: []
-            ))
-        }
-        .onChange(of: appState.townId) { _, newTownId in
-            if appState.userSession == .authenticated {
-                store.dispatch(.fetchPlaceRecommend(townId: newTownId))
-            }
-            
-            store.dispatch(.resetTags)
-            store.dispatch(.resetSubTags)
-            
-            store.dispatch(.fetchPlaceList(
-                townId: newTownId,
-                isBookmarkSearch: false,
-                mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: [],
-                subTagBIdList: []
+                subTagAIdList: store.state.subTagAIdList,
+                subTagBIdList: store.state.subTagBIdList
             ))
         }
     }
@@ -123,14 +95,22 @@ extension PlaceRecommendView {
     
     private var placeRecommendTitle: some View {
         HStack(alignment: .center, spacing: 0) {
-            Text(title)
+            Text(appState.placeRecommendTitle)
                 .applySolplyFont(.display_20_sb)
                 .foregroundStyle(.coreBlack)
             
             Spacer()
         }
-        .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
+        .customLoading(.recommendTitleLoading, isLoading: appState.isAuthenticated ? appState.isUserInformationLoading : false)
         .frame(width: 335.adjustedWidth)
+    }
+    
+    private var placeRecommend: some View {
+        VStack(alignment: .center, spacing : 28.adjustedHeight) {
+            todayPlaceRecommendCarousel
+            
+            filterPlaceGrid
+        }
     }
     
     private var todayPlaceRecommendCarousel: some View {
@@ -148,7 +128,6 @@ extension PlaceRecommendView {
                 }
             case .authenticated:
                 TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
-                    .customLoading(.todayPlaceRecommendCarouselLoading, isLoading: store.state.isCarouselLoading)
             }
         }
     }

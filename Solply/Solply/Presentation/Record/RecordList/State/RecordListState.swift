@@ -8,6 +8,7 @@
 import Foundation
 
 struct RecordListState {
+    var isLoading: Bool = true
     var records: [Record] = []
     
     var imageViewerItem: ImageViewerItem? = nil
