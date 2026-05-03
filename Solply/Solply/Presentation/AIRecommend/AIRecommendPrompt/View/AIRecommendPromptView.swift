@@ -67,6 +67,12 @@ struct AIRecommendPromptView: View {
         .onAppear {
             store.dispatch(.onAppear(townId: appState.townId, townName: appState.townName))
         }
+        .onChange(of: store.state.shouldNavigate) { _, shouldNavigate in
+            if shouldNavigate {
+                appCoordinator.navigate(to: .aiRecommendResult(cards: store.state.aiRecommendResult))
+                store.dispatch(.onNavigate)
+            }
+        }
     }
 }
 

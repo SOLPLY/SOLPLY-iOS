@@ -16,6 +16,9 @@ enum AIRecommendPromptReducer {
         case .onAppear(let townId, let townName):
             state.selectedSubTown = SubTown(id: townId, townName: townName)
             
+        case .onNavigate:
+            state.shouldNavigate = false
+            
         case .selectTab(let selectedCategory):
             state.selectedCategory = selectedCategory
             
@@ -61,8 +64,10 @@ enum AIRecommendPromptReducer {
         case .submitAIPlaceRecommend:
             break
             
-        case .submitAIPlaceRecommendSuccess:
+        case .submitAIPlaceRecommendSuccess(let result):
+            state.aiRecommendResult = result
             state.isAIRecommendLoading = false
+            state.shouldNavigate = true
             
         case .submitAIPlaceRecommendFailed(let error):
             print(error)
@@ -71,8 +76,10 @@ enum AIRecommendPromptReducer {
         case .submitAICourseRecommend:
             break
             
-        case .submitAICourseRecommendSuccess:
+        case .submitAICourseRecommendSuccess(let result):
+            state.aiRecommendResult = result
             state.isAIRecommendLoading = false
+            state.shouldNavigate = true
             
         case .submitAICourseRecommendFailed(let error):
             print(error)

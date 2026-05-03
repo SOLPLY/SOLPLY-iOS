@@ -24,12 +24,25 @@ extension AIRecommendPromptEffect {
         do {
             let response = try await recommendService.submitAIPlaceRecommend(request: request)
             
-            guard response.data != nil else {
+            guard let data = response.data else {
                 return .submitAIPlaceRecommendFailed(error: .responseError)
             }
             
-            // TODO: - 데이터 매핑 필요
-            return .submitAIPlaceRecommendSuccess
+            let result = data.places.map { place in
+                AIRecommendCard.place(
+                    AIRecommendPlaceCardItem(
+                        id: place.placeId,
+                        mainTag: MainTagType(rawValue: place.mainTag) ?? .book,
+                        placeName: place.placeName,
+                        townName: place.townName,
+                        tipText: place.reason,
+                        filters: place.optionTags,
+                        thumbnailImageUrl: place.thumbnailImageUrl
+                    )
+                )
+            }
+            
+            return .submitAIPlaceRecommendSuccess(result: result)
             
         } catch let error as NetworkError {
             return .submitAIPlaceRecommendFailed(error: error)
@@ -42,12 +55,29 @@ extension AIRecommendPromptEffect {
         do {
             let response = try await recommendService.submitAICourseRecommend(request: request)
             
-            guard response.data != nil else {
+            guard let data = response.data else {
                 return .submitAICourseRecommendFailed(error: .responseError)
             }
             
             // TODO: - 데이터 매핑 필요
-            return .submitAICourseRecommendSuccess
+            let result = data.courses.map { course in
+                let courseCounts = Dictionary(grouping: course.placeMainTags, by: { $0 })
+                    .map { AIRecommendCourseCountItem(mainTag: $0.key, count: $0.value.count) }
+                
+                let aiRecommendCourseCardItems = AIRecommendCourseCardItem(
+                    id: course.courseId,
+                    courseTagType: CourseTagType(rawValue: course.courseTag) ?? .daily,
+                    courseName: course.courseName,
+                    townName: course.townName,
+                    tipText: course.reason,
+                    courseCounts: courseCounts,
+                    thumbnailImageUrl: course.thumbnailImageUrl
+                )
+                
+                return AIRecommendCard.course(aiRecommendCourseCardItems)
+            }
+            
+            return .submitAICourseRecommendSuccess(result: result)
             
         } catch let error as NetworkError {
             return .submitAICourseRecommendFailed(error: error)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AIRecommendCard: Identifiable, Equatable {
+enum AIRecommendCard: Identifiable, Equatable, Hashable {
     case place(AIRecommendPlaceCardItem)
     case course(AIRecommendCourseCardItem)
 
@@ -21,8 +21,8 @@ enum AIRecommendCard: Identifiable, Equatable {
     }
 }
 
-struct AIRecommendPlaceCardItem: Equatable {
-    let id: String
+struct AIRecommendPlaceCardItem: Equatable, Hashable {
+    let id: Int
     let mainTag: MainTagType
     let placeName: String
     let townName: String
@@ -31,13 +31,13 @@ struct AIRecommendPlaceCardItem: Equatable {
     let thumbnailImageUrl: String?
 }
 
-struct AIRecommendCourseCountItem: Equatable {
+struct AIRecommendCourseCountItem: Equatable, Hashable {
     let mainTag: String
     let count: Int
 }
 
-struct AIRecommendCourseCardItem: Equatable {
-    let id: String
+struct AIRecommendCourseCardItem: Equatable, Hashable {
+    let id: Int
     let courseTagType: CourseTagType
     let courseName: String
     let townName: String
@@ -52,7 +52,7 @@ extension AIRecommendCard {
     static let mockData: [AIRecommendCard] = [
         .place(
             AIRecommendPlaceCardItem(
-                id: "1",
+                id: 1,
                 mainTag: .cafe,
                 placeName: "카페",
                 townName: "포항",
@@ -63,7 +63,7 @@ extension AIRecommendCard {
         ),
         .course(
             AIRecommendCourseCardItem(
-                id: "2",
+                id: 2,
                 courseTagType: .healing,
                 courseName: "힐링이다",
                 townName: "포항항",
@@ -79,7 +79,7 @@ extension AIRecommendCard {
         ),
         .place(
             AIRecommendPlaceCardItem(
-                id: "3",
+                id: 3,
                 mainTag: .food,
                 placeName: "맛도리",
                 townName: "포항항항",

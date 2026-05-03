@@ -23,6 +23,8 @@ struct AIRecommendPromptState {
     var isWritingGuidePresented: Bool = false
     var isTownSelectBottomSheetPresented: Bool = false
     var isRecommendButtonEnabled: Bool = false
+    var shouldNavigate: Bool = false
+    var aiRecommendResult: [AIRecommendCard] = []
     
     // MARK: - TownSelectBottomSheet
     

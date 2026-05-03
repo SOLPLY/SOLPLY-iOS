@@ -50,6 +50,7 @@ struct PopularRecommend: View {
                                 height: 49.adjustedHeight,
                                 alignment: .leading
                             )
+                            .background(.coreWhite)
                             .addBorder(
                                 .roundedRectangle(cornerRadius: 20),
                                 borderColor: .gray200,

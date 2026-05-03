@@ -9,6 +9,7 @@ import Foundation
 
 enum AIRecommendPromptAction {
     case onAppear(townId: Int, townName: String)
+    case onNavigate
     
     case selectTab(selectedCategory: SolplyContentType)
     case toggleWritingGuide
@@ -23,11 +24,11 @@ enum AIRecommendPromptAction {
     
     // api
     case submitAIPlaceRecommend(townId: Int, prompt: String)
-    case submitAIPlaceRecommendSuccess
+    case submitAIPlaceRecommendSuccess(result: [AIRecommendCard])
     case submitAIPlaceRecommendFailed(error: NetworkError)
     
     case submitAICourseRecommend(townId: Int, prompt: String)
-    case submitAICourseRecommendSuccess
+    case submitAICourseRecommendSuccess(result: [AIRecommendCard])
     case submitAICourseRecommendFailed(error: NetworkError)
     
     case fetchTowns

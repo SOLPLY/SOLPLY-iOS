@@ -12,7 +12,13 @@ struct AIRecommendResultView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @StateObject private var store = AIRecommendResultStore()
+    @StateObject private var store: AIRecommendResultStore
+    
+    // MARK: - Initializer
+    
+    init(cards: [AIRecommendCard]) {
+        self._store = StateObject(wrappedValue: AIRecommendResultStore(cards: cards))
+    }
     
     // MARK: - Body
     
@@ -21,7 +27,7 @@ struct AIRecommendResultView: View {
             VStack(alignment: .leading, spacing: 0) {
                 promptText
                 
-                if store.state.cards.isEmpty {
+                if store.cards.isEmpty {
                     AIRecommendEmptyView()
                 } else {
                     resultCountText
@@ -35,6 +41,7 @@ struct AIRecommendResultView: View {
                 backAction: { appCoordinator.goBack() }
             )
         )
+        .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchAIRecommendResults)
         }
@@ -64,7 +71,7 @@ private extension AIRecommendResultView {
     
     var recommendList: some View {
         LazyVStack(alignment: .leading, spacing: 24.adjustedHeight) {
-            ForEach(Array(store.state.cards.enumerated()), id: \.element.id) { _, card in
+            ForEach(Array(store.cards.enumerated()), id: \.element.id) { _, card in
                 switch card {
                 case .place(let item):
                     AIRecommendPlaceCard(
