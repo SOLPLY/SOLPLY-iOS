@@ -43,6 +43,25 @@ struct AIRecommendPromptView: View {
         .onTapGesture {
             hideKeyboard()
         }
+        .sheet(
+            isPresented: Binding(
+                get: { store.state.isTownSelectBottomSheetPresented },
+                set: { store.dispatch(.showTownSelectBottomSheet(isSheetPresented: $0)) }
+            )
+        ) {
+            TownSelectBottomSheet(
+                isTownLoading: store.state.isTownLoading,
+                townList: store.state.townList,
+                initialTown: store.state.selectedTown,
+                initialSubTown: store.state.selectedSubTown,
+                onAppear: { store.dispatch(.fetchTowns) },
+                onComplete: { town, subTown in
+                    // TODO: 완료 버튼 기능 구현 후 연결
+                }
+            )
+            .presentationDetents([.height(654.adjustedHeight)])
+            .presentationCornerRadius(20)
+        }
     }
 }
 
@@ -72,7 +91,7 @@ extension AIRecommendPromptView {
     
     private var townSelect: some View {
         Button {
-            // TODO: - 동네 선택 바텀시트 연결
+            store.dispatch(.showTownSelectBottomSheet(isSheetPresented: true))
         } label: {
             HStack(alignment: .center, spacing: 4.adjustedWidth) {
                 Image(.townIcon)

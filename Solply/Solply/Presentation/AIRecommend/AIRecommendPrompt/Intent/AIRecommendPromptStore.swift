@@ -18,7 +18,10 @@ final class AIRecommendPromptStore: ObservableObject {
     // MARK: - Initializer
     
     init() {
-        self.effect = AIRecommendPromptEffect(recommendService: RecommendService())
+        self.effect = AIRecommendPromptEffect(
+            recommendService: RecommendService(),
+            townService: TownService()
+        )
     }
     
     // MARK: - Dispatch
@@ -59,6 +62,12 @@ final class AIRecommendPromptStore: ObservableObject {
                 let request = AIRecommendRequestDTO(query: prompt, townId: townId)
                 let result = await effect.submitAICourseRecommend(request: request)
                 self.dispatch(result)
+            }
+            
+        case .fetchTowns:
+            Task {
+                let result = await effect.fetchTowns()
+                dispatch(result)
             }
             
         default:

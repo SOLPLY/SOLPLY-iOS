@@ -22,4 +22,20 @@ enum AIRecommendPromptAction {
     case submitAICourseRecommend(townId: Int, prompt: String)
     case submitAICourseRecommendSuccess
     case submitAICourseRecommendFailed(error: NetworkError)
+    case showTownSelectBottomSheet(isSheetPresented: Bool)
+    
+    // MARK: - TownSelectBottomSheet
+    
+    case fetchTowns
+    case fetchTownsSuccess(townList: [Town])
+    case fetchTownsFailure(error: NetworkError)
+    
+    case setInitialTownId(townId: Int)
+    
+    case selectTown(Town)
+    case selectSubTown(SubTown)
+    
+    case saveSelection
+    case saveSelectionSuccess
+    case saveSelectionFailure(error: NetworkError)
 }

@@ -9,9 +9,11 @@ import Foundation
 
 struct AIRecommendPromptEffect {
     private let recommendService: RecommendAPI
+    private let townService: TownAPI
     
-    init(recommendService: RecommendAPI) {
+    init(recommendService: RecommendAPI, townService: TownAPI) {
         self.recommendService = recommendService
+        self.townService = townService
     }
 }
 
@@ -22,7 +24,7 @@ extension AIRecommendPromptEffect {
         do {
             let response = try await recommendService.submitAIPlaceRecommend(request: request)
             
-            guard let places = response.data else {
+            guard response.data != nil else {
                 return .submitAIPlaceRecommendFailed(error: .responseError)
             }
             
@@ -40,7 +42,7 @@ extension AIRecommendPromptEffect {
         do {
             let response = try await recommendService.submitAICourseRecommend(request: request)
             
-            guard let courses = response.data else {
+            guard response.data != nil else {
                 return .submitAICourseRecommendFailed(error: .responseError)
             }
             
@@ -51,6 +53,28 @@ extension AIRecommendPromptEffect {
             return .submitAICourseRecommendFailed(error: error)
         } catch {
             return .submitAICourseRecommendFailed(error: .unknownError)
+        }
+    }
+}
+
+// MARK: - Town API
+
+extension AIRecommendPromptEffect {
+    func fetchTowns() async -> AIRecommendPromptAction {
+        do {
+            let response = try await townService.fetchTownList()
+            
+            guard let data = response.data else {
+                return .fetchTownsFailure(error: .responseError)
+            }
+            
+            let towns = data.toEntity()
+            
+            return .fetchTownsSuccess(townList: towns)
+        } catch let error as NetworkError {
+            return .fetchTownsFailure(error: error)
+        } catch {
+            return .fetchTownsFailure(error: .unknownError)
         }
     }
 }
