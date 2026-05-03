@@ -57,6 +57,7 @@ struct PopularRecommend: View {
                                 borderWidth: 1.adjustedWidth
                             )
                     }
+                    .contentShape(Rectangle())
                     .buttonStyle(.plain)
                     .disabled(isLoading)
                 }

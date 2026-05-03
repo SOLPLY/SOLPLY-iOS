@@ -31,14 +31,15 @@ struct AIRecommendPromptView: View {
                 }
             }
         }
+        .overlay(alignment: .bottom) {
+            aiRecommendButton
+                .padding(.bottom, 40.adjustedHeight)
+        }
         .customNavigationBar(.backWithTitle(title: "AI 추천") {
             appCoordinator.goBack()
         })
+//        .ignoresSafeArea(.keyboard)
         .ignoresSafeArea(edges: .bottom)
-        .overlay(alignment: .bottom) {
-            aiRecommendButton
-                .padding(.bottom, 4.adjustedHeight)
-        }
         .customModal()
         .onTapGesture {
             hideKeyboard()
