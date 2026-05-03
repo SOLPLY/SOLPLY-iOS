@@ -92,6 +92,7 @@ extension SolplyTextEditor {
                     .foregroundStyle(placeholderColor)
                     .padding(.horizontal, 16.adjustedWidth)
                     .padding(.vertical, 16.adjustedHeight)
+                    .allowsHitTesting(false)
             }
         }
         .frame(width: 335.adjustedWidth, height: 156.adjustedHeight)

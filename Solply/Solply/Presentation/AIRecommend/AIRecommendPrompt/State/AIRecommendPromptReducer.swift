@@ -31,10 +31,10 @@ enum AIRecommendPromptReducer {
             
         case .aiRecommendButtonTapped:
             state.isAIRecommendLoading = true
-            break
             
-        case .popularPromptTapped:
+        case .popularPromptTapped(let prompt):
             state.isAIRecommendLoading = true
+            state.promptContent = prompt
             
         case .completeTownSelect(let town, let subTown):
             state.selectedTown = town

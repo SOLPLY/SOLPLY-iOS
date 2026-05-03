@@ -14,11 +14,13 @@ final class AIRecommendResultStore: ObservableObject {
     
     @Published private(set) var state = AIRecommendResultState()
     
+    let prompt: String
     let cards: [AIRecommendCard]
     
     // MARK: - Initializer
         
-    init(cards: [AIRecommendCard]) {
+    init(prompt: String, cards: [AIRecommendCard]) {
+        self.prompt = prompt
         self.cards = cards
     }
     

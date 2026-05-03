@@ -69,7 +69,10 @@ struct AIRecommendPromptView: View {
         }
         .onChange(of: store.state.shouldNavigate) { _, shouldNavigate in
             if shouldNavigate {
-                appCoordinator.navigate(to: .aiRecommendResult(cards: store.state.aiRecommendResult))
+                appCoordinator.navigate(to: .aiRecommendResult(
+                    prompt: store.state.promptContent,
+                    cards: store.state.aiRecommendResult)
+                )
                 store.dispatch(.onNavigate)
             }
         }

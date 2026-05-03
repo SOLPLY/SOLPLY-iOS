@@ -16,8 +16,8 @@ struct AIRecommendResultView: View {
     
     // MARK: - Initializer
     
-    init(cards: [AIRecommendCard]) {
-        self._store = StateObject(wrappedValue: AIRecommendResultStore(cards: cards))
+    init(prompt: String, cards: [AIRecommendCard]) {
+        self._store = StateObject(wrappedValue: AIRecommendResultStore(prompt: prompt, cards: cards))
     }
     
     // MARK: - Body
@@ -54,7 +54,7 @@ private extension AIRecommendResultView {
     
     var promptText: some View {
         AIRecommendPromptText(
-            prompt: "서버에서 값 가져오는 거겠지"
+            prompt: store.prompt
         )
         .padding(.top, 8.adjustedHeight)
         .padding(.bottom, 16.adjustedHeight)
@@ -62,7 +62,7 @@ private extension AIRecommendResultView {
     }
     
     var resultCountText: some View {
-        Text("추천 결과 \(store.state.cards.count)개")
+        Text("추천 결과 \(store.cards.count)개")
             .applySolplyFont(.button_14_m)
             .foregroundColor(.gray800)
             .padding(.top, 16.adjustedHeight)
@@ -103,6 +103,6 @@ private extension AIRecommendResultView {
         }
         .padding(.horizontal, 16.adjustedWidth)
         .padding(.top, 16.adjustedHeight)
-        .padding(.bottom, 24.adjustedHeight)
+        .padding(.bottom, 40.adjustedHeight)
     }
 }
