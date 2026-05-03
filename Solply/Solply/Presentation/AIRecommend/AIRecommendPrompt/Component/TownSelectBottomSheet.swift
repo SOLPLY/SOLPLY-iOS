@@ -25,6 +25,8 @@ struct TownSelectBottomSheet: View {
     private let onAppear: (() -> Void)?
     private let onComplete: ((Town?, SubTown?) -> Void)?
     
+    // MARK: - Initializer
+    
     init(
         isTownLoading: Bool,
         townList: [Town],
@@ -59,6 +61,7 @@ struct TownSelectBottomSheet: View {
                     
                     subTownListView
                 }
+                .frame(maxWidth: .infinity)
                 .customLoading(.JGDLoading, isLoading: isTownLoading)
             }
             .ignoresSafeArea(edges: .bottom)
@@ -74,12 +77,16 @@ struct TownSelectBottomSheet: View {
         }
         .onAppear {
             onAppear?()
-        }
-        .onChange(of: townList) {
-            if selectedTown == nil {
+            if !townList.isEmpty {
                 selectedTown = initialTown
                 selectedSubTown = initialSubTown
             }
+        }
+        .onChange(of: townList) {
+            guard selectedTown == nil, !townList.isEmpty else { return }
+            
+            selectedTown = initialTown
+            selectedSubTown = initialSubTown
         }
     }
 }

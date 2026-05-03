@@ -8,7 +8,7 @@
 import Foundation
 
 struct AIRecommendPromptState {
-    var isLoading: Bool = false
+    var isAIRecommendLoading: Bool = false
     
     var promptContent: String = ""
     // TODO: - API 연동 필요
@@ -21,21 +21,21 @@ struct AIRecommendPromptState {
     
     var selectedCategory: SolplyContentType = .place
     var isWritingGuidePresented: Bool = false
-    // TODO: - 활성화 상태 수정 필요
-    var isRecommendButtonEnabled: Bool = false
     var isTownSelectBottomSheetPresented: Bool = false
+    var isRecommendButtonEnabled: Bool = false
     
     // MARK: - TownSelectBottomSheet
     
     var isTownLoading: Bool = false
     var isCompleteButtonLoading: Bool = false
     
-    var initialTownId: Int = 0
     var currentSelectedSubTown: SubTown? = nil
     
     var townList: [Town] = []
     var selectedTown: Town? = nil
     var selectedSubTown: SubTown? = nil
     
-    
+    var selectTownHeader: String {
+        selectedSubTown?.townName ?? ""
+    }
 }

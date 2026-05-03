@@ -13,6 +13,9 @@ enum AIRecommendPromptReducer {
         action: AIRecommendPromptAction
     ) {
         switch action {
+        case .onAppear(let townId, let townName):
+            state.selectedSubTown = SubTown(id: townId, townName: townName)
+            
         case .selectTab(let selectedCategory):
             state.selectedCategory = selectedCategory
             
@@ -24,17 +27,42 @@ enum AIRecommendPromptReducer {
             state.isRecommendButtonEnabled = state.promptContent.count >= 5
             
         case .aiRecommendButtonTapped:
-            state.isLoading = true
+            state.isAIRecommendLoading = true
             break
             
         case .popularPromptTapped:
-            state.isLoading = true
+            state.isAIRecommendLoading = true
+            
+        case .completeTownSelect(let town, let subTown):
+            state.selectedTown = town
+            state.selectedSubTown = subTown
+            state.isTownSelectBottomSheetPresented = false
+            
+        case .showTownSelectBottomSheet(let isSheetPresented):
+            state.isTownSelectBottomSheetPresented = isSheetPresented
+            
+        case .selectTown(let town):
+            state.selectedTown = town
+            
+            let subTowns = town.subTowns
+            
+            if let current = state.currentSelectedSubTown, subTowns.contains(current) {
+                state.selectedSubTown = current
+            } else {
+                state.selectedSubTown = subTowns.first
+            }
+            
+        case .selectSubTown(let subTown):
+            state.selectedSubTown = subTown
+            state.currentSelectedSubTown = subTown
+            
+        // api
             
         case .submitAIPlaceRecommend:
             break
             
         case .submitAIPlaceRecommendSuccess:
-            state.isLoading = false
+            state.isAIRecommendLoading = false
             
         case .submitAIPlaceRecommendFailed(let error):
             print(error)
@@ -44,26 +72,20 @@ enum AIRecommendPromptReducer {
             break
             
         case .submitAICourseRecommendSuccess:
-            state.isLoading = false
+            state.isAIRecommendLoading = false
             
         case .submitAICourseRecommendFailed(let error):
             print(error)
             break
             
-        case .showTownSelectBottomSheet(let isSheetPresented):
-            state.isTownSelectBottomSheetPresented = isSheetPresented
-            
-        // api
-            
         case .fetchTowns:
+            guard state.townList.isEmpty else { return }
+            
             state.isTownLoading = true
+            
         case .fetchTownsSuccess(let townList):
             
             state.townList = townList
-            
-            let subTowns = townList.flatMap { $0.subTowns }
-            state.selectedSubTown = subTowns.first { $0.id == state.initialTownId }
-            state.currentSelectedSubTown = state.selectedSubTown
             
             if let selectedSubTown = state.selectedSubTown {
                 state.selectedTown = townList.first { $0.subTowns.contains(selectedSubTown) }
@@ -82,33 +104,6 @@ enum AIRecommendPromptReducer {
             state.isTownLoading = false
             
         case .fetchTownsFailure(let error):
-            print(error)
-            
-        case .setInitialTownId(let townId):
-            state.initialTownId = townId
-            
-        case .selectTown(let town):
-            state.selectedTown = town
-            
-            let subTowns = town.subTowns
-            
-            if let current = state.currentSelectedSubTown, subTowns.contains(current) {
-                state.selectedSubTown = current
-            } else {
-                state.selectedSubTown = subTowns.first
-            }
-            
-        case .selectSubTown(let subTown):
-            state.selectedSubTown = subTown
-            state.currentSelectedSubTown = subTown
-            
-            
-        // TODO: - API에 따라 달라질듯
-        case .saveSelection:
-            break
-        case .saveSelectionSuccess:
-            break
-        case .saveSelectionFailure(let error):
             print(error)
         }
     }

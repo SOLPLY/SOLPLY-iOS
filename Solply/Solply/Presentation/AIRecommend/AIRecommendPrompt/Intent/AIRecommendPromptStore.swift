@@ -32,23 +32,24 @@ final class AIRecommendPromptStore: ObservableObject {
         switch action {
             
         case .aiRecommendButtonTapped:
-            // TODO: - townId 연동 필요
+            guard let townId = state.selectedSubTown?.id else { return }
+            
             switch state.selectedCategory {
             case .place:
-                dispatch(.submitAIPlaceRecommend(townId: 2, prompt: state.promptContent))
+                dispatch(.submitAIPlaceRecommend(townId: townId, prompt: state.promptContent))
             case .course:
-                dispatch(.submitAICourseRecommend(townId: 2, prompt: state.promptContent))
+                dispatch(.submitAICourseRecommend(townId: townId, prompt: state.promptContent))
             }
 
         case .popularPromptTapped(let prompt):
+            guard let townId = state.selectedSubTown?.id else { return }
+            
             switch state.selectedCategory {
             case .place:
-                dispatch(.submitAIPlaceRecommend(townId: 2, prompt: prompt))
+                dispatch(.submitAIPlaceRecommend(townId: townId, prompt: prompt))
             case .course:
-                dispatch(.submitAICourseRecommend(townId: 2, prompt: prompt))
+                dispatch(.submitAICourseRecommend(townId: townId, prompt: prompt))
             }
-            
-            //
             
         case .submitAIPlaceRecommend(let townId, let prompt):
             Task {
@@ -65,6 +66,8 @@ final class AIRecommendPromptStore: ObservableObject {
             }
             
         case .fetchTowns:
+            guard state.townList.isEmpty else { return }
+            
             Task {
                 let result = await effect.fetchTowns()
                 dispatch(result)

@@ -56,11 +56,16 @@ struct AIRecommendPromptView: View {
                 initialSubTown: store.state.selectedSubTown,
                 onAppear: { store.dispatch(.fetchTowns) },
                 onComplete: { town, subTown in
-                    // TODO: 완료 버튼 기능 구현 후 연결
+                    guard let town, let subTown else { return }
+                    
+                    store.dispatch(.completeTownSelect(town: town, subTown: subTown))
                 }
             )
             .presentationDetents([.height(654.adjustedHeight)])
             .presentationCornerRadius(20)
+        }
+        .onAppear {
+            store.dispatch(.onAppear(townId: appState.townId, townName: appState.townName))
         }
     }
 }
@@ -82,7 +87,9 @@ extension AIRecommendPromptView {
     private var townSelectWithGuide: some View {
         HStack(alignment: .center, spacing: 0) {
             townSelect
+            
             Spacer()
+            
             guideButton
         }
         .padding(.horizontal, 20.adjustedWidth)
@@ -99,11 +106,9 @@ extension AIRecommendPromptView {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjusted, height: 24.adjusted)
                 
-                // TODO: - 동네 선택 바텀시트 연결 후 수정 필요
-                Text(appState.townName)
+                Text(store.state.selectTownHeader)
                     .applySolplyFont(.body_16_m)
                     .foregroundStyle(.coreBlack)
-//                    .customLoading(.JGDButtonLoading, isLoading: isLoading)
                 
                 Image(.arrowRightIcon)
                     .resizable()
@@ -112,6 +117,7 @@ extension AIRecommendPromptView {
             }
         }
         .buttonStyle(.plain)
+        .disabled(store.state.isAIRecommendLoading)
     }
     
     private var guideButton: some View {
@@ -143,7 +149,7 @@ extension AIRecommendPromptView {
     private var popularRecommend: some View {
         PopularRecommend(
             popularPrompt: store.state.popularRecommends,
-            isLoading: store.state.isLoading
+            isLoading: store.state.isAIRecommendLoading
         ) { text in
             store.dispatch(.popularPromptTapped(prompt: text))
         }
@@ -154,7 +160,7 @@ extension AIRecommendPromptView {
         SolplyMainButton(
             title: "추천 받기",
             isEnabled: store.state.isRecommendButtonEnabled,
-            isLoading: store.state.isLoading
+            isLoading: store.state.isAIRecommendLoading
         ) {
             store.dispatch(.aiRecommendButtonTapped)
         }
