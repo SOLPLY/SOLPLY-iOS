@@ -38,7 +38,6 @@ struct AIRecommendPromptView: View {
         .customNavigationBar(.backWithTitle(title: "AI 추천") {
             appCoordinator.goBack()
         })
-//        .ignoresSafeArea(.keyboard)
         .ignoresSafeArea(edges: .bottom)
         .customModal()
         .onTapGesture {
