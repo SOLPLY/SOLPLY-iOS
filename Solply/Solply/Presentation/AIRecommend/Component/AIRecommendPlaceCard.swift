@@ -110,7 +110,7 @@ private extension AIRecommendPlaceCard {
             .applySolplyFont(.body_14_m)
             .foregroundStyle(mainTagType.titleColor ?? .coreBlack)
             .padding(.horizontal, 8.adjustedWidth)
-            .padding(.vertical, 4.adjustedHeight)
+            .padding(.vertical, 1.adjustedHeight)
             .background(mainTagType.backgroundColor ?? .clear)
             .capsuleClipped()
     }
@@ -138,7 +138,12 @@ private extension AIRecommendPlaceCard {
     }
     
     var filterSection: some View {
-        HStack(spacing: 8.adjustedWidth) {
+        CustomFlowLayout(
+            horizontalSpacing: 8.adjustedWidth,
+            verticalSpacing: 8.adjustedHeight,
+            lineHeight: 32.adjustedHeight,
+            alignment: .leading
+        ) {
             ForEach(filters.indices, id: \.self) { index in
                 RecommendCardFilterChip(title: filters[index])
             }

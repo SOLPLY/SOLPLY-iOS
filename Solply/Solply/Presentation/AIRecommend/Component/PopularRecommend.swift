@@ -11,7 +11,21 @@ struct PopularRecommend: View {
     
     // MARK: - Properties
 
-    let popularPrompt: [String]
+    private let popularPrompt: [String]
+    private let isLoading: Bool
+    private let action: ((String) -> Void)?
+    
+    // MARK: - Initializer
+    
+    init(
+        popularPrompt: [String],
+        isLoading: Bool,
+        action: ((String) -> Void)? = nil
+    ) {
+        self.popularPrompt = popularPrompt
+        self.isLoading = isLoading
+        self.action = action
+    }
     
     // MARK: - Body
     
@@ -25,7 +39,7 @@ struct PopularRecommend: View {
             VStack(alignment: .center, spacing: 12.adjustedHeight) {
                 ForEach(popularPrompt, id: \.self) { prompt in
                     Button {
-                        
+                        action?(prompt)
                     } label: {
                         Text(prompt)
                             .applySolplyFont(.body_14_r)
@@ -36,13 +50,16 @@ struct PopularRecommend: View {
                                 height: 49.adjustedHeight,
                                 alignment: .leading
                             )
+                            .background(.coreWhite)
                             .addBorder(
                                 .roundedRectangle(cornerRadius: 20),
                                 borderColor: .gray200,
                                 borderWidth: 1.adjustedWidth
                             )
                     }
+                    .contentShape(Rectangle())
                     .buttonStyle(.plain)
+                    .disabled(isLoading)
                 }
             }
         }

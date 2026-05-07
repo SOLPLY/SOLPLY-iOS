@@ -58,7 +58,7 @@ struct PlaceRecommendView: View {
                 },
                 aiAction: {
                     appState.requireLoginWithAlert(
-                        onAuthenticated: { appCoordinator.navigate(to: .aiRecommend) },
+                        onAuthenticated: { appCoordinator.navigate(to: .aiRecommendPrompt) },
                         onExplore: { appCoordinator.changeRoot(to: .auth) }
                     )
                 },

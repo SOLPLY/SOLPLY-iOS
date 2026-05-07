@@ -35,6 +35,7 @@ struct AIRecommendPromptText: View {
             HStack(alignment: .center, spacing: 0) {
                 Text(prompt)
                     .applySolplyFont(.body_14_r)
+                    .lineLimit(1)
                     .foregroundColor(.gray900)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

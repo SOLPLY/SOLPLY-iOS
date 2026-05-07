@@ -14,9 +14,15 @@ final class AIRecommendResultStore: ObservableObject {
     
     @Published private(set) var state = AIRecommendResultState()
     
+    let prompt: String
+    let cards: [AIRecommendCard]
+    
     // MARK: - Initializer
         
-    // TODO: - API 연동할 때 Effect 추가하겟슴니다!!
+    init(prompt: String, cards: [AIRecommendCard]) {
+        self.prompt = prompt
+        self.cards = cards
+    }
     
     // MARK: - dispatch
     

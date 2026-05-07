@@ -110,8 +110,8 @@ private extension AIRecommendCourseCard {
             .applySolplyFont(.body_14_m)
             .foregroundStyle(courseTagType.titleColor)
             .padding(.horizontal, 8.adjustedWidth)
-            .padding(.vertical, 4.adjustedHeight)
-            .background(courseTagType.backgroundColor)
+            .padding(.vertical, 1.adjustedHeight)
+            .background(courseTagType.tagBackgroundColor)
             .capsuleClipped()
     }
     
