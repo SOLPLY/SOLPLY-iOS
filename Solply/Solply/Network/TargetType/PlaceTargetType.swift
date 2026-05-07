@@ -27,6 +27,7 @@ enum PlaceTargetType {
     case submitRegister(request: RegisterRequestDTO)
     case submitPlaceRecordWrite(request: PlaceRecordWriteRequestDTO)
     case fetchPlaceRecordList(placeId: Int)
+    case fetchMySolplyRecords
 }
 
 extension PlaceTargetType: BaseTargetType {
@@ -58,6 +59,8 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/reviews"
         case .fetchPlaceRecordList(let placeId):
             return "/places/reviews/\(placeId)/reviews"
+        case .fetchMySolplyRecords:
+            return "/places/revies/me"
         }
     }
     
@@ -74,6 +77,7 @@ extension PlaceTargetType: BaseTargetType {
         case .submitRegister: return .post
         case .submitPlaceRecordWrite: return .post
         case .fetchPlaceRecordList: return .get
+        case .fetchMySolplyRecords: return .get
         }
     }
     
@@ -130,6 +134,8 @@ extension PlaceTargetType: BaseTargetType {
         case .submitPlaceRecordWrite(let request):
             return .requestJSONEncodable(request)
         case .fetchPlaceRecordList:
+            return .requestPlain
+        case .fetchMySolplyRecords:
             return .requestPlain
         }
     }
