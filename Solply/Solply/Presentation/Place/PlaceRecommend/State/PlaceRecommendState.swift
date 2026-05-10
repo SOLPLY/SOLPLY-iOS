@@ -39,8 +39,8 @@ struct PlaceRecommendState {
             .map { $0.id }
     }
     
-    var isPlaceRecommendLoading: Bool {
-        isCarouselLoading || isPlaceGridLoading
+    var bottomPadding: CGFloat {
+        return isPlaceGridLoading ? 600.adjustedHeight : 120.adjustedHeight
     }
 }
 

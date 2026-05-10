@@ -10,4 +10,8 @@ import Foundation
 struct CourseRecommendState {
     var isCourseGridLoading: Bool = true
     var courses: [CourseRecommend] = []
+    
+    var bottomPadding: CGFloat {
+        return isCourseGridLoading ? 600.adjustedHeight : 120.adjustedHeight
+    }
 }
