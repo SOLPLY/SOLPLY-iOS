@@ -12,7 +12,13 @@ struct AIRecommendResultView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @StateObject private var store = AIRecommendResultStore()
+    @StateObject private var store: AIRecommendResultStore
+    
+    // MARK: - Initializer
+    
+    init(prompt: String, cards: [AIRecommendCard]) {
+        self._store = StateObject(wrappedValue: AIRecommendResultStore(prompt: prompt, cards: cards))
+    }
     
     // MARK: - Body
     
@@ -21,7 +27,7 @@ struct AIRecommendResultView: View {
             VStack(alignment: .leading, spacing: 0) {
                 promptText
                 
-                if store.state.cards.isEmpty {
+                if store.cards.isEmpty {
                     AIRecommendEmptyView()
                 } else {
                     resultCountText
@@ -35,6 +41,7 @@ struct AIRecommendResultView: View {
                 backAction: { appCoordinator.goBack() }
             )
         )
+        .ignoresSafeArea(edges: .bottom)
         .onAppear {
             store.dispatch(.fetchAIRecommendResults)
         }
@@ -47,7 +54,7 @@ private extension AIRecommendResultView {
     
     var promptText: some View {
         AIRecommendPromptText(
-            prompt: "서버에서 값 가져오는 거겠지"
+            prompt: store.prompt
         )
         .padding(.top, 8.adjustedHeight)
         .padding(.bottom, 16.adjustedHeight)
@@ -55,7 +62,7 @@ private extension AIRecommendResultView {
     }
     
     var resultCountText: some View {
-        Text("추천 결과 \(store.state.cards.count)개")
+        Text("추천 결과 \(store.cards.count)개")
             .applySolplyFont(.button_14_m)
             .foregroundColor(.gray800)
             .padding(.top, 16.adjustedHeight)
@@ -64,7 +71,7 @@ private extension AIRecommendResultView {
     
     var recommendList: some View {
         LazyVStack(alignment: .leading, spacing: 24.adjustedHeight) {
-            ForEach(Array(store.state.cards.enumerated()), id: \.element.id) { _, card in
+            ForEach(Array(store.cards.enumerated()), id: \.element.id) { _, card in
                 switch card {
                 case .place(let item):
                     AIRecommendPlaceCard(
@@ -96,6 +103,6 @@ private extension AIRecommendResultView {
         }
         .padding(.horizontal, 16.adjustedWidth)
         .padding(.top, 16.adjustedHeight)
-        .padding(.bottom, 24.adjustedHeight)
+        .padding(.bottom, 40.adjustedHeight)
     }
 }

@@ -21,20 +21,60 @@ struct AIRecommendPromptView: View {
         VStack(alignment: .center, spacing: 0) {
             aiRecommendBar
             
-            townSelectWithGuide
-            
-            aiRecommendPromptField
-            
-            popularRecommend
-            
+            ScrollView(.vertical, showsIndicators: true) {
+                VStack(alignment: .center, spacing: 0) {
+                    townSelectWithGuide
+                    
+                    aiRecommendPromptField
+                    
+                    popularRecommend
+                }
+            }
+        }
+        .overlay(alignment: .bottom) {
             aiRecommendButton
+                .padding(.bottom, 40.adjustedHeight)
         }
         .customNavigationBar(.backWithTitle(title: "AI 추천") {
             appCoordinator.goBack()
         })
+        .ignoresSafeArea(edges: .bottom)
         .customModal()
         .onTapGesture {
             hideKeyboard()
+        }
+        .sheet(
+            isPresented: Binding(
+                get: { store.state.isTownSelectBottomSheetPresented },
+                set: { store.dispatch(.showTownSelectBottomSheet(isSheetPresented: $0)) }
+            )
+        ) {
+            TownSelectBottomSheet(
+                isTownLoading: store.state.isTownLoading,
+                townList: store.state.townList,
+                initialTown: store.state.selectedTown,
+                initialSubTown: store.state.selectedSubTown,
+                onAppear: { store.dispatch(.fetchTowns) },
+                onComplete: { town, subTown in
+                    guard let town, let subTown else { return }
+                    
+                    store.dispatch(.completeTownSelect(town: town, subTown: subTown))
+                }
+            )
+            .presentationDetents([.height(654.adjustedHeight)])
+            .presentationCornerRadius(20)
+        }
+        .onAppear {
+            store.dispatch(.onAppear(townId: appState.townId, townName: appState.townName))
+        }
+        .onChange(of: store.state.shouldNavigate) { _, shouldNavigate in
+            if shouldNavigate {
+                appCoordinator.navigate(to: .aiRecommendResult(
+                    prompt: store.state.promptContent,
+                    cards: store.state.aiRecommendResult)
+                )
+                store.dispatch(.onNavigate)
+            }
         }
     }
 }
@@ -56,7 +96,9 @@ extension AIRecommendPromptView {
     private var townSelectWithGuide: some View {
         HStack(alignment: .center, spacing: 0) {
             townSelect
+            
             Spacer()
+            
             guideButton
         }
         .padding(.horizontal, 20.adjustedWidth)
@@ -65,7 +107,7 @@ extension AIRecommendPromptView {
     
     private var townSelect: some View {
         Button {
-            // TODO: - 동네 선택 바텀시트 연결
+            store.dispatch(.showTownSelectBottomSheet(isSheetPresented: true))
         } label: {
             HStack(alignment: .center, spacing: 4.adjustedWidth) {
                 Image(.townIcon)
@@ -73,11 +115,9 @@ extension AIRecommendPromptView {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24.adjusted, height: 24.adjusted)
                 
-                // TODO: - 동네 선택 바텀시트 연결 후 수정 필요
-                Text(appState.townName)
+                Text(store.state.selectTownHeader)
                     .applySolplyFont(.body_16_m)
                     .foregroundStyle(.coreBlack)
-//                    .customLoading(.JGDButtonLoading, isLoading: isLoading)
                 
                 Image(.arrowRightIcon)
                     .resizable()
@@ -86,6 +126,7 @@ extension AIRecommendPromptView {
             }
         }
         .buttonStyle(.plain)
+        .disabled(store.state.isAIRecommendLoading)
     }
     
     private var guideButton: some View {
@@ -115,15 +156,23 @@ extension AIRecommendPromptView {
     }
     
     private var popularRecommend: some View {
-        PopularRecommend(popularPrompt: ["성수에서 작업하기 좋은 조용한 카페 추천해줘", "망원에서 혼자 오래 머물기 좋은 카페", "연남동 디저트가 맛있는 감성카페", "서촌 사색하기 좋은 책방"])
-            .padding(.top, 24.adjustedHeight)
+        PopularRecommend(
+            popularPrompt: store.state.popularRecommends,
+            isLoading: store.state.isAIRecommendLoading
+        ) { text in
+            store.dispatch(.popularPromptTapped(prompt: text))
+        }
+        .padding(.top, 24.adjustedHeight)
     }
     
     private var aiRecommendButton: some View {
         SolplyMainButton(
             title: "추천 받기",
-            isEnabled: store.state.isRecommendButtonEnabled
-        )
+            isEnabled: store.state.isRecommendButtonEnabled,
+            isLoading: store.state.isAIRecommendLoading
+        ) {
+            store.dispatch(.aiRecommendButtonTapped)
+        }
         .padding(.horizontal, 20.adjustedWidth)
         .padding(.top, 36.adjustedHeight)
     }

@@ -24,7 +24,8 @@ enum AppDestination: Hashable {
     case customerCenter
     case recordList(placeId: Int, placeName: String)
     case recordWrite(placeId: Int, placeName: String)
-    case aiRecommend
+    case aiRecommendPrompt
+    case aiRecommendResult(prompt: String, cards: [AIRecommendCard])
     case placeComplaint
     case mySolplyRecords
 }
@@ -65,8 +66,10 @@ extension AppDestination {
             RecordListView(placeId: placeId, placeName: placeName)
         case .recordWrite(let placeId, let placeName):
             RecordWriteView(placeId: placeId, placeName: placeName)
-        case .aiRecommend:
+        case .aiRecommendPrompt:
             AIRecommendPromptView()
+        case .aiRecommendResult(let prompt, let cards):
+            AIRecommendResultView(prompt: prompt, cards: cards)
         case .placeComplaint:
             PlaceComplaintView()
         case .mySolplyRecords:
