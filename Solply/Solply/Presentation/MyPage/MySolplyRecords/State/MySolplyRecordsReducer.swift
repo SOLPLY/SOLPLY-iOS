@@ -16,6 +16,15 @@ enum MySolplyRecordsReducer {
         case .deleteRecord:
             break
             
+        case .presentImageViewer(let index, let imageUrls):
+            state.imageViewerItem = ImageViewerItem(
+                selectedIndex: index,
+                imageUrls: imageUrls
+            )
+            
+        case .dismissImageViewer:
+            state.imageViewerItem = nil
+            
         case .fetchMySolplyRecords:
             state.isLoading = true
             break

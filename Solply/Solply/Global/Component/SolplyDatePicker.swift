@@ -51,6 +51,7 @@ struct SolplyDatePicker: View {
             minHeight: 52.adjustedHeight,
             alignment: .leading
         )
+        .background(.coreWhite)
         .addBorder(
             .roundedRectangle(cornerRadius: 20.adjustedWidth),
             borderColor: .gray300,

@@ -25,10 +25,15 @@ struct MySolplyRecordsView: View {
     
     var body: some View {
         mySolplyRecordsList
+            .customLoading(.mySolplyRecordsLoading, isLoading: store.state.isLoading)
             .customNavigationBar(.backWithTitle(title: "내 솔플리 기록", backAction: {
                 appCoordinator.goBack()
             }))
             .ignoresSafeArea(edges: .bottom)
+            .imageViewer(
+                item: store.state.imageViewerItem,
+                dismissAction: { store.dispatch(.dismissImageViewer) }
+            )
             .onAppear {
                 store.dispatch(.onAppear)
             }
@@ -95,13 +100,17 @@ extension MySolplyRecordsView {
             if !mySolplyRecord.PhotosUrls.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                        ForEach(mySolplyRecord.PhotosUrls, id: \.self) { thumbnailImageUrl in
+                        ForEach(Array(mySolplyRecord.PhotosUrls.enumerated()), id: \.offset) { index, thumbnailImageUrl in
                             ThumbnailImage(
                                 thumbnailImageUrl,
                                 width: 72.adjusted,
                                 height: 72.adjusted,
                                 radius: 12
                             )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                store.dispatch(.presentImageViewer(index: index, imageUrls: mySolplyRecord.PhotosUrls))
+                            }
                         }
                     }
                 }

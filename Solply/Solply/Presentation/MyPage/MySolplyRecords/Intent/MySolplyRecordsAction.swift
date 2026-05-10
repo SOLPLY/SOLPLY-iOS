@@ -11,6 +11,9 @@ enum MySolplyRecordsAction {
     case onAppear
     case deleteRecord(index: Int)
     
+    case presentImageViewer(index: Int, imageUrls: [String?])
+    case dismissImageViewer
+    
     // api
     case fetchMySolplyRecords
     case fetchMySolplyRecordsSuccess(mySolplyRecords: [MySolplyRecord])
