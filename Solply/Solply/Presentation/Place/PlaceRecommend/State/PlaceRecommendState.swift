@@ -40,7 +40,7 @@ struct PlaceRecommendState {
     }
     
     var bottomPadding: CGFloat {
-        return isPlaceGridLoading ? 600.adjustedHeight : 120.adjustedHeight
+        return isPlaceGridLoading ? (fetchedPlaceList.count / 2 * 170).adjustedHeight : 120.adjustedHeight
     }
 }
 

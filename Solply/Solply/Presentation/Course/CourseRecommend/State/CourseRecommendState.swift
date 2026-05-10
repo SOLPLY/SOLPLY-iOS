@@ -12,6 +12,6 @@ struct CourseRecommendState {
     var courses: [CourseRecommend] = []
     
     var bottomPadding: CGFloat {
-        return isCourseGridLoading ? 600.adjustedHeight : 120.adjustedHeight
+        return isCourseGridLoading ? (200 * courses.count).adjustedHeight : 120.adjustedHeight
     }
 }
