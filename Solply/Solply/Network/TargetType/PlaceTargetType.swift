@@ -60,7 +60,7 @@ extension PlaceTargetType: BaseTargetType {
         case .fetchPlaceRecordList(let placeId):
             return "/places/reviews/\(placeId)/reviews"
         case .fetchMySolplyRecords:
-            return "/places/revies/me"
+            return "/places/reviews/me"
         }
     }
     
