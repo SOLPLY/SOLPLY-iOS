@@ -83,7 +83,8 @@ private extension AIRecommendResultView {
                         thumbnailImageUrl: item.thumbnailImageUrl
                     )
                     .onTapGesture {
-                        // TODO: 장소 카드 탭 시 장소 상세
+                        // TODO: 장소 카드 탭 시 장소 상세 (townId 수정 필요)
+                        appCoordinator.navigate(to: .placeDetail(townId: 1, placeId: item.id, fromSearch: false))
                     }
 
                 case .course(let item):
@@ -96,7 +97,8 @@ private extension AIRecommendResultView {
                         thumbnailImageUrl: item.thumbnailImageUrl
                     )
                     .onTapGesture {
-                        // TODO: 코스 카드 탭 시 코스 상세
+                        // TODO: 코스 카드 탭 시 코스 상세 (townId 수정 필요)
+                        appCoordinator.navigate(to: .courseDetail(townId: 1, courseId: item.id, fromArchive: false))
                     }
                 }
             }

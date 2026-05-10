@@ -22,7 +22,7 @@ extension RecordWriteEffect {
         do {
             let _ = try await placeService.submitPlaceRecordWrite(request: request)
             
-            try await Task.sleep(for: .seconds(0.5))
+            try await Task.sleep(for: .seconds(1))
             
             return .submitPlaceRecordWriteSuccess
             

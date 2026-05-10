@@ -71,6 +71,7 @@ struct RecordWriteView: View {
                         .padding(.horizontal, 20.adjustedWidth)
                     
                     SolplyPhotosPicker(maxSelectionCount: 5) { imageData in
+                        hideKeyboard()
                         store.dispatch(.selectPhotos(imageData))
                     }
                 }
