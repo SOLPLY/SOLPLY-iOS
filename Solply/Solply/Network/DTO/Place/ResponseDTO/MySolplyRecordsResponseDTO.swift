@@ -16,6 +16,7 @@ struct MySolplyRecordDTO: ResponseModelType {
     let reviewId: Int
     let placeId: Int
     let placeName: String
+    let mainTag: String
     let content: String
     let visitedAt: String
     let visitTimeSlot: VisitTime

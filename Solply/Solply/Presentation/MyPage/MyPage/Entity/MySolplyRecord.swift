@@ -22,13 +22,12 @@ extension MySolplyRecord {
         self.id = dto.reviewId
         self.placeId = dto.placeId
         self.placeName = dto.placeName
-        self.placeTagType = .book // TODO: - 서버에서 안 내려줌
+        self.placeTagType = MainTagType(rawValue: dto.mainTag) ?? .book
         self.PhotosUrls = dto.imageUrls
         self.recordText = dto.content
         self.visitTime = "\(dto.visitedAt.replacingOccurrences(of: "-", with: ".")) \(dto.visitTimeSlot.title) 방문"
     }
 }
-
 
 extension MySolplyRecord {
     static var mock: [MySolplyRecord] {

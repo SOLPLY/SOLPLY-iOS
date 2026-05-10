@@ -14,6 +14,7 @@ struct UserInformationResponseDTO: ResponseModelType {
     let selectedTown: SelectedTownDTO
     let persona: String
     let myPlacePreviews: [MyPlacePreviewDTO]
+    let myReviewPreview: ReviewPreviewDTO
 }
 
 struct SelectedTownDTO: ResponseModelType {
@@ -27,4 +28,16 @@ struct MyPlacePreviewDTO: ResponseModelType {
     let thumbnailImageUrl: String?
     let mainTag: MainTagType
     let isBookmarked: Bool
+}
+
+struct ReviewPreviewDTO: ResponseModelType {
+    let reviews: [ReviewDTO]
+    let hasMoreReviews: Bool
+}
+
+struct ReviewDTO: ResponseModelType {
+    let reviewId: Int
+    let placeName: String
+    let previewImageUrl: String?
+    let content: String
 }

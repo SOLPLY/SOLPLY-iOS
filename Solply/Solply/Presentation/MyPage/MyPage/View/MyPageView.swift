@@ -15,9 +15,6 @@ struct MyPageView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = MyPageStore()
     
-    // 임시
-    private var mySolplyRecords: [MySolplyRecord]? = MySolplyRecord.mock
-    
     // MARK: - Body
     
     var body: some View {
@@ -116,8 +113,7 @@ private extension MyPageView {
         VStack(alignment: .center, spacing: 16.adjustedHeight) {
             sectionHeader(
                 title: "내 솔플리 기록",
-                // TODO: - API 연결 후 버튼 활성화 수정 필요
-                isButtonEnabled: true) {
+                isButtonEnabled: appState.userInformation?.hasMoreReviews ?? false) {
                     appCoordinator.navigate(to: .mySolplyRecords)
                     
                 }
@@ -148,12 +144,11 @@ private extension MyPageView {
     }
     
     func mySolplyRecordList() -> some View {
-        // TODO: - API 연결 후 수정 필요
         Group {
-            if let mySolplyRecords = mySolplyRecords, !mySolplyRecords.isEmpty {
+            if let mySolplyRecordPreviews = appState.userInformation?.mySolplyRecordPreviews, !mySolplyRecordPreviews.isEmpty {
                 VStack(alignment: .center, spacing: 0) {
-                    ForEach(Array(mySolplyRecords.enumerated()), id: \.offset) { index, mySolplyRecord in
-                        mySolplyRecordRow(mySolplyRecord, showsDivider: mySolplyRecords.count - 1 != index)
+                    ForEach(Array(mySolplyRecordPreviews.enumerated()), id: \.offset) { index, mySolplyRecordPreview in
+                        mySolplyRecordRow(mySolplyRecordPreview, showsDivider: mySolplyRecordPreviews.count - 1 != index)
                     }
                 }
             } else {
@@ -162,27 +157,27 @@ private extension MyPageView {
         }
     }
     
-    func mySolplyRecordRow(_ mySolplyRecord: MySolplyRecord, showsDivider: Bool) -> some  View {
+    func mySolplyRecordRow(_ mySolplyRecordPreview: MySolplyRecordPreview, showsDivider: Bool) -> some  View {
         VStack(alignment: .center, spacing: 0) {
             HStack(alignment: .top, spacing: 12.adjustedWidth) {
                 ThumbnailImage(
-                    mySolplyRecord.PhotosUrls.first,
+                    mySolplyRecordPreview.previewImageUrl,
                     width: 72.adjusted,
                     height: 72.adjusted,
                     radius: 12
                 )
                 
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                    Text(mySolplyRecord.placeName)
+                    Text(mySolplyRecordPreview.placeName)
                         .applySolplyFont(.title_15_m)
                         .foregroundStyle(.coreBlack)
                     
-                    Text(mySolplyRecord.recordText)
+                    Text(mySolplyRecordPreview.content)
                         .applySolplyFont(.body_14_r)
                         .foregroundStyle(.gray900)
                         .lineLimit(2)
                 }
-                .frame(width: 251.adjustedWidth, alignment: .center)
+                .frame(width: 251.adjustedWidth, alignment: .leading)
             }
             
             if showsDivider {
