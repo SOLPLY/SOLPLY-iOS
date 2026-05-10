@@ -9,10 +9,14 @@ import Foundation
 
 enum MySolplyRecordsAction {
     case onAppear
-    case deleteRecord
+    case deleteRecord(index: Int)
     
     // api
     case fetchMySolplyRecords
     case fetchMySolplyRecordsSuccess(mySolplyRecords: [MySolplyRecord])
     case fetchMySolplyRecordsFailed(error: NetworkError)
+    
+    case removeMySolplyRecord(reviewId: Int)
+    case removeMySolplyRecordSuccess(reviewId: Int)
+    case removeMySolplyRecordFailed(error: NetworkError)
 }

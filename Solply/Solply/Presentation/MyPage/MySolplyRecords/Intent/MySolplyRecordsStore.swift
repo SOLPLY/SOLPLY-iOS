@@ -31,9 +31,18 @@ final class MySolplyRecordsStore: ObservableObject {
         case .onAppear:
             dispatch(.fetchMySolplyRecords)
             
+        case .deleteRecord(let index):
+            dispatch(.removeMySolplyRecord(reviewId: state.mySolplyRecords[index].id))
+            
         case .fetchMySolplyRecords:
             Task {
                 let result = await effect.fetchMySolplyRecords()
+                dispatch(result)
+            }
+            
+        case .removeMySolplyRecord(let reviewId):
+            Task {
+                let result = await effect.removeMySolplyRecord(reviewId: reviewId)
                 dispatch(result)
             }
             

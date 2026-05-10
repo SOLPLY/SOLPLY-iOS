@@ -14,7 +14,6 @@ enum MySolplyRecordsReducer {
             break
             
         case .deleteRecord:
-            // state의 기록 갱신
             break
             
         case .fetchMySolplyRecords:
@@ -26,6 +25,17 @@ enum MySolplyRecordsReducer {
             state.isLoading = false
             
         case .fetchMySolplyRecordsFailed(let error):
+            print(error)
+            break
+            
+        case .removeMySolplyRecord:
+            break
+            
+        case .removeMySolplyRecordSuccess(let reviewId):
+            state.mySolplyRecords.removeAll { $0.id == reviewId }
+            break
+            
+        case .removeMySolplyRecordFailed(let error):
             print(error)
             break
         }

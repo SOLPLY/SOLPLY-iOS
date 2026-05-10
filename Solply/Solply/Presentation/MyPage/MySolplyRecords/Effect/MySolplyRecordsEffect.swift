@@ -36,4 +36,17 @@ extension MySolplyRecordsEffect {
             return .fetchMySolplyRecordsFailed(error: .unknownError)
         }
     }
+    
+    func removeMySolplyRecord(reviewId: Int) async -> MySolplyRecordsAction {
+        do {
+            let _ = try await placeService.removeMySolplyRecord(reviewId: reviewId)
+            
+            return .removeMySolplyRecordSuccess(reviewId: reviewId)
+            
+        } catch let error as NetworkError {
+            return .removeMySolplyRecordFailed(error: error)
+        } catch {
+            return .removeMySolplyRecordFailed(error: .unknownError)
+        }
+    }
 }

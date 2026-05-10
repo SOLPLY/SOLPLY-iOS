@@ -39,18 +39,32 @@ struct MySolplyRecordsView: View {
 
 extension MySolplyRecordsView {
     private var mySolplyRecordsList: some View {
-        ScrollView(.vertical, showsIndicators: true) {
-            LazyVStack(alignment: .center, spacing: 0) {
-                ForEach(Array(store.state.mySolplyRecords.enumerated()), id: \.offset) { index,  mySolplyRecord in
-                    mySolplyRecordRow(mySolplyRecord, hideSeparator: store.state.mySolplyRecords.count - 1 == index)
+        Group {
+            if store.state.mySolplyRecords.isEmpty {
+                Text("등록한 기록이 없어요")
+                    .applySolplyFont(.body_16_r)
+                    .foregroundStyle(.gray600)
+                    .padding(.top, 300.adjustedHeight)
+            } else {
+                ScrollView(.vertical, showsIndicators: true) {
+                    LazyVStack(alignment: .center, spacing: 0) {
+                        ForEach(Array(store.state.mySolplyRecords.enumerated()), id: \.offset) { index,  mySolplyRecord in
+                            mySolplyRecordRow(
+                                mySolplyRecord,
+                                index: index,
+                                hideSeparator: store.state.mySolplyRecords.count - 1 == index
+                            )
+                        }
+                    }
+                    .padding(.bottom, 90.adjustedHeight)
                 }
             }
-            .padding(.bottom, 90.adjustedHeight)
         }
     }
     
     private func mySolplyRecordRow(
         _ mySolplyRecord: MySolplyRecord,
+        index: Int,
         hideSeparator: Bool
     ) -> some View {
         VStack(alignment: .leading, spacing: 16.adjustedHeight) {
@@ -65,7 +79,7 @@ extension MySolplyRecordsView {
                 
                 Button {
                     AlertManager.shared.showAlert(alertType: .deleteRecord, onCancel: nil) {
-                        // TODO: - 기록 삭제하기 API 연동
+                        store.dispatch(.deleteRecord(index: index))
                     }
                 } label: {
                     Image(.binIcon)
