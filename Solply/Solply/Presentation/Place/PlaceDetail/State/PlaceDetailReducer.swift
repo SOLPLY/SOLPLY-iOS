@@ -131,6 +131,7 @@ enum PlaceDetailReducer {
             
         case .userTownsUpdated:
             state.shouldShowTownToast = false
+            state.shouldFetchUserInformation = true
             
         case .updateUserTownsFailed(let error):
             print(error)
