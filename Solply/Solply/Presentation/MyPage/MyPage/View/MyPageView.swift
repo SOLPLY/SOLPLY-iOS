@@ -49,7 +49,7 @@ struct MyPageView: View {
                     )
                     .padding(.top, 16.adjustedHeight)
                 }
-                .padding(.bottom, 112.adjustedHeight)
+                .padding(.bottom, 120.adjustedHeight)
             }
         }
         .onChange(of: store.state.shouldChangeRoot) { _, newValue in
