@@ -66,6 +66,11 @@ struct MyPageView: View {
         .background(.gray100)
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
+            // TODO: - 내 솔플리 기록 삭제하고 돌아왔을 때 반영되지 않아서 임시로 유저정보 Fetch
+            // 해결하려면, 회원 정보 Fetch랑 내 솔플리 기록 Fetch랑, 내가 등록한 장소 Fetch를 나눠야 좋을 듯..
+            Task {
+                await appState.fetchUserInformation()
+            }
             store.dispatch(.fetchLoginInformation)
             
             AmplitudeManager.shared.track(.viewMyPage(entryMode: .member))
