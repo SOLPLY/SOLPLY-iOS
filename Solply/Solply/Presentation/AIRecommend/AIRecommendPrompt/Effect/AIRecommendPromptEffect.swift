@@ -34,6 +34,7 @@ extension AIRecommendPromptEffect {
                         id: place.placeId,
                         mainTag: MainTagType(rawValue: place.mainTag) ?? .book,
                         placeName: place.placeName,
+                        townId: place.townId,
                         townName: place.townName,
                         tipText: place.reason,
                         filters: place.optionTags,
@@ -59,7 +60,6 @@ extension AIRecommendPromptEffect {
                 return .submitAICourseRecommendFailed(error: .responseError)
             }
             
-            // TODO: - 데이터 매핑 필요
             let result = data.courses.map { course in
                 let courseCounts = Dictionary(grouping: course.placeMainTags, by: { $0 })
                     .map { AIRecommendCourseCountItem(mainTag: $0.key, count: $0.value.count) }
@@ -68,6 +68,7 @@ extension AIRecommendPromptEffect {
                     id: course.courseId,
                     courseTagType: CourseTagType(rawValue: course.courseTag) ?? .daily,
                     courseName: course.courseName,
+                    townId: course.townId,
                     townName: course.townName,
                     tipText: course.reason,
                     courseCounts: courseCounts,

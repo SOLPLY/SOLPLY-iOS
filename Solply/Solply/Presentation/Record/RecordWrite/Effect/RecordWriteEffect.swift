@@ -22,6 +22,8 @@ extension RecordWriteEffect {
         do {
             let _ = try await placeService.submitPlaceRecordWrite(request: request)
             
+            try await Task.sleep(for: .seconds(1))
+            
             return .submitPlaceRecordWriteSuccess
             
         } catch let error as NetworkError {

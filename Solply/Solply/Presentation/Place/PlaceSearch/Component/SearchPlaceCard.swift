@@ -82,5 +82,6 @@ struct SearchPlaceCard: View {
             Divider()
                 .overlay(Color.gray200)
         }
+        .background(.coreWhite)
     }
 }

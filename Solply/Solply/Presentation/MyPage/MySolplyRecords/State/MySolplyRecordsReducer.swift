@@ -11,9 +11,41 @@ enum MySolplyRecordsReducer {
     static func reduce(state: inout MySolplyRecordsState, action: MySolplyRecordsAction) {
         switch action {
         case .onAppear:
-            state.mySolplyRecords = MySolplyRecord.mock
+            break
+            
         case .deleteRecord:
-            // state의 기록 갱신
+            break
+            
+        case .presentImageViewer(let index, let imageUrls):
+            state.imageViewerItem = ImageViewerItem(
+                selectedIndex: index,
+                imageUrls: imageUrls
+            )
+            
+        case .dismissImageViewer:
+            state.imageViewerItem = nil
+            
+        case .fetchMySolplyRecords:
+            state.isLoading = true
+            break
+            
+        case .fetchMySolplyRecordsSuccess(let mySolplyRecords):
+            state.mySolplyRecords = mySolplyRecords
+            state.isLoading = false
+            
+        case .fetchMySolplyRecordsFailed(let error):
+            print(error)
+            break
+            
+        case .removeMySolplyRecord:
+            break
+            
+        case .removeMySolplyRecordSuccess(let reviewId):
+            state.mySolplyRecords.removeAll { $0.id == reviewId }
+            break
+            
+        case .removeMySolplyRecordFailed(let error):
+            print(error)
             break
         }
     }

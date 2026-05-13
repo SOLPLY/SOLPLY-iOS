@@ -24,11 +24,11 @@ enum RecordWriteReducer {
             state.selectedPhotos = photos
             
         case .registerRecordButtonTapped:
+            state.isLoading = true
             break
             
         // api
         case .submitPlaceRecordWrite:
-            state.isLoading = true
             break
             
         case .submitPlaceRecordWriteSuccess:

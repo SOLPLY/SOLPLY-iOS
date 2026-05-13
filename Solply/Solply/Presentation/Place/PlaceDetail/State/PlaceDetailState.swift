@@ -11,6 +11,7 @@ struct PlaceDetailState {
     var isPlaceDetailLoading: Bool = false
     
     var shouldShowTownToast: Bool = false
+    var shouldFetchUserInformation: Bool = false
     var shouldShowFindDirectionDialog: Bool = false
     var isAddToCourseSheetPresented: Bool = false
     

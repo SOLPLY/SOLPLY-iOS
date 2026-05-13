@@ -10,4 +10,6 @@ import Foundation
 struct MySolplyRecordsState {
     var isLoading: Bool = true
     var mySolplyRecords: [MySolplyRecord] = []
+    
+    var imageViewerItem: ImageViewerItem? = nil
 }

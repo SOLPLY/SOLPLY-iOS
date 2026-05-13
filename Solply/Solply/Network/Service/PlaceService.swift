@@ -86,4 +86,12 @@ extension PlaceService: PlaceAPI {
     func fetchPlaceRecordList(placeId: Int) async throws -> BaseResponseBody<PlaceRecordListResponseDTO> {
         return try await self.request(with: .fetchPlaceRecordList(placeId: placeId))
     }
+    
+    func fetchMySolplyRecords() async throws -> BaseResponseBody<MySolplyRecordsResponseDTO> {
+        return try await self.request(with: .fetchMySolplyRecords)
+    }
+    
+    func removeMySolplyRecord(reviewId: Int) async throws -> BaseResponseBody<EmptyResponseDTO> {
+        return try await self.request(with: .removeMySolplyRecord(reviewId: reviewId))
+    }
 }

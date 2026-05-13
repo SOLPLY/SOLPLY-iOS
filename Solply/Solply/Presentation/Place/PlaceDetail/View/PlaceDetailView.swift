@@ -131,6 +131,14 @@ struct PlaceDetailView: View {
                 message: "‘\(addPlaceCourseInformation.courseName.truncated(length: 8))’에 추가되었어요."
             )
         }
+        .onChange(of: store.state.shouldFetchUserInformation) { _, shouldFetchUserInformation in
+            if shouldFetchUserInformation {
+                Task {
+                    await appState.fetchUserInformation()
+                    
+                }
+            }
+        }
     }
 }
 

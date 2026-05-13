@@ -19,4 +19,5 @@ enum CustomLoadingType {
     case courseDetailLoading
     case archiveFolderLoading
     case recordListLoading
+    case mySolplyRecordsLoading
 }

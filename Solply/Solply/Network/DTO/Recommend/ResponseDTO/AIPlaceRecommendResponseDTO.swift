@@ -17,6 +17,7 @@ struct AIRecommendedPlace: ResponseModelType {
     let thumbnailImageUrl: String
     let mainTag: String
     let optionTags: [String]
+    let townId: Int
     let townName: String
     let reason: String
 }

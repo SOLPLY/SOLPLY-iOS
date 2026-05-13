@@ -25,10 +25,15 @@ struct MySolplyRecordsView: View {
     
     var body: some View {
         mySolplyRecordsList
+            .customLoading(.mySolplyRecordsLoading, isLoading: store.state.isLoading)
             .customNavigationBar(.backWithTitle(title: "내 솔플리 기록", backAction: {
                 appCoordinator.goBack()
             }))
             .ignoresSafeArea(edges: .bottom)
+            .imageViewer(
+                item: store.state.imageViewerItem,
+                dismissAction: { store.dispatch(.dismissImageViewer) }
+            )
             .onAppear {
                 store.dispatch(.onAppear)
             }
@@ -39,18 +44,32 @@ struct MySolplyRecordsView: View {
 
 extension MySolplyRecordsView {
     private var mySolplyRecordsList: some View {
-        ScrollView(.vertical, showsIndicators: true) {
-            LazyVStack(alignment: .center, spacing: 0) {
-                ForEach(Array(store.state.mySolplyRecords.enumerated()), id: \.offset) { index,  mySolplyRecord in
-                    mySolplyRecordRow(mySolplyRecord, hideSeparator: store.state.mySolplyRecords.count - 1 == index)
+        Group {
+            if store.state.mySolplyRecords.isEmpty {
+                Text("등록한 기록이 없어요")
+                    .applySolplyFont(.body_16_r)
+                    .foregroundStyle(.gray600)
+                    .padding(.top, 300.adjustedHeight)
+            } else {
+                ScrollView(.vertical, showsIndicators: true) {
+                    LazyVStack(alignment: .center, spacing: 0) {
+                        ForEach(Array(store.state.mySolplyRecords.enumerated()), id: \.offset) { index,  mySolplyRecord in
+                            mySolplyRecordRow(
+                                mySolplyRecord,
+                                index: index,
+                                hideSeparator: store.state.mySolplyRecords.count - 1 == index
+                            )
+                        }
+                    }
+                    .padding(.bottom, 90.adjustedHeight)
                 }
             }
-            .padding(.bottom, 90.adjustedHeight)
         }
     }
     
     private func mySolplyRecordRow(
         _ mySolplyRecord: MySolplyRecord,
+        index: Int,
         hideSeparator: Bool
     ) -> some View {
         VStack(alignment: .leading, spacing: 16.adjustedHeight) {
@@ -65,7 +84,7 @@ extension MySolplyRecordsView {
                 
                 Button {
                     AlertManager.shared.showAlert(alertType: .deleteRecord, onCancel: nil) {
-                        // TODO: - 기록 삭제하기 API 연동
+                        store.dispatch(.deleteRecord(index: index))
                     }
                 } label: {
                     Image(.binIcon)
@@ -81,13 +100,17 @@ extension MySolplyRecordsView {
             if !mySolplyRecord.PhotosUrls.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(alignment: .center, spacing: 8.adjustedWidth) {
-                        ForEach(mySolplyRecord.PhotosUrls, id: \.self) { thumbnailImageUrl in
+                        ForEach(Array(mySolplyRecord.PhotosUrls.enumerated()), id: \.offset) { index, thumbnailImageUrl in
                             ThumbnailImage(
                                 thumbnailImageUrl,
                                 width: 72.adjusted,
                                 height: 72.adjusted,
                                 radius: 12
                             )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                store.dispatch(.presentImageViewer(index: index, imageUrls: mySolplyRecord.PhotosUrls))
+                            }
                         }
                     }
                 }

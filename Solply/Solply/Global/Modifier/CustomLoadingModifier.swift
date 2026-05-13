@@ -415,6 +415,53 @@ extension View {
                     }
                 )
             )
+            
+        case .mySolplyRecordsLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    isLoading: isLoading,
+                    loadingView: {
+                        VStack(alignment: .center, spacing: 0) {
+                            ForEach(0..<2) { index in
+                                VStack(alignment: .leading, spacing: 16.adjustedHeight) {
+                                    SolplySkeletonView(font: .body_14_r, width: 120.adjustedWidth)
+                                        .padding(.leading, 16.adjustedWidth)
+                                    
+                                    HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                                        ForEach(0..<5) { _ in
+                                            SolplySkeletonView(width: 72.adjusted, height: 72.adjusted, cornerRadius: 12)
+                                        }
+                                    }
+                                    .padding(.leading, 16.adjustedWidth)
+                                    .frame(width: 375.adjustedWidth, alignment: .leading)
+                                    .clipped()
+                                    
+                                    VStack(alignment: .leading, spacing: 0) {
+                                        SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth, cornerRadius: 4)
+                                        SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth, cornerRadius: 4)
+                                        SolplySkeletonView(font: .body_14_r, width: 250.adjustedWidth, cornerRadius: 4)
+                                    }
+                                    .padding(.leading, 16.adjustedWidth)
+                                    
+                                    SolplySkeletonView(font: .body_14_r, width: 120.adjustedWidth, cornerRadius: 4)
+                                        .padding(.leading, 16.adjustedWidth)
+                                }
+                                .padding(.vertical, 20.adjustedHeight)
+                                .overlay(alignment: .bottom) {
+                                    if index != 1 {
+                                        Rectangle()
+                                            .frame(maxWidth: .infinity)
+                                            .frame(height: 1)
+                                            .padding(.horizontal, 16.adjustedWidth)
+                                            .foregroundStyle(.gray200)
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                )
+            )
         }
     }
 }
