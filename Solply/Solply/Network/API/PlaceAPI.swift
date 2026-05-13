@@ -57,7 +57,7 @@ protocol PlaceAPI {
     func fetchPlaceRecordList(placeId: Int) async throws -> BaseResponseBody<PlaceRecordListResponseDTO>
     
     /// 내 리뷰(기록) 리스트 조회
-    func fetchMySolplysRecords() async throws -> BaseResponseBody<MySolplyRecordsResponseDTO>
+    func fetchMySolplyRecords() async throws -> BaseResponseBody<MySolplyRecordsResponseDTO>
     
     /// 내 장소 리뷰(기록) 삭제
     func removeMySolplyRecord(reviewId: Int) async throws -> BaseResponseBody<EmptyResponseDTO>

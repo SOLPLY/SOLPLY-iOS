@@ -87,7 +87,7 @@ extension PlaceService: PlaceAPI {
         return try await self.request(with: .fetchPlaceRecordList(placeId: placeId))
     }
     
-    func fetchMySolplysRecords() async throws -> BaseResponseBody<MySolplyRecordsResponseDTO> {
+    func fetchMySolplyRecords() async throws -> BaseResponseBody<MySolplyRecordsResponseDTO> {
         return try await self.request(with: .fetchMySolplyRecords)
     }
     

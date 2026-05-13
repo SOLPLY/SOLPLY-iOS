@@ -20,7 +20,7 @@ struct MySolplyRecordsEffect {
 extension MySolplyRecordsEffect {
     func fetchMySolplyRecords() async -> MySolplyRecordsAction {
         do {
-            let response = try await placeService.fetchMySolplysRecords()
+            let response = try await placeService.fetchMySolplyRecords()
             
             guard let data = response.data else {
                 return .fetchMySolplyRecordsFailed(error: .responseError)
