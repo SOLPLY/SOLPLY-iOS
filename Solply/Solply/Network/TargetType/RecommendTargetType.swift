@@ -14,6 +14,7 @@ enum RecommendTargetType {
     case fetchCourseRecommend(townId: Int)
     case submitAIPlaceRecommend(request: AIRecommendRequestDTO)
     case submitAICourseRecommend(request: AIRecommendRequestDTO)
+    case fetchAIExamplePhrases(type: String)
 }
 
 extension RecommendTargetType: BaseTargetType {
@@ -31,6 +32,8 @@ extension RecommendTargetType: BaseTargetType {
             return "/recommend/places/embedding"
         case .submitAICourseRecommend:
             return "/recommend/courses/embedding"
+        case .fetchAIExamplePhrases:
+            return "/recommend/example-phrases"
         }
     }
     
@@ -40,6 +43,7 @@ extension RecommendTargetType: BaseTargetType {
         case .fetchCourseRecommend: return .get
         case .submitAIPlaceRecommend: return .post
         case .submitAICourseRecommend: return .post
+        case .fetchAIExamplePhrases: return .get
         }
     }
     
@@ -55,6 +59,9 @@ extension RecommendTargetType: BaseTargetType {
             return .requestJSONEncodable(request)
         case .submitAICourseRecommend(let request):
             return .requestJSONEncodable(request)
+        case .fetchAIExamplePhrases(let type):
+            let params: [String: Any] = ["type": type]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
 }
