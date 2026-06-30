@@ -157,7 +157,7 @@ extension AIRecommendPromptView {
     
     private var popularRecommend: some View {
         PopularRecommend(
-            popularPrompt: store.state.popularRecommends,
+            popularPrompt: store.state.examplePhrases,
             isLoading: store.state.isAIRecommendLoading
         ) { text in
             store.dispatch(.popularPromptTapped(prompt: text))

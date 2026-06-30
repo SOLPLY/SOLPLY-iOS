@@ -122,4 +122,20 @@ extension MockRecommendService: RecommendAPI {
         let response = BaseResponseBody.mockSuccess(data: mock)
         return response
     }
+    
+    func fetchAIExamplePhrases(
+        type: String
+    ) async throws -> BaseResponseBody<AIExamplePhrasesResponseDTO> {
+        let mock = AIExamplePhrasesResponseDTO(
+            phrases: [
+                "임시추천질문1",
+                "임시추천질문2",
+                "임시추천질문3",
+                "임시추천질문4"
+            ]
+        )
+        
+        let response = BaseResponseBody.mockSuccess(data: mock)
+        return response
+    }
 }
