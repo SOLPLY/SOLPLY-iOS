@@ -31,6 +31,9 @@ final class AIRecommendPromptStore: ObservableObject {
         
         switch action {
             
+        case .onAppear:
+            self.dispatch(.fetchAIExamplePhrases)
+            
         case .aiRecommendButtonTapped:
             guard let townId = state.selectedSubTown?.id else { return }
             
@@ -71,6 +74,12 @@ final class AIRecommendPromptStore: ObservableObject {
             Task {
                 let result = await effect.fetchTowns()
                 dispatch(result)
+            }
+            
+        case .fetchAIExamplePhrases:
+            Task {
+                let result = await effect.fetchAIExamplePhrases()
+                self.dispatch(result)
             }
             
         default:
