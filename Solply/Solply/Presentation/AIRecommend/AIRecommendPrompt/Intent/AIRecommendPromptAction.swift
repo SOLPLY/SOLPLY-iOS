@@ -34,4 +34,8 @@ enum AIRecommendPromptAction {
     case fetchTowns
     case fetchTownsSuccess(townList: [Town])
     case fetchTownsFailure(error: NetworkError)
+    
+    case fetchAIExamplePhrases
+    case fetchAIExamplePhrasesSuccess(placePhrases: [String], coursePhrases: [String])
+    case fetchAIExamplePhrasesFailed(error: NetworkError)
 }

@@ -86,6 +86,32 @@ extension AIRecommendPromptEffect {
             return .submitAICourseRecommendFailed(error: .unknownError)
         }
     }
+    
+    func fetchAIExamplePhrases() async -> AIRecommendPromptAction {
+        do {
+            async let placeResponse = recommendService.fetchAIExamplePhrases(
+                type: SolplyContentType.place.apiValue
+            )
+            async let courseResponse = recommendService.fetchAIExamplePhrases(
+                type: SolplyContentType.course.apiValue
+            )
+            
+            let (place, course) = try await (placeResponse, courseResponse)
+            
+            guard let placeData = place.data, let courseData = course.data else {
+                return .fetchAIExamplePhrasesFailed(error: .responseError)
+            }
+            
+            return .fetchAIExamplePhrasesSuccess(
+                placePhrases: placeData.phrases,
+                coursePhrases: courseData.phrases
+            )
+        } catch let error as NetworkError {
+            return .fetchAIExamplePhrasesFailed(error: error)
+        } catch {
+            return .fetchAIExamplePhrasesFailed(error: .unknownError)
+        }
+    }
 }
 
 // MARK: - Town API

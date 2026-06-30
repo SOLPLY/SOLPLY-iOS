@@ -31,4 +31,10 @@ extension RecommendService: RecommendAPI {
     ) async throws -> BaseResponseBody<AICourseRecommendResponseDTO> {
         return try await self.request(with: .submitAICourseRecommend(request: request))
     }
+    
+    func fetchAIExamplePhrases(
+        type: String
+    ) async throws -> BaseResponseBody<AIExamplePhrasesResponseDTO> {
+        return try await self.request(with: .fetchAIExamplePhrases(type: type))
+    }
 }
