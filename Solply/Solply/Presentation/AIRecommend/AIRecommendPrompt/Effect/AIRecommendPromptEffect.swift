@@ -125,7 +125,7 @@ extension AIRecommendPromptEffect {
                 return .fetchTownsFailure(error: .responseError)
             }
             
-            let towns = data.toEntity()
+            let towns = data.toEntity(includeAllOption: true)
             
             return .fetchTownsSuccess(townList: towns)
         } catch let error as NetworkError {
