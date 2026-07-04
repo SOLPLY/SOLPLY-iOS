@@ -112,6 +112,16 @@ enum AIRecommendPromptReducer {
             
         case .fetchTownsFailure(let error):
             print(error)
+            
+        case .fetchAIExamplePhrases:
+            break
+            
+        case .fetchAIExamplePhrasesSuccess(let placePhrases, let coursePhrases):
+            state.placeExamplePhrases = placePhrases
+            state.courseExamplePhrases = coursePhrases
+            
+        case .fetchAIExamplePhrasesFailed(let error):
+            print(error)
         }
     }
 }

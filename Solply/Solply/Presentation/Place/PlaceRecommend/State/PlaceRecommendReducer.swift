@@ -74,7 +74,6 @@ struct PlaceRecommendReducer {
             
         case .fetchPlaceList:
             state.isPlaceGridLoading = true
-            state.fetchedPlaceList = []
             break
             
         case .placeListFetched(let placeList):

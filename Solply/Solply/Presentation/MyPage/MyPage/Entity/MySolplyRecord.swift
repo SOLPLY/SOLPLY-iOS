@@ -18,6 +18,18 @@ struct MySolplyRecord: Identifiable {
 }
 
 extension MySolplyRecord {
+    init(dto: MySolplyRecordDTO) {
+        self.id = dto.reviewId
+        self.placeId = dto.placeId
+        self.placeName = dto.placeName
+        self.placeTagType = MainTagType(rawValue: dto.mainTag) ?? .book
+        self.PhotosUrls = dto.imageUrls
+        self.recordText = dto.content
+        self.visitTime = "\(dto.visitedAt.replacingOccurrences(of: "-", with: ".")) \(dto.visitTimeSlot.title) 방문"
+    }
+}
+
+extension MySolplyRecord {
     static var mock: [MySolplyRecord] {
         return [
             MySolplyRecord(

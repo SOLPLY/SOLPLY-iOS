@@ -13,7 +13,6 @@ struct CourseRecommendReducer {
             
         case .fetchCourseRecommend:
             state.isCourseGridLoading = true
-            state.courses = []
             break
             
         case .courseRecommendFetched(let courses):

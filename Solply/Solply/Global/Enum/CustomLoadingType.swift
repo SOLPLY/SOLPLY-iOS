@@ -12,10 +12,12 @@ enum CustomLoadingType {
     case JGDButtonLoading
     case JGDLoading
     case recommendTitleLoading
-    case placeRecommendLoading
+    case placeRecommendCarouselLoading
+    case placeRecommendGridLoading
     case courseRecommendGridLoading
     case placeDetailLoading
     case courseDetailLoading
     case archiveFolderLoading
     case recordListLoading
+    case mySolplyRecordsLoading
 }

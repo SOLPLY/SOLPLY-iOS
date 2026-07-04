@@ -16,6 +16,7 @@ struct AIRecommendedCourse: ResponseModelType {
     let courseName: String
     let thumbnailImageUrl: String
     let courseTag: String
+    let townId: Int
     let townName: String
     let reason: String
     let placeMainTags: [String]

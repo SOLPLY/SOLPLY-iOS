@@ -31,8 +31,13 @@ struct CourseRecommendView: View {
                     courseRecommendGrid
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.bottom, 112.adjustedHeight)
+                .padding(.bottom, store.state.bottomPadding)
             }
+            .onChange(of: appState.townId, { oldValue, newValue in
+                if oldValue != newValue {
+                    proxy.scrollTo(topId, anchor: .top)
+                }
+            })
             .onChange(of: scrollToTopManager.target) { _, target in
                 guard target == .course else { return }
                 

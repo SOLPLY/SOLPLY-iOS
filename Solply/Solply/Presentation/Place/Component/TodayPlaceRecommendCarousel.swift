@@ -72,7 +72,7 @@ struct TodayPlaceRecommendCarousel: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             }
         }
-        .frame(height: store.state.placeRecommendItems.isEmpty ? 60.adjustedHeight : 240.adjusted)
+        .frame(height: 240.adjusted)
         .gesture(
             DragGesture()
                 .onChanged { value in

@@ -28,12 +28,18 @@ struct PlaceRecommendView: View {
                 VStack(alignment: .center, spacing: 28.adjustedHeight) {
                     placeRecommendTitle
                     
-                    placeRecommend
-                        .customLoading(.placeRecommendLoading, isLoading: store.state.isPlaceRecommendLoading)
+                    todayPlaceRecommendCarousel
+                    
+                    filterPlaceGrid
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.bottom, 112.adjustedHeight)
+                .padding(.bottom, store.state.bottomPadding)
             }
+            .onChange(of: appState.townId, { oldValue, newValue in
+                if oldValue != newValue {
+                    proxy.scrollTo(topId, anchor: .top)
+                }
+            })
             .onChange(of: scrollToTopManager.target) { _, target in
                 guard target == .place else { return }
                 
@@ -105,14 +111,6 @@ extension PlaceRecommendView {
         .frame(width: 335.adjustedWidth)
     }
     
-    private var placeRecommend: some View {
-        VStack(alignment: .center, spacing : 28.adjustedHeight) {
-            todayPlaceRecommendCarousel
-            
-            filterPlaceGrid
-        }
-    }
-    
     private var todayPlaceRecommendCarousel: some View {
         Group {
             switch appState.userSession {
@@ -128,6 +126,7 @@ extension PlaceRecommendView {
                 }
             case .authenticated:
                 TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
+                    .customLoading(.placeRecommendCarouselLoading, isLoading: store.state.isCarouselLoading)
             }
         }
     }

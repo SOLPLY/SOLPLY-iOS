@@ -90,6 +90,7 @@ extension MockRecommendService: RecommendAPI {
                     thumbnailImageUrl: "https://d2ga1f2858oj5h.cloudfront.net/dev/uploads/places/25/place_025_image_1.jpg",
                     mainTag: "CAFE",
                     optionTags: ["WORK", "READING"],
+                    townId: 1,
                     townName: "망원",
                     reason: "a;dslkfja;sldkjf;alksdjf;lakdsjf;lkj"
                 )
@@ -110,10 +111,27 @@ extension MockRecommendService: RecommendAPI {
                     courseName: "임시 코스 1",
                     thumbnailImageUrl: "https://d2ga1f2858oj5h.cloudfront.net/dev/uploads/places/25/place_025_image_1.jpg",
                     courseTag: "FOOD",
+                    townId: 1,
                     townName: "망원",
                     reason: "안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요",
                     placeMainTags: ["CAFE", "SHOPPING"]
                 )
+            ]
+        )
+        
+        let response = BaseResponseBody.mockSuccess(data: mock)
+        return response
+    }
+    
+    func fetchAIExamplePhrases(
+        type: String
+    ) async throws -> BaseResponseBody<AIExamplePhrasesResponseDTO> {
+        let mock = AIExamplePhrasesResponseDTO(
+            phrases: [
+                "임시추천질문1",
+                "임시추천질문2",
+                "임시추천질문3",
+                "임시추천질문4"
             ]
         )
         
