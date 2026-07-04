@@ -27,7 +27,7 @@ struct RecordListView: View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .center, spacing: 20.adjustedHeight) {
                 RecordWriteButton {
-                    appCoordinator.navigate(to: .recordWrite(placeId: store.placeId, placeName: store.placeName)) 
+                    appCoordinator.navigate(to: .recordWrite(placeId: store.placeId, placeName: store.placeName))
                 }
                 
                 recordList
@@ -65,7 +65,11 @@ extension RecordListView {
                         store.dispatch(.presentImageViewer(index: index, imageUrls: record.photoUrls))
                     }, reportAction: {
                         appState.requireLoginWithAlert(
-                            onAuthenticated: { appCoordinator.navigate(to: .placeComplaint) },
+                            onAuthenticated: {
+                                appCoordinator.navigate(
+                                    to: .placeComplaint(reviewId: record.id)
+                                )
+                            },
                             onExplore: { appCoordinator.changeRoot(to: .auth) }
                         )
                     }
