@@ -8,28 +8,31 @@
 import SwiftUI
 
 struct PlaceComplaintView: View {
-    
+
     // MARK: - Properties
-    
+
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @StateObject private var store = PlaceComplaintStore()
-    
+    @StateObject private var store: PlaceComplaintStore
+
+    private let reviewId: Int
+
+    // MARK: - Initializer
+
+    init(reviewId: Int) {
+        self.reviewId = reviewId
+        _store = StateObject(
+            wrappedValue: PlaceComplaintStore(reviewId: reviewId)
+        )
+    }
+
     // MARK: - Body
-    
+
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             complaintTypeList
-            
-            if store.state.selectedComplaintType == .others {
-                SolplyTextEditor(
-                    onTextChanged: { text in
-                        store.dispatch(.updateContent(text))
-                    }
-                )
-            }
-            
+
             Spacer()
-            
+
             nextButton
         }
         .customNavigationBar(
@@ -38,10 +41,6 @@ struct PlaceComplaintView: View {
                 backAction: { appCoordinator.goBack() }
             )
         )
-        .ignoresSafeArea(.keyboard)
-        .onTapGesture {
-            hideKeyboard()
-        }
         .customAlert()
         .overlay(alignment: .center) {
             if store.state.showComplaintCompleteModal {
@@ -54,26 +53,18 @@ struct PlaceComplaintView: View {
 }
 
 extension PlaceComplaintView {
-    
+
     private var isNextEnabled: Bool {
-        guard let selectedComplaintType = store.state.selectedComplaintType else { return false }
-        
-        if selectedComplaintType == .others {
-            return !store.state.content
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-                .isEmpty
-        }
-        
-        return true
+        store.state.selectedComplaintType != nil
     }
-    
+
     private var complaintTypeList: some View {
         VStack(alignment: .center, spacing: 0) {
             ForEach(ComplaintType.allCases, id: \.self) { complaint in
                 SolplySelectRow(
                     title: complaint.title,
                     isSelected: store.state.selectedComplaintType == complaint,
-                    hideSeparator: store.state.selectedComplaintType == complaint && complaint == .others
+                    hideSeparator: false
                 ) {
                     store.dispatch(.selectComplaintType(complaint))
                 }
@@ -82,7 +73,7 @@ extension PlaceComplaintView {
         .padding(.horizontal, 20.adjustedWidth)
         .padding(.top, 16.adjustedHeight)
     }
-    
+
     private var nextButton: some View {
         SolplyMainButton(
             title: "다음",
