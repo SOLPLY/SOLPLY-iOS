@@ -29,6 +29,7 @@ enum PlaceTargetType {
     case fetchPlaceRecordList(placeId: Int)
     case fetchMySolplyRecords
     case removeMySolplyRecord(reviewId: Int)
+    case reportReview(reviewId: Int, request: PlaceReviewReportRequestDTO)
 }
 
 extension PlaceTargetType: BaseTargetType {
@@ -64,6 +65,8 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/reviews/me"
         case .removeMySolplyRecord(let reviewId):
             return "/places/reviews/\(reviewId)"
+        case .reportReview(let reviewId, _):
+            return "/places/reviews/\(reviewId)/reports"
         }
     }
     
@@ -82,6 +85,7 @@ extension PlaceTargetType: BaseTargetType {
         case .fetchPlaceRecordList: return .get
         case .fetchMySolplyRecords: return .get
         case .removeMySolplyRecord: return .delete
+        case .reportReview: return .post
         }
     }
     
@@ -143,6 +147,8 @@ extension PlaceTargetType: BaseTargetType {
             return .requestPlain
         case .removeMySolplyRecord:
             return .requestPlain
+        case .reportReview(_, let request):
+            return .requestJSONEncodable(request)
         }
     }
 }

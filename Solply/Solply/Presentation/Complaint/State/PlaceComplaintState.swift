@@ -9,7 +9,6 @@ import Foundation
 
 struct PlaceComplaintState {
     var selectedComplaintType: ComplaintType?
-    var content: String = ""
     var showComplaintCompleteModal: Bool = false
     var error: NetworkError?
 }

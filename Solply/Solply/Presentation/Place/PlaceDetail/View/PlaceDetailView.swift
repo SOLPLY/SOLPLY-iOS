@@ -413,7 +413,7 @@ extension PlaceDetailView {
                             },
                             reportAction: {
                                 appState.requireLoginWithAlert(
-                                    onAuthenticated: { appCoordinator.navigate(to: .placeComplaint) },
+                                    onAuthenticated: { appCoordinator.navigate(to: .placeComplaint(reviewId: record.id)) },
                                     onExplore: { appCoordinator.changeRoot(to: .auth) }
                                 )
                             }

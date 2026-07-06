@@ -61,4 +61,8 @@ protocol PlaceAPI {
     
     /// 내 장소 리뷰(기록) 삭제
     func removeMySolplyRecord(reviewId: Int) async throws -> BaseResponseBody<EmptyResponseDTO>
+    
+    /// 장소 리뷰 신고
+    func reportReview(reviewId: Int, request: PlaceReviewReportRequestDTO) async throws ->
+        BaseResponseBody<EmptyResponseDTO>
 }
