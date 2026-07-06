@@ -53,19 +53,24 @@ struct AIRecommendResultView: View {
 private extension AIRecommendResultView {
     
     var promptText: some View {
-        AIRecommendPromptText(
-            prompt: store.prompt
-        )
-        .padding(.top, 8.adjustedHeight)
-        .padding(.bottom, 16.adjustedHeight)
-        .padding(.horizontal, 16.adjustedWidth)
+        Text(store.prompt)
+            .lineLimit(1)
+            .applySolplyFont(.body_16_r)
+            .foregroundStyle(.gray900)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 20.adjustedWidth)
+            .padding(.vertical, 14.adjustedHeight)
+            .background(.gray100)
+            .cornerRadius(20, corners: .allCorners)
+            .addBorder(.roundedRectangle(cornerRadius: 20), borderColor: .gray300, borderWidth: 1)
+            .padding(.horizontal, 16.adjustedWidth)
     }
     
     var resultCountText: some View {
         Text("추천 결과 \(store.cards.count)개")
             .applySolplyFont(.button_14_m)
             .foregroundColor(.gray800)
-            .padding(.top, 16.adjustedHeight)
+            .padding(.top, 32.adjustedHeight)
             .padding(.leading, 24.adjustedWidth)
     }
     

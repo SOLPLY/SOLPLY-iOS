@@ -34,7 +34,11 @@ struct AIRecommendPromptState {
     var selectedSubTown: SubTown? = nil
     
     var selectTownHeader: String {
-        selectedSubTown?.townName ?? ""
+        guard let selectedSubTown else { return "" }
+        
+        let isAllSelected = selectedSubTown.id == selectedTown?.id
+        
+        return isAllSelected ? (selectedTown?.townName ?? "") : selectedSubTown.townName
     }
     
     var examplePhrases: [String] {

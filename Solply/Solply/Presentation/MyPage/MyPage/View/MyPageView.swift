@@ -43,7 +43,6 @@ struct MyPageView: View {
                             store.dispatch(.logout)
                         },
                         onTapDeleteAccount: {
-                            appState.clearUserInformation()
                             appCoordinator.navigate(to: .withdraw)
                         }
                     )
