@@ -117,10 +117,11 @@ private extension MyPageView {
         VStack(alignment: .center, spacing: 16.adjustedHeight) {
             sectionHeader(
                 title: "내 솔플리 기록",
-                isButtonEnabled: appState.userInformation?.hasMoreReviews ?? false) {
-                    appCoordinator.navigate(to: .mySolplyRecords)
-                    
-                }
+                isButtonEnabled: appState.userInformation?.hasMoreReviews ?? false
+            ) {
+                appCoordinator.navigate(to: .mySolplyRecords)
+                
+            }
             
             mySolplyRecordList()
         }

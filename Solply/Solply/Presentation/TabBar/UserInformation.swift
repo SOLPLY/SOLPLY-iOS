@@ -29,6 +29,6 @@ extension UserInformation {
         profileImageUrl = dto.profileImageUrl
         myPlacePreviews = dto.myPlacePreviews.map(UserPlace.init)
         mySolplyRecordPreviews = dto.myReviewPreview.reviews.map { MySolplyRecordPreview(dto: $0) }
-        hasMoreReviews = dto.myReviewPreview.hasMoreReviews
+        hasMoreReviews = !mySolplyRecordPreviews.isEmpty
     }
 }
