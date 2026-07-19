@@ -7,6 +7,26 @@
 
 import SwiftUI
 
+/// Solply 앱에서 공통으로 사용하는 TextEditor 컴포넌트입니다.
+///
+/// 플레이스홀더, 글자 수 제한, 라벨(정보 아이콘 포함) 기능을 지원하는
+/// 커스텀 `TextEditor` 래퍼 뷰입니다.
+///
+/// ## 사용 예시
+/// ```swift
+/// SolplyTextEditor(
+///     placeholder: "내용을 입력해주세요",
+///     isTextLimitEnabled: true,
+///     topLabel: "추가 설명 topLabel",
+///     bottomLabel: "추가 설명 bottomLabel",
+///     onTextChanged: { text in
+///         print("입력된 텍스트: \(text)")
+///     },
+///     onLabelTapped: {
+///         // 정보 아이콘 탭 시 동작
+///     }
+/// )
+/// ```
 struct SolplyTextEditor: View {
     
     // MARK: - Properties
@@ -15,7 +35,8 @@ struct SolplyTextEditor: View {
     
     private let placeholder: String
     private let isTextLimitEnabled: Bool
-    private let label: String?
+    private let topLabel: String?
+    private let bottomLabel: String?
     private let backgroundColor: Color
     private let onTextChanged: ((String) -> Void)?
     private let onLabelTapped: (() -> Void)?
@@ -30,14 +51,16 @@ struct SolplyTextEditor: View {
     init(
         placeholder: String = "최대 200자 입력 가능",
         isTextLimitEnabled: Bool = true,
-        label: String? = nil,
+        topLabel: String? = nil,
+        bottomLabel: String? = nil,
         backgroundColor: Color = .coreWhite,
         onTextChanged: ((String) -> Void)? = nil,
         onLabelTapped: (() -> Void)? = nil
     ) {
         self.placeholder = placeholder
         self.isTextLimitEnabled = isTextLimitEnabled
-        self.label = label
+        self.topLabel = topLabel
+        self.bottomLabel = bottomLabel
         self.backgroundColor = backgroundColor
         self.onTextChanged = onTextChanged
         self.onLabelTapped = onLabelTapped
@@ -47,8 +70,8 @@ struct SolplyTextEditor: View {
     
     var body: some View {
         VStack(alignment: .trailing, spacing: 8.adjustedHeight) {
-            if let label {
-                labelButton(label)
+            if let topLabel {
+                labelButton(topLabel)
             }
             
             textEditor
@@ -106,7 +129,7 @@ extension SolplyTextEditor {
     }
     
     private var textLimitCount: some View {
-        Text("\(text.count)/200")
+        Text("\(bottomLabel ?? "") \(text.count)/200")
             .applySolplyFont(.caption_12_m)
             .foregroundStyle(placeholderColor)
             .padding(.trailing, 8.adjustedWidth)

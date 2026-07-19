@@ -58,7 +58,8 @@ struct RecordWriteView: View {
                     
                     SolplyTextEditor(
                         placeholder: "오늘의 기록을 입력해주세요",
-                        isTextLimitEnabled: true
+                        isTextLimitEnabled: true,
+                        bottomLabel: "10자 이상 작성해주세요"
                     ) { newText in
                         store.dispatch(.writeRecordText(newText))
                     }
