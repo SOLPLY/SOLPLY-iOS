@@ -67,12 +67,17 @@ struct CustomNavigationBarModifier: ViewModifier {
                     backgroundColor: .clear
                 )
             )
-        case .titleWithNotification(let title, let notificationAction):
+        case .titleWithNotification(let title/*, let notificationAction*/):
+            // TODO: - 알림 구현 시 원상복구 !!!
             content.modifier(
                 LayoutNavigationBarModifier(
                     centerView: { EmptyView() },
                     leftView: { titleItem(title, isLargeTitle: true) },
-                    rightView: { barButtonItem(.alarmIcon, action: notificationAction) },
+                    rightView: {
+                        //TODO: - 알림 구현 시 원상복구하기 !!
+                        /*barButtonItem(.alarmIcon, action: notificationAction)*/
+                        EmptyView()
+                    },
                     backgroundColor: .clear
                 )
             )
