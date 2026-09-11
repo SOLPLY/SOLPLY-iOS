@@ -13,7 +13,8 @@ enum NavigationBarType {
     case backWithTitleAndHome(title: String?, backAction: (() -> Void), homeAction: (() -> Void))
     case backWithTitle(title: String, backAction: (() -> Void))
     case backOnly(backAction: (() -> Void))
-    case titleWithNotification(title: String, notificationAction: (() -> Void))
+    case titleWithNotification(title: String/*, notificationAction: (() -> Void)*/)
+    // TODO: - 알림 구현 시 원상복구 !!!
     case townFilterWithSearch(filterTitle: String, isLoading: Bool, filterAction: (() -> Void), aiAction: (() -> Void), searchAction: (() -> Void))
     case floating(backAction: (() -> Void), homeAction: (() -> Void))
     case dismissWithImageCount(dismissAction: (() -> Void), imageCount: String)

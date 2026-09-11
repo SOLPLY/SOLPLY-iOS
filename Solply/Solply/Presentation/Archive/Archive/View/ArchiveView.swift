@@ -24,8 +24,9 @@ struct ArchiveView: View {
         }
         .customNavigationBar(
             .titleWithNotification(
-                title: "수집함",
-                notificationAction: { print("알림") }
+                title: "수집함"
+//                notificationAction: { print("알림") }
+                // TODO: - 알림 구현 시 원상복구 ....
             )
         )
         .ignoresSafeArea(edges: .bottom)

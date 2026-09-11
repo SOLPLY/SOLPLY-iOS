@@ -58,8 +58,9 @@ struct MyPageView: View {
         }
         .customNavigationBar(
             .titleWithNotification(
-                title: "마이페이지",
-                notificationAction: { print("알림") }
+                title: "마이페이지"
+//                notificationAction: { print("알림") }
+                // TODO: - 알림 구현 시 원상복구 ....
             )
         )
         .background(.gray100)
