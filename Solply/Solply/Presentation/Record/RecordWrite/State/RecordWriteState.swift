@@ -8,6 +8,8 @@
 import Foundation
 
 struct RecordWriteState {
+    private let minimumRecordTextLength: Int = 10
+    
     var isLoading: Bool = false
     var shouldGoBack: Bool = false
     
@@ -17,8 +19,10 @@ struct RecordWriteState {
     var selectedPhotos: [(fileName: String, data: Data)] = []
     
     var isSubmitButtonEnabled: Bool {
-        selectedDate != nil
-        && selectedVisitTime != nil
-        && !recordText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        let trimmedText = recordText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        return selectedDate != nil
+            && selectedVisitTime != nil
+            && trimmedText.count >= minimumRecordTextLength
     }
 }

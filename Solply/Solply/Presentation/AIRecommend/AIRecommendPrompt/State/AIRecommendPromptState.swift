@@ -42,9 +42,16 @@ struct AIRecommendPromptState {
     }
     
     var examplePhrases: [String] {
+        let rawPhrases: [String]
         switch selectedCategory {
-        case .place: return placeExamplePhrases
-        case .course: return courseExamplePhrases
+        case .place: rawPhrases = placeExamplePhrases
+        case .course: rawPhrases = courseExamplePhrases
+        }
+        
+        return rawPhrases.map {
+            $0.replacingOccurrences(of: "\\n", with: " ")
+                .replacingOccurrences(of: "\n", with: " ")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
 }
