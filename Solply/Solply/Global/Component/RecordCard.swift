@@ -14,6 +14,7 @@ struct RecordCard: View {
     // MARK: - Properties
     
     private let record: Record
+    private let isMyRecord: Bool
     private let hideSeparator: Bool
     private let selectImageAction: ((Int) -> Void)?
     private let reportAction: (() -> Void)?
@@ -22,11 +23,13 @@ struct RecordCard: View {
     
     init(
         _ record: Record,
+        isMyRecord: Bool,
         hideSeparator: Bool = false,
         selectImageAction: ((Int) -> Void)? = nil,
         reportAction: (() -> Void)? = nil
     ) {
         self.record = record
+        self.isMyRecord = isMyRecord
         self.hideSeparator = hideSeparator
         self.selectImageAction = selectImageAction
         self.reportAction = reportAction
@@ -110,6 +113,7 @@ extension RecordCard {
                     .frame(width: 24.adjusted, height: 24.adjusted)
             }
             .buttonStyle(.plain)
+            .visible(!isMyRecord)
         }
         .padding(.horizontal, 16.adjustedWidth)
     }
