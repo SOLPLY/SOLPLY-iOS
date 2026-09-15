@@ -18,6 +18,7 @@ struct RecordCard: View {
     private let hideSeparator: Bool
     private let selectImageAction: ((Int) -> Void)?
     private let reportAction: (() -> Void)?
+    private let deleteAction: (() -> Void)?
     
     // MARK: - Initializer
     
@@ -26,13 +27,15 @@ struct RecordCard: View {
         isMyRecord: Bool,
         hideSeparator: Bool = false,
         selectImageAction: ((Int) -> Void)? = nil,
-        reportAction: (() -> Void)? = nil
+        reportAction: (() -> Void)? = nil,
+        deleteAction: (() -> Void)? = nil
     ) {
         self.record = record
         self.isMyRecord = isMyRecord
         self.hideSeparator = hideSeparator
         self.selectImageAction = selectImageAction
         self.reportAction = reportAction
+        self.deleteAction = deleteAction
     }
     
     // MARK: - Body
@@ -104,18 +107,25 @@ extension RecordCard {
             
             Spacer()
             
-            Button {
-                reportAction?()
-            } label: {
-                Image(.bellIcon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24.adjusted, height: 24.adjusted)
-            }
-            .buttonStyle(.plain)
-            .visible(!isMyRecord)
+            reportButton
         }
         .padding(.horizontal, 16.adjustedWidth)
+    }
+    
+    private var reportButton: some View {
+        Button {
+            if isMyRecord {
+                deleteAction?()
+            } else {
+                reportAction?()
+            }
+        } label: {
+            Image(isMyRecord ? .binIcon : .bellIcon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24.adjusted, height: 24.adjusted)
+        }
+        .buttonStyle(.plain)
     }
     
     private var separator: some View {

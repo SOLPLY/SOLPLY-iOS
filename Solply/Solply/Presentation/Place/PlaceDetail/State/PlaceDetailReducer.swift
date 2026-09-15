@@ -137,6 +137,12 @@ enum PlaceDetailReducer {
             print(error)
             break
             
+        case .removeMySolplyRecord:
+            break
+            
+        case .removeMySolplyRecordSuccess(let reviewId):
+            state.records.removeAll { $0.id == reviewId }
+            
         // errors
             
         case .fetchCourseArchiveFailed(let error):
@@ -154,6 +160,10 @@ enum PlaceDetailReducer {
             
         case .submitAddPlaceFailed(let error):
             print(error)
+            
+        case .removeMySolplyRecordFailed(let error):
+            print(error)
+            
         }
     }
 }

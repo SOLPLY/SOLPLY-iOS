@@ -32,6 +32,15 @@ enum RecordListReducer {
         case .fetchPlaceRecordListFailed(let error):
             state.isLoading = true
             print(error)
+            
+        case .removeMySolplyRecord:
+            break
+            
+        case .removeMySolplyRecordSuccess(let reviewId):
+            state.records.removeAll { $0.id == reviewId }
+            
+        case .removeMySolplyRecordFailed(let error):
+            print(error)
         }
     }
 }

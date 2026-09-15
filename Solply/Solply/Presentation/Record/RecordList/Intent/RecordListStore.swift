@@ -47,8 +47,13 @@ final class RecordListStore: ObservableObject {
                 self.dispatch(result)
             }
             
-        default:
+        case .removeMySolplyRecord(let reviewId):
+            Task {
+                let result = await effect.removeMySolplyRecord(reviewId: reviewId)
+                self.dispatch(result)
+            }
             
+        default:
             break
         }
     }

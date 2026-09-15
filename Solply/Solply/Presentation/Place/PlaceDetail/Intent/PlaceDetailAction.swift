@@ -56,4 +56,8 @@ enum PlaceDetailAction {
     case updateUserTowns(newTownId: Int)
     case userTownsUpdated(townName: String)
     case updateUserTownsFailed(error: NetworkError)
+    
+    case removeMySolplyRecord(reviewId: Int)
+    case removeMySolplyRecordSuccess(reviewId: Int)
+    case removeMySolplyRecordFailed(error: NetworkError)
 }

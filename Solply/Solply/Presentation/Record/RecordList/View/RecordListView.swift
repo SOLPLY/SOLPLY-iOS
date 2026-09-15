@@ -73,6 +73,11 @@ extension RecordListView {
                             },
                             onExplore: { appCoordinator.changeRoot(to: .auth) }
                         )
+                    },
+                    deleteAction: {
+                        AlertManager.shared.showAlert(alertType: .deleteRecord, onCancel: nil) {
+                            store.dispatch(.removeMySolplyRecord(reviewId: record.id))
+                        }
                     }
                 )
             }

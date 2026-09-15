@@ -417,6 +417,11 @@ extension PlaceDetailView {
                                     onAuthenticated: { appCoordinator.navigate(to: .placeComplaint(reviewId: record.id)) },
                                     onExplore: { appCoordinator.changeRoot(to: .auth) }
                                 )
+                            },
+                            deleteAction: {
+                                AlertManager.shared.showAlert(alertType: .deleteRecord, onCancel: nil) {
+                                    store.dispatch(.removeMySolplyRecord(reviewId: record.id))
+                                }
                             }
                         )
                     }
@@ -585,7 +590,7 @@ extension PlaceDetailView {
                     }
                 }
                 .buttonStyle(.plain)
-                .disabled(!isButtonEnabled)
+                .visible(isButtonEnabled)
             }
         }
     }

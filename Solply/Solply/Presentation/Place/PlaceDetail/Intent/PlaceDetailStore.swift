@@ -176,6 +176,12 @@ final class PlaceDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
+        case .removeMySolplyRecord(let reviewId):
+            Task {
+                let result = await effect.removeMySolplyRecord(reviewId: reviewId)
+                self.dispatch(result)
+            }
+            
         default:
             break
         }
