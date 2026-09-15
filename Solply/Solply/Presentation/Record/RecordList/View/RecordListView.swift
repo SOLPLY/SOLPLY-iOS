@@ -60,6 +60,7 @@ extension RecordListView {
             ForEach(Array(store.state.records.enumerated()), id: \.offset) { index, record in
                 RecordCard(
                     record,
+                    isMyRecord: record.userId == appState.userInformation?.userId,
                     hideSeparator: index == store.state.records.count - 1,
                     selectImageAction: { index in
                         store.dispatch(.presentImageViewer(index: index, imageUrls: record.photoUrls))
@@ -72,6 +73,11 @@ extension RecordListView {
                             },
                             onExplore: { appCoordinator.changeRoot(to: .auth) }
                         )
+                    },
+                    deleteAction: {
+                        AlertManager.shared.showAlert(alertType: .deleteRecord, onCancel: nil) {
+                            store.dispatch(.removeMySolplyRecord(reviewId: record.id))
+                        }
                     }
                 )
             }

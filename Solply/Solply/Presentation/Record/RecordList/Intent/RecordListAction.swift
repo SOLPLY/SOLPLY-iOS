@@ -17,5 +17,9 @@ enum RecordListAction {
     case fetchPlaceRecordList
     case fetchPlaceRecordListSuccess(records: [Record])
     case fetchPlaceRecordListFailed(error: NetworkError)
+    
+    case removeMySolplyRecord(reviewId: Int)
+    case removeMySolplyRecordSuccess(reviewId: Int)
+    case removeMySolplyRecordFailed(error: NetworkError)
 }
     

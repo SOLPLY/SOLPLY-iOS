@@ -12,8 +12,11 @@ struct RecordWriteView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @FocusState private var isFocused: Bool
     @StateObject private var store: RecordWriteStore
     
+    private let textEditorId = "textEditor"
+
     // MARK: - Initializer
     
     init(placeId: Int, placeName: String) {
@@ -25,60 +28,74 @@ struct RecordWriteView: View {
     // MARK: - Body
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                
-                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                    RecordWriteSectionHeader(title: "방문 장소")
-                    placeField
-                }
-                .padding(.horizontal, 20.adjustedWidth)
-                
-                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                    RecordWriteSectionHeader(title: "방문 날짜")
-                    SolplyDatePicker(
-                        selectedDate: Binding(
-                            get: { store.state.selectedDate },
-                            set: { store.dispatch(.selectDate($0)) }
+        ScrollViewReader { proxy in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                        RecordWriteSectionHeader(title: "방문 장소")
+                        placeField
+                    }
+                    .padding(.horizontal, 20.adjustedWidth)
+
+                    VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                        RecordWriteSectionHeader(title: "방문 날짜")
+                        SolplyDatePicker(
+                            selectedDate: Binding(
+                                get: { store.state.selectedDate },
+                                set: { store.dispatch(.selectDate($0)) }
+                            )
                         )
-                    )
-                    visitTimeButtons
-                }
-                .padding(.horizontal, 20.adjustedWidth)
-                .padding(.top, 40.adjustedHeight)
-                
-                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                    RecordWriteSectionHeader(
-                        title: "오늘의 기록",
-                        showsGuide: true,
-                        onGuideTapped: {
-                            showModal()
+                        visitTimeButtons
+                    }
+                    .padding(.horizontal, 20.adjustedWidth)
+                    .padding(.top, 40.adjustedHeight)
+
+                    VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                        RecordWriteSectionHeader(
+                            title: "오늘의 기록",
+                            showsGuide: true,
+                            onGuideTapped: {
+                                showModal()
+                            }
+                        )
+
+                        SolplyTextEditor(
+                            placeholder: "오늘의 기록을 입력해주세요",
+                            isTextLimitEnabled: true,
+                            bottomLabel: "10자 이상 작성해주세요"
+                        ) { newText in
+                            store.dispatch(.writeRecordText(newText))
                         }
-                    )
-                    
-                    SolplyTextEditor(
-                        placeholder: "오늘의 기록을 입력해주세요",
-                        isTextLimitEnabled: true,
-                        bottomLabel: "10자 이상 작성해주세요"
-                    ) { newText in
-                        store.dispatch(.writeRecordText(newText))
+                        .focused($isFocused)
                     }
-                }
-                .padding(.horizontal, 20.adjustedWidth)
-                .padding(.top, 40.adjustedHeight)
-                
-                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                    RecordWriteSectionHeader(title: "사진 추가 (선택)")
-                        .padding(.horizontal, 20.adjustedWidth)
+                    .padding(.horizontal, 20.adjustedWidth)
+                    .padding(.top, 40.adjustedHeight)
                     
-                    SolplyPhotosPicker(maxSelectionCount: 5) { imageData in
-                        hideKeyboard()
-                        store.dispatch(.selectPhotos(imageData))
+                    VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                        RecordWriteSectionHeader(title: "사진 추가 (선택)")
+                            .padding(.horizontal, 20.adjustedWidth)
+
+                        SolplyPhotosPicker(maxSelectionCount: 5) { imageData in
+                            hideKeyboard()
+                            store.dispatch(.selectPhotos(imageData))
+                        }
                     }
+                    .padding(.top, 14.adjustedHeight)
+                    
+                    Rectangle()
+                        .frame(height: 210.adjustedHeight)
+                        .foregroundStyle(.clear)
+                        .id(textEditorId)
                 }
-                .padding(.top, 14.adjustedHeight)
             }
-            .padding(.bottom, 124.adjustedHeight)
+            .scrollDismissesKeyboard(.interactively)
+            .onChange(of: isFocused) { _, isFocused in
+                if isFocused {
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        proxy.scrollTo(textEditorId, anchor: .bottom)
+                    }
+                }
+            }
         }
         .onTapGesture {
             hideKeyboard()
@@ -90,6 +107,7 @@ struct RecordWriteView: View {
         .customNavigationBar(.backWithTitle(title: "혼놀 기록 남기기") {
             appCoordinator.goBack()
         })
+        .ignoresSafeArea(edges: .bottom)
         .onChange(of: store.state.shouldGoBack) { _, shouldGoBack in
             if shouldGoBack {
                 appCoordinator.goBack()
@@ -161,7 +179,7 @@ extension RecordWriteView {
         }
         .padding(.horizontal, 20.adjustedWidth)
         .padding(.top, 12.adjustedHeight)
-        .padding(.bottom, 4.adjustedHeight)
+        .padding(.bottom, 40.adjustedHeight)
     }
 }
 

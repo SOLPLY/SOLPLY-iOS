@@ -125,12 +125,25 @@ extension PlaceDetailEffect {
         do {
             let _ = try await placeService.removePlaceBookmark(placeId: placeId)
             
-            return . placeBookmarkRemoved
+            return .placeBookmarkRemoved
             
         } catch let error as NetworkError {
             return .removePlaceBookmarkFailed(error: error)
         } catch {
             return .removePlaceBookmarkFailed(error: .unknownError)
+        }
+    }
+    
+    func removeMySolplyRecord(reviewId: Int) async -> PlaceDetailAction {
+        do {
+            let _ = try await placeService.removeMySolplyRecord(reviewId: reviewId)
+            
+            return .removeMySolplyRecordSuccess(reviewId: reviewId)
+            
+        } catch let error as NetworkError {
+            return .removeMySolplyRecordFailed(error: error)
+        } catch {
+            return .removeMySolplyRecordFailed(error: .unknownError)
         }
     }
 }
