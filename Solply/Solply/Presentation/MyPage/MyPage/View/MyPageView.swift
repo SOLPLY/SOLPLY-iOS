@@ -14,6 +14,8 @@ struct MyPageView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = MyPageStore()
+
+    private let previewLimit = 3
     
     // MARK: - Body
     
@@ -66,10 +68,8 @@ struct MyPageView: View {
         .background(.gray100)
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
-            // TODO: - 내 솔플리 기록 삭제하고 돌아왔을 때 반영되지 않아서 임시로 유저정보 Fetch
-            // 해결하려면, 회원 정보 Fetch랑 내 솔플리 기록 Fetch랑, 내가 등록한 장소 Fetch를 나눠야 좋을 듯..
-            Task {
-                await appState.fetchUserInformation()
+            if let userId = appState.userInformation?.userId {
+                store.dispatch(.fetchMyPageContent(userId: userId))
             }
             store.dispatch(.fetchLoginInformation)
             
@@ -118,7 +118,7 @@ private extension MyPageView {
         VStack(alignment: .center, spacing: 16.adjustedHeight) {
             sectionHeader(
                 title: "내 솔플리 기록",
-                isButtonEnabled: appState.userInformation?.hasMoreReviews ?? false
+                isButtonEnabled: !store.state.mySolplyRecords.isEmpty
             ) {
                 appCoordinator.navigate(to: .mySolplyRecords)
                 
@@ -135,7 +135,7 @@ private extension MyPageView {
         VStack(alignment: .center, spacing: 16.adjustedHeight) {
             sectionHeader(
                 title: "내가 등록한 장소",
-                isButtonEnabled: !(appState.userInformation?.myPlacePreviews.isEmpty ?? true)
+                isButtonEnabled: !store.state.registeredPlaces.isEmpty
             ) {
                 guard let userId = appState.userInformation?.userId else { return }
                 
@@ -150,11 +150,13 @@ private extension MyPageView {
     }
     
     func mySolplyRecordList() -> some View {
-        Group {
-            if let mySolplyRecordPreviews = appState.userInformation?.mySolplyRecordPreviews, !mySolplyRecordPreviews.isEmpty {
+        let previewRecords = Array(store.state.mySolplyRecords.prefix(previewLimit))
+
+        return Group {
+            if !previewRecords.isEmpty {
                 VStack(alignment: .center, spacing: 0) {
-                    ForEach(Array(mySolplyRecordPreviews.enumerated()), id: \.offset) { index, mySolplyRecordPreview in
-                        mySolplyRecordRow(mySolplyRecordPreview, showsDivider: mySolplyRecordPreviews.count - 1 != index)
+                    ForEach(Array(previewRecords.enumerated()), id: \.offset) { index, record in
+                        mySolplyRecordRow(record, showsDivider: previewRecords.count - 1 != index)
                     }
                 }
             } else {
@@ -163,22 +165,22 @@ private extension MyPageView {
         }
     }
     
-    func mySolplyRecordRow(_ mySolplyRecordPreview: MySolplyRecordPreview, showsDivider: Bool) -> some  View {
+    func mySolplyRecordRow(_ record: MySolplyRecord, showsDivider: Bool) -> some  View {
         VStack(alignment: .center, spacing: 0) {
             HStack(alignment: .top, spacing: 12.adjustedWidth) {
                 ThumbnailImage(
-                    mySolplyRecordPreview.previewImageUrl,
+                    record.PhotosUrls.first,
                     width: 72.adjusted,
                     height: 72.adjusted,
                     radius: 12
                 )
                 
                 VStack(alignment: .leading, spacing: 8.adjustedHeight) {
-                    Text(mySolplyRecordPreview.placeName)
+                    Text(record.placeName)
                         .applySolplyFont(.title_15_m)
                         .foregroundStyle(.coreBlack)
                     
-                    Text(mySolplyRecordPreview.content)
+                    Text(record.recordText)
                         .applySolplyFont(.body_14_r)
                         .foregroundStyle(.gray900)
                         .lineLimit(2)
@@ -198,7 +200,7 @@ private extension MyPageView {
         .onTapGesture {
             appCoordinator.navigate(
                 to: .placeDetail(
-                    placeId: mySolplyRecordPreview.placeId,
+                    placeId: record.placeId,
                     shouldSuggestTownChange: true
                 )
             )
@@ -207,10 +209,10 @@ private extension MyPageView {
     
     func myRegisteredPlacesList() -> some View {
         Group {
-            if let myPlacePreviews = appState.userInformation?.myPlacePreviews, !myPlacePreviews.isEmpty {
+            if !store.state.registeredPlaces.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(alignment: .top, spacing: 16.adjustedWidth) {
-                        ForEach(myPlacePreviews, id: \.id) { item in
+                        ForEach(store.state.registeredPlaces) { item in
                             PlaceCard(
                                 isSaved: item.isBookmarked,
                                 thumbnailUrl: item.thumbnail,
