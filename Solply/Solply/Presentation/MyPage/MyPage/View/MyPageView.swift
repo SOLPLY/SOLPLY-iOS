@@ -194,6 +194,14 @@ private extension MyPageView {
                     .padding(.vertical, 16.adjustedHeight)
             }
         }
+        .onTapGesture {
+            appCoordinator.navigate(
+                to: .placeDetail(
+                    placeId: mySolplyRecordPreview.placeId,
+                    shouldSuggestTownChange: true
+                )
+            )
+        }
     }
     
     func myRegisteredPlacesList() -> some View {

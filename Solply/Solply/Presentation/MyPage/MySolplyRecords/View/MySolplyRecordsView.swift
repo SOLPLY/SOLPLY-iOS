@@ -136,5 +136,13 @@ extension MySolplyRecordsView {
                     .padding(.horizontal, 16.adjustedWidth)
             }
         }
+        .onTapGesture {
+            appCoordinator.navigate(
+                to: .placeDetail(
+                    placeId: mySolplyRecord.placeId,
+                    shouldSuggestTownChange: true
+                )
+            )
+        }
     }
 }

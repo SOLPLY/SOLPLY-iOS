@@ -24,11 +24,11 @@ struct PlaceDetailView: View {
     
     // MARK: - Initializer
     
-    init(placeId: Int, fromSearch: Bool) {
+    init(placeId: Int, shouldSuggestTownChange: Bool) {
         _store = StateObject(
             wrappedValue: PlaceDetailStore(
                 placeId: placeId,
-                fromSearch: fromSearch
+                shouldSuggestTownChange: shouldSuggestTownChange
             )
         )
     }

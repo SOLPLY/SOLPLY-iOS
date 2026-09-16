@@ -42,7 +42,7 @@ struct RegisteredPlacesView: View {
                     appCoordinator.navigate(
                         to: .placeDetail(
                             placeId: place.id,
-                            fromSearch: false
+                            shouldSuggestTownChange: false
                         )
                     )
                 }

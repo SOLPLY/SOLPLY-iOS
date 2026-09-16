@@ -51,7 +51,7 @@ struct PlaceSearchView: View {
                             appCoordinator.navigate(
                                 to: .placeDetail(
                                     placeId: placeId,
-                                    fromSearch: true
+                                    shouldSuggestTownChange: true
                                 )
                             )
                             

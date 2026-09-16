@@ -16,7 +16,7 @@ final class PlaceDetailStore: ObservableObject {
     private let effect: PlaceDetailEffect
     
     let placeId: Int
-    let fromSearch: Bool
+    let shouldSuggestTownChange: Bool
     
     private var placeTownId: Int?
     private var userTownId: Int?
@@ -30,11 +30,11 @@ final class PlaceDetailStore: ObservableObject {
             userService: UserService()
         ),
         placeId: Int,
-        fromSearch: Bool
+        shouldSuggestTownChange: Bool
     ) {
         self.effect = effect
         self.placeId = placeId
-        self.fromSearch = fromSearch
+        self.shouldSuggestTownChange = shouldSuggestTownChange
     }
     
     // MARK: - dispatch
@@ -106,7 +106,7 @@ final class PlaceDetailStore: ObservableObject {
                 )
             )
             
-            guard fromSearch,
+            guard shouldSuggestTownChange,
                   let userTownId,
                   userTownId != placeDetailInformation.townId else { return }
             

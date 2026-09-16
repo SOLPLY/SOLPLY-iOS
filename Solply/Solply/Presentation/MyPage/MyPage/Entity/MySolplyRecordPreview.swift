@@ -9,6 +9,7 @@ import Foundation
 
 struct MySolplyRecordPreview: Hashable {
     let id: Int
+    let placeId: Int
     let placeName: String
     let previewImageUrl: String?
     let content: String
@@ -17,6 +18,7 @@ struct MySolplyRecordPreview: Hashable {
 extension MySolplyRecordPreview {
     init(dto: ReviewDTO) {
         self.id = dto.reviewId
+        self.placeId = dto.placeId
         self.placeName = dto.placeName
         self.previewImageUrl = dto.previewImageUrl
         self.content = dto.content

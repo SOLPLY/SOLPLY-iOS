@@ -183,7 +183,7 @@ struct FilterPlaceGrid: View {
                                 ) {
                                     appCoordinator.navigate(to: .placeDetail(
                                         placeId: place.placeId,
-                                        fromSearch: false
+                                        shouldSuggestTownChange: false
                                     ))
                                 }
                             }
