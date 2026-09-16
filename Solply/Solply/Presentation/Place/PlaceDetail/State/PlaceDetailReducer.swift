@@ -10,11 +10,8 @@ import UIKit
 enum PlaceDetailReducer {
     static func reduce(state: inout PlaceDetailState, action: PlaceDetailAction) {
         switch action {
-        case .compareUserTownId:
+        case .setUserTownId:
             break
-            
-        case .showTownToast:
-            state.shouldShowTownToast = true
             
         case .presentAddToCourseSheet:
             state.isAddToCourseSheetPresented = true
@@ -72,6 +69,15 @@ enum PlaceDetailReducer {
             
         case .dismissImageViewer:
             state.imageViewerItem = nil
+
+        case .requestCourseDetailNavigation:
+            break
+
+        case .courseDetailNavigationRequested(let destination):
+            state.courseDetailNavigation = destination
+
+        case .clearCourseDetailNavigation:
+            state.courseDetailNavigation = nil
             
         // api
             
@@ -130,7 +136,6 @@ enum PlaceDetailReducer {
             break
             
         case .userTownsUpdated:
-            state.shouldShowTownToast = false
             state.shouldFetchUserInformation = true
             
         case .updateUserTownsFailed(let error):

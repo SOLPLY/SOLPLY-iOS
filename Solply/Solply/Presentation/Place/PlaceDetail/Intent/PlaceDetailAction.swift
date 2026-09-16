@@ -8,8 +8,7 @@
 import Foundation
 
 enum PlaceDetailAction {
-    case compareUserTownId(userTownId: Int)
-    case showTownToast
+    case setUserTownId(userTownId: Int)
     
     case presentAddToCourseSheet
     case dismissAddToCourseSheet
@@ -31,6 +30,10 @@ enum PlaceDetailAction {
     case presentImageViewer(index: Int, imageUrls: [String?])
     case dismissImageViewer
     
+    case requestCourseDetailNavigation(courseId: Int)
+    case courseDetailNavigationRequested(destination: CourseDetailNavigation)
+    case clearCourseDetailNavigation
+
     // api
     
     case fetchCourseArchive

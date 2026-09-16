@@ -55,7 +55,6 @@ struct TodayPlaceRecommendCarousel: View {
                     ) {
                         appCoordinator.navigate(
                             to: .placeDetail(
-                                townId: townId,
                                 placeId: store.state.placeRecommendItems[index].id,
                                 fromSearch: false
                             )
