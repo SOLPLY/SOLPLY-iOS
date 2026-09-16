@@ -136,6 +136,7 @@ extension MySolplyRecordsView {
                     .padding(.horizontal, 16.adjustedWidth)
             }
         }
+        .background(.coreWhite)
         .onTapGesture {
             appCoordinator.navigate(
                 to: .placeDetail(

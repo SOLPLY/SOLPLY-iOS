@@ -194,6 +194,7 @@ private extension MyPageView {
                     .padding(.vertical, 16.adjustedHeight)
             }
         }
+        .background(.coreWhite)
         .onTapGesture {
             appCoordinator.navigate(
                 to: .placeDetail(
