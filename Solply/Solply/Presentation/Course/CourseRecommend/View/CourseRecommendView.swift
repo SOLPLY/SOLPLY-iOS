@@ -12,27 +12,11 @@ struct CourseRecommendView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var scrollToTopManager: ScrollToTopManager
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = CourseRecommendStore()
     
-    @Binding private var scrollToTopTarget: ScrollToTopTarget?
-    
-    private let title: String
-    private let isUserInformationLoading: Bool
-    
     private let topId: String = "TOP"
-    
-    // MARK: - Initializer
-    
-    init(
-        title: String,
-        isUserInformationLoading: Bool,
-        scrollToTopTarget: Binding<ScrollToTopTarget?>
-    ) {
-        self.title = title
-        self.isUserInformationLoading = isUserInformationLoading
-        self._scrollToTopTarget = scrollToTopTarget
-    }
     
     // MARK: - Body
     
@@ -47,24 +31,26 @@ struct CourseRecommendView: View {
                     courseRecommendGrid
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.bottom, 112.adjustedHeight)
+                .padding(.bottom, store.state.bottomPadding)
             }
-            .onChange(of: scrollToTopTarget) { _, target in
-                guard target == .courseTopTarget else { return }
+            .onChange(of: appState.townId, { oldValue, newValue in
+                if oldValue != newValue {
+                    proxy.scrollTo(topId, anchor: .top)
+                }
+            })
+            .onChange(of: scrollToTopManager.target) { _, target in
+                guard target == .course else { return }
                 
                 withAnimation(.easeInOut(duration: 0.4)) {
                     proxy.scrollTo(topId, anchor: .top)
                 }
-                
-                scrollToTopTarget = nil
             }
         }
         .customNavigationBar(
-            .recommend(
-                isLoading: isUserInformationLoading,
+            .townFilterWithSearch(
                 filterTitle: appState.townName,
+                isLoading: appState.isAuthenticated ? appState.isUserInformationLoading : false,
                 filterAction: {
-                    
                     AmplitudeManager.shared.track(
                         .viewTownList(
                             entryMode: AmplitudeEntryMode.from(appState.userSession),
@@ -74,18 +60,19 @@ struct CourseRecommendView: View {
                     
                     appCoordinator.navigate(to: .JGD)
                 },
-                settingAction: {
-                    appCoordinator.navigate(to: .placeSearch)
-                }
+                aiAction: {
+                    appState.requireLoginWithAlert(
+                        onAuthenticated: { appCoordinator.navigate(to: .aiRecommendPrompt) },
+                        onExplore: { appCoordinator.changeRoot(to: .auth) }
+                    )
+                },
+                searchAction: { appCoordinator.navigate(to: .placeSearch) }
             )
         )
-        .onChange(of: appState.townId) { _, townId in
-            store.dispatch(.fetchCourseRecommend(townId: townId))
-        }
-        .background(.gray100)
-        .task {
+        .onAppear {
             store.dispatch(.fetchCourseRecommend(townId: appState.townId))
         }
+        .background(.gray100)
     }
 }
 
@@ -100,13 +87,13 @@ extension CourseRecommendView {
     
     private var courseRecommendTitle: some View {
         HStack(alignment: .center, spacing: 0) {
-            Text(title)
+            Text(appState.courseRecommendTitle)
                 .applySolplyFont(.display_20_sb)
                 .foregroundStyle(.coreBlack)
             
             Spacer()
         }
-        .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
+        .customLoading(.recommendTitleLoading, isLoading: appState.isAuthenticated ? appState.isUserInformationLoading : false)
         .frame(width: 335.adjustedWidth)
     }
     

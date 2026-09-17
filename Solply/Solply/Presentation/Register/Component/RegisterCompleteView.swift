@@ -38,8 +38,3 @@ extension RegisterCompleteView {
         appCoordinator.goToRoot()
     }
 }
-
-#Preview {
-    RegisterCompleteView()
-        .environmentObject(AppCoordinator())
-}

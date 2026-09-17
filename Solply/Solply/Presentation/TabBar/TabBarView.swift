@@ -13,15 +13,13 @@ struct TabBarView: View {
     
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @EnvironmentObject private var alertManager: AlertManager
+    @EnvironmentObject private var scrollToTopManager: ScrollToTopManager
     @StateObject private var locationManager = LocationManager()
     
-    @State private var placeRecommendTitle: String = ""
-    @State private var courseRecommendTitle: String = ""
-    @State private var isUserInformationLoading: Bool = false
-    @State private var scrollToTopTarget: ScrollToTopTarget?
-    
-    private let userService = UserService()
+    @State private var visitedTabs: Set<TabBarState> = [.place]
+    @State private var showOfflineBanner: Bool = false
+    @State private var networkMonitor = NetworkMonitor()
+    @State private var retryRegistry = RetryRegistry()
     
     // MARK: - Body
     
@@ -33,38 +31,51 @@ struct TabBarView: View {
                 .zIndex(10)
                 .padding(.bottom, 16.adjustedHeight)
         }
+        .overlay(alignment: .top) {
+            if showOfflineBanner {
+                OfflineBanner {
+                    if networkMonitor.checkConnection() {
+                        retryRegistry.reload()
+                        showOfflineBanner = false
+                    }
+                }
+                .transition(
+                    .move(edge: .top)
+                    .combined(with: .opacity)
+                )
+                .zIndex(20)
+            }
+        }
+        .animation(.easeInOut(duration: 0.4), value: showOfflineBanner)
+        .onChange(of: networkMonitor.isConnected) { _, isConnected in
+            if !isConnected {
+                showOfflineBanner = true
+            } else {
+                Task {
+                    try? await Task.sleep(for: .seconds(1))
+                    
+                    guard networkMonitor.isConnected else { return }
+                    
+                    retryRegistry.reload()
+                    await appState.fetchUserInformation()
+                    trackAmplitudeViewListEvent(appCoordinator.selectedTab)
+                    showOfflineBanner = false
+                }
+            }
+        }
+        .environment(retryRegistry)
         .onAppear {
             locationManager.requestPermissionAndStartUpdates()
+            trackAmplitudeViewListEvent(appCoordinator.selectedTab)
         }
         .onChange(of: appCoordinator.selectedTab) { _, newValue in
             trackAmplitudeViewListEvent(newValue)
         }
-        .task {
-            await loadUserInfo()
-        }
-    }
-    
-    private func loadUserInfo() async {
-        print("🌳 [TabBarView] User Information Update")
-
-        switch appState.userSession {
-        case .explore:
-            placeRecommendTitle = "로그인하고\n취향에 맞는 추천을 받아보세요"
-            courseRecommendTitle = "로그인하고\n취향에 맞는 추천을 받아보세요"
-            
-        case .authenticated:
-            do {
-                let userInfo = try await fetchUserInformation()
-                appState.townName = userInfo.townName
-                appState.townId = userInfo.townId
-                placeRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 추천"
-                courseRecommendTitle = "\(userInfo.persona.description)\n\(userInfo.nickname)님을 위한 오늘의 코스"
-                
-                trackAmplitudeViewListEvent(appCoordinator.selectedTab)
-            } catch {
-                print("사용자 정보 가져오기 실패: \(error)")
-            }
-        }
+//        .task {
+//            // TODO: - 유저 정보 받아오는 시점보다 추천뷰 api 호출 시점이 빨라서 문제가 생김
+//            await appState.fetchUserInformation()
+//            trackAmplitudeViewListEvent(appCoordinator.selectedTab)
+//        }
     }
 }
 
@@ -72,22 +83,35 @@ struct TabBarView: View {
 
 extension TabBarView {
     private var tabContent: some View {
-        Group {
-            PlaceRecommendView(
-                title: placeRecommendTitle,
-                isUserInformationLoading: isUserInformationLoading,
-                scrollToTopTarget: $scrollToTopTarget
-            )
-            .visible(appCoordinator.selectedTab == .place)
+        ZStack {
+            if visitedTabs.contains(.place) {
+                PlaceRecommendView()
+                    .visible(appCoordinator.selectedTab == .place)
+                    .id(retryRegistry.reloadId)
+            }
             
-            CourseRecommendView(
-                title: courseRecommendTitle,
-                isUserInformationLoading: isUserInformationLoading,
-                scrollToTopTarget: $scrollToTopTarget
-            )
-            .visible(appCoordinator.selectedTab == .course)
+            if visitedTabs.contains(.course) {
+                CourseRecommendView()
+                    .visible(appCoordinator.selectedTab == .course)
+                    .id(retryRegistry.reloadId)
+            }
+            
+            if visitedTabs.contains(.bookmark) {
+                ArchiveView()
+                    .visible(appCoordinator.selectedTab == .bookmark)
+                    .id(retryRegistry.reloadId)
+            }
+            
+            if visitedTabs.contains(.myPage) {
+                MyPageView()
+                    .visible(appCoordinator.selectedTab == .myPage)
+                    .id(retryRegistry.reloadId)
+            }
         }
         .ignoresSafeArea(edges: .bottom)
+        .onChange(of: appCoordinator.selectedTab) { _, newValue in
+            visitedTabs.insert(newValue)
+        }
     }
     
     private var tabBar: some View {
@@ -95,32 +119,23 @@ extension TabBarView {
             selectedTab: Binding(
                 get: { appCoordinator.selectedTab },
                 set: { appCoordinator.switchTab(to: $0) }
-            ), bookmarkAction: {
-                switch appState.userSession {
-                case .explore:
+            ),
+            isAuthenticated: appState.userSession == .authenticated,
+            scrollToTopAction: { tabBarState in
+                scrollToTopManager.trigger(tabBarState)
+            },
+            loginRequiredAction: {
+                switch appCoordinator.selectedTab {
+                case .bookmark:
                     AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .openCollectionTab))
-                    showLoginAlert(amplitudeBlockedAction: .openCollectionTab)
-                case .authenticated:
-                    appCoordinator.navigate(to: .archive)
-                }
-
-            }, myPageAction: {
-                switch appState.userSession {
-                case .explore:
+                case .myPage:
                     AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .openMyPageTab))
-                    showLoginAlert(amplitudeBlockedAction: .openMyPageTab)
-                case .authenticated:
-                    appCoordinator.navigate(to: .myPage)
-                }
-                    
-            }, scrollToTopAction: { tabBarState in
-                switch tabBarState {
-                case .place:
-                    scrollToTopTarget = .placeTopTarget
-                case .course:
-                    scrollToTopTarget = .courseTopTarget
                 default:
                     break
+                }
+                
+                AlertManager.shared.showAlert(alertType: .authenticationRequired, onCancel: nil) {
+                    appCoordinator.changeRoot(to: .auth)
                 }
             }
         )
@@ -128,45 +143,9 @@ extension TabBarView {
     }
 }
 
-// MARK: - Network
-
-extension TabBarView {
-    private func fetchUserInformation() async throws -> UserInformation {
-        do {
-            isUserInformationLoading = true
-            
-            let response = try await userService.fetchUserInformation()
-            
-            guard let data = response.data else {
-                isUserInformationLoading = true
-                throw NetworkError.responseError
-            }
-            
-            isUserInformationLoading = false
-            return UserInformation(dto: data)
-
-        } catch let error as NetworkError {
-            isUserInformationLoading = true
-            throw error
-            
-        } catch {
-            isUserInformationLoading = true
-            throw error
-        }
-    }
-}
-
 // MARK: - Functions
 
 extension TabBarView {
-    private func showLoginAlert(amplitudeBlockedAction: AmplitudeBlockedAction) {
-        alertManager.showAlert(alertType: .authenticationRequired) {
-            AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: amplitudeBlockedAction))
-        } onConfirm: {
-            appCoordinator.changeRoot(to: .auth)
-        }
-    }
-    
     private func trackAmplitudeViewListEvent(_ selectedTab: TabBarState) {
         switch selectedTab {
         case .place:

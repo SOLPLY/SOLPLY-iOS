@@ -8,14 +8,14 @@
 import Foundation
 
 enum MyPageAction {
-    case fetchUser
-    case userLoaded(UserInformation)
-    case userLoadFailed(error: NetworkError)
-    
-    case editProfileTapped
-    case customerCenterTapped
-    case deleteAccountTapped
-    
+    case fetchMyPageContent(userId: Int)
+    case fetchMySolplyRecords
+    case mySolplyRecordsFetched(records: [MySolplyRecord], totalCount: Int)
+    case fetchMySolplyRecordsFailed(error: NetworkError)
+    case fetchRegisteredPlaces(userId: Int)
+    case registeredPlacesFetched([RegisteredPlace])
+    case fetchRegisteredPlacesFailed(error: NetworkError)
+
     case fetchLoginInformation
     case fetchLoginInformationSuccess(loginInformation: SocialLoginType?)
     case fetchLoginInformationFailed(error: NetworkError)

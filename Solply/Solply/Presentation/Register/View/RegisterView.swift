@@ -52,9 +52,10 @@ struct RegisterView: View {
             }
         }
         .customNavigationBar(
-            .register(backAction: {
-                appCoordinator.goBack()
-            })
+            .backWithTitle(
+                title: "장소 등록하기",
+                backAction: { appCoordinator.goBack() }
+            )
         )
         .ignoresSafeArea(edges: .bottom)
         .background(.coreWhite)
@@ -78,22 +79,11 @@ extension RegisterView {
                     VStack(alignment: .center, spacing: 28.adjustedHeight) {
                         
                         // 장소 검색바
-                        RegisterSearchBar(
-                            onChange: { text in
-                                store.dispatch(.updateSearchBarText(text: text))
-                            },
-                            onSubmit: { text in
-                                store.dispatch(.fetchSearchPlaces)
-                            },
-                            registerAction: {
-                                store.dispatch(
-                                    .selectPlaceToRegister(
-                                        placeName: store.state.placeName,
-                                        placeAddress: nil
-                                    )
-                                )
-                            }
-                        )
+                        SolplyTextField(.register(action: { text in
+                            store.dispatch(.selectPlaceToRegister(placeName: text, placeAddress: nil))
+                        }), placeholder: "장소 이름을 입력하세요") { text in
+                            store.dispatch(.fetchSearchPlaces(placeName: text))
+                        }
                         .padding(.horizontal, 16.adjustedWidth)
                         
                         // 검색 결과 List
@@ -224,7 +214,6 @@ extension RegisterView {
                         SolplyPhotosPicker { imageData in
                             store.dispatch(.attachRegisterPhoto(imageData: imageData))
                         }
-                        .padding(.horizontal, 20.adjustedWidth)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -257,8 +246,3 @@ extension RegisterView {
         .padding(.horizontal, 20.adjustedWidth)
     }
 }
-
-//#Preview {
-//    RegisterView()
-//        .environmentObject(AppCoordinator())
-//}

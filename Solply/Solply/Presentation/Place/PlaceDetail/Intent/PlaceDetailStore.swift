@@ -15,10 +15,12 @@ final class PlaceDetailStore: ObservableObject {
     @Published private(set) var state = PlaceDetailState()
     private let effect: PlaceDetailEffect
     
-    let townId: Int
     let placeId: Int
-    let fromSearch: Bool
+    let shouldSuggestTownChange: Bool
     
+    private var placeTownId: Int?
+    private var userTownId: Int?
+
     // MARK: - Initializer
     
     init(
@@ -27,14 +29,12 @@ final class PlaceDetailStore: ObservableObject {
             placeService: PlaceService(),
             userService: UserService()
         ),
-        townId: Int,
         placeId: Int,
-        fromSearch: Bool
+        shouldSuggestTownChange: Bool
     ) {
         self.effect = effect
-        self.townId = townId
         self.placeId = placeId
-        self.fromSearch = fromSearch
+        self.shouldSuggestTownChange = shouldSuggestTownChange
     }
     
     // MARK: - dispatch
@@ -43,38 +43,42 @@ final class PlaceDetailStore: ObservableObject {
         PlaceDetailReducer.reduce(state: &state, action: action)
         
         switch action {
-        case .compareUserTownId(let userTownId):
-            if userTownId != townId {
-                dispatch(.showTownToast)
-            }
+        case .setUserTownId(let userTownId):
+            self.userTownId = userTownId
             
         case .findDirection(let mapRouteType):
+            
+            guard let userLatitude = state.userLatitude,
+                  let userLongitude = state.userLongitude,
+                  let latitude = state.latitude,
+                  let longitude = state.longitude else { return }
+            
             switch mapRouteType {
             case .naver:
                 effect.findDirection(
                     with: .naver,
-                    startLatitude: state.userLatitude,
-                    startLongitude: state.userLongitude,
-                    destinationLatitude: state.latitude,
-                    destinationLongitude: state.longitude,
+                    startLatitude: userLatitude,
+                    startLongitude: userLongitude,
+                    destinationLatitude: latitude,
+                    destinationLongitude: longitude,
                     destinationName: state.placeName
                 )
             case .apple:
                 effect.findDirection(
                     with: .apple,
-                    startLatitude: state.userLatitude,
-                    startLongitude: state.userLongitude,
-                    destinationLatitude: state.latitude,
-                    destinationLongitude: state.longitude,
+                    startLatitude: userLatitude,
+                    startLongitude: userLongitude,
+                    destinationLatitude: latitude,
+                    destinationLongitude: longitude,
                     destinationName: nil
                 )
             case .kakao:
                 effect.findDirection(
                     with: .kakao,
-                    startLatitude: state.userLatitude,
-                    startLongitude: state.userLongitude,
-                    destinationLatitude: state.latitude,
-                    destinationLongitude: state.longitude,
+                    startLatitude: userLatitude,
+                    startLongitude: userLongitude,
+                    destinationLatitude: latitude,
+                    destinationLongitude: longitude,
                     destinationName: nil
                 )
             }
@@ -91,7 +95,9 @@ final class PlaceDetailStore: ObservableObject {
                 self.dispatch(result)
             }
             
-        case .placeDetailFetched(let placeDetailInformation):
+        case .placeDetailFetched(let placeDetailInformation, _, _):
+            placeTownId = placeDetailInformation.townId
+
             AmplitudeManager.shared.track(
                 .viewPlaceDetail(
                     placeId: placeId,
@@ -100,36 +106,26 @@ final class PlaceDetailStore: ObservableObject {
                 )
             )
             
-            guard state.shouldShowTownToast && fromSearch else { return }
+            guard shouldSuggestTownChange,
+                  let userTownId,
+                  userTownId != placeDetailInformation.townId else { return }
             
             let townName = placeDetailInformation.townName
             
-            self.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .withActionToast,
-                        message: "이 장소는 \(townName)에 위치해있어요.",
-                        toastAction: ToastAction(
-                            buttonTitle: "동네 변경",
-                            action: { [weak self] in
-                                guard let self else { return }
-                                
-                                self.dispatch(.updateUserTowns(newTownId: self.townId))
-                            }
-                        )
-                    )
-                )
+            ToastManager.shared.showToast(
+                .withActionToast(
+                    buttonTitle: "동네 변경",
+                    action: { [weak self] in
+                        guard let self else { return }
+                        
+                        self.dispatch(.updateUserTowns(newTownId: placeDetailInformation.townId))
+                    }
+                ),
+                message: "이 장소는 \(townName)에 위치해있어요."
             )
             
         case .userTownsUpdated(let townName):
-            self.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .defaultToast,
-                        message: "동네가 \(townName)으로 변경되었어요."
-                    )
-                )
-            )
+            ToastManager.shared.showToast(.defaultToast, message: "동네가 \(townName)으로 변경되었어요.")
             
         case .submitPlaceBookmark:
             Task {
@@ -175,10 +171,29 @@ final class PlaceDetailStore: ObservableObject {
                     courseId: addPlaceCourseInformation.courseId
                 )
             )
+
+        case .requestCourseDetailNavigation(let courseId):
+            guard let placeTownId else { return }
+
+            dispatch(
+                .courseDetailNavigationRequested(
+                    destination: CourseDetailNavigation(
+                        townId: placeTownId,
+                        courseId: courseId,
+                        fromArchive: true
+                    )
+                )
+            )
             
         case .updateUserTowns(let newTownId):
             Task {
                 let result = await effect.updateUserTowns(selectedTownId: newTownId)
+                self.dispatch(result)
+            }
+            
+        case .removeMySolplyRecord(let reviewId):
+            Task {
+                let result = await effect.removeMySolplyRecord(reviewId: reviewId)
                 self.dispatch(result)
             }
             

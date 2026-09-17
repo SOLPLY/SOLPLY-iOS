@@ -15,13 +15,15 @@ struct ProfileImage: View {
     
     private let profileImageUrl: String?
     
-    private let width: CGFloat = 80.adjusted
-    private let height: CGFloat = 80.adjusted
+    private let width: CGFloat
+    private let height: CGFloat
     
     // MARK: - Initializer
     
-    init(profileImageUrl: String?) {
+    init(profileImageUrl: String?, size: CGFloat = 80.adjusted) {
         self.profileImageUrl = profileImageUrl
+        self.width = size
+        self.height = size
     }
     
     // MARK: - Body
@@ -35,7 +37,7 @@ struct ProfileImage: View {
             Image(.myNavIcon)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 60.adjusted, height: 60.adjusted)
+                .frame(width: width * 0.75, height: height * 0.75)
                 .foregroundColor(.green100)
             
             if let profileImageUrl {
@@ -47,10 +49,4 @@ struct ProfileImage: View {
             }
         }
     }
-}
-
-#Preview {
-    ProfileImage(profileImageUrl: "https://i.pinimg.com/1200x/29/0a/41/290a41a756c7b1482af1897fdcb65a7a.jpg")
-    
-    ProfileImage(profileImageUrl: nil)
 }

@@ -14,4 +14,12 @@ protocol RecommendAPI {
     /// 추천 코스 조회
     func fetchCourseRecommend(townId: Int) async throws -> BaseResponseBody<CourseRecommendResponseDTO>
 
+    /// 자연어 기반 장소 추천
+    func submitAIPlaceRecommend(request: AIRecommendRequestDTO) async throws -> BaseResponseBody<AIPlaceRecommendResponseDTO>
+    
+    /// 자연어 기반 코스 추천
+    func submitAICourseRecommend(request: AIRecommendRequestDTO) async throws -> BaseResponseBody<AICourseRecommendResponseDTO>
+    
+    /// 추천 예시 문구 조회
+    func fetchAIExamplePhrases(type: String) async throws -> BaseResponseBody<AIExamplePhrasesResponseDTO>
 }

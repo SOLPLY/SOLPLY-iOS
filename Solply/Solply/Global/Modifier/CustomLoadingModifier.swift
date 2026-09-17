@@ -27,13 +27,14 @@ struct CustomLoadingModifier<T>: ViewModifier where T: View {
     // MARK: - Body
     
     func body(content: Content) -> some View {
-        Group {
-            if isLoading {
-                self.loadingView?()
-            } else {
-                content
+        content
+            .opacity(isLoading ? 0 : 1)
+            .overlay(alignment: .top) {
+                if isLoading {
+                    self.loadingView?()
+                        .allowsHitTesting(false)
+                }
             }
-        }
     }
 }
 
@@ -73,6 +74,67 @@ extension View {
                 )
             )
             
+        // MARK: - JGDLoading
+            
+        case .JGDLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    isLoading: isLoading,
+                    loadingView: {
+                        HStack(alignment: .top, spacing: 0) {
+                            VStack(alignment: .center, spacing: 0) {
+                                ForEach(0..<3) { index in
+                                    SolplySkeletonView(
+                                        font: .body_16_r,
+                                        width: 42.adjustedWidth
+                                    )
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 46.adjustedHeight)
+                                    .background(index == 0 ? .coreWhite : .clear)
+                                    .overlay(alignment: .bottom) {
+                                        Rectangle()
+                                            .frame(height: 1)
+                                            .foregroundStyle(.gray200)
+                                    }
+                                }
+                            }
+                            .frame(maxHeight: .infinity, alignment: .top)
+                            .frame(width: 128.adjustedWidth)
+                            .background(.gray100)
+                            
+                            Rectangle()
+                                .frame(width: 1)
+                                .frame(maxHeight: .infinity)
+                                .foregroundStyle(.gray200)
+                            
+                            VStack(alignment: .center, spacing: 0) {
+                                ForEach(0..<5) { _ in
+                                    SolplySkeletonView(
+                                        font: .body_16_r,
+                                        width: 58.adjustedWidth
+                                    )
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.leading, 16.adjustedWidth)
+                                    .frame(height: 46.adjustedHeight)
+                                    .overlay(alignment: .bottom) {
+                                        Rectangle()
+                                            .frame(height: 1)
+                                            .foregroundStyle(.gray200)
+                                    }
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                        .overlay(alignment: .top) {
+                            Rectangle()
+                                .frame(height: 1)
+                                .frame(maxWidth: .infinity)
+                                .foregroundStyle(.gray300)
+                        }
+                    }
+                )
+            )
+            
         // MARK: - RecommendTitleLoading
             
         case .recommendTitleLoading:
@@ -89,20 +151,22 @@ extension View {
                 )
             )
             
-        // MARK: - TodayPlaceRecommendCarouselLoading
+        // MARK: - PlaceRecommendCarouselLoading
             
-        case .todayPlaceRecommendCarouselLoading:
+        case .placeRecommendCarouselLoading:
             self.modifier(
                 CustomLoadingModifier(
                     isLoading: isLoading,
                     loadingView: {
-                        HStack(alignment: .center, spacing: 16.adjustedWidth) {
-                            SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
-                            SolplySkeletonView(width: 240.adjusted, height: 240.adjusted, cornerRadius: 20)
-                            SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
+                        VStack(alignment: .center, spacing: 28.adjustedHeight) {
+                            HStack(alignment: .center, spacing: 16.adjustedWidth) {
+                                SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
+                                SolplySkeletonView(width: 240.adjusted, height: 240.adjusted, cornerRadius: 20)
+                                SolplySkeletonView(width: 180.adjusted, height: 180.adjusted, cornerRadius: 20)
+                            }
+                            .frame(width: 375.adjustedWidth)
+                            .clipped()
                         }
-                        .frame(width: 375.adjustedWidth)
-                        .clipped()
                     }
                 )
             )
@@ -170,7 +234,7 @@ extension View {
             
         // MARK: - PlaceDetailLoading
             
-        case .placeInformationLoading:
+        case .placeDetailLoading:
             self.modifier(
                 CustomLoadingModifier(
                     isLoading: isLoading,
@@ -182,6 +246,11 @@ extension View {
                             }
                             
                             HStack(alignment: .center,spacing: 8.adjustedWidth) {
+                                SolplySkeletonView(
+                                    width: 73.adjustedWidth,
+                                    height: 40.adjustedHeight,
+                                    cornerRadius: 20
+                                )
                                 SolplySkeletonView(
                                     width: 85.adjustedWidth,
                                     height: 40.adjustedHeight,
@@ -205,6 +274,7 @@ extension View {
                             }
                         }
                         .padding(.leading, 16.adjustedWidth)
+                        .padding(.top, 16.adjustedHeight)
                         .frame(width: 375.adjustedWidth, alignment: .leading)
                         .clipped()
                     }
@@ -300,14 +370,98 @@ extension View {
                     }
                 )
             )
+            
+            // MARK: - RecordListLoading
+            
+        case .recordListLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    isLoading: isLoading,
+                    loadingView: {
+                        VStack(alignment: .center, spacing: 0) {
+                            ForEach(0..<2) { index in
+                                VStack(alignment: .leading, spacing : 16.adjustedHeight) {
+                                    HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                                        SolplySkeletonView(width: 24.adjusted, height: 24.adjusted, cornerRadius: 0)
+                                            .capsuleClipped()
+                                        
+                                        SolplySkeletonView(font: .body_14_m, width: 60.adjustedWidth)
+                                    }
+                                    
+                                    HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                                        ForEach(0..<4) { _ in
+                                            SolplySkeletonView(width: 72.adjusted, height: 72.adjusted, cornerRadius: 12)
+                                        }
+                                    }
+                                    
+                                    VStack(alignment: .leading, spacing: 2.adjustedHeight) {
+                                        SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth, cornerRadius: 4)
+                                        SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth)
+                                    }
+                                    
+                                    SolplySkeletonView(font: .body_14_m, width: 127.adjustedWidth, cornerRadius: 4)
+                                }
+                                .padding(.vertical, 20.adjustedHeight)
+                                .overlay(alignment: .bottom) {
+                                    if index == 0 {
+                                        Rectangle()
+                                            .frame(height: 1)
+                                            .foregroundStyle(.gray200)
+                                    }
+                                }
+                                .padding(.horizontal, 20.adjustedWidth)
+                            }
+                        }
+                    }
+                )
+            )
+            
+        case .mySolplyRecordsLoading:
+            self.modifier(
+                CustomLoadingModifier(
+                    isLoading: isLoading,
+                    loadingView: {
+                        VStack(alignment: .center, spacing: 0) {
+                            ForEach(0..<2) { index in
+                                VStack(alignment: .leading, spacing: 16.adjustedHeight) {
+                                    SolplySkeletonView(font: .body_14_r, width: 120.adjustedWidth)
+                                        .padding(.leading, 16.adjustedWidth)
+                                    
+                                    HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                                        ForEach(0..<5) { _ in
+                                            SolplySkeletonView(width: 72.adjusted, height: 72.adjusted, cornerRadius: 12)
+                                        }
+                                    }
+                                    .padding(.leading, 16.adjustedWidth)
+                                    .frame(width: 375.adjustedWidth, alignment: .leading)
+                                    .clipped()
+                                    
+                                    VStack(alignment: .leading, spacing: 0) {
+                                        SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth, cornerRadius: 4)
+                                        SolplySkeletonView(font: .body_14_r, width: 343.adjustedWidth, cornerRadius: 4)
+                                        SolplySkeletonView(font: .body_14_r, width: 250.adjustedWidth, cornerRadius: 4)
+                                    }
+                                    .padding(.leading, 16.adjustedWidth)
+                                    
+                                    SolplySkeletonView(font: .body_14_r, width: 120.adjustedWidth, cornerRadius: 4)
+                                        .padding(.leading, 16.adjustedWidth)
+                                }
+                                .padding(.vertical, 20.adjustedHeight)
+                                .overlay(alignment: .bottom) {
+                                    if index != 1 {
+                                        Rectangle()
+                                            .frame(maxWidth: .infinity)
+                                            .frame(height: 1)
+                                            .padding(.horizontal, 16.adjustedWidth)
+                                            .foregroundStyle(.gray200)
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                )
+            )
         }
     }
-}
-
-#Preview {
-    Text("dasdf")
-        .customLoading(
-            .courseDetailLoading,
-            isLoading: true
-        )
 }

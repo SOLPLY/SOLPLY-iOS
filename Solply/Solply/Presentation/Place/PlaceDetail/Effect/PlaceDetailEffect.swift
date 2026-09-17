@@ -93,8 +93,14 @@ extension PlaceDetailEffect {
             }
             
             let placeDetailInformation = PlaceDetailInformation(dto: data)
+            let records = data.latestReviews.map { Record($0) }
+            let hasMoreReviews = data.hasMoreReviews
             
-            return .placeDetailFetched(placeDetailInformation: placeDetailInformation)
+            return .placeDetailFetched(
+                placeDetailInformation: placeDetailInformation,
+                records: records,
+                hasMoreRecords: hasMoreReviews
+            )
         } catch let error as NetworkError {
             return .fetchPlaceDetailFailed(error: error)
         } catch {
@@ -119,12 +125,25 @@ extension PlaceDetailEffect {
         do {
             let _ = try await placeService.removePlaceBookmark(placeId: placeId)
             
-            return . placeBookmarkRemoved
+            return .placeBookmarkRemoved
             
         } catch let error as NetworkError {
             return .removePlaceBookmarkFailed(error: error)
         } catch {
             return .removePlaceBookmarkFailed(error: .unknownError)
+        }
+    }
+    
+    func removeMySolplyRecord(reviewId: Int) async -> PlaceDetailAction {
+        do {
+            let _ = try await placeService.removeMySolplyRecord(reviewId: reviewId)
+            
+            return .removeMySolplyRecordSuccess(reviewId: reviewId)
+            
+        } catch let error as NetworkError {
+            return .removeMySolplyRecordFailed(error: error)
+        } catch {
+            return .removeMySolplyRecordFailed(error: .unknownError)
         }
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 enum AppDestination: Hashable {
     case archive
     case archiveList(archiveCategory: SolplyContentType, townName: String, townId: Int)
-    case placeDetail(townId: Int, placeId: Int, fromSearch: Bool)
+    case placeDetail(placeId: Int, shouldSuggestTownChange: Bool)
     case courseDetail(townId: Int, courseId: Int, fromArchive: Bool)
     case JGD
     case reports(placeId: Int)
@@ -22,6 +22,12 @@ enum AppDestination: Hashable {
     case register
     case registerComplete
     case customerCenter
+    case recordList(placeId: Int, placeName: String)
+    case recordWrite(placeId: Int, placeName: String)
+    case aiRecommendPrompt
+    case aiRecommendResult(prompt: String, cards: [AIRecommendCard])
+    case placeComplaint(reviewId: Int)
+    case mySolplyRecords
 }
 
 extension AppDestination {
@@ -32,8 +38,11 @@ extension AppDestination {
             ArchiveView()
         case .archiveList(let archiveCategory, let townName, let townId):
             ArchiveListView(archiveCategory: archiveCategory, town: townName, townId: townId)
-        case .placeDetail(let townId, let placeId, let fromSearch):
-            PlaceDetailView(townId: townId, placeId: placeId, fromSearch: fromSearch)
+        case .placeDetail(let placeId, let shouldSuggestTownChange):
+            PlaceDetailView(
+                placeId: placeId,
+                shouldSuggestTownChange: shouldSuggestTownChange
+            )
         case .courseDetail(let townId, let courseId, let fromArchive):
             CourseDetailView(townId: townId, courseId: courseId, fromArchive: fromArchive)
         case .JGD:
@@ -56,6 +65,18 @@ extension AppDestination {
             RegisterCompleteView()
         case .customerCenter:
             CustomerCenterView()
+        case .recordList(let placeId, let placeName):
+            RecordListView(placeId: placeId, placeName: placeName)
+        case .recordWrite(let placeId, let placeName):
+            RecordWriteView(placeId: placeId, placeName: placeName)
+        case .aiRecommendPrompt:
+            AIRecommendPromptView()
+        case .aiRecommendResult(let prompt, let cards):
+            AIRecommendResultView(prompt: prompt, cards: cards)
+        case .placeComplaint(let reviewId):
+            PlaceComplaintView(reviewId: reviewId)
+        case .mySolplyRecords:
+            MySolplyRecordsView()
         }
     }
 }

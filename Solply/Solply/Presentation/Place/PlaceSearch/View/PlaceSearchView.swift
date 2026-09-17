@@ -14,7 +14,6 @@ struct PlaceSearchView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager
-    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store = PlaceSearchStore()
     
     private let onSubmit: ((String) -> Void)?
@@ -28,83 +27,59 @@ struct PlaceSearchView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 28.adjustedHeight) {
-            SearchBar { text in
+        VStack(alignment: .center, spacing: 28.adjustedHeight) {
+            SolplyTextField(.searchBar, placeholder: "찾는 장소를 입력하세요") { text in
                 store.dispatch(.searchPlace(placeName: text))
                 hideKeyboard()
             }
+            .padding(.horizontal, 16.adjustedWidth)
+            .padding(.top, 16.adjustedHeight)
             
             Group {
                 if store.state.isSearchCompleted {
                     if store.state.searchedPlaces.isEmpty {
                         PlaceEmptyView() {
-                            requireLogin {
-                                AmplitudeManager.shared.track(.clickManualPlaceEntry(entryRoute: .noResults))
+                            appState.requireLoginWithAlert {
                                 appCoordinator.navigate(to: .register)
-                            } exploreAction: {
+                            } onExplore: {
                                 AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .requestPlaceRegister))
-                                showLoginAlert(amplitudeBlockedAction: .requestPlaceRegister)
+                                appCoordinator.changeRoot(to: .auth)
                             }
                         }
                     } else {
-                        PlaceDataView(places: store.state.searchedPlaces) { townId, placeId in
+                        PlaceDataView(places: store.state.searchedPlaces) { _, placeId in
                             appCoordinator.navigate(
                                 to: .placeDetail(
-                                    townId: townId,
                                     placeId: placeId,
-                                    fromSearch: true
+                                    shouldSuggestTownChange: true
                                 )
                             )
                             
                             hideKeyboard()
                         } registerAction: {
-                            requireLogin {
+                            appState.requireLoginWithAlert {
                                 AmplitudeManager.shared.track(.clickManualPlaceEntry(entryRoute: .notFound))
                                 appCoordinator.navigate(to: .register)
-                            } exploreAction: {
+                            } onExplore: {
                                 AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .requestPlaceRegister))
-                                showLoginAlert(amplitudeBlockedAction: .requestPlaceRegister)
+                                appCoordinator.changeRoot(to: .auth)
                             }
                         }
                     }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .customLoading(.searchLoading, isLoading: store.state.isSearchLoading)
         }
-        .frame(maxWidth: .infinity)
-        .customNavigationBar(.placeSearch(backAction: appCoordinator.goBack))
+        .customNavigationBar(
+            .backWithTitle(
+                title: "검색하기",
+                backAction: { appCoordinator.goBack() }
+            )
+        )
         .background(.coreWhite)
         .onTapGesture {
             hideKeyboard()
-        }
-        .onChange(of: store.state.toastContent) { _, newValue in
-            guard let toastContent = newValue else { return }
-            
-            toastManager.showToast(content: toastContent)
-        }
-        .onAppear {
-            AmplitudeManager.shared.track(.viewSearch(entryMode: AmplitudeEntryMode.from(appState.userSession)))
-        }
-    }
-}
-
-// MARK: - Functions
-
-extension PlaceSearchView {
-    private func requireLogin(_ authenticatedAction: (() -> Void), exploreAction: (() -> Void)) {
-        switch appState.userSession {
-        case .explore:
-            exploreAction()
-        case .authenticated:
-            authenticatedAction()
-        }
-    }
-
-    private func showLoginAlert(amplitudeBlockedAction: AmplitudeBlockedAction) {
-        alertManager.showAlert(alertType: .authenticationRequired) {
-            AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: amplitudeBlockedAction))
-        } onConfirm: {
-            appCoordinator.changeRoot(to: .auth)
         }
     }
 }

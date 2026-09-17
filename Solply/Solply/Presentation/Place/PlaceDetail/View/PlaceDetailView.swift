@@ -11,21 +11,24 @@ struct PlaceDetailView: View {
     
     // MARK: - Properties
     
+    @Environment(\.openURL) private var openURL
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @EnvironmentObject private var toastManager: ToastManager
-    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store: PlaceDetailStore
     @StateObject private var locationManager = LocationManager()
     
+    private let columns = [
+        GridItem(.fixed(165.adjustedWidth), spacing: 11.adjustedWidth),
+        GridItem(.fixed(165.adjustedWidth))
+    ]
+    
     // MARK: - Initializer
     
-    init(townId: Int, placeId: Int, fromSearch: Bool) {
+    init(placeId: Int, shouldSuggestTownChange: Bool) {
         _store = StateObject(
             wrappedValue: PlaceDetailStore(
-                townId: townId,
                 placeId: placeId,
-                fromSearch: fromSearch
+                shouldSuggestTownChange: shouldSuggestTownChange
             )
         )
     }
@@ -33,26 +36,62 @@ struct PlaceDetailView: View {
     // MARK: - Body
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            placeMapView
-                .customNavigationBar(
-                    .placeDetail(
-                        backAction: {
-                            appCoordinator.goBack()
-                        },
-                        homeAction: {
-                            appCoordinator.goToRoot()
-                        }
-                    )
-                )
-                .customBottomSheet(.placeDetail) {
-                    bottomSheetContent
-                }
+        ScrollView(.vertical) {
+            scrollOffsetTracker
             
-            if store.state.selectedCourseIndex != -1 {
-                addPlaceToCourseButton
+            VStack(alignment: .center, spacing: 20.adjustedHeight) {
+                placeNameWithIntroduction
+                
+                actionBar
+                
+                placeImages
+                
+                placeInformationCard
+                
+                map
+                
+                reportsButton
+                
+                separator
+                
+                solplyTip
+                
+                separator
+                
+                record
             }
+            .padding(.bottom, 40.adjustedHeight)
+            .customLoading(.placeDetailLoading, isLoading: store.state.isPlaceDetailLoading)
         }
+        .sheet(
+            isPresented: Binding(
+                get: { store.state.isAddToCourseSheetPresented },
+                set: { isPresented in
+                    if !isPresented {
+                        store.dispatch(.dismissAddToCourseSheet)
+                    }
+                }
+            ),
+            onDismiss: {
+                store.dispatch(.dismissAddToCourseSheet)
+            },
+            content: {
+                addToCourseSheet
+                    .customToast()
+            }
+        )
+        .imageViewer(
+            item: store.state.imageViewerItem,
+            dismissAction: { store.dispatch(.dismissImageViewer) }
+        )
+        .coordinateSpace(name: "scroll")
+        .customNavigationBar(.backWithTitleAndHome(
+            title: store.state.navigationBarTitle,
+            backAction: { appCoordinator.goBack() },
+            homeAction: { appCoordinator.goToRoot() }
+            )
+        )
+        .ignoresSafeArea(edges: .bottom)
         .findDirectionDialog(
             isPresented: Binding(
                 get: { store.state.shouldShowFindDirectionDialog },
@@ -65,43 +104,51 @@ struct PlaceDetailView: View {
             }
         )
         .onAppear {
+            if appState.userSession == .authenticated {
+                store.dispatch(.setUserTownId(userTownId: appState.townId))
+            }
             store.dispatch(.fetchPlaceDetail)
             store.dispatch(.fetchCourseArchive)
-            if appState.userSession == .authenticated {
-                store.dispatch(.compareUserTownId(userTownId: appState.townId))
-            }
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
         }
-        .onChange(of: store.state.toastContent) { _, toastContent in
-            guard let toastContent else { return }
-            
-            toastManager.showToast(content: toastContent)
-        }
         .onChange(of: store.state.addPlaceCourseInformation) { _, newValue in
             guard let addPlaceCourseInformation = newValue else { return }
             
-            store.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .withActionToast,
-                        message: "‘\(addPlaceCourseInformation.courseName.truncated(length: 8))’에 추가되었어요.",
-                        toastAction: ToastAction(
-                            buttonTitle: "자세히 보기",
-                            action: {
-                                appCoordinator.navigate(
-                                    to: .courseDetail(
-                                        townId: store.townId,
-                                        courseId: addPlaceCourseInformation.courseId,
-                                        fromArchive: true
-                                    )
-                                )
-                            }
+            ToastManager.shared.showToast(
+                .withActionToast(
+                    buttonTitle: "자세히 보기",
+                    action: {
+                        store.dispatch(
+                            .requestCourseDetailNavigation(
+                                courseId: addPlaceCourseInformation.courseId
+                            )
                         )
-                    )
+                    }
+                ),
+                message: "‘\(addPlaceCourseInformation.courseName.truncated(length: 8))’에 추가되었어요."
+            )
+        }
+        .onChange(of: store.state.courseDetailNavigation) { _, destination in
+            guard let destination else { return }
+
+            appCoordinator.navigate(
+                to: .courseDetail(
+                    townId: destination.townId,
+                    courseId: destination.courseId,
+                    fromArchive: destination.fromArchive
                 )
             )
+            store.dispatch(.clearCourseDetailNavigation)
+        }
+        .onChange(of: store.state.shouldFetchUserInformation) { _, shouldFetchUserInformation in
+            if shouldFetchUserInformation {
+                Task {
+                    await appState.fetchUserInformation()
+                    
+                }
+            }
         }
     }
 }
@@ -109,148 +156,401 @@ struct PlaceDetailView: View {
 // MARK: - Subviews
 
 extension PlaceDetailView {
-    private var placeMapView: some View {
-        PlaceDetailMapView(
-            latitude: store.state.latitude,
-            longitude: store.state.longitude,
-            addButtonSelected: store.state.addButtonSelected,
-            bookmarkButtonSelected: store.state.bookmarkButtonSelected,
-            bookmarkButtonEnabled: store.state.bookmarkButtonEnabled,
-            findDirectionEnabled: store.state.findDirectionEnabled
-        )
-    }
-    
-    private var bottomSheetContent: some View {
-        ZStack {
-            if !store.state.addButtonSelected {
-                placeInformation
-                    .customLoading(.placeInformationLoading, isLoading: store.state.isPlaceInformationLoading)
-                    .transition(.move(edge: .leading))
-            } else {
-                addPlaceToCourse
-                    .transition(.move(edge: .trailing))
-            }
-        }
-        .animation(.easeInOut(duration: 0.3), value: store.state.addButtonSelected)
-    }
-    
-    private var placeInformation: some View {
-        PlaceInformationView(
-            primaryTag: store.state.primaryTag,
-            placeName: store.state.placeName,
-            isBookmarked: store.state.isBookmarked,
-            introduction: store.state.introduction,
-            imageURLs: store.state.imageURLs,
-            address: store.state.address,
-            contactNumber: store.state.contactNumber,
-            openingHours: store.state.openingHours,
-            snsLink: store.state.snsLink
-        ) {
-            requireLogin {
-                bookmarkPlace()
-            } exploreAction: {
-                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .savePlace))
-                showLoginAlert(amplitudeBlockedAction: .savePlace)
-            }
-        } findDirectionAction: {
-            store.dispatch(.requestFindDirection)
-            
-            AmplitudeManager.shared.track(
-                .clickPlaceDirections(
-                    placeId: store.placeId,
-                    placeName: store.state.placeName,
-                    fromContext: .placeDetail
-                )
-            )
-        } addPlaceToCourseAction: {
-            requireLogin {
-                store.dispatch(.fetchCourseArchive)
-                store.dispatch(.toggleAddToCourse)
-                
-                if store.state.selectedCourseIndex != -1 {
-                    store.dispatch(.selectCourseToAdd(index: -1))
+    private var scrollOffsetTracker: some View {
+        GeometryReader { geometry in
+            Color.clear
+                .onChange(of: geometry.frame(in: .named("scroll")).minY) { _, newValue in
+                    withAnimation(.easeInOut(duration: 0.1)) {
+                        if newValue >= -45 {
+                            store.dispatch(.hideNavigationBarTitle)
+                        } else {
+                            store.dispatch(.showNavigationBarTitle)
+                        }
+                    }
                 }
+        }
+        .frame(height: 0)
+    }
+    
+    private var placeNameWithIntroduction: some View {
+        VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+            HStack(alignment: .center, spacing: 8.adjustedWidth) {
+                PlaceCategoryTag(placeCategory: store.state.primaryTag)
+                
+                Text(store.state.placeName)
+                    .applySolplyFont(.title_18_sb)
+                    .foregroundStyle(.coreBlack)
+                    .frame(height: 23.adjustedHeight)
+            }
+            
+            Text(store.state.introduction)
+                .applySolplyFont(.caption_14_r)
+                .foregroundStyle(.gray900)
+                .frame(height: 21.adjustedHeight)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 16.adjustedWidth)
+        .padding(.top, 16.adjustedHeight)
+    }
+    
+    private var actionBar: some View {
+        HStack(alignment: .center, spacing: 8.adjustedWidth) {
+            actionButton(
+                title: "저장",
+                icon: store.state.isBookmarked ? .bookmarkSavedIcon : .bookmarkIcon,
+            ) {
+                appState.requireLoginWithAlert {
+                    bookmarkPlace()
+                } onExplore: {
+                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .savePlace))
+                    appCoordinator.changeRoot(to: .auth)
+                }
+            }
+            
+            actionButton(title: "길찾기", icon: .tolinkIcon) {
+                store.dispatch(.requestFindDirection)
                 
                 AmplitudeManager.shared.track(
-                    .viewAddToCourse(
+                    .clickPlaceDirections(
                         placeId: store.placeId,
-                        hasCourse: !store.state.courses.isEmpty
+                        placeName: store.state.placeName,
+                        fromContext: .placeDetail
                     )
                 )
-            } exploreAction: {
-                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .addToCourse))
-                showLoginAlert(amplitudeBlockedAction: .addToCourse)
             }
-        } copyAction: { text in
-            store.dispatch(.copyToClipboard(text: text))
-            store.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .defaultToast,
-                        message: "클립보드에 복사되었습니다."
+            
+            addToCourseButton {
+                appState.requireLoginWithAlert {
+                    store.dispatch(.fetchCourseArchive)
+                    store.dispatch(.presentAddToCourseSheet)
+                    
+                    if store.state.selectedCourseIndex != -1 {
+                        store.dispatch(.selectCourseToAdd(index: -1))
+                    }
+                    
+                    AmplitudeManager.shared.track(
+                        .viewAddToCourse(
+                            placeId: store.placeId,
+                            hasCourse: !store.state.courses.isEmpty
+                        )
                     )
-                )
-            )
-        } reportsAction: {
-            requireLogin {
-                appCoordinator.navigate(to: .reports(placeId: store.placeId))
-            } exploreAction: {
-                AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .reportError))
-                showLoginAlert(amplitudeBlockedAction: .reportError)
+                } onExplore: {
+                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .addToCourse))
+                    appCoordinator.changeRoot(to: .auth)
+                }
             }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 16.adjustedWidth)
+    }
+    
+    private var placeImages: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .center, spacing: 12.adjustedWidth) {
+                ForEach(Array(store.state.imageURLs.enumerated()), id: \.offset) { index, imageUrl in
+                    ThumbnailImage(
+                        imageUrl,
+                        width: 307.adjustedWidth,
+                        height: 204.adjustedHeight,
+                        radius: 12
+                    )
+                    .onTapGesture {
+                        store.dispatch(.presentImageViewer(index: index, imageUrls: store.state.imageURLs))
+                    }
+                }
+            }
+            .padding(.horizontal, 16.adjustedWidth)
         }
     }
     
-    private var addPlaceToCourse: some View {
-        AddPlaceToCourseView(
-            courses: store.state.courses,
-            selectedIndex: store.state.selectedCourseIndex
-        ) { index in
-            if index == -1 { return }
+    private var placeInformationCard: some View {
+        VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+            PlaceInformationWithCopyRow(title: "주소", value: store.state.address) {
+                store.dispatch(.copyToClipboard(text: store.state.address))
+                ToastManager.shared.showToast(.defaultToast, message: "클립보드에 복사되었습니다.")
+            }
             
-            guard index < store.state.courses.count else { return }
-            
-            guard let isDuplicated = store.state.courses[index].isDuplicated,
-                  let isPlaceCountLimited = store.state.courses[index].isPlaceCountLimited else { return }
-            
-            if isDuplicated {
-                store.dispatch(
-                    .showToastView(
-                        ToastContent(
-                            toastType: .withIconToast,
-                            message: "해당 장소가 코스에 이미 담겨있어요."
-                        )
-                    )
-                )
-            } else if isPlaceCountLimited {
-                store.dispatch(
-                    .showToastView(
-                        ToastContent(
-                            toastType: .withIconToast,
-                            message: "코스에 이미 6개의 장소가 꽉 차 있어요."
-                        )
-                    )
-                )
+            if !store.state.contactNumber.isEmpty {
+                PlaceInformationWithCopyRow(title: "전화번호", value: store.state.contactNumber) {
+                    store.dispatch(.copyToClipboard(text: store.state.contactNumber))
+                    ToastManager.shared.showToast(.defaultToast, message: "클립보드에 복사되었습니다.")
+                }
             } else {
-                store.dispatch(.selectCourseToAdd(index: index))
+                PlaceInformationRow(title: "전화번호", value: "")
             }
-        } backAction: {
-            store.dispatch(.fetchCourseArchive)
-            store.dispatch(.toggleAddToCourse)
-            store.dispatch(.selectCourseToAdd(index: -1))
-        } goToAddCourseAction: {
-            appCoordinator.goToRoot()
-            appCoordinator.switchTab(to: .course)
             
-            AmplitudeManager.shared.track(.clickFindNewCourse)
+            PlaceInformationRow(title: "운영시간", value: store.state.openingHours)
+            
+            if !store.state.snsLink.isEmpty {
+                // TODO: - 바로가기에 인스타 말고 더 생기면 로직 수정하기
+                PlaceInformationRow(
+                    title: "바로가기",
+                    value: store.state.snsLink[0].snsPlatform
+                ) {
+                    if let url = URL(string: store.state.snsLink[0].url) {
+                        openURL(url)
+                    }
+                }
+            }
+        }
+        .padding(.vertical, 16.adjustedHeight)
+        .padding(.horizontal, 20.adjustedWidth)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .addBorder(
+            .roundedRectangle(cornerRadius: 20),
+            borderColor: .gray200,
+            borderWidth: 1
+        )
+        .padding(.horizontal, 16.adjustedWidth)
+    }
+    
+    private var map: some View {
+        PlaceMarkerMap(
+            latitude: store.state.latitude,
+            longitude: store.state.longitude
+        )
+        .frame(width: 343.adjustedWidth, height: 234.adjustedHeight)
+        .cornerRadius(20, corners: .allCorners)
+    }
+    
+    private var reportsButton: some View {
+        HStack(alignment: .center, spacing: 4.adjustedWidth) {
+            Image(.warningIcon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24.adjusted, height: 24.adjusted)
+            
+            Text("잘못된 정보가 있어요.")
+                .applySolplyFont(.body_14_r)
+                .foregroundStyle(.gray800)
+            
+            Spacer()
+            
+            Button {
+                appState.requireLoginWithAlert {
+                    appCoordinator.navigate(to: .reports(placeId: store.placeId))
+                } onExplore: {
+                    AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .reportError))
+                    appCoordinator.changeRoot(to: .auth)
+                }
+            } label: {
+                HStack(alignment: .center, spacing: 0) {
+                    Text("오류 제보하기")
+                        .applySolplyFont(.button_14_m)
+                        .foregroundStyle(.red600)
+                    
+                    Image(.arrowRightIcon)
+                        .resizable()
+                        .renderingMode(.template)
+                        .foregroundStyle(.red600)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24.adjusted, height: 24.adjusted)
+                }
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 20.adjustedWidth)
+        .padding(.vertical, 12.adjustedHeight)
+        .addBorder(
+            .roundedRectangle(cornerRadius: 20),
+            borderColor: .gray200,
+            borderWidth: 1
+        )
+        .padding(.horizontal, 16.adjustedWidth)
+    }
+    
+    private var solplyTip: some View {
+        VStack(alignment: .leading, spacing: 16.adjustedHeight) {
+            sectionHeader(title: "솔플리 TIP")
+                .padding(.horizontal, 20.adjustedWidth)
+            
+            CustomFlowLayout(
+                horizontalSpacing: 8.adjustedWidth,
+                verticalSpacing: 8.adjustedHeight,
+                lineHeight: 32.adjusted,
+                alignment: .center
+            ) {
+                ForEach(store.state.solplyTips, id: \.self) { subTag in
+                    RecommendCardFilterChip(subTag: subTag)
+                }
+            }
+            .padding(.horizontal, 20.adjustedWidth)
+            
+            VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                ForEach(store.state.solplyCheckPoints, id: \.self) { checkPoint in
+                    TextWithBulletIcon(checkPoint)
+                }
+            }
+            .padding(.horizontal, 16.adjustedWidth)
         }
     }
     
-    private var addPlaceToCourseButton: some View {
+    private var record: some View {
+        VStack(alignment: .center, spacing: 20.adjustedHeight) {
+            sectionHeader(
+                title: "기록",
+                moreButtonAction: {
+                    appCoordinator.navigate(to: .recordList(placeId: store.placeId, placeName: store.state.placeName))
+                },
+                isButtonEnabled: store.state.isMoreRecordsButtonEnabled
+            )
+            .padding(.horizontal, 20.adjustedWidth)
+            
+            RecordWriteButton {
+                appState.requireLoginWithAlert(
+                    onAuthenticated: {
+                        appCoordinator.navigate(to: .recordWrite(placeId: store.placeId, placeName: store.state.placeName))
+                    },
+                    onExplore: {
+                        appCoordinator.changeRoot(to: .auth)
+                    }
+                )
+            }
+            
+            recordList
+        }
+    }
+    
+    private var recordList: some View {
+        Group {
+            if !store.state.records.isEmpty {
+                VStack(alignment: .center, spacing: 0) {
+                    ForEach(Array(store.state.records.enumerated()), id: \.offset) { index, record in
+                        RecordCard(
+                            record,
+                            isMyRecord: record.userId == appState.userInformation?.userId,
+                            hideSeparator: index == store.state.records.count - 1,
+                            selectImageAction: { index in
+                                store.dispatch(.presentImageViewer(index: index, imageUrls: record.photoUrls))
+                            },
+                            reportAction: {
+                                appState.requireLoginWithAlert(
+                                    onAuthenticated: { appCoordinator.navigate(to: .placeComplaint(reviewId: record.id)) },
+                                    onExplore: { appCoordinator.changeRoot(to: .auth) }
+                                )
+                            },
+                            deleteAction: {
+                                AlertManager.shared.showAlert(alertType: .deleteRecord, onCancel: nil) {
+                                    store.dispatch(.removeMySolplyRecord(reviewId: record.id))
+                                }
+                            }
+                        )
+                    }
+                }
+            } else {
+                emptyRecord
+                    .padding(.bottom, 32.adjustedHeight)
+            }
+        }
+    }
+    
+    private var emptyRecord: some View {
+        Text("등록된 기록이 없어요.\n이 장소의 첫번째 기록을 남겨주세요!")
+            .applySolplyFont(.body_14_m)
+            .multilineTextAlignment(.center)
+            .foregroundStyle(.gray700)
+            .frame(maxWidth: .infinity)
+            .frame(height: 152.adjustedHeight)
+            .padding(.horizontal, 16.adjustedWidth)
+    }
+    
+    private var addToCourseSheet: some View {
+        VStack(alignment: .center, spacing: 20.adjustedHeight) {
+            addToCourseNavigationBar
+            
+            addToCourseGrid
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+        .presentationDetents([.height(630.adjustedHeight)])
+        .presentationDragIndicator(.hidden)
+        .presentationCornerRadius(21)
+    }
+    
+    private var addToCourseNavigationBar: some View {
+        ZStack(alignment: .center) {
+            HStack(alignment: .center, spacing: 0) {
+                Spacer()
+                
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        store.dispatch(.dismissAddToCourseSheet)
+                    }
+                } label: {
+                    Image(.xIconLg)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24.adjusted, height: 24.adjusted)
+                }
+                .buttonStyle(.plain)
+            }
+            
+            Text("내 코스에 추가")
+                .applySolplyFont(.head_16_m)
+                .foregroundStyle(.coreBlack)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 16.adjustedWidth)
+        .padding(.top, 16.adjustedHeight)
+    }
+    
+    private var addToCourseGrid: some View {
+        Group {
+            if !store.state.courses.isEmpty {
+                ZStack(alignment: .bottom) {
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 13.adjustedHeight) {
+                            ForEach(Array(store.state.courses.enumerated()), id: \.offset) { index, course in
+                                CourseCard(
+                                    isSaved: course.isBookmarked,
+                                    courseName: course.courseName,
+                                    imageUrl: course.thumbnailImage,
+                                    courseTagType: course.courseTag,
+                                    isChecked: index == store.state.selectedCourseIndex,
+                                    isActive: course.isActive
+                                ) {
+                                    if course.isDuplicated {
+                                        ToastManager.shared.showToast(
+                                            .withIconToast,
+                                            message: "해당 장소가 코스에 이미 담겨있어요.",
+                                            bottomPadding: store.state.isPlaceConfirmButtonEnabled ? 90.adjustedHeight : 28.adjustedHeight
+                                        )
+                                    } else if course.isPlaceCountLimited {
+                                        ToastManager.shared.showToast(
+                                            .withIconToast,
+                                            message: "코스에 이미 6개의 장소가 꽉 차 있어요",
+                                            bottomPadding: store.state.isPlaceConfirmButtonEnabled ? 90.adjustedHeight : 28.adjustedHeight
+                                        )
+                                    } else {
+                                        store.dispatch(.selectCourseToAdd(index: index))
+                                    }
+                                }
+                            }
+                        }
+                        .padding(.bottom, 100.adjustedHeight)
+                    }
+                    .contentMargins(.top, 1.5.adjustedHeight)
+                    
+                    if store.state.isPlaceConfirmButtonEnabled {
+                        addPlaceConfirmButton
+                    }
+                }
+            } else {
+                EmptyArchiveButton(contentType: .course) {
+                    store.dispatch(.dismissAddToCourseSheet)
+                    appCoordinator.goToRoot()
+                    appCoordinator.switchTab(to: .course)
+                    AmplitudeManager.shared.track(.clickFindNewCourse)
+                }
+                .padding(.top, 200.adjustedHeight)
+            }
+        }
+    }
+    
+    private var addPlaceConfirmButton: some View {
         SolplyMainButton(title: "이 코스에 추가할래요") {
             let selectedCourseIndex = store.state.selectedCourseIndex
             
-            store.dispatch(.toggleAddToCourse)
+            store.dispatch(.dismissAddToCourseSheet)
             store.dispatch(
                 .submitAddPlace(
                     courseId: store.state.courses[selectedCourseIndex].courseId
@@ -261,6 +561,90 @@ extension PlaceDetailView {
         .safeAreaInset(edge: .bottom) {
             Color.clear.frame(height: 16.adjustedHeight)
         }
+    }
+
+    private var separator: some View {
+        Rectangle()
+            .foregroundStyle(.gray100)
+            .frame(height: 8.adjustedHeight)
+            .frame(maxWidth: .infinity)
+    }
+    
+    private func sectionHeader(
+        title: String,
+        moreButtonAction: (() -> Void)? = nil,
+        isButtonEnabled: Bool = false
+    ) -> some View {
+        HStack(alignment: .center, spacing: 0) {
+            Text(title)
+                .applySolplyFont(.body_16_m)
+                .foregroundStyle(.black)
+            
+            Spacer()
+            
+            if let moreButtonAction {
+                Button {
+                    appState.requireLoginWithAlert(
+                        onAuthenticated: { moreButtonAction() },
+                        onExplore: { appCoordinator.changeRoot(to: .auth) }
+                    )
+                } label: {
+                    HStack(alignment: .center, spacing: 0) {
+                        Text("더보기")
+                            .applySolplyFont(.body_14_r)
+                            .foregroundStyle(.gray600)
+                        
+                        Image(.arrowRightIconThin)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24.adjusted, height: 24.adjusted)
+                    }
+                }
+                .buttonStyle(.plain)
+                .visible(isButtonEnabled)
+            }
+        }
+    }
+    
+    private func actionButton(title: String, icon: ImageResource, onTap: (() -> Void)?) -> some View {
+        Button {
+            onTap?()
+        } label: {
+            HStack(alignment: .center, spacing: 0) {
+                Text(title)
+                    .applySolplyFont(.button_14_m)
+                    .foregroundStyle(.gray800)
+                
+                Image(icon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20.adjusted, height: 20.adjusted)
+            }
+            .frame(height: 24.adjustedHeight)
+            .padding(.vertical, 8.adjustedHeight)
+            .padding(.leading, 16.adjustedWidth)
+            .padding(.trailing, 12.adjustedWidth)
+            .background(.gray100)
+            .capsuleClipped()
+            .addBorder(.capsule, borderColor: .gray300, borderWidth: 1)
+        }
+        .buttonStyle(.plain)
+    }
+    
+    private func addToCourseButton(onTap: (() -> Void)?) -> some View {
+        Button {
+            onTap?()
+        } label: {
+            Text("내 코스에 추가")
+                .applySolplyFont(.button_14_m)
+                .foregroundStyle(.coreWhite)
+                .frame(width: 80.adjustedWidth, height: 24.adjustedHeight)
+                .padding(.vertical, 8.adjustedHeight)
+                .padding(.horizontal, 16.adjustedWidth)
+                .background(.gray900)
+                .capsuleClipped()
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -277,31 +661,7 @@ extension PlaceDetailView {
         store.dispatch(.toggleBookmarkPlace)
         
         if store.state.isBookmarked {
-            store.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .defaultToast,
-                        message: "장소가 수집함에 저장되었어요."
-                    )
-                )
-            )
-        }
-    }
-    
-    private func requireLogin(_ authenticatedAction: (() -> Void), exploreAction: (() -> Void)) {
-        switch appState.userSession {
-        case .explore:
-            exploreAction()
-        case .authenticated:
-            authenticatedAction()
-        }
-    }
-    
-    private func showLoginAlert(amplitudeBlockedAction: AmplitudeBlockedAction) {
-        alertManager.showAlert(alertType: .authenticationRequired) {
-            AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: amplitudeBlockedAction))
-        } onConfirm: {
-            appCoordinator.changeRoot(to: .auth)
+            ToastManager.shared.showToast(.defaultToast, message: "장소가 수집함에 저장되었어요.")
         }
     }
 }

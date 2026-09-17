@@ -24,11 +24,11 @@ struct SubTagBottomSheet: View {
     init(
         store: PlaceRecommendStore,
         isPresented: Binding<Bool>,
-        action: (([SelectableSubTag]) -> Void)? = nil
+        confirmAction: (([SelectableSubTag]) -> Void)? = nil
     ) {
         self.store = store
         self._isPresented = isPresented
-        self.confirmAction = action
+        self.confirmAction = confirmAction
     }
     
     // MARK: - Body

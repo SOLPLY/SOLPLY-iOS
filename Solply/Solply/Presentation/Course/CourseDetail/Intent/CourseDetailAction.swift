@@ -30,8 +30,6 @@ enum CourseDetailAction {
     case draggedInDeleteZone
     case draggedOutDeleteZone
     
-    case showToastView(ToastContent)
-    
     case saveCourseToCurrent
     case saveCourseAsNew
     case saveCourseCancel

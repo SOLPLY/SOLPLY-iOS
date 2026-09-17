@@ -27,33 +27,22 @@ struct ArchiveBar: View {
     // MARK: - Body
     
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 8.adjustedWidth) {
             ForEach(SolplyContentType.allCases, id: \.self) { category in
                 Button {
                     action?(category)
                 } label: {
-                    VStack(spacing: 0) {
-                        Text(category.title)
-                            .foregroundColor(selected == category ? .coreBlack : .gray800)
-                            .applySolplyFont(.head_15_sb)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 48.adjustedHeight)
-                            .contentShape(Rectangle())
-                    }
+                    Text(category.title)
+                        .applySolplyFont(.body_16_m)
+                        .foregroundColor(selected == category ? .coreWhite : .gray900)
+                        .frame(width: 60.adjustedWidth, height: 40.adjustedHeight)
+                        .background(selected == category ? .gray900 : .gray200)
+                        .capsuleClipped()
                 }
                 .buttonStyle(.plain)
             }
         }
-        .overlay(alignment: .bottom) {
-            Capsule()
-                .fill(.gray800)
-                .frame(width: 181.adjustedWidth, height: 3.adjustedHeight)
-                .frame(
-                    maxWidth: .infinity,
-                    alignment: selected == .place ? .leading : .trailing
-                )
-                .animation(.easeInOut(duration: 0.3), value: selected)
-        }
-        .background(.coreWhite)
+        .padding(.leading, 16.adjustedWidth)
+        .background(.gray100)
     }
 }

@@ -12,7 +12,7 @@ struct MyPageEditView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
-    @EnvironmentObject private var alertManager: AlertManager
+    @EnvironmentObject private var appState: AppState
     @StateObject private var store: MyPageEditStore
     @FocusState private var isNicknameTextFieldFocused: Bool
     
@@ -43,16 +43,20 @@ struct MyPageEditView: View {
         .padding(.top, 16.adjustedHeight)
         .padding(.bottom, 24.adjustedHeight)
         .background(.coreWhite)
-        .customNavigationBar(.myPageEdit(backAction: {
-            if store.state.isUserInformationChanged {
-                alertManager.showAlert(alertType: .changesNotSaved, onCancel: nil) {
-                    appCoordinator.goBack()
+        .customNavigationBar(
+            .backWithTitle(
+                title: "프로필 수정",
+                backAction: {
+                    if store.state.isUserInformationChanged {
+                        AlertManager.shared.showAlert(alertType: .changesNotSaved, onCancel: nil) {
+                            appCoordinator.goBack()
+                        }
+                    } else {
+                        appCoordinator.goBack()
+                    }
                 }
-            } else {
-                appCoordinator.goBack()
-            }
-            
-        }))
+            )
+        )
         .onAppear {
             store.dispatch(.loadUserInformation)
         }
@@ -61,11 +65,14 @@ struct MyPageEditView: View {
                 store.dispatch(.fetchUserNicknameCheck)
             }
         }
-        .onChange(of: store.state.shouldGoBack, { _, newValue in
-            if newValue {
-                appCoordinator.goBack()
+        .onChange(of: store.state.shouldGoBack) { _, shouldGoBack in
+            if shouldGoBack {
+                Task {
+                    await appState.fetchUserInformation()
+                    appCoordinator.goBack()
+                }
             }
-        })
+        }
         .onTapGesture {
             hideKeyboard()
         }

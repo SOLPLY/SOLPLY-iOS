@@ -8,10 +8,10 @@
 import Foundation
 
 enum PlaceDetailAction {
-    case compareUserTownId(userTownId: Int)
-    case showTownToast
+    case setUserTownId(userTownId: Int)
     
-    case toggleAddToCourse
+    case presentAddToCourseSheet
+    case dismissAddToCourseSheet
     case toggleBookmarkPlace
     
     case requestFindDirection
@@ -19,13 +19,21 @@ enum PlaceDetailAction {
     case findDirectionFinished
     
     case selectCourseToAdd(index: Int)
-    
-    case showToastView(ToastContent)
-    
+
     case copyToClipboard(text: String)
     
     case updateUserCoordinate(latitude: Double, longitude: Double)
     
+    case showNavigationBarTitle
+    case hideNavigationBarTitle
+    
+    case presentImageViewer(index: Int, imageUrls: [String?])
+    case dismissImageViewer
+    
+    case requestCourseDetailNavigation(courseId: Int)
+    case courseDetailNavigationRequested(destination: CourseDetailNavigation)
+    case clearCourseDetailNavigation
+
     // api
     
     case fetchCourseArchive
@@ -33,7 +41,7 @@ enum PlaceDetailAction {
     case fetchCourseArchiveFailed(error: NetworkError)
     
     case fetchPlaceDetail
-    case placeDetailFetched(placeDetailInformation: PlaceDetailInformation)
+    case placeDetailFetched(placeDetailInformation: PlaceDetailInformation, records: [Record], hasMoreRecords: Bool)
     case fetchPlaceDetailFailed(error: NetworkError)
     
     case submitPlaceBookmark
@@ -51,4 +59,8 @@ enum PlaceDetailAction {
     case updateUserTowns(newTownId: Int)
     case userTownsUpdated(townName: String)
     case updateUserTownsFailed(error: NetworkError)
+    
+    case removeMySolplyRecord(reviewId: Int)
+    case removeMySolplyRecordSuccess(reviewId: Int)
+    case removeMySolplyRecordFailed(error: NetworkError)
 }

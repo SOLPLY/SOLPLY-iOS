@@ -49,4 +49,20 @@ protocol PlaceAPI {
     
     /// 장소 등록 요청
     func submitRegister(request: RegisterRequestDTO) async throws -> BaseResponseBody<RegisterResponseDTO>
+    
+    /// 장소 리뷰(기록) 작성
+    func submitPlaceRecordWrite(request: PlaceRecordWriteRequestDTO) async throws -> BaseResponseBody<EmptyResponseDTO>
+    
+    /// 장소 리뷰(기록) 리스트 조회
+    func fetchPlaceRecordList(placeId: Int) async throws -> BaseResponseBody<PlaceRecordListResponseDTO>
+    
+    /// 내 리뷰(기록) 리스트 조회
+    func fetchMySolplyRecords() async throws -> BaseResponseBody<MySolplyRecordsResponseDTO>
+    
+    /// 내 장소 리뷰(기록) 삭제
+    func removeMySolplyRecord(reviewId: Int) async throws -> BaseResponseBody<EmptyResponseDTO>
+    
+    /// 장소 리뷰 신고
+    func reportReview(reviewId: Int, request: PlaceReviewReportRequestDTO) async throws ->
+        BaseResponseBody<EmptyResponseDTO>
 }

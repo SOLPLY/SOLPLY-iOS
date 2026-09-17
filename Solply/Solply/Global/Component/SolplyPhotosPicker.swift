@@ -12,34 +12,46 @@ struct SolplyPhotosPicker: View {
     
     // MARK: - Properties
     
-    @EnvironmentObject private var alertManager: AlertManager
     @State private var isPickerPresented: Bool = false
     @State private var selectedItems: [PhotosPickerItem] = []
     @State private var selectedImages: [UIImage] = []
     
-    private let maxSelectionCount: Int = 3
+    private let maxSelectionCount: Int
     private let onComplete: (([(String, Data)]) -> Void)?
+    
+    private var isScrollDisabled: Bool {
+        return maxSelectionCount <= 4
+    }
     
     // MARK: - Initializer
     
-    init(onComplete: (([(String, Data)]) -> Void)? = nil) {
+    init(
+        maxSelectionCount: Int = 3,
+        onComplete: (([(String, Data)]) -> Void)? = nil
+    ) {
+        self.maxSelectionCount = maxSelectionCount
         self.onComplete = onComplete
     }
     
     // MARK: - Body
     
     var body: some View {
-        HStack(alignment: .center, spacing: 12.adjustedWidth) {
-            ForEach(0..<maxSelectionCount, id: \.self) { index in
-                if index < selectedImages.count {
-                    selectedPhotoCell(selectedImages[index])
-                } else if index == selectedImages.count {
-                    addPhotoCell
-                } else {
-                    emptyPhotoCell
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .center, spacing: 12.adjustedWidth) {
+                ForEach(0..<maxSelectionCount, id: \.self) { index in
+                    if index < selectedImages.count {
+                        selectedPhotoCell(selectedImages[index])
+                    } else if index == selectedImages.count {
+                        addPhotoCell
+                    } else {
+                        emptyPhotoCell
+                    }
                 }
             }
         }
+        .scrollDisabled(isScrollDisabled)
+        .scrollClipDisabled(true)
+        .contentMargins(.horizontal, 20.adjustedWidth, for: .scrollContent)
         .photosPicker(
             isPresented: $isPickerPresented,
             selection: $selectedItems,
@@ -138,15 +150,11 @@ extension SolplyPhotosPicker {
     }
     
     private func showAlert() {
-        alertManager.showAlert(alertType: .photoPermissionDenied, onCancel: nil) {
+        AlertManager.shared.showAlert(alertType: .photoPermissionDenied, onCancel: nil) {
             guard let url = URL(string: UIApplication.openSettingsURLString),
                   UIApplication.shared.canOpenURL(url) else { return }
             
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
-}
-
-#Preview {
-    SolplyPhotosPicker()
 }

@@ -18,11 +18,11 @@ struct SplashView: View {
     
     var body: some View {
         ZStack {
-            Color.green300
+            Color.green200
                 .ignoresSafeArea()
 
             LottieView(jsonName: "Splash")
-                .frame(width: 122.adjustedHeight, height: 122.adjustedHeight)
+                .frame(width: 154.adjustedHeight, height: 154.adjustedHeight)
         }
         .onAppear {
             Task {
@@ -42,13 +42,10 @@ extension SplashView {
         appState.updateUserSession()
         
         if TokenManager.shared.isSessionAvailable {
+            await appState.fetchUserInformation()
             appCoordinator.changeRoot(to: .tabBar)
         } else {
             appCoordinator.changeRoot(to: .auth)
         }
     }
-}
-
-#Preview {
-    SplashView()
 }

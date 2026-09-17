@@ -13,7 +13,8 @@ struct WithdrawView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var store = WithdrawStore()
-    @EnvironmentObject var alertManager: AlertManager
+    
+    // MARK: - Body
     
     var body: some View {
         WithdrawSelectView(
@@ -25,11 +26,12 @@ struct WithdrawView: View {
             },
             withdrawAction: {
                 showAlert()
-                }
-            )
+            }
+        )
         .customNavigationBar(
-            .withdraw(
-                backAction: appCoordinator.goBack
+            .backWithTitle(
+                title: "탈퇴하기",
+                backAction: { appCoordinator.goBack() }
             )
         )
         .onChange(of: store.state.shouldChangeRoot) { _, newValue in
@@ -48,7 +50,7 @@ struct WithdrawView: View {
 
 extension WithdrawView {
     private func showAlert() {
-        alertManager.showAlert(
+        AlertManager.shared.showAlert(
             alertType: .withdraw, onCancel: nil
         ) {
             store.dispatch(.withdraw)

@@ -9,15 +9,6 @@ import Foundation
 
 
 enum AppEnvironment {
-    /// Naver 지도 ClientId
-    static let naverMapClientId: String = {
-        guard let clientId = Bundle.main.object(forInfoDictionaryKey: "NMFClientId") as? String else {
-            fatalError("Info.plist에 NMFClientId가 없습니다.")
-        }
-        
-        return clientId
-    }()
-    
     /// BaseURL
     static let baseURL: String = {
         guard let baseURL = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String else {

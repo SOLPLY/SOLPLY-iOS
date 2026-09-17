@@ -10,16 +10,16 @@ import UIKit
 enum PlaceDetailReducer {
     static func reduce(state: inout PlaceDetailState, action: PlaceDetailAction) {
         switch action {
-        case .compareUserTownId:
+        case .setUserTownId:
             break
             
-        case .showTownToast:
-            state.shouldShowTownToast = true
+        case .presentAddToCourseSheet:
+            state.isAddToCourseSheetPresented = true
             
-        case .toggleAddToCourse:
-            state.addButtonSelected.toggle()
-            state.findDirectionEnabled = state.addButtonSelected ? false : true
-            state.bookmarkButtonEnabled = state.addButtonSelected ? false : true
+        case .dismissAddToCourseSheet:
+            state.isAddToCourseSheetPresented = false
+            state.selectedCourseIndex = -1
+            state.isPlaceConfirmButtonEnabled = false
             
         case .toggleBookmarkPlace:
             state.isBookmarked.toggle()
@@ -35,10 +35,13 @@ enum PlaceDetailReducer {
             break
             
         case .selectCourseToAdd(let index):
-            state.selectedCourseIndex = index
-            
-        case .showToastView(let toastContent):
-            state.toastContent = toastContent
+            if index == state.selectedCourseIndex {
+                state.selectedCourseIndex = -1
+                state.isPlaceConfirmButtonEnabled = false
+            } else {
+                state.selectedCourseIndex = index
+                state.isPlaceConfirmButtonEnabled = true
+            }
             
         case .copyToClipboard(let text):
             UIPasteboard.general.string = text
@@ -52,6 +55,30 @@ enum PlaceDetailReducer {
             state.userLatitude = latitude
             state.userLongitude = longitude
             
+        case .showNavigationBarTitle:
+            state.navigationBarTitle = state.placeName
+            
+        case .hideNavigationBarTitle:
+            state.navigationBarTitle = nil
+            
+        case .presentImageViewer(let index, let imageUrls):
+            state.imageViewerItem = ImageViewerItem(
+                selectedIndex: index,
+                imageUrls: imageUrls
+            )
+            
+        case .dismissImageViewer:
+            state.imageViewerItem = nil
+
+        case .requestCourseDetailNavigation:
+            break
+
+        case .courseDetailNavigationRequested(let destination):
+            state.courseDetailNavigation = destination
+
+        case .clearCourseDetailNavigation:
+            state.courseDetailNavigation = nil
+            
         // api
             
         case .fetchCourseArchive:
@@ -62,11 +89,11 @@ enum PlaceDetailReducer {
             break
             
         case .fetchPlaceDetail:
-            state.isPlaceInformationLoading = true
+            state.isPlaceDetailLoading = true
             break
             
-        case .placeDetailFetched(let placeDetailInformation):
-            state.isPlaceInformationLoading = false
+        case .placeDetailFetched(let placeDetailInformation, let records, let hasMoreRecords):
+            state.isPlaceDetailLoading = false
             state.isBookmarked = placeDetailInformation.isBookmarked
             state.primaryTag = placeDetailInformation.primaryTag
             state.placeName = placeDetailInformation.placeName
@@ -78,6 +105,10 @@ enum PlaceDetailReducer {
             state.snsLink = placeDetailInformation.snsLink
             state.latitude = placeDetailInformation.latitude
             state.longitude = placeDetailInformation.longitude
+            state.solplyTips = placeDetailInformation.solplyTips
+            state.solplyCheckPoints = placeDetailInformation.placeCheckpoints
+            state.isMoreRecordsButtonEnabled = hasMoreRecords
+            state.records = records
             
         case .submitPlaceBookmark:
             break
@@ -105,11 +136,17 @@ enum PlaceDetailReducer {
             break
             
         case .userTownsUpdated:
-            state.shouldShowTownToast = false
+            state.shouldFetchUserInformation = true
             
         case .updateUserTownsFailed(let error):
             print(error)
             break
+            
+        case .removeMySolplyRecord:
+            break
+            
+        case .removeMySolplyRecordSuccess(let reviewId):
+            state.records.removeAll { $0.id == reviewId }
             
         // errors
             
@@ -117,7 +154,7 @@ enum PlaceDetailReducer {
             print(error)
             
         case .fetchPlaceDetailFailed(let error):
-            state.isPlaceInformationLoading = true
+            state.isPlaceDetailLoading = true
             print(error)
             
         case .submitPlaceBookmarkFailed(let error):
@@ -128,6 +165,10 @@ enum PlaceDetailReducer {
             
         case .submitAddPlaceFailed(let error):
             print(error)
+            
+        case .removeMySolplyRecordFailed(let error):
+            print(error)
+            
         }
     }
 }

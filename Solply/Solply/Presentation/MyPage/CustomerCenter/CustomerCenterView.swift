@@ -18,17 +18,11 @@ struct CustomerCenterView: View {
     var body: some View {
         WebView(url: AppEnvironment.customerCenterURL)
             .customNavigationBar(
-                .customerCenter(
-                    backAction: {
-                        appCoordinator.goBack()
-                    }
+                .backWithTitle(
+                    title: "고객센터",
+                    backAction: { appCoordinator.goBack() }
                 )
             )
             .ignoresSafeArea(edges: .bottom)
     }
-}
-
-#Preview {
-    CustomerCenterView()
-        .environmentObject(AppCoordinator())
 }

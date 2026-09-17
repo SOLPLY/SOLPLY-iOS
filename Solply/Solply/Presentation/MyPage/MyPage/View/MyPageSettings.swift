@@ -12,7 +12,6 @@ struct MyPageSettings: View {
     // MARK: - Properties
     
     @EnvironmentObject var appCoordinator: AppCoordinator
-    @EnvironmentObject var alertManager: AlertManager
 
     private let loginProvider: SocialLoginType?
     private let appVersion: String
@@ -103,7 +102,7 @@ struct MyPageSettings: View {
     // MARK: - Alert
     
     private func showLogoutAlert() {
-        alertManager.showAlert(alertType: .logout, onCancel: nil) {
+        AlertManager.shared.showAlert(alertType: .logout, onCancel: nil) {
             performLogout()
         }
     }

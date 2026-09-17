@@ -12,9 +12,8 @@ struct AddToCourseArchive {
     let courseName: String
     let thumbnailImage: String?
     let courseTag: CourseTagType
-    let isBookmarked: Bool?
-    let isDuplicated: Bool?
-    let isPlaceCountLimited: Bool?
-    let isActive: Bool?
+    let isBookmarked: Bool
+    let isDuplicated: Bool
+    let isPlaceCountLimited: Bool
+    let isActive: Bool
 }
-

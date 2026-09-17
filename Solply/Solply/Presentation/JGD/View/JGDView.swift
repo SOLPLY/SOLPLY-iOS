@@ -30,9 +30,10 @@ struct JGDView: View {
                     subTownListView
                 }
             }
-            .customNavigationBar(
-            .frequentTown(backAction: appCoordinator.goBack)
-            )
+            .customLoading(.JGDLoading, isLoading: store.state.isTownLoading)
+            .customNavigationBar(.backWithTitle(title: "동네설정", backAction: {
+                appCoordinator.goBack()
+            }))
             .ignoresSafeArea(edges: .bottom)
             
             SolplyMainButton(
@@ -58,7 +59,10 @@ struct JGDView: View {
         }
         .onChange(of: store.state.shouldGoBack) { _, shouldGoBack in
             if shouldGoBack {
-                appCoordinator.goBack()
+                Task {
+                    await appState.fetchUserInformation()
+                    appCoordinator.goBack()
+                }
             }
         }
     }

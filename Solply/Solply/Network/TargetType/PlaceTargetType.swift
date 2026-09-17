@@ -25,6 +25,11 @@ enum PlaceTargetType {
     case searchPlace(placeName: String)
     case submitReports(placeId: Int, request: ReportsRequestDTO)
     case submitRegister(request: RegisterRequestDTO)
+    case submitPlaceRecordWrite(request: PlaceRecordWriteRequestDTO)
+    case fetchPlaceRecordList(placeId: Int)
+    case fetchMySolplyRecords
+    case removeMySolplyRecord(reviewId: Int)
+    case reportReview(reviewId: Int, request: PlaceReviewReportRequestDTO)
 }
 
 extension PlaceTargetType: BaseTargetType {
@@ -52,6 +57,16 @@ extension PlaceTargetType: BaseTargetType {
             return "/places/\(placeId)/reports"
         case .submitRegister:
             return "/places/requests"
+        case .submitPlaceRecordWrite:
+            return "/places/reviews"
+        case .fetchPlaceRecordList(let placeId):
+            return "/places/reviews/\(placeId)/reviews"
+        case .fetchMySolplyRecords:
+            return "/places/reviews/me"
+        case .removeMySolplyRecord(let reviewId):
+            return "/places/reviews/\(reviewId)"
+        case .reportReview(let reviewId, _):
+            return "/places/reviews/\(reviewId)/reports"
         }
     }
     
@@ -66,6 +81,11 @@ extension PlaceTargetType: BaseTargetType {
         case .searchPlace: return .get
         case .submitReports: return .post
         case .submitRegister: return .post
+        case .submitPlaceRecordWrite: return .post
+        case .fetchPlaceRecordList: return .get
+        case .fetchMySolplyRecords: return .get
+        case .removeMySolplyRecord: return .delete
+        case .reportReview: return .post
         }
     }
     
@@ -118,6 +138,16 @@ extension PlaceTargetType: BaseTargetType {
         case .submitReports(_, let request):
             return .requestJSONEncodable(request)
         case .submitRegister(let request):
+            return .requestJSONEncodable(request)
+        case .submitPlaceRecordWrite(let request):
+            return .requestJSONEncodable(request)
+        case .fetchPlaceRecordList:
+            return .requestPlain
+        case .fetchMySolplyRecords:
+            return .requestPlain
+        case .removeMySolplyRecord:
+            return .requestPlain
+        case .reportReview(_, let request):
             return .requestJSONEncodable(request)
         }
     }

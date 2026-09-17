@@ -9,6 +9,6 @@ import SwiftUI
 
 enum ToastType {
     case defaultToast
-    case withActionToast
+    case withActionToast(buttonTitle: String, action: (() -> Void))
     case withIconToast
 }

@@ -27,6 +27,9 @@ final class PlaceSearchStore: ObservableObject {
                 self.dispatch(.searchQueryLengthInvalid)
             }
             
+        case .searchQueryLengthInvalid:
+            ToastManager.shared.showToast(.defaultToast, message: "검색어는 최소 2자 이상이어야 해요.")
+            
         case .searchPlaceSuccess(let places):
             AmplitudeManager.shared.track(.viewSearchResult(isEmpty: places.isEmpty))
         

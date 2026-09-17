@@ -33,12 +33,12 @@ enum MainTagType: String, CaseIterable, Identifiable, ResponseModelType, Request
     var backgroundColor: Color? {
         switch self {
         case .all: return nil
-        case .cafe: return .red100
-        case .food: return .yellow100
-        case .shopping: return .purple100
-        case .book: return .purple100
-        case .unique: return .green100
-        case .walk: return .green100
+        case .cafe: return .red50
+        case .food: return .yellow50
+        case .shopping: return .purple50
+        case .book: return .purple50
+        case .unique: return .green50
+        case .walk: return .green50
         }
     }
     
@@ -47,8 +47,8 @@ enum MainTagType: String, CaseIterable, Identifiable, ResponseModelType, Request
         case .all: return nil
         case .cafe: return .red500
         case .food: return .yellow500
-        case .shopping: return .purple600
-        case .book: return .purple600
+        case .shopping: return .purple500
+        case .book: return .purple500
         case .unique: return .green500
         case .walk: return .green500
         }
@@ -99,6 +99,18 @@ enum MainTagType: String, CaseIterable, Identifiable, ResponseModelType, Request
         case .book: return 4
         case .unique: return 5
         case .walk: return 6
+        }
+    }
+    
+    var aiIcon: ImageResource? {
+        switch self {
+        case .all: return nil
+        case .cafe: return .aiIconRed
+        case .food: return .aiIconYellow
+        case .shopping: return .aiIconPurple
+        case .book: return .aiIconPurple
+        case .unique: return .aiIconGreen
+        case .walk: return .aiIconGreen
         }
     }
 }

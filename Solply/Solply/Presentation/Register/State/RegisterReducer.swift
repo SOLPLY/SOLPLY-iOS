@@ -10,9 +10,6 @@ import Foundation
 enum RegisterReducer {
     static func reduce(state: inout RegisterState, action: RegisterAction) {
         switch action {
-        case .updateSearchBarText(let text):
-            state.placeName = text
-            
         case .selectPlaceToRegister(let placeName, let placeAddress):
             state.placeName = placeName
             state.placeAddress = placeAddress
@@ -78,24 +75,6 @@ enum RegisterReducer {
             
         case .submitRegisterFailed(let error):
             print(error)
-            break
-            
-        case .submitPresignedUrlRequest:
-            break
-            
-        case .presignedUrlRequestSubmitted:
-            break
-            
-        case .submitPresignedUrlRequestFailed(let error):
-            print(error)
-            break
-            
-        case .photoUploadSuccess:
-            print("S3 사진 업로드 성공")
-            break
-            
-        case .photoUploadFailed(let error):
-            print("S3 사진 업로드 실패 error: \(error)")
             break
         }
     }

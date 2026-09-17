@@ -12,28 +12,11 @@ struct PlaceRecommendView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appState: AppState
-    @EnvironmentObject private var alertManager: AlertManager
+    @EnvironmentObject private var scrollToTopManager: ScrollToTopManager
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = PlaceRecommendStore()
     
-    @Binding private var scrollToTopTarget: ScrollToTopTarget?
-    
-    private let title: String
-    private let isUserInformationLoading: Bool
-    
     private let topId: String = "TOP"
-    
-    // MARK: - Initializer
-    
-    init(
-        title: String,
-        isUserInformationLoading: Bool,
-        scrollToTopTarget: Binding<ScrollToTopTarget?>
-    ) {
-        self.title = title
-        self.isUserInformationLoading = isUserInformationLoading
-        self._scrollToTopTarget = scrollToTopTarget
-    }
     
     // MARK: - Body
     
@@ -50,24 +33,26 @@ struct PlaceRecommendView: View {
                     filterPlaceGrid
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.bottom, 112.adjustedHeight)
+                .padding(.bottom, store.state.bottomPadding)
             }
-            .onChange(of: scrollToTopTarget) { _, target in
-                guard target == .placeTopTarget else { return }
+            .onChange(of: appState.townId, { oldValue, newValue in
+                if oldValue != newValue {
+                    proxy.scrollTo(topId, anchor: .top)
+                }
+            })
+            .onChange(of: scrollToTopManager.target) { _, target in
+                guard target == .place else { return }
                 
                 withAnimation(.easeInOut(duration: 0.4)) {
                     proxy.scrollTo(topId, anchor: .top)
                 }
-                
-                scrollToTopTarget = nil
             }
         }
         .customNavigationBar(
-            .recommend(
-                isLoading: isUserInformationLoading,
+            .townFilterWithSearch(
                 filterTitle: appState.townName,
+                isLoading: appState.isAuthenticated ? appState.isUserInformationLoading : false,
                 filterAction: {
-                    
                     AmplitudeManager.shared.track(
                         .viewTownList(
                             entryMode: AmplitudeEntryMode.from(appState.userSession),
@@ -77,16 +62,20 @@ struct PlaceRecommendView: View {
                     
                     appCoordinator.navigate(to: .JGD)
                 },
-                settingAction: {
-                    appCoordinator.navigate(to: .placeSearch)
-                }
+                aiAction: {
+                    appState.requireLoginWithAlert(
+                        onAuthenticated: { appCoordinator.navigate(to: .aiRecommendPrompt) },
+                        onExplore: { appCoordinator.changeRoot(to: .auth) }
+                    )
+                },
+                searchAction: { appCoordinator.navigate(to: .placeSearch) }
             )
         )
         .background(.gray100)
         .onAppear {
-            store.dispatch(.onAppear(townId: appState.townId))
-                        
-            if appState.userSession == .authenticated {
+            store.dispatch(.onAppear(isExplore: appState.isExplore, townId: appState.townId))
+            
+            if appState.isAuthenticated {
                 store.dispatch(.fetchPlaceRecommend(townId: appState.townId))
             }
             
@@ -96,22 +85,6 @@ struct PlaceRecommendView: View {
                 mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
                 subTagAIdList: store.state.subTagAIdList,
                 subTagBIdList: store.state.subTagBIdList
-            ))
-        }
-        .onChange(of: appState.townId) { _, newTownId in
-            if appState.userSession == .authenticated {
-                store.dispatch(.fetchPlaceRecommend(townId: newTownId))
-            }
-            
-            store.dispatch(.resetTags)
-            store.dispatch(.resetSubTags)
-            
-            store.dispatch(.fetchPlaceList(
-                townId: newTownId,
-                isBookmarkSearch: false,
-                mainTagId: store.state.selectedMainTag.parentId == 0 ? nil : store.state.selectedMainTag.parentId,
-                subTagAIdList: [],
-                subTagBIdList: []
             ))
         }
     }
@@ -128,13 +101,13 @@ extension PlaceRecommendView {
     
     private var placeRecommendTitle: some View {
         HStack(alignment: .center, spacing: 0) {
-            Text(title)
+            Text(appState.placeRecommendTitle)
                 .applySolplyFont(.display_20_sb)
                 .foregroundStyle(.coreBlack)
             
             Spacer()
         }
-        .customLoading(.recommendTitleLoading, isLoading: isUserInformationLoading)
+        .customLoading(.recommendTitleLoading, isLoading: appState.isAuthenticated ? appState.isUserInformationLoading : false)
         .frame(width: 335.adjustedWidth)
     }
     
@@ -145,15 +118,15 @@ extension PlaceRecommendView {
                 ExplorePlaceRecommendCarousel() {
                     AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .todayRecommend))
                     
-                    alertManager.showAlert(alertType: .authenticationRequired) {
-                        AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: .todayRecommend))
-                    } onConfirm: {
-                        appCoordinator.changeRoot(to: .auth)
-                    }
+                    AlertManager.shared.showAlert(
+                        alertType: .authenticationRequired,
+                        onCancel: { AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: .todayRecommend)) },
+                        onConfirm: { appCoordinator.changeRoot(to: .auth) }
+                    )
                 }
             case .authenticated:
                 TodayPlaceRecommendCarousel(store: store, townId: appState.townId)
-                    .customLoading(.todayPlaceRecommendCarouselLoading, isLoading: store.state.isCarouselLoading)
+                    .customLoading(.placeRecommendCarouselLoading, isLoading: store.state.isCarouselLoading)
             }
         }
     }

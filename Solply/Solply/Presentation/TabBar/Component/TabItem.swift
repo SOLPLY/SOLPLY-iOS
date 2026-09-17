@@ -18,6 +18,10 @@ struct TabItem: View {
     private let height: CGFloat
     private let onTap: (() -> Void)?
     
+    private var buttonColor: Color {
+        selectedTab == tab ? .gray900 : .green50
+    }
+    
     // MARK: - Initializer
     
     init(
@@ -45,8 +49,9 @@ struct TabItem: View {
                 .renderingMode(.template)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: width, height: height)
-                .foregroundColor(selectedTab == tab ? .gray900 : .gray100)
-                .animation(.easeInOut(duration: 0.2), value: selectedTab)
+                .padding(6.adjusted)
+                .foregroundColor(buttonColor)
+                .animation(.easeInOut(duration: 0.4), value: selectedTab)
         }
         .buttonStyle(.plain)
     }

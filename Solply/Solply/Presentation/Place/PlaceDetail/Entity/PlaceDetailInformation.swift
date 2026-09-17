@@ -21,6 +21,7 @@ struct PlaceDetailInformation {
     let longitude: Double
     let townId: Int
     let townName: String
+    let solplyTips: [SubTagType]
     let placeCheckpoints: [String]
 }
 
@@ -39,6 +40,7 @@ extension PlaceDetailInformation {
         self.longitude = Double(dto.longitude) ?? 0.0
         self.townId = dto.townId
         self.townName = dto.townName
+        self.solplyTips = dto.optionTags
         self.placeCheckpoints = dto.placeCheckpoints
     }
     

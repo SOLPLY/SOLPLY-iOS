@@ -1,0 +1,93 @@
+//
+//  RecordListView.swift
+//  Solply
+//
+//  Created by 김승원 on 3/14/26.
+//
+
+import SwiftUI
+
+struct RecordListView: View {
+    
+    // MARK: - Properites
+    
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var appCoordinator: AppCoordinator
+    @StateObject private var store: RecordListStore
+    
+    // MARK: - Initializer
+    
+    init(placeId: Int, placeName: String) {
+        self._store = StateObject(wrappedValue: RecordListStore(placeId: placeId, placeName: placeName))
+    }
+    
+    // MARK: - Body
+    
+    var body: some View {
+        ScrollView(.vertical, showsIndicators: true) {
+            VStack(alignment: .center, spacing: 20.adjustedHeight) {
+                RecordWriteButton {
+                    appCoordinator.navigate(to: .recordWrite(placeId: store.placeId, placeName: store.placeName))
+                }
+                
+                recordList
+                    .customLoading(.recordListLoading, isLoading: store.state.isLoading)
+                
+                bottomPadding
+            }
+        }
+        .imageViewer(
+            item: store.state.imageViewerItem,
+            dismissAction: { store.dispatch(.dismissImageViewer) }
+        )
+        .contentMargins(.top, 8.adjustedHeight)
+        .customNavigationBar(.backWithTitle(
+            title: "기록",
+            backAction: { appCoordinator.goBack() })
+        )
+        .ignoresSafeArea(edges: .bottom)
+        .onAppear {
+            store.dispatch(.onAppear)
+        }
+    }
+}
+
+// MARK: - Subviews
+
+extension RecordListView {
+    private var recordList: some View {
+        VStack(alignment: .center, spacing: 0) {
+            ForEach(Array(store.state.records.enumerated()), id: \.offset) { index, record in
+                RecordCard(
+                    record,
+                    isMyRecord: record.userId == appState.userInformation?.userId,
+                    hideSeparator: index == store.state.records.count - 1,
+                    selectImageAction: { index in
+                        store.dispatch(.presentImageViewer(index: index, imageUrls: record.photoUrls))
+                    }, reportAction: {
+                        appState.requireLoginWithAlert(
+                            onAuthenticated: {
+                                appCoordinator.navigate(
+                                    to: .placeComplaint(reviewId: record.id)
+                                )
+                            },
+                            onExplore: { appCoordinator.changeRoot(to: .auth) }
+                        )
+                    },
+                    deleteAction: {
+                        AlertManager.shared.showAlert(alertType: .deleteRecord, onCancel: nil) {
+                            store.dispatch(.removeMySolplyRecord(reviewId: record.id))
+                        }
+                    }
+                )
+            }
+        }
+    }
+    
+    private var bottomPadding: some View {
+        Rectangle()
+            .foregroundStyle(.clear)
+            .frame(height: 40.adjustedHeight)
+            .frame(maxWidth: .infinity)
+    }
+}

@@ -12,32 +12,57 @@ struct MyPageEffect {
     // MARK: - Properties
     
     private let userService: UserAPI
+    private let placeService: PlaceAPI
     private let authService: AuthService
     
     // MARK: - Init
     
-    init(userService: UserAPI, authService: AuthService) {
+    init(userService: UserAPI, placeService: PlaceAPI, authService: AuthService) {
         self.userService = userService
+        self.placeService = placeService
         self.authService = authService
     }
-    
-    // MARK: - Functions
-    
-    func fetchUser() async -> MyPageAction {
+}
+
+// MARK: - My Page Content
+
+extension MyPageEffect {
+    func fetchMySolplyRecords() async -> MyPageAction {
         do {
-            let response = try await userService.fetchUserInformation()
-            
-            guard let dto = response.data else {
-                return .userLoadFailed(error: .responseError)
+            let response = try await placeService.fetchMySolplyRecords()
+
+            guard let data = response.data else {
+                return .fetchMySolplyRecordsFailed(error: .responseError)
             }
-            
-            let user = UserInformation(dto: dto)
-            return .userLoaded(user)
-            
+
+            return .mySolplyRecordsFetched(
+                records: data.reviews.map(MySolplyRecord.init),
+                totalCount: data.reviewCount
+            )
         } catch let error as NetworkError {
-            return .userLoadFailed(error: error)
+            return .fetchMySolplyRecordsFailed(error: error)
         } catch {
-            return .userLoadFailed(error: .unknownError)
+            return .fetchMySolplyRecordsFailed(error: .unknownError)
+        }
+    }
+
+    func fetchRegisteredPlaces(userId: Int) async -> MyPageAction {
+        do {
+            let response = try await userService.fetchRegisteredPlaces(
+                userId: userId,
+                page: 0,
+                size: 100
+            )
+
+            guard let data = response.data else {
+                return .fetchRegisteredPlacesFailed(error: .responseError)
+            }
+
+            return .registeredPlacesFetched(data.content.map(RegisteredPlace.init))
+        } catch let error as NetworkError {
+            return .fetchRegisteredPlacesFailed(error: error)
+        } catch {
+            return .fetchRegisteredPlacesFailed(error: .unknownError)
         }
     }
 }

@@ -18,36 +18,30 @@ struct TownDTO: ResponseModelType {
 struct TownListResponseDTO: ResponseModelType {
     let towns: [TownDTO]
     
-    func toEntity() -> [Town] {
-        let parentTowns = towns.filter { town in
-            return town.parentTownId == nil
-        }
-
-        var structuredTownList: [Town] = []
-
-        for parent in parentTowns {
-            var subTownList: [SubTown] = []
-
-            for child in towns {
-                if child.parentTownId == parent.townId {
-                    let subTown = SubTown(
-                        id: child.townId,
-                        townName: child.townName
-                    )
-                    subTownList.append(subTown)
-                }
+    func toEntity(includeAllOption: Bool = false) -> [Town] {
+        let childrenByParentId = Dictionary(grouping: towns) { $0.parentTownId }
+        
+        let parentTowns = towns.filter { $0.parentTownId == nil }
+        
+        return parentTowns.map { parent in
+            let childSubTowns = (childrenByParentId[parent.townId] ?? []).map { child in
+                SubTown(id: child.townId, townName: child.townName)
             }
-
-            let town = Town(
+            
+            let subTowns: [SubTown]
+            if includeAllOption {
+                let allSubTown = SubTown(id: parent.townId, townName: "전체")
+                subTowns = [allSubTown] + childSubTowns
+            } else {
+                subTowns = childSubTowns
+            }
+            
+            return Town(
                 id: parent.townId,
                 townName: parent.townName,
-                subTowns: subTownList
+                subTowns: subTowns
             )
-            
-            structuredTownList.append(town)
         }
-
-        return structuredTownList
     }
 }
 

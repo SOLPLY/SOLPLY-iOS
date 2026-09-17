@@ -140,29 +140,30 @@ struct FilterPlaceGrid: View {
                                         store.dispatch(.dismissSubTagBottomSheet)
                                     }
                                 }
-                            )
-                        ) { selectedTags in
-                            let subTags = selectedTags.filter { $0.isSelected }.map { $0.name }
-                            
-                            AmplitudeManager.shared.track(
-                                .completePlaceFilter(
-                                    selectedOptionTags: subTags.map { AmplitudeSelectedOptionTag.from($0) },
-                                    optionTagCount: store.state.selectedSubTags.count,
-                                    townId: appState.townId ,
-                                    townName: appState.townName
+                            ),
+                            confirmAction: { selectedTags in
+                                let subTags = selectedTags.filter { $0.isSelected }.map { $0.name }
+                                
+                                AmplitudeManager.shared.track(
+                                    .completePlaceFilter(
+                                        selectedOptionTags: subTags.map { AmplitudeSelectedOptionTag.from($0) },
+                                        optionTagCount: store.state.selectedSubTags.count,
+                                        townId: appState.townId ,
+                                        townName: appState.townName
+                                    )
                                 )
-                            )
-                            
-                            store.dispatch(.updateSubTags(selectedTags))
-                            
-                            store.dispatch(.fetchPlaceList(
-                                townId: townId,
-                                isBookmarkSearch: false,
-                                mainTagId: store.state.selectedMainTag.parentId,
-                                subTagAIdList: store.state.subTagAIdList,
-                                subTagBIdList: store.state.subTagBIdList
-                            ))
-                        }
+                                
+                                store.dispatch(.updateSubTags(selectedTags))
+                                
+                                store.dispatch(.fetchPlaceList(
+                                    townId: townId,
+                                    isBookmarkSearch: false,
+                                    mainTagId: store.state.selectedMainTag.parentId,
+                                    subTagAIdList: store.state.subTagAIdList,
+                                    subTagBIdList: store.state.subTagBIdList
+                                ))
+                            }
+                        )
                         .presentationDetents([.fraction(0.6)])
                         .presentationCornerRadius(20)
                     }
@@ -181,9 +182,8 @@ struct FilterPlaceGrid: View {
                                     size: 145.adjusted
                                 ) {
                                     appCoordinator.navigate(to: .placeDetail(
-                                        townId: townId,
                                         placeId: place.placeId,
-                                        fromSearch: false
+                                        shouldSuggestTownChange: false
                                     ))
                                 }
                             }

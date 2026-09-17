@@ -25,12 +25,4 @@ enum MyPageEditAction {
     case updateUserInformation(imageKeyString: String?)
     case updateUserInformationSuccess(nickName: String, persona: String)
     case updateUserInformationFailed(error: NetworkError)
-    
-    // uploadImage
-    case submitPresignedUrlRequest(request: PresignedUrlRequestDTO)
-    case submitPresignedUrlRequestSuccess(presignedUrl: String)
-    case submitPresignedUrlRequestFailed(error: NetworkError)
-    
-    case photoUploadSuccess(imageKey: URL)
-    case photoUploadFailed(error: NetworkError)
 }

@@ -38,6 +38,10 @@ struct PlaceRecommendState {
             .filter { $0.tagType == "OPTION2" && $0.isSelected }
             .map { $0.id }
     }
+    
+    var bottomPadding: CGFloat {
+        return isPlaceGridLoading ? (fetchedPlaceList.count / 2 * 170).adjustedHeight : 120.adjustedHeight
+    }
 }
 
 struct SelectableSubTag: Identifiable, Hashable {

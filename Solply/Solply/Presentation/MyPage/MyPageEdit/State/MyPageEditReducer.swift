@@ -64,24 +64,6 @@ enum MyPageEditReducer {
             print(error)
             state.isCompleteButtonLoading = false
             break
-            
-        case .submitPresignedUrlRequest:
-            break
-            
-        case .submitPresignedUrlRequestSuccess:
-            break
-            
-        case .submitPresignedUrlRequestFailed(let error):
-            print(error)
-            break
-            
-        case .photoUploadSuccess:
-            print("S3 사진 업로드 성공")
-            break
-            
-        case .photoUploadFailed(let error):
-            print("S3 사진 업로드 실패 error: \(error)")
-            break
         }
     }
 }

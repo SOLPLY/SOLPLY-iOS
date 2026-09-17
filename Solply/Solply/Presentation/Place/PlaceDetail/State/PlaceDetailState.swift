@@ -8,24 +8,21 @@
 import Foundation
 
 struct PlaceDetailState {
-    var isPlaceInformationLoading: Bool = false
+    var isPlaceDetailLoading: Bool = false
     
-    var shouldShowTownToast: Bool = false
+    var shouldFetchUserInformation: Bool = false
     var shouldShowFindDirectionDialog: Bool = false
+    var isAddToCourseSheetPresented: Bool = false
     
-    var addButtonSelected: Bool = false
     var bookmarkButtonSelected: Bool = false
-    var bookmarkButtonEnabled: Bool = true
-    var findDirectionEnabled: Bool = true
-    var userLatitude: Double = 0.0
-    var userLongitude: Double = 0.0
+    var userLatitude: Double?
+    var userLongitude: Double?
     var addPlaceCourseInformation: AddPlaceCourseInformation?
     
     var courses: [AddToCourseArchive] = []
     
     var selectedCourseIndex: Int = -1
-    
-    var toastContent: ToastContent?
+    var isPlaceConfirmButtonEnabled: Bool = false
     
     var isBookmarked: Bool = false
     var primaryTag: MainTagType = .all
@@ -36,6 +33,20 @@ struct PlaceDetailState {
     var contactNumber: String = ""
     var openingHours: String = ""
     var snsLink: [PlaceDetailSnsLink] = []
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
+    var latitude: Double?
+    var longitude: Double?
+    var solplyTips: [SubTagType] = []
+    var solplyCheckPoints: [String] = []
+    var records: [Record] = []
+    var isMoreRecordsButtonEnabled: Bool = false
+    
+    var navigationBarTitle: String? = nil
+    var imageViewerItem: ImageViewerItem? = nil
+    var courseDetailNavigation: CourseDetailNavigation? = nil
+}
+
+struct CourseDetailNavigation: Equatable {
+    let townId: Int
+    let courseId: Int
+    let fromArchive: Bool
 }

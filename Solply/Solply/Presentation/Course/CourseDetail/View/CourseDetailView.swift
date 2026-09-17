@@ -10,10 +10,10 @@ import SwiftUI
 struct CourseDetailView: View {
     
     // MARK: - Properties
+    
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @EnvironmentObject private var toastManager: ToastManager
-    @EnvironmentObject private var alertManager: AlertManager
     @StateObject private var store: CourseDetailStore
     @StateObject private var locationManager = LocationManager()
     
@@ -64,11 +64,6 @@ struct CourseDetailView: View {
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
         }
-        .onChange(of: store.state.toastContent) { _, toastContent in
-            guard let toastContent else { return }
-            
-            toastManager.showToast(content: toastContent)
-        }
         .findDirectionDialog(
             isPresented: Binding(
                 get: { store.state.isFindDirectionDialogPresented },
@@ -107,14 +102,13 @@ struct CourseDetailView: View {
 
 extension CourseDetailView {
     private var courseMapView: some View {
-        CourseDetailMapView(places: store.state.places)
-            .customNavigationBar(.courseDetail(
-                backAction: {
-                    store.state.isCourseEditing ? showChangesNotSavedAlert() : appCoordinator.goBack()
-                }, homeAction: {
-                    appCoordinator.goToRoot()
-                }
-            ))
+        CourseMarkerMap(places: store.state.coursePlaceMarks)
+            .customNavigationBar(
+                .floating(
+                    backAction: { store.state.isCourseEditing ? showChangesNotSavedAlert() : appCoordinator.goBack() },
+                    homeAction: { store.state.isCourseEditing ? showChangesNotSavedAlert() : appCoordinator.goToRoot()  }
+                )
+            )
             .customBottomSheet(.courseDetail(fromArchive: store.fromArchive)) {
                 VStack(alignment: .center, spacing: 20.adjustedHeight) {
                     title
@@ -157,11 +151,11 @@ extension CourseDetailView {
                         
                         if !store.fromArchive {
                             Button {
-                                requireLogin {
+                                appState.requireLoginWithAlert {
                                     bookmarkCourse()
-                                } exploreAction: {
+                                } onExplore: {
                                     AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .saveCourse))
-                                    showLoginAlert(amplitudeBlockedAction: .saveCourse)
+                                    appCoordinator.changeRoot(to: .auth)
                                 }
                             } label: {
                                 Image(store.state.isCourseBookmarkSelected ? .bookmarkSavedIcon : .bookmarkIcon)
@@ -210,7 +204,7 @@ extension CourseDetailView {
                         )
                         store.dispatch(.focusPlace(index: index))
                     } detailAction: {
-                        appCoordinator.navigate(to: .placeDetail(townId: store.townId, placeId: store.state.places[index].placeId, fromSearch: false))
+                        appCoordinator.navigate(to: .placeDetail(placeId: store.state.places[index].placeId, shouldSuggestTownChange: false))
                     } findDirectionAction: {
                         store.dispatch(.requestFindDirection)
                         
@@ -222,7 +216,7 @@ extension CourseDetailView {
                             )
                         )
                     } saveAction: {
-                        requireLogin {
+                        appState.requireLoginWithAlert {
                             store.dispatch(.toggleBookmarkPlace(index: index))
                             
                             if store.state.places[index].isBookmarked {
@@ -234,15 +228,7 @@ extension CourseDetailView {
                                     )
                                 )
                                 store.dispatch(.submitPlaceBookmark(index: index))
-                                
-                                store.dispatch(
-                                    .showToastView(
-                                        ToastContent(
-                                            toastType: .defaultToast,
-                                            message: "'\(place.placeName.truncated(length: 9))'가 수집함에 저장되었어요."
-                                        )
-                                    )
-                                )
+                                ToastManager.shared.showToast(.defaultToast, message: "'\(place.placeName.truncated(length: 9))'가 수집함에 저장되었어요.")
                             } else {
                                 AmplitudeManager.shared.track(
                                     .clickCoursePlaceSave(
@@ -252,19 +238,11 @@ extension CourseDetailView {
                                     )
                                 )
                                 store.dispatch(.removePlaceBookmark(index: index))
-                                
-                                store.dispatch(
-                                    .showToastView(
-                                        ToastContent(
-                                            toastType: .defaultToast,
-                                            message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요."
-                                        )
-                                    )
-                                )
+                                ToastManager.shared.showToast(.defaultToast, message: "'\(place.placeName.truncated(length: 9))'가 수집함에서 삭제되었어요.")
                             }
-                        } exploreAction: {
+                        } onExplore: {
                             AmplitudeManager.shared.track(.viewLoginRequiredAlert(entryMode: .guest, blockedAction: .saveCoursePlace))
-                            showLoginAlert(amplitudeBlockedAction: .saveCoursePlace)
+                            appCoordinator.changeRoot(to: .auth)
                         }
                     }
                     .animation(.easeInOut(duration: 0.2), value: store.state.isCourseEditing)
@@ -379,15 +357,7 @@ extension CourseDetailView {
                 CourseSaveButton(title: "새 코스로 저장") {
                     store.dispatch(.submitCreateCourseDetail)
                     store.dispatch(.saveCourseAsNew)
-                    
-                    store.dispatch(
-                        .showToastView(
-                            ToastContent(
-                                toastType: .defaultToast,
-                                message: "새 코스로 저장되었어요."
-                            )
-                        )
-                    )
+                    ToastManager.shared.showToast(.defaultToast, message: "새 코스로 저장되었어요.")
                 }
             }
             .padding(.bottom, 16.adjustedHeight)
@@ -407,57 +377,25 @@ extension CourseDetailView {
         } else {
             store.dispatch(.submitCourseBookmark)
             store.dispatch(.toggleBookmarkCourse)
-            
-            store.dispatch(
-                .showToastView(
-                    ToastContent(
-                        toastType: .withActionToast,
-                        message: "코스가 수집함에 저장되었어요.",
-                        toastAction: ToastAction(
-                            buttonTitle: "코스 수정하기",
-                            action: {
-                                appCoordinator.navigate(
-                                    to: .courseDetail(
-                                        townId: store.townId,
-                                        courseId: store.courseId,
-                                        fromArchive: true
-                                    )
-                                )
-                            }
-                        )
-                    )
-                )
+            ToastManager.shared.showToast(
+                .withActionToast(
+                    buttonTitle: "코스 수정하기",
+                    action: {
+                        appCoordinator.navigate(to: .courseDetail(
+                                townId: store.townId,
+                                courseId: store.courseId,
+                                fromArchive: true
+                        ))
+                    }
+                ),
+                message: "코스가 수집함에 저장되었어요."
             )
         }
     }
-    
-    private func requireLogin(_ authenticatedAction: (() -> Void), exploreAction: (() -> Void)) {
-        switch appState.userSession {
-        case .explore:
-            exploreAction()
-        case .authenticated:
-            authenticatedAction()
-        }
-    }
-    
-    private func showLoginAlert(amplitudeBlockedAction: AmplitudeBlockedAction) {
-        alertManager.showAlert(alertType: .authenticationRequired) {
-            AmplitudeManager.shared.track(.clickLoginCancel(entryMode: .guest, blockedAction: amplitudeBlockedAction))
-        } onConfirm: {
-            appCoordinator.changeRoot(to: .auth)
-        }
-    }
-    
+
     private func showChangesNotSavedAlert() {
-        alertManager.showAlert(
-            alertType: .changesNotSaved,
-            onCancel: {
-                AmplitudeManager.shared.track(.clickLeaveCourseEdit(courseId: store.courseId, choice: .cancel))
-            },
-            onConfirm: {
-                AmplitudeManager.shared.track(.clickLeaveCourseEdit(courseId: store.courseId, choice: .leave))
-                appCoordinator.goBack()
-            }
-        )
+        AlertManager.shared.showAlert(alertType: .changesNotSaved, onCancel: nil) {
+            appCoordinator.goBack()
+        }
     }
 }

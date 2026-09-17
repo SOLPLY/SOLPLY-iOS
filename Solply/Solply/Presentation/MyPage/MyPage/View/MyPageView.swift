@@ -14,6 +14,8 @@ struct MyPageView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appCoordinator: AppCoordinator
     @StateObject private var store = MyPageStore()
+
+    private let previewLimit = 3
     
     // MARK: - Body
     
@@ -22,18 +24,15 @@ struct MyPageView: View {
             Color(.gray100)
                 .ignoresSafeArea(edges: .top)
             
-            ScrollView {
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
-                    header
+                    userProfileHeader
                     
-                    MyPageRegisteredPlaces(
-                        places: store.state.user?.myPlacePreviews ?? [],
-                        onSeeAllTapped: {
-                            guard let userId = store.state.user?.userId else { return }
-                            appCoordinator.navigate(to: .registeredPlaces(userId: userId))
-                        }
-                    )
-                    .padding(.top, 44.adjustedHeight)
+                    mySolplyRecordSection
+                        .padding(.top, 44.adjustedHeight)
+
+                    myRegisteredPlacesSection
+                        .padding(.top, 16.adjustedHeight)
                     
                     MyPageSettings(
                         loginProvider: store.state.loginInformation,
@@ -41,15 +40,17 @@ struct MyPageView: View {
                         onTapCustomerCenter: {
                             appCoordinator.navigate(to: .customerCenter)
                         },
-                        onTapLogout: { store.dispatch(.logout) },
-                        onTapDeleteAccount: { store.dispatch(.deleteAccountTapped)
+                        onTapLogout: {
+                            appState.clearUserInformation()
+                            store.dispatch(.logout)
+                        },
+                        onTapDeleteAccount: {
                             appCoordinator.navigate(to: .withdraw)
                         }
                     )
                     .padding(.top, 16.adjustedHeight)
                 }
-                Spacer()
-                    .frame(height: 30.adjustedHeight)
+                .padding(.bottom, 120.adjustedHeight)
             }
         }
         .onChange(of: store.state.shouldChangeRoot) { _, newValue in
@@ -57,11 +58,19 @@ struct MyPageView: View {
                 appCoordinator.changeRoot(to: .splash)
             }
         }
-        .background(Color(.gray100).ignoresSafeArea())
-        .customNavigationBar(.myPage(backAction: appCoordinator.goBack))
+        .customNavigationBar(
+            .titleWithNotification(
+                title: "마이페이지"
+//                notificationAction: { print("알림") }
+                // TODO: - 알림 구현 시 원상복구 ....
+            )
+        )
+        .background(.gray100)
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
-            store.dispatch(.fetchUser)
+            if let userId = appState.userInformation?.userId {
+                store.dispatch(.fetchMyPageContent(userId: userId))
+            }
             store.dispatch(.fetchLoginInformation)
             
             AmplitudeManager.shared.track(.viewMyPage(entryMode: .member))
@@ -72,18 +81,18 @@ struct MyPageView: View {
 // MARK: - Header
 
 private extension MyPageView {
-    var header: some View {
+    var userProfileHeader: some View {
         VStack(alignment: .center, spacing: 15.adjustedHeight) {
-            ProfileImage(profileImageUrl: store.state.user?.profileImageUrl)
+            ProfileImage(profileImageUrl: appState.userInformation?.profileImageUrl)
             
-            Text(store.state.user?.nickname ?? "")
+            Text(appState.userInformation?.nickname ?? "")
                 .applySolplyFont(.title_18_sb)
                 .foregroundColor(.coreBlack)
             
             Button {
-                guard let user = store.state.user else { return }
+                guard let userInformation = appState.userInformation else { return }
                 
-                appCoordinator.navigate(to: .myPageEdit(userInformation: user))
+                appCoordinator.navigate(to: .myPageEdit(userInformation: userInformation))
             } label: {
                 HStack(alignment: .center, spacing: 0) {
                     Text("프로필 수정")
@@ -103,5 +112,164 @@ private extension MyPageView {
             .buttonStyle(.plain)
         }
         .frame(maxWidth: .infinity, alignment: .center)
+    }
+    
+    var mySolplyRecordSection: some View {
+        VStack(alignment: .center, spacing: 16.adjustedHeight) {
+            sectionHeader(
+                title: "내 솔플리 기록",
+                isButtonEnabled: !store.state.mySolplyRecords.isEmpty
+            ) {
+                appCoordinator.navigate(to: .mySolplyRecords)
+                
+            }
+            
+            mySolplyRecordList()
+        }
+        .padding(.vertical, 16.adjustedHeight)
+        .padding(.horizontal, 20.adjustedWidth)
+        .background(.coreWhite)
+    }
+    
+    var myRegisteredPlacesSection: some View {
+        VStack(alignment: .center, spacing: 16.adjustedHeight) {
+            sectionHeader(
+                title: "내가 등록한 장소",
+                isButtonEnabled: !store.state.registeredPlaces.isEmpty
+            ) {
+                guard let userId = appState.userInformation?.userId else { return }
+                
+                appCoordinator.navigate(to: .registeredPlaces(userId: userId))
+            }
+            .padding(.horizontal, 20.adjustedWidth)
+            
+            myRegisteredPlacesList()
+        }
+        .padding(.vertical, 16.adjustedHeight)
+        .background(.coreWhite)
+    }
+    
+    func mySolplyRecordList() -> some View {
+        let previewRecords = Array(store.state.mySolplyRecords.prefix(previewLimit))
+
+        return Group {
+            if !previewRecords.isEmpty {
+                VStack(alignment: .center, spacing: 0) {
+                    ForEach(Array(previewRecords.enumerated()), id: \.offset) { index, record in
+                        mySolplyRecordRow(record, showsDivider: previewRecords.count - 1 != index)
+                    }
+                }
+            } else {
+                emptyView(title: "등록한 기록이 없어요")
+            }
+        }
+    }
+    
+    func mySolplyRecordRow(_ record: MySolplyRecord, showsDivider: Bool) -> some  View {
+        VStack(alignment: .center, spacing: 0) {
+            HStack(alignment: .top, spacing: 12.adjustedWidth) {
+                ThumbnailImage(
+                    record.PhotosUrls.first,
+                    width: 72.adjusted,
+                    height: 72.adjusted,
+                    radius: 12
+                )
+                
+                VStack(alignment: .leading, spacing: 8.adjustedHeight) {
+                    Text(record.placeName)
+                        .applySolplyFont(.title_15_m)
+                        .foregroundStyle(.coreBlack)
+                    
+                    Text(record.recordText)
+                        .applySolplyFont(.body_14_r)
+                        .foregroundStyle(.gray900)
+                        .lineLimit(2)
+                }
+                .frame(width: 251.adjustedWidth, alignment: .leading)
+            }
+            
+            if showsDivider {
+                Rectangle()
+                    .frame(height: 1.adjustedHeight)
+                    .frame(maxWidth: .infinity)
+                    .foregroundStyle(.gray200)
+                    .padding(.vertical, 16.adjustedHeight)
+            }
+        }
+        .background(.coreWhite)
+        .onTapGesture {
+            appCoordinator.navigate(
+                to: .placeDetail(
+                    placeId: record.placeId,
+                    shouldSuggestTownChange: true
+                )
+            )
+        }
+    }
+    
+    func myRegisteredPlacesList() -> some View {
+        Group {
+            if !store.state.registeredPlaces.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(alignment: .top, spacing: 16.adjustedWidth) {
+                        ForEach(store.state.registeredPlaces) { item in
+                            PlaceCard(
+                                isSaved: item.isBookmarked,
+                                thumbnailUrl: item.thumbnail,
+                                placeName: item.name,
+                                placeCategory: item.mainTag,
+                                isSelected: false,
+                                size: 145.adjusted
+                            )
+                        }
+                    }
+                }
+                .contentMargins(.horizontal, 20.adjustedWidth)
+            } else {
+                emptyView(title: "등록한 장소가 없어요")
+            }
+        }
+    }
+    
+    func sectionHeader(
+        title: String,
+        isButtonEnabled: Bool,
+        action: (() -> Void)?
+    ) -> some View {
+        HStack(alignment: .center, spacing: 0) {
+            Text(title)
+                .applySolplyFont(.body_16_m)
+                .foregroundColor(.coreBlack)
+            
+            Spacer()
+            
+            if isButtonEnabled {
+                Button {
+                    action?()
+                } label: {
+                    HStack(spacing: 0) {
+                        Text("전체 보기")
+                            .applySolplyFont(.body_14_r)
+                            .foregroundColor(.gray600)
+                        
+                        Image(.arrowRightIconThin)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24.adjusted, height: 24.adjusted)
+                            .foregroundColor(.gray600)
+                    }
+                    .padding(.leading, 12.adjustedWidth)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+    
+    func emptyView(title: String) -> some View {
+        Text(title)
+            .applySolplyFont(.body_16_r)
+            .foregroundColor(.gray400)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .frame(height: 40.adjustedHeight)
     }
 }

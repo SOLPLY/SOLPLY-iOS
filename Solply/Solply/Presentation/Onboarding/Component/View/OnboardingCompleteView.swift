@@ -53,7 +53,10 @@ struct OnboardingCompleteView: View {
         }
         .onChange(of: store.state.isLottieFinished) { _, newValue in
             if newValue {
-                appCoordinator.changeRoot(to: .tabBar)
+                Task {
+                    await appState.fetchUserInformation()
+                    appCoordinator.changeRoot(to: .tabBar)
+                }
             }
         }
     }

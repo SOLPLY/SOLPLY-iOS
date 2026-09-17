@@ -10,6 +10,7 @@ import SwiftUI
 struct OnboardingView: View {
     
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @EnvironmentObject private var appState: AppState
     @StateObject private var store: OnboardingStore = OnboardingStore()
     
     var body: some View {
@@ -39,7 +40,7 @@ struct OnboardingView: View {
                         appCoordinator.changeRoot(to: .tabBar)
                     }
                 }
-                .customNavigationBar(.onboarding(backAction: {
+                .customNavigationBar(.backOnly(backAction: {
                     switch store.state.step {
                     case .agreement:
                         appCoordinator.changeRoot(to: .auth)
@@ -65,9 +66,4 @@ struct OnboardingView: View {
         }
         .ignoresSafeArea(.keyboard)
     }
-}
-
-#Preview {
-    OnboardingView()
-        .environmentObject(AppCoordinator())
 }
