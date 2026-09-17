@@ -15,6 +15,8 @@ struct RootView: View {
     @StateObject private var appCoordinator = AppCoordinator()
     @StateObject private var scrollToTopManager = ScrollToTopManager()
     
+    @State private var appVersionMonitor = AppVersionMonitor()
+    
     // MARK: - Body
     
     var body: some View {
@@ -36,6 +38,10 @@ struct RootView: View {
                 message: "세션이 만료되었습니다. 다시 로그인해주세요.",
                 bottomPadding: 16.adjustedHeight
             )
+        }
+        .forceUpdateAlert(monitor: appVersionMonitor)
+        .task {
+            await appVersionMonitor.checkCurrentVersionForUpdate()
         }
     }
 }
