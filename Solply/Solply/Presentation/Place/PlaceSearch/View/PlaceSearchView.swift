@@ -47,12 +47,11 @@ struct PlaceSearchView: View {
                             }
                         }
                     } else {
-                        PlaceDataView(places: store.state.searchedPlaces) { townId, placeId in
+                        PlaceDataView(places: store.state.searchedPlaces) { _, placeId in
                             appCoordinator.navigate(
                                 to: .placeDetail(
-                                    townId: townId,
                                     placeId: placeId,
-                                    fromSearch: true
+                                    shouldSuggestTownChange: true
                                 )
                             )
                             

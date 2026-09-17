@@ -10,7 +10,6 @@ import Foundation
 struct PlaceDetailState {
     var isPlaceDetailLoading: Bool = false
     
-    var shouldShowTownToast: Bool = false
     var shouldFetchUserInformation: Bool = false
     var shouldShowFindDirectionDialog: Bool = false
     var isAddToCourseSheetPresented: Bool = false
@@ -43,4 +42,11 @@ struct PlaceDetailState {
     
     var navigationBarTitle: String? = nil
     var imageViewerItem: ImageViewerItem? = nil
+    var courseDetailNavigation: CourseDetailNavigation? = nil
+}
+
+struct CourseDetailNavigation: Equatable {
+    let townId: Int
+    let courseId: Int
+    let fromArchive: Bool
 }

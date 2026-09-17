@@ -204,7 +204,7 @@ extension CourseDetailView {
                         )
                         store.dispatch(.focusPlace(index: index))
                     } detailAction: {
-                        appCoordinator.navigate(to: .placeDetail(townId: store.townId, placeId: store.state.places[index].placeId, fromSearch: false))
+                        appCoordinator.navigate(to: .placeDetail(placeId: store.state.places[index].placeId, shouldSuggestTownChange: false))
                     } findDirectionAction: {
                         store.dispatch(.requestFindDirection)
                         

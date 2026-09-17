@@ -44,16 +44,6 @@ final class AIRecommendPromptStore: ObservableObject {
                 dispatch(.submitAICourseRecommend(townId: townId, prompt: state.promptContent))
             }
 
-        case .popularPromptTapped(let prompt):
-            guard let townId = state.selectedSubTown?.id else { return }
-            
-            switch state.selectedCategory {
-            case .place:
-                dispatch(.submitAIPlaceRecommend(townId: townId, prompt: prompt))
-            case .course:
-                dispatch(.submitAICourseRecommend(townId: townId, prompt: prompt))
-            }
-            
         case .submitAIPlaceRecommend(let townId, let prompt):
             Task {
                 let request = AIRecommendRequestDTO(query: prompt, townId: townId)

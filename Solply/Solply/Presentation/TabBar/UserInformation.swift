@@ -14,9 +14,6 @@ struct UserInformation : Hashable {
     let townName: String
     let townId: Int
     let profileImageUrl: String?
-    let myPlacePreviews: [UserPlace]
-    let mySolplyRecordPreviews: [MySolplyRecordPreview]
-    let hasMoreReviews: Bool
 }
 
 extension UserInformation {
@@ -27,8 +24,5 @@ extension UserInformation {
         townName = dto.selectedTown.townName
         townId = dto.selectedTown.townId
         profileImageUrl = dto.profileImageUrl
-        myPlacePreviews = dto.myPlacePreviews.map(UserPlace.init)
-        mySolplyRecordPreviews = dto.myReviewPreview.reviews.map { MySolplyRecordPreview(dto: $0) }
-        hasMoreReviews = !mySolplyRecordPreviews.isEmpty
     }
 }

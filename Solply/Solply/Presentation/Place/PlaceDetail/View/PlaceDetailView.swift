@@ -24,12 +24,11 @@ struct PlaceDetailView: View {
     
     // MARK: - Initializer
     
-    init(townId: Int, placeId: Int, fromSearch: Bool) {
+    init(placeId: Int, shouldSuggestTownChange: Bool) {
         _store = StateObject(
             wrappedValue: PlaceDetailStore(
-                townId: townId,
                 placeId: placeId,
-                fromSearch: fromSearch
+                shouldSuggestTownChange: shouldSuggestTownChange
             )
         )
     }
@@ -105,11 +104,11 @@ struct PlaceDetailView: View {
             }
         )
         .onAppear {
+            if appState.userSession == .authenticated {
+                store.dispatch(.setUserTownId(userTownId: appState.townId))
+            }
             store.dispatch(.fetchPlaceDetail)
             store.dispatch(.fetchCourseArchive)
-            if appState.userSession == .authenticated {
-                store.dispatch(.compareUserTownId(userTownId: appState.townId))
-            }
         }
         .onReceive(locationManager.$latitude.combineLatest(locationManager.$longitude)) { latitude, longitude in
             store.dispatch(.updateUserCoordinate(latitude: latitude, longitude: longitude))
@@ -121,15 +120,27 @@ struct PlaceDetailView: View {
                 .withActionToast(
                     buttonTitle: "자세히 보기",
                     action: {
-                        appCoordinator.navigate(to: .courseDetail(
-                            townId: store.townId,
-                            courseId: addPlaceCourseInformation.courseId,
-                            fromArchive: true)
+                        store.dispatch(
+                            .requestCourseDetailNavigation(
+                                courseId: addPlaceCourseInformation.courseId
+                            )
                         )
                     }
                 ),
                 message: "‘\(addPlaceCourseInformation.courseName.truncated(length: 8))’에 추가되었어요."
             )
+        }
+        .onChange(of: store.state.courseDetailNavigation) { _, destination in
+            guard let destination else { return }
+
+            appCoordinator.navigate(
+                to: .courseDetail(
+                    townId: destination.townId,
+                    courseId: destination.courseId,
+                    fromArchive: destination.fromArchive
+                )
+            )
+            store.dispatch(.clearCourseDetailNavigation)
         }
         .onChange(of: store.state.shouldFetchUserInformation) { _, shouldFetchUserInformation in
             if shouldFetchUserInformation {

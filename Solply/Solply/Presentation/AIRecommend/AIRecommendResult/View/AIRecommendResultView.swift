@@ -88,7 +88,7 @@ private extension AIRecommendResultView {
                         thumbnailImageUrl: item.thumbnailImageUrl
                     )
                     .onTapGesture {
-                        appCoordinator.navigate(to: .placeDetail(townId: item.townId, placeId: item.id, fromSearch: true))
+                        appCoordinator.navigate(to: .placeDetail(placeId: item.id, shouldSuggestTownChange: true))
                     }
 
                 case .course(let item):

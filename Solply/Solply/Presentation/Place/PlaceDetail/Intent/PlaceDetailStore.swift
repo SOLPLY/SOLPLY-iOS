@@ -15,10 +15,12 @@ final class PlaceDetailStore: ObservableObject {
     @Published private(set) var state = PlaceDetailState()
     private let effect: PlaceDetailEffect
     
-    let townId: Int
     let placeId: Int
-    let fromSearch: Bool
+    let shouldSuggestTownChange: Bool
     
+    private var placeTownId: Int?
+    private var userTownId: Int?
+
     // MARK: - Initializer
     
     init(
@@ -27,14 +29,12 @@ final class PlaceDetailStore: ObservableObject {
             placeService: PlaceService(),
             userService: UserService()
         ),
-        townId: Int,
         placeId: Int,
-        fromSearch: Bool
+        shouldSuggestTownChange: Bool
     ) {
         self.effect = effect
-        self.townId = townId
         self.placeId = placeId
-        self.fromSearch = fromSearch
+        self.shouldSuggestTownChange = shouldSuggestTownChange
     }
     
     // MARK: - dispatch
@@ -43,10 +43,8 @@ final class PlaceDetailStore: ObservableObject {
         PlaceDetailReducer.reduce(state: &state, action: action)
         
         switch action {
-        case .compareUserTownId(let userTownId):
-            if userTownId != townId {
-                dispatch(.showTownToast)
-            }
+        case .setUserTownId(let userTownId):
+            self.userTownId = userTownId
             
         case .findDirection(let mapRouteType):
             
@@ -98,6 +96,8 @@ final class PlaceDetailStore: ObservableObject {
             }
             
         case .placeDetailFetched(let placeDetailInformation, _, _):
+            placeTownId = placeDetailInformation.townId
+
             AmplitudeManager.shared.track(
                 .viewPlaceDetail(
                     placeId: placeId,
@@ -106,7 +106,9 @@ final class PlaceDetailStore: ObservableObject {
                 )
             )
             
-            guard state.shouldShowTownToast && fromSearch else { return }
+            guard shouldSuggestTownChange,
+                  let userTownId,
+                  userTownId != placeDetailInformation.townId else { return }
             
             let townName = placeDetailInformation.townName
             
@@ -116,7 +118,7 @@ final class PlaceDetailStore: ObservableObject {
                     action: { [weak self] in
                         guard let self else { return }
                         
-                        self.dispatch(.updateUserTowns(newTownId: self.townId))
+                        self.dispatch(.updateUserTowns(newTownId: placeDetailInformation.townId))
                     }
                 ),
                 message: "이 장소는 \(townName)에 위치해있어요."
@@ -167,6 +169,19 @@ final class PlaceDetailStore: ObservableObject {
                     placeId: placeId,
                     placeName: state.placeName,
                     courseId: addPlaceCourseInformation.courseId
+                )
+            )
+
+        case .requestCourseDetailNavigation(let courseId):
+            guard let placeTownId else { return }
+
+            dispatch(
+                .courseDetailNavigationRequested(
+                    destination: CourseDetailNavigation(
+                        townId: placeTownId,
+                        courseId: courseId,
+                        fromArchive: true
+                    )
                 )
             )
             

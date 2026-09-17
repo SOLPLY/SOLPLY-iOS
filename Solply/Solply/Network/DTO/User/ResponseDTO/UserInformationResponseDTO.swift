@@ -37,6 +37,7 @@ struct ReviewPreviewDTO: ResponseModelType {
 
 struct ReviewDTO: ResponseModelType {
     let reviewId: Int
+    let placeId: Int
     let placeName: String
     let previewImageUrl: String?
     let content: String

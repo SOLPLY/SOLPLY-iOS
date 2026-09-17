@@ -10,6 +10,20 @@ import Foundation
 enum MyPageReducer {
     static func reduce(state: inout MyPageState, action: MyPageAction) {
         switch action {
+        case .fetchMyPageContent, .fetchMySolplyRecords, .fetchRegisteredPlaces:
+            break
+
+        case .mySolplyRecordsFetched(let records, let totalCount):
+            state.mySolplyRecords = records
+            state.mySolplyRecordCount = totalCount
+
+        case .registeredPlacesFetched(let places):
+            state.registeredPlaces = places
+
+        case .fetchMySolplyRecordsFailed(let error), .fetchRegisteredPlacesFailed(let error):
+            state.error = error
+            print(error)
+
         case .fetchLoginInformation:
             break
             
