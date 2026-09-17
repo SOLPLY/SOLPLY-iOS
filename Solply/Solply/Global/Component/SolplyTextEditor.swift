@@ -33,6 +33,7 @@ struct SolplyTextEditor: View {
     
     @State private var text: String = ""
     
+    private let externalText: Binding<String>?
     private let placeholder: String
     private let isTextLimitEnabled: Bool
     private let topLabel: String?
@@ -49,6 +50,7 @@ struct SolplyTextEditor: View {
     // MARK: - Initializer
     
     init(
+        text: Binding<String>? = nil,
         placeholder: String = "최대 200자 입력 가능",
         isTextLimitEnabled: Bool = true,
         topLabel: String? = nil,
@@ -57,6 +59,7 @@ struct SolplyTextEditor: View {
         onTextChanged: ((String) -> Void)? = nil,
         onLabelTapped: (() -> Void)? = nil
     ) {
+        self.externalText = text
         self.placeholder = placeholder
         self.isTextLimitEnabled = isTextLimitEnabled
         self.topLabel = topLabel
@@ -78,6 +81,14 @@ struct SolplyTextEditor: View {
             
             textLimitCount
         }
+        .onAppear {
+            synchronizeTextFromBinding()
+        }
+        .onChange(of: externalText?.wrappedValue) { _, newValue in
+            guard let newValue, newValue != text else { return }
+
+            text = newValue
+        }
     }
 }
 
@@ -96,6 +107,7 @@ extension SolplyTextEditor {
                 .background(.clear)
                 .onChange(of: text) { _, newValue in
                     guard isTextLimitEnabled else {
+                        externalText?.wrappedValue = newValue
                         onTextChanged?(newValue)
                         return
                     }
@@ -106,6 +118,7 @@ extension SolplyTextEditor {
                         text = limitedText
                     }
                     
+                    externalText?.wrappedValue = limitedText
                     onTextChanged?(limitedText)
                 }
             
@@ -152,5 +165,11 @@ extension SolplyTextEditor {
         }
         .buttonStyle(.plain)
         .frame(width: 335.adjustedWidth, alignment: .leading)
+    }
+
+    private func synchronizeTextFromBinding() {
+        guard let externalText else { return }
+
+        text = externalText.wrappedValue
     }
 }

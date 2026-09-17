@@ -148,6 +148,10 @@ extension AIRecommendPromptView {
     
     private var aiRecommendPromptField: some View {
         SolplyTextEditor(
+            text: Binding(
+                get: { store.state.promptContent },
+                set: { store.dispatch(.updatePromptText($0)) }
+            ),
             placeholder: store.state.selectedCategory.aiRecommendPromptPlaceholder,
             backgroundColor: .gray100
         ) { newText in

@@ -33,8 +33,8 @@ enum AIRecommendPromptReducer {
             state.isAIRecommendLoading = true
             
         case .popularPromptTapped(let prompt):
-            state.isAIRecommendLoading = true
             state.promptContent = prompt
+            state.isRecommendButtonEnabled = prompt.count >= 5
             
         case .completeTownSelect(let town, let subTown):
             state.selectedTown = town

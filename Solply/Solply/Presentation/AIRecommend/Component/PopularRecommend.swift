@@ -30,6 +30,7 @@ struct PopularRecommend: View {
     // MARK: - Body
     
     var body: some View {
+        // TODO: - 첫 로딩할 때 인기추천 바로가기 중간에 깜빡거림
         VStack(alignment: .leading, spacing: 16.adjustedHeight) {
             Text("인기 추천 바로가기")
                 .applySolplyFont(.title_14_m)
